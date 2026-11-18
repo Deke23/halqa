@@ -1,0 +1,97 @@
+@import "tailwindcss";
+
+/*
+ * Design tokens. Calm clinical look.
+ * Contrast (WCAG AA, 4.5:1 for text) was checked for each text and background pair below.
+ *   ink on bg            #1b2733 on #f4f6f7   14.6:1
+ *   muted on surface     #4a5866 on #ffffff    7.4:1
+ *   white on accent      #ffffff on #0f766e    5.5:1
+ *   accent-ink on soft   #0b5e57 on #e3f4f1    6.5:1
+ *   due-ink on due-soft  #7a3b05 on #fdf1d3    7.3:1
+ *   urgent-ink on soft   #991b1b on #fde8e8    6.6:1
+ * Red is for clinical urgency on staff screens only. Never use it on patient screens.
+ */
+@theme {
+  --color-bg: #f4f6f7;
+  --color-surface: #ffffff;
+  --color-surface-2: #eef1f3;
+  --color-line: #d5dce1;
+  --color-ink: #1b2733;
+  --color-muted: #4a5866;
+
+  --color-accent: #0f766e;
+  --color-accent-strong: #0b5e57;
+  --color-accent-soft: #e3f4f1;
+  --color-accent-ink: #0b5e57;
+
+  --color-due: #b45309;
+  --color-due-soft: #fdf1d3;
+  --color-due-ink: #7a3b05;
+
+  --color-urgent: #b91c1c;
+  --color-urgent-soft: #fde8e8;
+  --color-urgent-ink: #991b1b;
+
+  --color-ok-soft: #e3f4f1;
+  --color-ok-ink: #0b5e57;
+  --color-info-soft: #e6eef7;
+  --color-info-ink: #1e3a5f;
+
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Noto Sans Arabic", "Segoe UI Arabic", "Geeza Pro", "Tahoma", "Arial", sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  --radius-card: 0.75rem;
+  --shadow-card: 0 1px 2px rgb(16 24 40 / 0.06), 0 1px 3px rgb(16 24 40 / 0.08);
+}
+
+html {
+  background: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-text-size-adjust: 100%;
+}
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--color-bg);
+  line-height: 1.5;
+}
+html[lang="ar"] body {
+  line-height: 1.7;
+}
+
+/* Visible keyboard focus everywhere. */
+:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Clinical values stay in Latin digits and read left to right, even in Arabic. */
+.clinical,
+.bp {
+  direction: ltr;
+  unicode-bidi: isolate;
+  display: inline-block;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+.latin-digits {
+  font-variant-numeric: lining-nums;
+}
+
+.sr-only-focusable:not(:focus):not(:focus-within) {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -1,0 +1,32 @@
+# Approved template. Edit the text here, bump `version`, and keep every {slot} listed in required_slots.
+id: appointment_reminder
+version: 1
+purpose: Reminder before the visit.
+channel_limits:
+  app: 900
+  whatsapp: 1000
+required_slots:
+- name
+- clinic_name
+- appointment_date
+- appointment_time
+sample_slots:
+  en:
+    name: Khalid
+    clinic_name: Al Noor Clinic
+    appointment_date: Monday 25 November
+    appointment_time: 09:30
+  ar:
+    name: خالد
+    clinic_name: عيادة النور
+    appointment_date: الاثنين 25 نوفمبر
+    appointment_time: 09:30
+  fr:
+    name: Jean-Paul
+    clinic_name: Centre Mvog-Ada
+    appointment_date: lundi 25 novembre
+    appointment_time: 09:30
+text:
+  en: Hello {name}. This is a reminder of your visit at {clinic_name} on {appointment_date} at {appointment_time}. If you cannot come, tell us and we will help you find another time.
+  ar: مرحبًا {name}. تذكير بموعدك في {clinic_name} يوم {appointment_date} الساعة {appointment_time}. إذا تعذر عليك الحضور، يرجى إخبارنا وسنساعدك في إيجاد وقت آخر.
+  fr: Bonjour {name}. Rappel de votre rendez-vous à {clinic_name} le {appointment_date} à {appointment_time}. Si vous ne pouvez pas venir, dites-le-nous et nous vous aiderons à trouver un autre horaire.

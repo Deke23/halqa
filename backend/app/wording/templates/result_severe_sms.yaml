@@ -1,0 +1,38 @@
+# Approved template. Edit the text here, bump `version`, and keep every {slot} listed in required_slots.
+id: result_severe_sms
+version: 1
+purpose: SMS version of the severe result with red-flag advice.
+channel_limits:
+  sms:
+    en: 160
+    fr: 160
+    ar: 134
+required_slots:
+- name
+- reading
+- emergency_instruction
+sample_slots:
+  en:
+    name: Khalid
+    reading: 152/96
+    emergency_instruction: Call 998 now.
+  ar:
+    name: خالد
+    reading: 152/96
+    emergency_instruction: اتصل بالإسعاف الآن.
+  fr:
+    name: Jean-Paul
+    reading: 164/102
+    emergency_instruction: Allez aux urgences les plus proches.
+text:
+  en: '{name}, your reading {reading} is very high. A clinician will review it today. Chest pain, trouble breathing or severe headache: {emergency_instruction}'
+  ar: '{name}، قراءتك {reading} مرتفعة جدًا. سيراجعها الطبيب اليوم. ألم الصدر أو صعوبة التنفس أو صداع شديد: {emergency_instruction}'
+  fr: '{name}, votre mesure {reading} est très élevée. Un soignant la verra aujourd''hui. Si douleur poitrine ou souffle court : {emergency_instruction}'
+sms_chars_with_sample_slots:
+  en: 139
+  ar: 115
+  fr: 158
+gsm7_safe_with_sample_slots:
+  en: true
+  ar: false
+  fr: true

@@ -1,0 +1,28 @@
+# Approved template. Edit the text here, bump `version`, and keep every {slot} listed in required_slots.
+id: case_closed_summary
+version: 1
+purpose: Plain summary when a clinician has finished the follow-up.
+channel_limits:
+  app: 900
+  whatsapp: 1000
+required_slots:
+- name
+- clinic_name
+- closed_date
+sample_slots:
+  en:
+    name: Khalid
+    clinic_name: Al Noor Clinic
+    closed_date: 20 December
+  ar:
+    name: خالد
+    clinic_name: عيادة النور
+    closed_date: 20 ديسمبر
+  fr:
+    name: Jean-Paul
+    clinic_name: Centre Mvog-Ada
+    closed_date: 20 décembre
+text:
+  en: Hello {name}. On {closed_date}, your clinician at {clinic_name} reviewed your care and finished this follow-up. You can contact {clinic_name} at any time if you have questions or if your readings change. Thank you for taking part.
+  ar: مرحبًا {name}. بتاريخ {closed_date}، راجع الطبيب في {clinic_name} رعايتك وأنهى هذه المتابعة. يمكنك التواصل مع {clinic_name} في أي وقت إذا كانت لديك أسئلة أو تغيّرت قراءاتك. شكرًا لمشاركتك.
+  fr: Bonjour {name}. Le {closed_date}, votre médecin à {clinic_name} a revu votre suivi et l'a terminé. Vous pouvez contacter {clinic_name} à tout moment si vous avez des questions ou si vos mesures changent. Merci de votre participation.

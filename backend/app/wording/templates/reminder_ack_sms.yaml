@@ -1,0 +1,34 @@
+# Approved template. Edit the text here, bump `version`, and keep every {slot} listed in required_slots.
+id: reminder_ack_sms
+version: 1
+purpose: SMS reminder to confirm understanding.
+channel_limits:
+  sms:
+    en: 160
+    fr: 160
+    ar: 134
+required_slots:
+- name
+- due_date
+sample_slots:
+  en:
+    name: Khalid
+    due_date: Friday 22 November
+  ar:
+    name: خالد
+    due_date: الجمعة 22 نوفمبر
+  fr:
+    name: Jean-Paul
+    due_date: vendredi 22 novembre
+text:
+  en: '{name}, a reminder: please answer one short question about your reading by {due_date}. Reply 2 for a call.'
+  ar: '{name}، تذكير: يرجى الإجابة عن سؤال قصير بخصوص قراءتك قبل {due_date}. أرسل 2 لمكالمة.'
+  fr: '{name}, rappel : merci de répondre à une courte question sur votre mesure avant le {due_date}. Répondez 2 pour un appel.'
+sms_chars_with_sample_slots:
+  en: 114
+  ar: 89
+  fr: 133
+gsm7_safe_with_sample_slots:
+  en: true
+  ar: false
+  fr: true

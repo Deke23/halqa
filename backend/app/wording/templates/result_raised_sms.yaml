@@ -1,0 +1,34 @@
+# Approved template. Edit the text here, bump `version`, and keep every {slot} listed in required_slots.
+id: result_raised_sms
+version: 1
+purpose: SMS version of the raised-reading result.
+channel_limits:
+  sms:
+    en: 160
+    fr: 160
+    ar: 134
+required_slots:
+- name
+- reading
+sample_slots:
+  en:
+    name: Khalid
+    reading: 152/96
+  ar:
+    name: خالد
+    reading: 152/96
+  fr:
+    name: Jean-Paul
+    reading: 164/102
+text:
+  en: '{name}, your reading {reading} is raised and needs checking. Not a final result. Next: measure again. Reply 1 if clear, 2 for a call.'
+  ar: '{name}، قراءتك {reading} مرتفعة وتحتاج إلى تأكيد، وليست نتيجة نهائية. التالي: قياس جديد. أرسل 1 إن كان واضحًا، 2 لمكالمة.'
+  fr: '{name}, votre mesure {reading} est élevée et à vérifier. Pas un résultat définitif. Ensuite : mesurer à nouveau. Répondez 1 si clair, 2 pour un appel.'
+sms_chars_with_sample_slots:
+  en: 130
+  ar: 116
+  fr: 151
+gsm7_safe_with_sample_slots:
+  en: true
+  ar: false
+  fr: true

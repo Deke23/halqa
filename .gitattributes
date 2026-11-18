@@ -1,0 +1,6 @@
+# Keep LF line endings everywhere: shell scripts run in Linux containers and
+# generated data files are compared byte for byte.
+* text=auto eol=lf
+*.png binary
+*.jpg binary
+*.ico binary

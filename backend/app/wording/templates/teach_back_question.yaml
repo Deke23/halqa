@@ -1,0 +1,34 @@
+# Approved template. Edit the text here, bump `version`, and keep every {slot} listed in required_slots.
+id: teach_back_question
+version: 1
+purpose: 'Check understanding: one question, three answers, one correct.'
+channel_limits:
+  app: 900
+  whatsapp: 1000
+required_slots:
+- reading
+sample_slots:
+  en:
+    reading: 152/96
+  ar:
+    reading: 152/96
+  fr:
+    reading: 164/102
+text:
+  en: 'To check that we explained things clearly: what does your reading of {reading} mean? Reply with 1, 2 or 3.'
+  ar: 'للتأكد من أننا شرحنا الأمر بوضوح: ماذا تعني قراءتك {reading}؟ يرجى اختيار 1 أو 2 أو 3.'
+  fr: 'Pour vérifier que nous avons été clairs : que signifie votre mesure de {reading} ? Répondez 1, 2 ou 3.'
+options:
+  en:
+  - It means I surely have a lifelong illness.
+  - It is a raised reading that needs checking again.
+  - It is normal, so I can ignore it.
+  ar:
+  - تعني أن لدي مرضًا دائمًا بالتأكيد.
+  - قراءة مرتفعة تحتاج إلى فحص آخر للتأكد.
+  - قراءة طبيعية ويمكنني تجاهلها.
+  fr:
+  - Cela veut dire que j'ai sûrement une maladie pour la vie.
+  - C'est une valeur élevée qui doit être vérifiée à nouveau.
+  - C'est normal, je peux l'ignorer.
+correct: 2

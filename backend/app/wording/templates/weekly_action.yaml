@@ -1,0 +1,24 @@
+# Approved template. Edit the text here, bump `version`, and keep every {slot} listed in required_slots.
+id: weekly_action
+version: 1
+purpose: One small weekly diet or activity action.
+channel_limits:
+  app: 900
+  whatsapp: 1000
+required_slots:
+- name
+- action_text
+sample_slots:
+  en:
+    name: Khalid
+    action_text: leave the salt off one meal
+  ar:
+    name: خالد
+    action_text: وجبة واحدة بلا ملح مضاف
+  fr:
+    name: Jean-Paul
+    action_text: un repas sans sel ajouté
+text:
+  en: 'Hello {name}. Here is one small step to try this week: {action_text}. That is all we ask. If the week is busy, doing less is fine.'
+  ar: 'مرحبًا {name}. إليك خطوة صغيرة واحدة لهذا الأسبوع: {action_text}. هذا كل ما نطلبه. وإذا كان الأسبوع مزدحمًا، فلا بأس بفعل أقل.'
+  fr: 'Bonjour {name}. Voici une petite action pour cette semaine : {action_text}. C''est tout ce que nous demandons. Si la semaine est chargée, faire moins est très bien.'

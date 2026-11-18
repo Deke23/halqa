@@ -1,0 +1,20 @@
+# Approved template. Edit the text here, bump `version`, and keep every {slot} listed in required_slots.
+id: confirmation_hbpm_instructions
+version: 1
+purpose: How to take home blood pressure readings for 7 days.
+channel_limits:
+  app: 900
+  whatsapp: 1000
+required_slots:
+- name
+sample_slots:
+  en:
+    name: Khalid
+  ar:
+    name: خالد
+  fr:
+    name: Jean-Paul
+text:
+  en: Hello {name}. To check your reading, please measure your blood pressure at home for 7 days. Each day, measure twice in the morning and twice in the evening. Before measuring, sit quietly for 5 minutes with your back supported and your arm resting at heart level, then take two readings one minute apart. Write down or send each result. If you miss a measurement, carry on the next day. A clinician will then look at the average.
+  ar: مرحبًا {name}. للتأكد من القراءة، يرجى قياس ضغط الدم في المنزل لمدة 7 أيام. في كل يوم، يرجى القياس مرتين في الصباح ومرتين في المساء. قبل القياس، يرجى الجلوس بهدوء لمدة 5 دقائق مع إسناد الظهر ووضع الذراع على مستوى القلب، ثم أخذ قراءتين بينهما دقيقة واحدة. يرجى تسجيل كل نتيجة أو إرسالها لنا. إذا فاتك قياس، يمكن المتابعة في اليوم التالي. بعد ذلك سيراجع الطبيب المتوسط.
+  fr: Bonjour {name}. Pour vérifier votre mesure, merci de prendre votre tension à la maison pendant 7 jours. Chaque jour, mesurez deux fois le matin et deux fois le soir. Avant de mesurer, restez assis au calme pendant 5 minutes, le dos soutenu et le bras posé à hauteur du cœur, puis faites deux mesures à une minute d'intervalle. Notez chaque résultat ou envoyez-le-nous. Si vous oubliez une mesure, continuez le lendemain. Un professionnel de santé regardera ensuite la moyenne.

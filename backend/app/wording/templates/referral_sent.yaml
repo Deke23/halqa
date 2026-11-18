@@ -1,0 +1,24 @@
+# Approved template. Edit the text here, bump `version`, and keep every {slot} listed in required_slots.
+id: referral_sent
+version: 1
+purpose: Tell the patient a referral was sent (with their permission).
+channel_limits:
+  app: 900
+  whatsapp: 1000
+required_slots:
+- name
+- clinic_name
+sample_slots:
+  en:
+    name: Khalid
+    clinic_name: Al Noor Clinic
+  ar:
+    name: خالد
+    clinic_name: عيادة النور
+  fr:
+    name: Jean-Paul
+    clinic_name: Centre Mvog-Ada
+text:
+  en: Hello {name}. Your home readings stayed raised, so your clinician is asking {clinic_name} to look at this more closely, with your permission. We will tell you when {clinic_name} accepts the request and when you can book a visit.
+  ar: مرحبًا {name}. بقيت قراءاتك المنزلية مرتفعة، لذلك يطلب الطبيب من {clinic_name} النظر في الأمر بشكل أدق، وذلك بموافقتك. سنخبرك عندما يقبل {clinic_name} الطلب وعندما يمكنك حجز موعد.
+  fr: Bonjour {name}. Vos mesures à la maison sont restées élevées. Votre médecin demande donc à {clinic_name} d'examiner cela de plus près, avec votre accord. Nous vous dirons quand {clinic_name} acceptera la demande et quand vous pourrez prendre rendez-vous.

@@ -1,0 +1,24 @@
+# Approved template. Edit the text here, bump `version`, and keep every {slot} listed in required_slots.
+id: plan_smaller
+version: 1
+purpose: Tell the patient the weekly step was made smaller.
+channel_limits:
+  app: 900
+  whatsapp: 1000
+required_slots:
+- name
+- action_text
+sample_slots:
+  en:
+    name: Khalid
+    action_text: leave the salt off one meal
+  ar:
+    name: خالد
+    action_text: وجبة واحدة بلا ملح مضاف
+  fr:
+    name: Jean-Paul
+    action_text: un repas sans sel ajouté
+text:
+  en: 'Hello {name}. Based on your last check-in, we have made your weekly step smaller: {action_text}. You can go back to a bigger step whenever you want, or stay with this one.'
+  ar: 'مرحبًا {name}. بناءً على إجابتك الأخيرة، جعلنا خطوتك الأسبوعية أصغر: {action_text}. يمكنك العودة إلى خطوة أكبر متى شئت، أو البقاء مع هذه الخطوة.'
+  fr: 'Bonjour {name}. D''après votre dernier point, nous avons rendu votre action de la semaine plus petite : {action_text}. Vous pourrez revenir à une action plus grande quand vous le voulez, ou rester avec celle-ci.'

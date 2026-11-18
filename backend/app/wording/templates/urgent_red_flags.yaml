@@ -1,0 +1,20 @@
+# Approved template. Edit the text here, bump `version`, and keep every {slot} listed in required_slots.
+id: urgent_red_flags
+version: 1
+purpose: Red-flag symptom advice. The emergency instruction comes from region config.
+channel_limits:
+  app: 900
+  whatsapp: 1000
+required_slots:
+- emergency_instruction
+sample_slots:
+  en:
+    emergency_instruction: Call 998 now.
+  ar:
+    emergency_instruction: اتصل بالإسعاف الآن.
+  fr:
+    emergency_instruction: Allez aux urgences les plus proches.
+text:
+  en: 'If you have any of these now: chest pain, trouble breathing, a severe headache, changes in your vision, confusion, or weakness on one side of the body, do this straight away: {emergency_instruction} Do not wait for a message or a call back.'
+  ar: 'إذا ظهر لديك الآن أي مما يلي: ألم في الصدر، أو صعوبة في التنفس، أو صداع شديد، أو تغيّر في الرؤية، أو ارتباك، أو ضعف في جانب واحد من الجسم، فافعل ما يلي فورًا: {emergency_instruction} لا تنتظر رسالة أو اتصالًا.'
+  fr: 'Si vous avez maintenant l''un de ces signes : douleur à la poitrine, difficulté à respirer, mal de tête très fort, changement de la vision, confusion ou faiblesse d''un côté du corps, faites ceci tout de suite : {emergency_instruction} N''attendez pas un message ou un appel.'

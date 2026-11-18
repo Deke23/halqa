@@ -1,0 +1,525 @@
+{
+  "title": "Mon suivi",
+  "nav": {
+    "label": "Menu de mon suivi",
+    "home": "Accueil",
+    "result": "Résultat",
+    "journey": "Parcours",
+    "messages": "Messages",
+    "privacy": "Mes données"
+  },
+  "noCase": {
+    "title": "Aucun dossier ouvert",
+    "description": "Aucun dossier de suivi n'est ouvert pour vous pour le moment."
+  },
+  "home": {
+    "hello": "Bonjour {{name}}",
+    "intro": "Vous voyez ici votre résultat, ce qui se passe ensuite et qui est responsable de chaque étape.",
+    "yourReading": "Votre mesure",
+    "seeResult": "Voir le résultat",
+    "nextStep": "Votre prochaine étape",
+    "nothingFromYou": "Vous n'avez rien à faire pour le moment. L'équipe de soins prépare la prochaine étape.",
+    "moreTitle": "Plus dans votre suivi",
+    "links": {
+      "understand": "Vérifier votre compréhension",
+      "confirm": "Mesurer à nouveau votre tension",
+      "visit": "Orientation et consultation",
+      "weekly": "L'action de cette semaine",
+      "diary": "Journal d'activité et de sommeil"
+    },
+    "linksHint": {
+      "understand": "Signes d'alerte et une question sur votre résultat",
+      "confirm": "Choisissez la mesure à domicile ou un appareil de 24 heures et ajoutez vos mesures",
+      "visit": "Où en est votre orientation et comment réserver une consultation",
+      "weekly": "Un petit pas chaque semaine, sans pression",
+      "diary": "Pas et sommeil d'un objet connecté d'exemple"
+    }
+  },
+  "status": {
+    "RESULT_ISSUED": "Votre résultat a été reçu",
+    "NOTIFIED": "Votre résultat est prêt",
+    "ACKNOWLEDGED": "Vous avez compris votre résultat",
+    "CONFIRMED": "La mesure élevée a été confirmée",
+    "REFERRED": "Vous avez été orienté",
+    "APPOINTMENT_BOOKED": "Votre consultation est réservée",
+    "IN_CARE": "Vous êtes suivi",
+    "CLOSED": "Votre dossier est clos"
+  },
+  "journey": {
+    "heading": "Votre parcours",
+    "intro": "Huit étapes, du résultat au suivi continu. Chaque étape a une personne responsable.",
+    "states": {
+      "RESULT_ISSUED": "Votre résultat est reçu",
+      "NOTIFIED": "On vous annonce votre résultat",
+      "ACKNOWLEDGED": "Vous confirmez avoir compris",
+      "CONFIRMED": "Votre tension est mesurée à nouveau",
+      "REFERRED": "Vous êtes orienté vers une consultation spécialisée",
+      "APPOINTMENT_BOOKED": "Votre consultation est réservée",
+      "IN_CARE": "Vous êtes suivi",
+      "CLOSED": "Votre dossier est clos par un médecin"
+    },
+    "whoTitle": "Qui est responsable de la prochaine étape",
+    "closedNote": "Seul un médecin peut clore un dossier, après avoir examiné les éléments."
+  },
+  "next": {
+    "title": "Ce qui se passe ensuite",
+    "by": "À faire avant le",
+    "responsible": "Responsable",
+    "doneBy": "Fait par",
+    "you": "Vous",
+    "careTeam": "L'équipe de soins",
+    "youOwnerNote": "Cette étape vous concerne. {{owner}} en est responsable.",
+    "teamOwnerNote": "{{owner}} est responsable de cette étape.",
+    "notify_patient": {
+      "title": "Votre équipe de soins vous annonce votre résultat",
+      "text": "Vous recevrez un message dans votre langue avec la mesure et ce qu'il faut faire."
+    },
+    "patient_acknowledge": {
+      "title": "Dites-nous que vous avez compris votre résultat",
+      "text": "Répondez aux questions sur les signes d'alerte et à une courte question sur votre résultat."
+    },
+    "choose_confirmation_method": {
+      "title": "Choisissez comment mesurer à nouveau votre tension",
+      "text": "Vous pouvez mesurer chez vous pendant une semaine, ou porter un appareil pendant 24 heures."
+    },
+    "complete_home_readings": {
+      "title": "Prenez vos mesures à domicile",
+      "text": "Mesurez deux fois par jour et ajoutez chaque mesure ici."
+    },
+    "attend_abpm": {
+      "title": "Présentez-vous au rendez-vous pour l'appareil de 24 heures",
+      "text": "La clinique vous remettra un appareil à porter un jour et une nuit."
+    },
+    "clinician_review_confirmation": {
+      "title": "Un médecin examine vos mesures",
+      "text": "Vous avez donné assez de mesures. Un médecin les examine maintenant."
+    },
+    "clinician_closure_decision": {
+      "title": "Un médecin décide de la suite",
+      "text": "Vos mesures n'ont pas confirmé une tension élevée. Un médecin décidera de la suite."
+    },
+    "send_referral": {
+      "title": "Votre médecin envoie votre orientation",
+      "text": "Votre médecin prépare une orientation vers une clinique qui peut vous suivre."
+    },
+    "reassign_or_rerefer": {
+      "title": "Votre équipe de soins cherche une autre clinique",
+      "text": "La première clinique n'a pas pu prendre votre orientation. Cela ne vient pas de vous. L'équipe en organise une autre."
+    },
+    "accept_referral": {
+      "title": "La clinique accepte votre orientation",
+      "text": "La clinique lit votre orientation et confirme qu'elle peut vous recevoir."
+    },
+    "book_appointment": {
+      "title": "Choisissez un moment pour votre consultation",
+      "text": "La clinique a accepté votre orientation. Choisissez l'horaire qui vous convient."
+    },
+    "record_visit_outcome": {
+      "title": "Venez à votre consultation",
+      "text": "Après la consultation, le médecin note ce qui a été décidé."
+    },
+    "four_week_review": {
+      "title": "Votre bilan de quatre semaines",
+      "text": "Votre médecin fait le point. Votre action de la semaine continue d'ici là."
+    },
+    "consider_closure": {
+      "title": "Un médecin étudie la clôture de votre dossier",
+      "text": "Vos mesures récentes semblent stables. Un médecin décide s'il faut clore le dossier."
+    },
+    "default": {
+      "title": "Votre équipe de soins prépare la prochaine étape",
+      "text": "Vous n'avez rien à faire pour le moment."
+    }
+  },
+  "result": {
+    "heading": "Votre résultat",
+    "source": {
+      "IFHAS_SCREENING": "Résultat de dépistage d'une source simulée (IFHAS)",
+      "CLINIC_READING": "Mesure prise en clinique",
+      "OTHER": "Mesure d'une autre source"
+    },
+    "takenOn": "Prise le {{date}}",
+    "mmHgNote": "Le chiffre du haut sur le chiffre du bas, en mmHg.",
+    "needsChecking": "Il s'agit d'une mesure élevée qui doit être vérifiée. Ce n'est pas un diagnostic.",
+    "meansTitle": "Ce que cela veut dire",
+    "means": [
+      "Votre tension était plus haute que prévu à un moment donné.",
+      "Une seule mesure peut changer d'un jour à l'autre, il faut donc la vérifier à nouveau.",
+      "Une nouvelle mesure montre si elle reste élevée."
+    ],
+    "notMeansTitle": "Ce que cela ne veut pas dire",
+    "notMeans": [
+      "Cela ne veut pas dire que vous avez une maladie pour la vie.",
+      "Ce n'est pas un résultat définitif.",
+      "Ce n'est pas une raison de paniquer."
+    ],
+    "urgencyTitle": "Le degré d'urgence",
+    "urgencyRaised": "Ce n'est pas une urgence. Le mieux est de passer à l'étape suivante avant le {{date}}.",
+    "urgencySevere": "Cette mesure est assez élevée pour qu'un médecin l'examine aujourd'hui. Si vous avez un signe d'alerte, demandez de l'aide en urgence maintenant.",
+    "nextTitle": "Votre seule prochaine étape",
+    "messageTitle": "Message de votre équipe de soins",
+    "emergencyTitle": "Si vous avez un signe d'alerte",
+    "toUnderstand": "Répondre à deux questions rapides",
+    "alreadyUnderstood": "Vous nous avez déjà dit que vous aviez compris ce résultat."
+  },
+  "understand": {
+    "heading": "Vérifier votre compréhension",
+    "intro": "Deux courtes parties. Ce n'est pas un test sur vous. Elles nous aident à bien expliquer.",
+    "flagsTitle": "1. Signes d'alerte",
+    "flagsIntro": "Avez-vous l'un de ces signes en ce moment ?",
+    "flags": {
+      "chest_pain": "Douleur dans la poitrine",
+      "shortness_of_breath": "Difficulté à respirer",
+      "severe_headache": "Un très fort mal de tête",
+      "vision_change": "Un changement soudain de la vue",
+      "confusion": "Un sentiment de confusion",
+      "one_sided_weakness": "Une faiblesse d'un côté du corps"
+    },
+    "yes": "Oui",
+    "no": "Non",
+    "emergencyTitle": "Demandez de l'aide en urgence maintenant",
+    "emergencyFallback": "Rendez-vous maintenant au service des urgences le plus proche.",
+    "emergencyAfter": "Quand vous continuez, votre équipe de soins est prévenue, pour qu'un médecin examine votre dossier le jour même.",
+    "emergencyRecorded": "Votre équipe de soins a été prévenue et un médecin examinera votre dossier le jour même.",
+    "tbTitle": "2. Une question sur votre résultat",
+    "tbLegend": "Choisissez la réponse qui vous semble la plus juste",
+    "tbMissing": "La question n'est pas disponible pour le moment.",
+    "confidenceLegend": "Êtes-vous sûr de ce qu'il faut faire ensuite ?",
+    "confidenceLow": "Pas sûr",
+    "confidenceHigh": "Très sûr",
+    "confidenceValue": "{{n}} sur 5",
+    "needAnswer": "Choisissez une réponse pour continuer.",
+    "needConfidence": "Choisissez un chiffre de 1 à 5.",
+    "submit": "Envoyer ma réponse",
+    "retryTitle": "Merci d'avoir essayé. Voici une explication plus simple.",
+    "retryHint": "Vous pouvez choisir à nouveau quand vous voulez.",
+    "doneTitle": "Merci. C'est clair.",
+    "doneText": "Vous avez compris votre résultat. La suite est de mesurer à nouveau votre tension.",
+    "toConfirm": "Choisir comment mesurer à nouveau",
+    "alreadyDone": "Vous avez déjà répondu à ces questions.",
+    "notYet": "Votre résultat ne vous a pas encore été envoyé."
+  },
+  "confirm": {
+    "heading": "Mesurer à nouveau votre tension",
+    "needUnderstand": "Veuillez d'abord terminer les questions sur votre résultat.",
+    "toUnderstand": "Aller aux questions",
+    "chooseTitle": "Comment voulez-vous mesurer ?",
+    "legend": "Méthode",
+    "hbpm": "À domicile pendant une semaine",
+    "hbpmHelp": "Vous mesurez deux fois par jour avec un tensiomètre de bras validé et vous ajoutez chaque mesure ici.",
+    "abpm": "Un appareil de 24 heures",
+    "abpmHelp": "La clinique vous remet un appareil à porter un jour et une nuit.",
+    "save": "Enregistrer mon choix",
+    "saved": "Votre choix est enregistré.",
+    "chosen": "Votre choix : {{method}}",
+    "abpmBody": "La clinique organisera votre rendez-vous pour l'appareil. Il n'y a rien à saisir ici.",
+    "howTitle": "Comment mesurer chez vous",
+    "how": [
+      "Asseyez-vous au calme pendant cinq minutes, le dos soutenu et le bras posé à la hauteur du cœur.",
+      "Mesurez le matin et le soir, deux fois à chaque fois, à une minute d'intervalle.",
+      "Ajoutez chaque mesure ci-dessous, même si elle diffère de la précédente."
+    ],
+    "formTitle": "Ajouter une mesure",
+    "systolic": "Chiffre du haut (systolique)",
+    "diastolic": "Chiffre du bas (diastolique)",
+    "pulse": "Pouls",
+    "when": "Moment de la mesure (UTC)",
+    "add": "Ajouter cette mesure",
+    "added": "Mesure ajoutée.",
+    "errSystolic": "Saisissez un chiffre du haut entre 60 et 260.",
+    "errDiastolic": "Saisissez un chiffre du bas entre 30 et 160.",
+    "errOrder": "Le chiffre du haut doit être plus grand que le chiffre du bas.",
+    "errPulse": "Le pouls doit être entre 30 et 220, ou laissez le champ vide.",
+    "errWhen": "Saisissez la date et l'heure de la mesure.",
+    "listTitle": "Vos mesures",
+    "listEmpty": "Aucune mesure pour le moment. Ajoutez la première ci-dessus.",
+    "pulseValue": "pouls {{n}}",
+    "progressTitle": "Votre progression",
+    "dayOf": "Jour {{n}} sur {{total}}",
+    "progressLabel": "Jours avec des mesures",
+    "needed": "L'équipe de soins a besoin d'au moins {{days}} jours avec deux mesures chacun. Le premier jour n'est pas compté dans la moyenne.",
+    "averageTitle": "Moyenne jusqu'ici",
+    "averageNone": "La moyenne apparaît après l'ajout de mesures.",
+    "averageBasis": "{{n}} mesures comptées",
+    "enough": "Vous avez donné assez de mesures. Un médecin va les examiner.",
+    "reviewed": "Un médecin a examiné vos mesures et a confirmé que votre tension reste élevée.",
+    "notConfirmed": "Vos mesures n'ont pas confirmé une tension élevée. Un médecin décidera de la suite.",
+    "demoTitle": "Aide pour la démonstration",
+    "demoText": "Au lieu de saisir 28 mesures, chargez la semaine d'exemple. Ces valeurs sont inventées.",
+    "demoButton": "Remplir une semaine d'exemple de mesures",
+    "demoLoading": "Ajout des mesures",
+    "demoDone": "{{n}} mesures d'exemple ajoutées.",
+    "demoNeedsHbpm": "Choisissez d'abord la mesure à domicile.",
+    "change": "Modifier"
+  },
+  "visit": {
+    "heading": "Orientation et consultation",
+    "statusTitle": "Où en sont les choses",
+    "status": {
+      "early": "L'orientation vient après l'examen de vos mesures par un médecin.",
+      "confirmed": "Votre médecin prépare votre orientation.",
+      "rejected": "La première clinique n'a pas pu prendre votre orientation. Cela ne vient pas de vous. Votre équipe de soins en organise une autre.",
+      "pending": "Votre orientation a été envoyée à {{name}}. Ils confirmeront qu'ils peuvent vous recevoir.",
+      "pendingNoName": "Votre orientation a été envoyée. La clinique confirmera qu'elle peut vous recevoir.",
+      "accepted": "{{name}} a accepté votre orientation. Choisissez un moment pour votre consultation.",
+      "acceptedNoName": "La clinique a accepté votre orientation. Choisissez un moment pour votre consultation.",
+      "booked": "Votre consultation est réservée.",
+      "inCare": "Votre consultation a eu lieu. Vous êtes maintenant suivi."
+    },
+    "referralTo": "Envoyée à",
+    "slotsTitle": "Choisissez un moment",
+    "slotsLegend": "Horaires disponibles",
+    "slotsEmpty": "Aucun horaire n'est disponible pour le moment. Votre équipe de soins vous contactera.",
+    "coverTitle": "Prise en charge de cette consultation",
+    "covered": "Pris en charge par votre assurance",
+    "notCovered": "Non pris en charge par votre assurance",
+    "coverUnknown": "Prise en charge pas encore connue",
+    "copay": "Vous payez {{amount}}",
+    "noCopay": "Vous ne payez rien",
+    "price": "Prix estimé {{amount}}",
+    "coverNote": "La prise en charge et les prix sont simulés pour cette démonstration.",
+    "book": "Réserver cette consultation",
+    "booking": "Réservation en cours",
+    "pickFirst": "Choisissez d'abord un moment.",
+    "bookedTitle": "Votre consultation est réservée",
+    "with": "Avec",
+    "where": "Lieu",
+    "when": "Date et heure",
+    "afterVisit": "Après la consultation, votre médecin note ce qui a été décidé et votre action hebdomadaire commence.",
+    "bookedToast": "Votre consultation est réservée."
+  },
+  "weekly": {
+    "heading": "L'action de cette semaine",
+    "intro": "Un petit pas chaque semaine. Si une semaine ne se passe pas comme prévu, la suivante devient plus petite. Rien n'est perdu.",
+    "notYet": "Les actions hebdomadaires commencent après votre première consultation, une fois le traitement ou le suivi décidé.",
+    "thisWeek": "Cette semaine",
+    "size": {
+      "full": "Pas complet",
+      "smaller": "Pas plus petit",
+      "smallest": "Plus petit pas"
+    },
+    "action": {
+      "salt": {
+        "name": "Moins de sel",
+        "full": "Cette semaine, goûtez votre plat avant d'ajouter du sel, à chaque repas où vous avez le choix.",
+        "smaller": "Cette semaine, goûtez votre plat avant d'ajouter du sel à un repas par jour.",
+        "smallest": "Cette semaine, goûtez votre plat avant d'ajouter du sel à un seul repas."
+      },
+      "activity": {
+        "name": "Bouger un peu plus",
+        "full": "Cette semaine, marchez 30 minutes pendant cinq jours.",
+        "smaller": "Cette semaine, marchez 15 minutes pendant trois jours.",
+        "smallest": "Cette semaine, marchez 10 minutes pendant un jour."
+      },
+      "sleep": {
+        "name": "Sommeil régulier",
+        "full": "Cette semaine, couchez-vous à peu près à la même heure pendant cinq nuits.",
+        "smaller": "Cette semaine, couchez-vous à peu près à la même heure pendant trois nuits.",
+        "smallest": "Cette semaine, couchez-vous à peu près à la même heure pendant une nuit."
+      },
+      "home_bp_check": {
+        "name": "Mesure de la tension à domicile",
+        "full": "Cette semaine, mesurez votre tension chez vous trois matins et notez les chiffres.",
+        "smaller": "Cette semaine, mesurez votre tension chez vous deux matins et notez les chiffres.",
+        "smallest": "Cette semaine, mesurez votre tension chez vous un matin et notez les chiffres."
+      }
+    },
+    "checkinTitle": "Comment s'est passée cette semaine ?",
+    "statusLegend": "Bilan de cette semaine",
+    "status": {
+      "done": "Je l'ai fait",
+      "partly": "J'en ai fait une partie",
+      "missed": "Je n'ai pas pu cette semaine"
+    },
+    "barrierLabel": "Quelque chose vous a-t-il gêné ?",
+    "barrierPlaceholder": "Je préfère ne pas le dire",
+    "barrier": {
+      "TIME": "Pas assez de temps",
+      "COST": "Le coût",
+      "NOT_SURE_HOW": "Je ne savais pas comment faire",
+      "FELT_UNWELL": "Je ne me sentais pas bien",
+      "WORK_SCHEDULE": "Mes horaires de travail",
+      "OTHER": "Autre chose"
+    },
+    "largerOffer": "Vous avez réussi cette action deux semaines de suite. Si vous le souhaitez, vous pouvez choisir un pas un peu plus grand pour la semaine prochaine lors du bilan. C'est votre choix.",
+    "largerAccept": "Oui, essayer un pas un peu plus grand la semaine prochaine",
+    "submit": "Enregistrer mon bilan",
+    "needStatus": "Choisissez une réponse.",
+    "feedback": {
+      "PLAN_SMALLER": "Ce n'est pas grave. Certaines semaines sont ainsi. Le pas de la semaine prochaine est plus petit, pour qu'il soit plus facile à placer.",
+      "PLAN_LARGER_OFFERED": "Merci. Votre prochaine action est prête. Si vous le souhaitez, vous pourrez choisir un pas un peu plus grand plus tard. C'est votre choix.",
+      "PLAN_NEXT": "Merci pour votre bilan. Votre prochaine action est prête."
+    },
+    "noBlameTitle": "Un mot en douceur",
+    "noBlameLapsed": "La semaine dernière ne s'est pas passée comme prévu. Ce n'est pas grave. Le pas de cette semaine est plus petit.",
+    "messageTitle": "Message de votre équipe de soins",
+    "historyTitle": "Semaines précédentes",
+    "historyEmpty": "Vos semaines précédentes apparaîtront ici.",
+    "week": "Semaine {{n}}",
+    "historyStatus": {
+      "done": "Fait",
+      "partly": "En partie",
+      "missed": "Pas cette semaine"
+    },
+    "diaryTitle": "Journal d'activité et de sommeil",
+    "diaryNote": "Ce journal vient d'un objet connecté d'exemple. Il montre les pas, les minutes d'activité et le sommeil. Il n'est jamais utilisé comme valeur de tension.",
+    "diaryDay": "Jour {{n}}",
+    "steps": "{{n}} pas",
+    "activeMinutes": "{{n}} min d'activité",
+    "sleepHours": "{{n}} h de sommeil",
+    "diaryEmpty": "Pas encore de données dans le journal."
+  },
+  "messages": {
+    "heading": "Messages",
+    "intro": "Les messages de votre équipe de soins, dans la langue que vous avez choisie.",
+    "empty": "Aucun message pour le moment.",
+    "from": "De {{name}}",
+    "standard": "Formulation standard",
+    "aiReworded": "Reformulé avec l'aide de l'IA et approuvé par {{name}}",
+    "you": "Vous",
+    "fromTeam": "De votre équipe de soins"
+  },
+  "privacy": {
+    "heading": "Mes données",
+    "consentTitle": "Vos choix",
+    "consentIntro": "Vous décidez de la façon dont vos informations sont utilisées. Vous pouvez changer un choix à tout moment.",
+    "on": "Activé",
+    "off": "Désactivé",
+    "turnOn": "Activer",
+    "turnOff": "Désactiver",
+    "changedOn": "Choix activé.",
+    "changedOff": "Choix désactivé.",
+    "channel": {
+      "APP": "dans l'application",
+      "SMS": "par SMS",
+      "WHATSAPP": "sur WhatsApp"
+    },
+    "purpose": {
+      "care_coordination": {
+        "name": "Coordination des soins",
+        "text": "Permet à votre équipe de soins de suivre votre dossier et de vous rappeler chaque étape.",
+        "withdraw": "Votre suivi dépend de ce choix. Sa désactivation est enregistrée avec la date. Vous pouvez le réactiver à tout moment."
+      },
+      "messaging_channel": {
+        "name": "Messages",
+        "text": "Permet à votre équipe de soins de vous envoyer des messages {{channel}}.",
+        "withdraw": "Vous ne recevrez plus de messages {{channel}}. Votre équipe de soins pourra utiliser un autre moyen de vous joindre. Vous pouvez le réactiver à tout moment."
+      },
+      "share_with_receiving_provider": {
+        "name": "Partage avec la clinique qui reçoit votre orientation",
+        "text": "Permet à votre médecin d'envoyer vos mesures et votre orientation à la clinique qui vous recevra.",
+        "withdraw": "Votre médecin ne peut pas envoyer l'orientation tant que vous ne réactivez pas ce choix. Votre équipe de soins vous expliquera les options."
+      },
+      "lifestyle_programme": {
+        "name": "Actions hebdomadaires",
+        "text": "Nous permet de proposer un petit pas chaque semaine.",
+        "withdraw": "Vous ne recevrez plus d'actions hebdomadaires. Rien d'autre ne change dans votre suivi. Vous pouvez le réactiver à tout moment."
+      },
+      "research_aggregate": {
+        "name": "Synthèses anonymes",
+        "text": "Vous compte dans des chiffres de synthèse qui ne peuvent pas être reliés à vous.",
+        "withdraw": "Vous ne serez plus compté dans les chiffres de synthèse. Cela ne change pas votre suivi."
+      }
+    },
+    "confirmTitle": "Désactiver ce choix ?",
+    "confirmButton": "Désactiver",
+    "keep": "Le laisser activé",
+    "dataTitle": "Comment mes données sont utilisées",
+    "data": [
+      "Tout ce que vous voyez dans ce prototype est une donnée de démonstration synthétique. Les personnes, les mesures, les cliniques et les messages sont inventés.",
+      "Votre équipe de soins peut voir votre dossier : les mesures, les étapes et les messages. Un médecin voit plus de détails qu'un coordinateur.",
+      "Une clinique vers laquelle vous êtes orienté ne voit votre orientation que si vous autorisez le partage avec elle.",
+      "Rien sur vous n'est partagé avec des employeurs ou des assureurs. Les chiffres du programme sont des totaux, et tout groupe de moins de 5 personnes est masqué.",
+      "L'IA sert seulement à aider à formuler les messages. Une personne approuve tout message reformulé. Elle ne décide jamais qui est urgent, qui est responsable ni si un dossier est clos.",
+      "Seul un médecin peut clore votre dossier, avec des éléments ou une décision enregistrée.",
+      "Des noms comme IFHAS, Thiqa et Malaffi n'apparaissent que comme étiquettes de sources simulées."
+    ]
+  },
+  "closed": {
+    "heading": "Votre dossier est clos",
+    "intro": "Un médecin a clos votre dossier après avoir examiné les éléments.",
+    "closedOn": "Clos le {{date}}",
+    "by": "Clos par {{name}}",
+    "outcome": "Ce que cela veut dire",
+    "evidence": {
+      "BP_CONTROLLED": "Vos mesures récentes de tension étaient dans la zone visée.",
+      "NOT_CONFIRMED": "Vos nouvelles mesures n'ont pas confirmé une tension élevée, aucun suivi supplémentaire n'est donc nécessaire pour le moment.",
+      "CARE_TRANSFERRED": "Votre suivi a été transféré à un autre service.",
+      "PATIENT_DECLINED": "Vous avez choisi de ne pas poursuivre le suivi.",
+      "UNREACHABLE_AFTER_PROTOCOL": "Nous n'avons pas pu vous joindre après plusieurs tentatives, un médecin a donc clos le dossier pour le moment.",
+      "DECEASED_OR_MOVED": "Votre dossier a été clos parce que le suivi se poursuit ailleurs.",
+      "OTHER_CLINICAL_DECISION": "Un médecin a décidé que ce suivi pouvait se terminer."
+    },
+    "note": "Vous pouvez demander à votre équipe de soins de réexaminer votre dossier à tout moment.",
+    "summaryTitle": "Résumé de votre équipe de soins"
+  },
+  "shortcuts": {
+    "title": "Raccourcis de démonstration",
+    "badge": "Aide de démonstration, hors produit",
+    "intro": "Dans la réalité, ce sont les professionnels qui font ces étapes. Chaque bouton se connecte en arrière-plan comme le bon professionnel et utilise l'action réelle, elle apparaît donc dans le journal d'audit.",
+    "review": "Équipe de soins : examiner mes mesures",
+    "referral": "Équipe de soins : envoyer et accepter l'orientation",
+    "book": "Équipe de soins : réserver ma consultation",
+    "visit": "Équipe de soins : enregistrer ma consultation",
+    "skip": "Avancer d'une semaine",
+    "sampleWeek": "Envoyer une semaine d'exemple de mesures",
+    "unavailable": "Disponible plus tard : {{reason}}",
+    "needs": {
+      "review": "quand vous aurez donné assez de mesures",
+      "referral": "quand vos mesures auront été examinées",
+      "book": "quand l'orientation aura été acceptée",
+      "visit": "quand votre consultation sera réservée",
+      "skip": "quand vous serez suivi",
+      "sampleWeek": "quand vous aurez répondu 1 à votre premier message",
+      "close": "quand vous serez suivi"
+    },
+    "working": "En cours",
+    "did": {
+      "review": "{{who}} a examiné les mesures et confirmé la moyenne élevée.",
+      "refer": "{{who}} a envoyé l'orientation.",
+      "accept": "{{who}} a accepté l'orientation.",
+      "book": "{{who}} a réservé la consultation.",
+      "visit": "{{who}} a enregistré la consultation et commencé le traitement.",
+      "skip": "L'horloge de démonstration a avancé d'une semaine.",
+      "sampleWeek": "Une semaine d'exemple de mesures a été envoyée.",
+      "close": "{{who}} a clos le dossier avec une décision enregistrée."
+    },
+    "note": {
+      "review": "Demo shortcut: home average reviewed.",
+      "refer": "Demo shortcut: raised home average, referral to the clinic.",
+      "close": "Demo shortcut: closed to show the closed case screen."
+    },
+    "failed": "Cela n'a pas fonctionné : {{message}}",
+    "close": "Équipe de soins : clore mon dossier"
+  },
+  "phone": {
+    "title": "Messages de votre équipe de soins",
+    "noNext": "Aucune étape à faire",
+    "channelLabel": "Aspect de la conversation",
+    "sms": "SMS",
+    "whatsapp": "WhatsApp",
+    "simulated": "Simulé",
+    "channelNote": "L'aspect SMS ou WhatsApp est seulement un style. Il ne change pas la façon dont les messages sont envoyés.",
+    "inputLabel": "Votre réponse",
+    "inputPlaceholder": "Écrire une réponse",
+    "send": "Envoyer",
+    "sending": "Envoi",
+    "quickLabel": "Réponses rapides",
+    "quick": {
+      "understood": "1  Compris",
+      "callMe": "2  Appelez-moi",
+      "done": "A  Fait",
+      "partly": "B  En partie",
+      "missed": "C  Pas cette semaine",
+      "reading": "150/95"
+    },
+    "hint": "Répondez 1 ou 2. Pour envoyer une tension, écrivez-la ainsi : 150/95. Répondez STOP pour arrêter les messages.",
+    "hintCare": "Répondez A, B ou C pour votre bilan de la semaine.",
+    "empty": "Aucun message pour le moment.",
+    "loadError": "Les messages n'ont pas pu être chargés",
+    "you": "Vous",
+    "delivered": "Remis",
+    "contact": "Votre contact",
+    "stepOwner": "Responsable de l'étape : {{name}}. Avant le {{date}}"
+  }
+}

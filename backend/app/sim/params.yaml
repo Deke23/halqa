@@ -1,0 +1,167 @@
+# Parameters of the pathway simulation. Every transition probability and delay distribution is named here.
+# kind: published  -> taken from a figure in the team brief (SPEC section 9), source names it.
+# kind: assumption -> our own number, with a one-line rationale. Not evidence. Review before any real use.
+# Delays are log-normal: delay_days = median * exp(sigma * Z), Z standard normal.
+# Naming: <arm>.<name>, where arm is baseline, with_loop or common (same in both arms).
+
+published_sources:
+  simple_bangladesh: "Simple app, Bangladesh: overdue lists and calls cut 3-month missed visits from 50% to 26% in six months (team brief)"
+  mohap_uae: "MOHAP 2025 UAE screening campaign, reported by Gulf News: over 40% of people with hypertension did not know it; 29% of treated patients not at target (team brief). Context only, not used as a transition probability."
+  nhns_uae: "UAE National Health and Nutrition Survey 2024 to 2025: 25.9% of UAE adults have high blood pressure (team brief). Context only, not used as a transition probability."
+  tam_jmir_2021: "Tam et al., JMIR mHealth 2021: text messaging roughly halved the odds of uncontrolled BP (team brief). Context only, not used as a transition probability."
+
+parameters:
+  simulation.follow_up_days:
+    {value: 180, unit: days, source: Assumption, kind: assumption, rationale: "Window in which a result must reach care to count as resolved."}
+  simulation.plan_weeks:
+    {value: 12, unit: weeks, source: Assumption, kind: assumption, rationale: "Length of the weekly lifestyle plan window simulated after care starts."}
+
+  # Step 1 to 2: patient told the result
+  baseline.p_notified:
+    {value: 0.85, unit: probability, source: Assumption, kind: assumption, rationale: "A routine result report reaches most people but nobody checks."}
+  with_loop.p_notified:
+    {value: 0.95, unit: probability, source: Assumption, kind: assumption, rationale: "A named owner, a due date and a second channel make delivery very likely."}
+  baseline.notify_delay_median_d:
+    {value: 3.0, unit: days, source: Assumption, kind: assumption, rationale: "Report sent in a batch."}
+  with_loop.notify_delay_median_d:
+    {value: 0.25, unit: days, source: Assumption, kind: assumption, rationale: "Service level is 24 hours for this step, 2 hours if severe."}
+  baseline.notify_delay_sigma:
+    {value: 0.8, unit: log-sd, source: Assumption, kind: assumption, rationale: "Wide spread, no tracking."}
+  with_loop.notify_delay_sigma:
+    {value: 0.6, unit: log-sd, source: Assumption, kind: assumption, rationale: "Narrower spread because the step has a due date."}
+
+  # Step 2 to 3: patient acknowledges (baseline: patient acts on the report; loop: teach-back passed)
+  baseline.p_acknowledged:
+    {value: 0.70, unit: probability, source: Assumption, kind: assumption, rationale: "No prompt to respond; about half act."}
+  with_loop.p_acknowledged:
+    {value: 0.82, unit: probability, source: Assumption, kind: assumption, rationale: "Reminders at 24, 48 and 72 hours and a coordinator call. Kept well below 100 percent."}
+  baseline.ack_delay_median_d:
+    {value: 7.0, unit: days, source: Assumption, kind: assumption, rationale: "Self-paced."}
+  with_loop.ack_delay_median_d:
+    {value: 1.5, unit: days, source: Assumption, kind: assumption, rationale: "Reminder protocol runs inside 72 hours."}
+  baseline.ack_delay_sigma:
+    {value: 0.9, unit: log-sd, source: Assumption, kind: assumption, rationale: "Wide spread."}
+  with_loop.ack_delay_sigma:
+    {value: 0.7, unit: log-sd, source: Assumption, kind: assumption, rationale: "Narrower spread."}
+
+  # Step 3 to 4: confirmation by home or 24-hour monitoring and clinician review
+  baseline.p_confirmation_completed:
+    {value: 0.60, unit: probability, source: Assumption, kind: assumption, rationale: "No instructions, no reminder, no named reviewer."}
+  with_loop.p_confirmation_completed:
+    {value: 0.72, unit: probability, source: Assumption, kind: assumption, rationale: "Instructions, running average and a clinician review task with a due date."}
+  baseline.confirm_delay_median_d:
+    {value: 30.0, unit: days, source: Assumption, kind: assumption, rationale: "Waits for the next routine visit."}
+  with_loop.confirm_delay_median_d:
+    {value: 12.0, unit: days, source: Assumption, kind: assumption, rationale: "7 days of readings plus review; service level is 14 days."}
+  baseline.confirm_delay_sigma:
+    {value: 0.7, unit: log-sd, source: Assumption, kind: assumption, rationale: "Wide spread."}
+  with_loop.confirm_delay_sigma:
+    {value: 0.5, unit: log-sd, source: Assumption, kind: assumption, rationale: "Narrower spread."}
+  common.p_confirmed_raised:
+    {value: 0.70, unit: probability, source: Assumption, kind: assumption, rationale: "Some screening readings fall on re-measurement; same in both arms."}
+
+  # Step 4 to 5: referral sent and accepted
+  baseline.p_referral_sent:
+    {value: 0.85, unit: probability, source: Assumption, kind: assumption, rationale: "Referral depends on one clinician remembering."}
+  with_loop.p_referral_sent:
+    {value: 0.92, unit: probability, source: Assumption, kind: assumption, rationale: "Task with owner and due date."}
+  baseline.referral_delay_median_d:
+    {value: 7.0, unit: days, source: Assumption, kind: assumption, rationale: "Routine."}
+  with_loop.referral_delay_median_d:
+    {value: 2.0, unit: days, source: Assumption, kind: assumption, rationale: "Service level is 3 days."}
+  baseline.referral_delay_sigma:
+    {value: 0.7, unit: log-sd, source: Assumption, kind: assumption, rationale: "Wide spread."}
+  with_loop.referral_delay_sigma:
+    {value: 0.5, unit: log-sd, source: Assumption, kind: assumption, rationale: "Narrower spread."}
+  baseline.p_referral_accepted:
+    {value: 0.90, unit: probability, source: Assumption, kind: assumption, rationale: "Rejections are not followed up."}
+  with_loop.p_referral_accepted:
+    {value: 0.90, unit: probability, source: Assumption, kind: assumption, rationale: "Rejected referrals go to a queue and are re-referred."}
+  baseline.accept_delay_median_d:
+    {value: 7.0, unit: days, source: Assumption, kind: assumption, rationale: "No clock on the receiving clinician."}
+  with_loop.accept_delay_median_d:
+    {value: 1.5, unit: days, source: Assumption, kind: assumption, rationale: "Service level is 2 days."}
+  baseline.accept_delay_sigma:
+    {value: 0.7, unit: log-sd, source: Assumption, kind: assumption, rationale: "Wide spread."}
+  with_loop.accept_delay_sigma:
+    {value: 0.5, unit: log-sd, source: Assumption, kind: assumption, rationale: "Narrower spread."}
+
+  # Step 5 to 6: appointment booked
+  baseline.p_appointment_booked:
+    {value: 0.80, unit: probability, source: Assumption, kind: assumption, rationale: "Patient must find and book alone."}
+  with_loop.p_appointment_booked:
+    {value: 0.85, unit: probability, source: Assumption, kind: assumption, rationale: "Slots and cover shown before booking, coordinator follows up."}
+  baseline.book_delay_median_d:
+    {value: 14.0, unit: days, source: Assumption, kind: assumption, rationale: "Self-paced."}
+  with_loop.book_delay_median_d:
+    {value: 3.0, unit: days, source: Assumption, kind: assumption, rationale: "Service level is 5 days."}
+  baseline.book_delay_sigma:
+    {value: 0.8, unit: log-sd, source: Assumption, kind: assumption, rationale: "Wide spread."}
+  with_loop.book_delay_sigma:
+    {value: 0.6, unit: log-sd, source: Assumption, kind: assumption, rationale: "Narrower spread."}
+
+  # Step 6: visit attended
+  baseline.p_visit_attended:
+    {value: 0.50, unit: probability, source: "Simple app, Bangladesh: overdue lists and calls cut 3-month missed visits from 50% to 26% in six months (team brief)", kind: published, rationale: "Baseline 50% missed visits read as 50% attended. Different setting and programme; applied here to the first specialist visit as an approximation."}
+  with_loop.p_visit_attended:
+    {value: 0.74, unit: probability, source: "Simple app, Bangladesh: overdue lists and calls cut 3-month missed visits from 50% to 26% in six months (team brief)", kind: published, rationale: "26% missed visits read as 74% attended. Same caveat as the baseline value."}
+  baseline.visit_wait_median_d:
+    {value: 21.0, unit: days, source: Assumption, kind: assumption, rationale: "Time from booking to visit; longer without prioritisation."}
+  with_loop.visit_wait_median_d:
+    {value: 10.0, unit: days, source: Assumption, kind: assumption, rationale: "Slots offered by earliest availability."}
+  baseline.visit_wait_sigma:
+    {value: 0.4, unit: log-sd, source: Assumption, kind: assumption, rationale: "Moderate spread."}
+  with_loop.visit_wait_sigma:
+    {value: 0.4, unit: log-sd, source: Assumption, kind: assumption, rationale: "Moderate spread."}
+
+  # Step 7: care recorded (treatment started or surveillance agreed)
+  baseline.p_care_recorded:
+    {value: 0.92, unit: probability, source: Assumption, kind: assumption, rationale: "Outcome of the visit is recorded less reliably without a task."}
+  with_loop.p_care_recorded:
+    {value: 0.95, unit: probability, source: Assumption, kind: assumption, rationale: "Visit outcome is the next step with an owner."}
+  common.care_delay_median_d:
+    {value: 1.0, unit: days, source: Assumption, kind: assumption, rationale: "Decision made at or just after the visit."}
+  common.care_delay_sigma:
+    {value: 0.5, unit: log-sd, source: Assumption, kind: assumption, rationale: "Moderate spread."}
+  common.p_treatment_started:
+    {value: 0.75, unit: probability, source: Assumption, kind: assumption, rationale: "Share of people in care who start treatment rather than surveillance."}
+
+  # Step 8: closure by a clinician with evidence
+  baseline.p_closed:
+    {value: 0.20, unit: probability, source: Assumption, kind: assumption, rationale: "Closure is rarely recorded when nothing prompts it."}
+  with_loop.p_closed:
+    {value: 0.50, unit: probability, source: Assumption, kind: assumption, rationale: "4-week review task and ready-to-close list. Clinicians still decide."}
+  baseline.close_delay_median_d:
+    {value: 60.0, unit: days, source: Assumption, kind: assumption, rationale: "Slow."}
+  with_loop.close_delay_median_d:
+    {value: 45.0, unit: days, source: Assumption, kind: assumption, rationale: "Review at 28 days plus time to reach target."}
+  common.close_delay_sigma:
+    {value: 0.6, unit: log-sd, source: Assumption, kind: assumption, rationale: "Wide spread."}
+
+  # With-loop only: teach-back, confidence
+  with_loop.p_teach_back_first_pass:
+    {value: 0.70, unit: probability, source: Assumption, kind: assumption, rationale: "Share who answer the teach-back question correctly at the first try."}
+  with_loop.confidence_probs_1_to_5:
+    {value: [0.03, 0.10, 0.25, 0.37, 0.25], unit: probability by score, source: Assumption, kind: assumption, rationale: "Self-rated confidence 1 to 5, centred slightly above the middle."}
+  with_loop.severe_delay_multiplier:
+    {value: 0.25, unit: multiplier, source: Assumption, kind: assumption, rationale: "Severe results use shorter service levels in notification and acknowledgement."}
+
+  # With-loop only: weekly lifestyle plan (sizes: full, smaller, smallest)
+  with_loop.plan_p_done_by_size:
+    {value: [0.30, 0.40, 0.50], unit: probability by size, source: Assumption, kind: assumption, rationale: "Smaller steps are easier to complete."}
+  with_loop.plan_p_partly_by_size:
+    {value: [0.20, 0.20, 0.20], unit: probability by size, source: Assumption, kind: assumption, rationale: "The rest of each week is missed."}
+  with_loop.plan_p_accept_larger:
+    {value: 0.50, unit: probability, source: Assumption, kind: assumption, rationale: "After two done weeks the larger size is offered, never forced."}
+  with_loop.plan_p_reengage_after_call:
+    {value: 0.40, unit: probability, source: Assumption, kind: assumption, rationale: "After three missed weeks a coordinator offers a call."}
+
+  # Modifiers applied in both arms so that splits show something to look at
+  common.modifier_age_65_plus:
+    {value: 0.90, unit: multiplier, source: Assumption, kind: assumption, rationale: "Slightly lower odds of completing patient-driven steps for people aged 65 or over."}
+  common.modifier_uninsured:
+    {value: 0.85, unit: multiplier, source: Assumption, kind: assumption, rationale: "Cost barrier on booking and attending for people with no insurance."}
+  with_loop.modifier_uninsured_cover_shown:
+    {value: 0.93, unit: multiplier, source: Assumption, kind: assumption, rationale: "Showing cover before booking softens, but does not remove, the cost barrier."}
+  common.modifier_yde_access:
+    {value: 0.90, unit: multiplier, source: Assumption, kind: assumption, rationale: "Fewer specialist slots in the Yaounde setting; applied to referral acceptance and booking."}

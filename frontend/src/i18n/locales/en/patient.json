@@ -1,0 +1,525 @@
+{
+  "title": "My care",
+  "nav": {
+    "label": "My care menu",
+    "home": "Home",
+    "result": "Result",
+    "journey": "Journey",
+    "messages": "Messages",
+    "privacy": "My data"
+  },
+  "noCase": {
+    "title": "No open case",
+    "description": "There is no follow-up case for you right now."
+  },
+  "home": {
+    "hello": "Hello, {{name}}",
+    "intro": "This is where you can see your result, what happens next and who is looking after each step.",
+    "yourReading": "Your reading",
+    "seeResult": "See your result",
+    "nextStep": "Your next step",
+    "nothingFromYou": "There is nothing you need to do right now. The care team is working on the next step.",
+    "moreTitle": "More in your care",
+    "links": {
+      "understand": "Check your understanding",
+      "confirm": "Check your blood pressure again",
+      "visit": "Referral and visit",
+      "weekly": "This week's action",
+      "diary": "Activity and sleep diary"
+    },
+    "linksHint": {
+      "understand": "Warning signs and one question about your result",
+      "confirm": "Choose home monitoring or a 24 hour monitor and add readings",
+      "visit": "Where your referral is and how to book a visit",
+      "weekly": "One small step each week, with no pressure",
+      "diary": "Steps and sleep from a sample wearable"
+    }
+  },
+  "status": {
+    "RESULT_ISSUED": "Your result has been received",
+    "NOTIFIED": "Your result is ready for you",
+    "ACKNOWLEDGED": "You have understood your result",
+    "CONFIRMED": "The raised reading was confirmed",
+    "REFERRED": "You have been referred",
+    "APPOINTMENT_BOOKED": "Your visit is booked",
+    "IN_CARE": "You are in care",
+    "CLOSED": "Your case is closed"
+  },
+  "journey": {
+    "heading": "Your journey",
+    "intro": "Eight steps, from your result to ongoing care. Each step has one person who is responsible for it.",
+    "states": {
+      "RESULT_ISSUED": "Your result is received",
+      "NOTIFIED": "You are told your result",
+      "ACKNOWLEDGED": "You confirm you understand",
+      "CONFIRMED": "Your blood pressure is checked again",
+      "REFERRED": "You are referred to a specialist clinic",
+      "APPOINTMENT_BOOKED": "Your visit is booked",
+      "IN_CARE": "You are in care",
+      "CLOSED": "Your case is closed by a clinician"
+    },
+    "whoTitle": "Who is responsible for the next step",
+    "closedNote": "Only a clinician can close a case, and only after reviewing the evidence."
+  },
+  "next": {
+    "title": "What happens next",
+    "by": "Due by",
+    "responsible": "Responsible",
+    "doneBy": "Done by",
+    "you": "You",
+    "careTeam": "The care team",
+    "youOwnerNote": "This step needs you. {{owner}} is accountable for it.",
+    "teamOwnerNote": "{{owner}} is accountable for this step.",
+    "notify_patient": {
+      "title": "Your care team tells you your result",
+      "text": "You will get a message in your language with the reading and what to do."
+    },
+    "patient_acknowledge": {
+      "title": "Tell us you understood your result",
+      "text": "Answer the warning sign questions and one short question about your result."
+    },
+    "choose_confirmation_method": {
+      "title": "Choose how to check your blood pressure again",
+      "text": "You can measure at home for a week, or wear a monitor for 24 hours."
+    },
+    "complete_home_readings": {
+      "title": "Take your readings at home",
+      "text": "Measure twice a day and add each reading here."
+    },
+    "attend_abpm": {
+      "title": "Attend your 24 hour monitor appointment",
+      "text": "The clinic will give you a monitor to wear for a day and a night."
+    },
+    "clinician_review_confirmation": {
+      "title": "A clinician reviews your readings",
+      "text": "You have given enough readings. A clinician now looks at them."
+    },
+    "clinician_closure_decision": {
+      "title": "A clinician decides the next step",
+      "text": "Your readings did not confirm a raised pressure. A clinician will decide what happens next."
+    },
+    "send_referral": {
+      "title": "Your clinician sends your referral",
+      "text": "Your clinician prepares a referral to a clinic that can look after you."
+    },
+    "reassign_or_rerefer": {
+      "title": "Your care team finds another clinic",
+      "text": "The first clinic could not take your referral. This is not about you. The team is arranging another."
+    },
+    "accept_referral": {
+      "title": "The clinic accepts your referral",
+      "text": "The clinic reads your referral and confirms it can see you."
+    },
+    "book_appointment": {
+      "title": "Choose a time for your visit",
+      "text": "The clinic accepted your referral. Pick a time that suits you."
+    },
+    "record_visit_outcome": {
+      "title": "Attend your visit",
+      "text": "After the visit, the clinician records what was agreed."
+    },
+    "four_week_review": {
+      "title": "Your four week review",
+      "text": "Your clinician reviews how things are going. Your weekly action runs until then."
+    },
+    "consider_closure": {
+      "title": "A clinician considers closing your case",
+      "text": "Your recent readings look settled. A clinician decides whether to close the case."
+    },
+    "default": {
+      "title": "Your care team is working on the next step",
+      "text": "Nothing is needed from you right now."
+    }
+  },
+  "result": {
+    "heading": "Your result",
+    "source": {
+      "IFHAS_SCREENING": "Screening result from a simulated source (IFHAS)",
+      "CLINIC_READING": "Reading taken at a clinic",
+      "OTHER": "Reading from another source"
+    },
+    "takenOn": "Taken on {{date}}",
+    "mmHgNote": "Top number over bottom number, in mmHg.",
+    "needsChecking": "This is a raised reading that needs checking. It is not a diagnosis.",
+    "meansTitle": "What this means",
+    "means": [
+      "Your blood pressure was higher than expected at one time.",
+      "One reading can change from day to day, so it needs to be checked again.",
+      "Checking again shows whether it stays raised."
+    ],
+    "notMeansTitle": "What this does not mean",
+    "notMeans": [
+      "It does not mean you have a lifelong illness.",
+      "It is not a final result.",
+      "It is not a reason to panic."
+    ],
+    "urgencyTitle": "How urgent it is",
+    "urgencyRaised": "This is not an emergency. It is best to take the next step by {{date}}.",
+    "urgencySevere": "This reading is high enough that a clinician will look at it today. If you have any warning sign, get emergency help now.",
+    "nextTitle": "Your one next step",
+    "messageTitle": "Message from your care team",
+    "emergencyTitle": "If you have a warning sign",
+    "toUnderstand": "Answer two quick questions",
+    "alreadyUnderstood": "You have already told us you understood this result."
+  },
+  "understand": {
+    "heading": "Check your understanding",
+    "intro": "Two short parts. Neither is a test of you. They help us explain things clearly.",
+    "flagsTitle": "1. Warning signs",
+    "flagsIntro": "Do you have any of these right now?",
+    "flags": {
+      "chest_pain": "Chest pain",
+      "shortness_of_breath": "Shortness of breath",
+      "severe_headache": "A very bad headache",
+      "vision_change": "A sudden change in your vision",
+      "confusion": "Feeling confused",
+      "one_sided_weakness": "Weakness on one side of the body"
+    },
+    "yes": "Yes",
+    "no": "No",
+    "emergencyTitle": "Get emergency help now",
+    "emergencyFallback": "Go to the nearest emergency department now.",
+    "emergencyAfter": "When you continue, your care team is told, so a clinician can look at your case the same day.",
+    "emergencyRecorded": "Your care team has been told and a clinician will look at your case the same day.",
+    "tbTitle": "2. A question about your result",
+    "tbLegend": "Choose the answer you think fits best",
+    "tbMissing": "The question is not available right now.",
+    "confidenceLegend": "How sure do you feel about what to do next?",
+    "confidenceLow": "Not sure",
+    "confidenceHigh": "Very sure",
+    "confidenceValue": "{{n}} of 5",
+    "needAnswer": "Choose an answer to continue.",
+    "needConfidence": "Choose a number from 1 to 5.",
+    "submit": "Send my answer",
+    "retryTitle": "Thank you for trying. Here is a simpler way to say it.",
+    "retryHint": "You can choose again whenever you are ready.",
+    "doneTitle": "Thank you. That is clear.",
+    "doneText": "You have understood your result. Next, we check your blood pressure again.",
+    "toConfirm": "Choose how to check again",
+    "alreadyDone": "You have already answered these questions.",
+    "notYet": "Your result has not been sent to you yet."
+  },
+  "confirm": {
+    "heading": "Check your blood pressure again",
+    "needUnderstand": "Please finish the questions about your result first.",
+    "toUnderstand": "Go to the questions",
+    "chooseTitle": "How would you like to check?",
+    "legend": "Method",
+    "hbpm": "At home for a week",
+    "hbpmHelp": "You measure twice a day with a validated upper arm cuff and add each reading here.",
+    "abpm": "A 24 hour monitor",
+    "abpmHelp": "The clinic gives you a monitor to wear for a day and a night.",
+    "save": "Save my choice",
+    "saved": "Your choice is saved.",
+    "chosen": "Your choice: {{method}}",
+    "abpmBody": "The clinic will arrange your monitor appointment. There is nothing to enter here.",
+    "howTitle": "How to measure at home",
+    "how": [
+      "Sit quietly for five minutes with your back supported and your arm resting at heart height.",
+      "Measure in the morning and in the evening, twice each time, one minute apart.",
+      "Add every reading below, even if it looks different from the last one."
+    ],
+    "formTitle": "Add a reading",
+    "systolic": "Top number (systolic)",
+    "diastolic": "Bottom number (diastolic)",
+    "pulse": "Pulse",
+    "when": "When you measured (UTC)",
+    "add": "Add this reading",
+    "added": "Reading added.",
+    "errSystolic": "Enter a top number between 60 and 260.",
+    "errDiastolic": "Enter a bottom number between 30 and 160.",
+    "errOrder": "The top number must be higher than the bottom number.",
+    "errPulse": "Pulse must be between 30 and 220, or leave it empty.",
+    "errWhen": "Enter the date and time of the reading.",
+    "listTitle": "Your readings",
+    "listEmpty": "No readings yet. Add your first one above.",
+    "pulseValue": "pulse {{n}}",
+    "progressTitle": "Your progress",
+    "dayOf": "Day {{n}} of {{total}}",
+    "progressLabel": "Days with readings",
+    "needed": "The care team needs at least {{days}} days with two readings each. The first day is not counted in the average.",
+    "averageTitle": "Average so far",
+    "averageNone": "The average appears after you add readings.",
+    "averageBasis": "{{n}} readings counted",
+    "enough": "You have given enough readings. A clinician will review them next.",
+    "reviewed": "A clinician has reviewed your readings and confirmed that your blood pressure stays raised.",
+    "notConfirmed": "Your readings did not confirm a raised pressure. A clinician will decide what happens next.",
+    "demoTitle": "Demo aid",
+    "demoText": "Instead of typing 28 readings, load the sample week. These are made-up values.",
+    "demoButton": "Fill a sample week of readings",
+    "demoLoading": "Adding readings",
+    "demoDone": "Added {{n}} sample readings.",
+    "demoNeedsHbpm": "Choose home monitoring first.",
+    "change": "Change"
+  },
+  "visit": {
+    "heading": "Referral and visit",
+    "statusTitle": "Where things are",
+    "status": {
+      "early": "A referral comes after a clinician has reviewed your readings.",
+      "confirmed": "Your clinician is preparing a referral.",
+      "rejected": "The first clinic could not take your referral. This is not about you. Your care team is arranging another one.",
+      "pending": "Your referral was sent to {{name}}. They will confirm that they can see you.",
+      "pendingNoName": "Your referral was sent. The clinic will confirm that they can see you.",
+      "accepted": "{{name}} accepted your referral. Choose a time for your visit.",
+      "acceptedNoName": "The clinic accepted your referral. Choose a time for your visit.",
+      "booked": "Your visit is booked.",
+      "inCare": "Your visit has taken place. You are now in care."
+    },
+    "referralTo": "Sent to",
+    "slotsTitle": "Choose a time",
+    "slotsLegend": "Available times",
+    "slotsEmpty": "There are no times available right now. Your care team will contact you.",
+    "coverTitle": "Cover for this visit",
+    "covered": "Covered by your insurance",
+    "notCovered": "Not covered by your insurance",
+    "coverUnknown": "Cover not known yet",
+    "copay": "You pay {{amount}}",
+    "noCopay": "You pay nothing",
+    "price": "Estimated price {{amount}}",
+    "coverNote": "Cover and prices are simulated for this demo.",
+    "book": "Book this visit",
+    "booking": "Booking",
+    "pickFirst": "Choose a time first.",
+    "bookedTitle": "Your visit is booked",
+    "with": "With",
+    "where": "Where",
+    "when": "When",
+    "afterVisit": "After the visit, your clinician records what was agreed and your weekly action starts.",
+    "bookedToast": "Your visit is booked."
+  },
+  "weekly": {
+    "heading": "This week's action",
+    "intro": "One small step each week. If a week does not go to plan, the next one gets smaller. Nothing is lost.",
+    "notYet": "Weekly actions start after your first visit, once treatment or follow-up is agreed.",
+    "thisWeek": "This week",
+    "size": {
+      "full": "Full step",
+      "smaller": "Smaller step",
+      "smallest": "Smallest step"
+    },
+    "action": {
+      "salt": {
+        "name": "Less salt",
+        "full": "This week, taste your food before you add salt, at every meal where you have a choice.",
+        "smaller": "This week, taste your food before you add salt at one meal a day.",
+        "smallest": "This week, taste your food before you add salt at one meal."
+      },
+      "activity": {
+        "name": "Move a little more",
+        "full": "This week, walk for 30 minutes on five days.",
+        "smaller": "This week, walk for 15 minutes on three days.",
+        "smallest": "This week, walk for 10 minutes on one day."
+      },
+      "sleep": {
+        "name": "Steady sleep",
+        "full": "This week, go to bed at about the same time on five nights.",
+        "smaller": "This week, go to bed at about the same time on three nights.",
+        "smallest": "This week, go to bed at about the same time on one night."
+      },
+      "home_bp_check": {
+        "name": "Home blood pressure check",
+        "full": "This week, check your blood pressure at home on three mornings and write the numbers down.",
+        "smaller": "This week, check your blood pressure at home on two mornings and write the numbers down.",
+        "smallest": "This week, check your blood pressure at home on one morning and write the numbers down."
+      }
+    },
+    "checkinTitle": "How did this week go?",
+    "statusLegend": "This week's check-in",
+    "status": {
+      "done": "I did it",
+      "partly": "I did part of it",
+      "missed": "I could not this week"
+    },
+    "barrierLabel": "Was anything in the way?",
+    "barrierPlaceholder": "Prefer not to say",
+    "barrier": {
+      "TIME": "Not enough time",
+      "COST": "Cost",
+      "NOT_SURE_HOW": "Not sure how to do it",
+      "FELT_UNWELL": "I felt unwell",
+      "WORK_SCHEDULE": "My work schedule",
+      "OTHER": "Something else"
+    },
+    "largerOffer": "You have done this two weeks running. If you would like, you can choose a slightly bigger step for next week when you check in. It is your choice.",
+    "largerAccept": "Yes, try a slightly bigger step next week",
+    "submit": "Save my check-in",
+    "needStatus": "Choose one answer.",
+    "feedback": {
+      "PLAN_SMALLER": "That is fine. Some weeks are like this. Next week's step is smaller, so it is easier to fit in.",
+      "PLAN_LARGER_OFFERED": "Thank you. Your next action is ready. If you like, you can choose a slightly bigger step later. It is your choice.",
+      "PLAN_NEXT": "Thank you for checking in. Your next action is ready."
+    },
+    "noBlameTitle": "A gentle note",
+    "noBlameLapsed": "Last week did not go to plan. That is fine. This week's step is smaller.",
+    "messageTitle": "Message from your care team",
+    "historyTitle": "Earlier weeks",
+    "historyEmpty": "Your earlier weeks will appear here.",
+    "week": "Week {{n}}",
+    "historyStatus": {
+      "done": "Done",
+      "partly": "Part of it",
+      "missed": "Not this week"
+    },
+    "diaryTitle": "Activity and sleep diary",
+    "diaryNote": "This diary comes from a sample wearable. It shows steps, active minutes and sleep. It is never used as a blood pressure value.",
+    "diaryDay": "Day {{n}}",
+    "steps": "{{n}} steps",
+    "activeMinutes": "{{n}} active minutes",
+    "sleepHours": "{{n}} h sleep",
+    "diaryEmpty": "No diary data yet."
+  },
+  "messages": {
+    "heading": "Messages",
+    "intro": "Messages from your care team, in the language you chose.",
+    "empty": "No messages yet.",
+    "from": "From {{name}}",
+    "standard": "Standard wording",
+    "aiReworded": "Reworded with AI help and approved by {{name}}",
+    "you": "You",
+    "fromTeam": "From your care team"
+  },
+  "privacy": {
+    "heading": "My data",
+    "consentTitle": "Your choices",
+    "consentIntro": "You decide how your information is used. You can change a choice at any time.",
+    "on": "On",
+    "off": "Off",
+    "turnOn": "Turn on",
+    "turnOff": "Turn off",
+    "changedOn": "Choice turned on.",
+    "changedOff": "Choice turned off.",
+    "channel": {
+      "APP": "in the app",
+      "SMS": "by SMS",
+      "WHATSAPP": "on WhatsApp"
+    },
+    "purpose": {
+      "care_coordination": {
+        "name": "Care coordination",
+        "text": "Lets your care team follow your case and remind you of each step.",
+        "withdraw": "Your follow-up depends on this choice. Turning it off is recorded with the date. You can turn it back on at any time."
+      },
+      "messaging_channel": {
+        "name": "Messages",
+        "text": "Lets your care team send you messages {{channel}}.",
+        "withdraw": "You will not get messages {{channel}}. Your care team may use another way to reach you. You can turn it back on at any time."
+      },
+      "share_with_receiving_provider": {
+        "name": "Share with the clinic that receives your referral",
+        "text": "Lets your clinician send your readings and referral to the clinic that will see you.",
+        "withdraw": "Your clinician cannot send a referral until you turn this back on. Your care team will explain the options."
+      },
+      "lifestyle_programme": {
+        "name": "Weekly actions",
+        "text": "Lets us suggest one small step each week.",
+        "withdraw": "You will not get weekly actions. Nothing else about your care changes. You can turn it back on at any time."
+      },
+      "research_aggregate": {
+        "name": "Anonymous summaries",
+        "text": "Counts you in summary figures that cannot be traced to you.",
+        "withdraw": "You will not be counted in summary figures. This does not change your care."
+      }
+    },
+    "confirmTitle": "Turn off this choice?",
+    "confirmButton": "Turn off",
+    "keep": "Keep it on",
+    "dataTitle": "How my data is used",
+    "data": [
+      "Everything you see in this prototype is synthetic demo data. The people, readings, clinics and messages are made up.",
+      "Your care team can see your case: the readings, the steps and the messages. A clinician sees more detail than a coordinator.",
+      "A clinic you are referred to sees your referral only if you allow sharing with it.",
+      "Nothing about you is shared with employers or insurers. Programme figures are totals, and any group smaller than 5 people is hidden.",
+      "AI is only used to help word messages. A person approves any reworded message. It never decides who is urgent, who is responsible or whether a case closes.",
+      "Only a clinician can close your case, and only with evidence or a recorded decision.",
+      "Names such as IFHAS, Thiqa and Malaffi appear only as labels of simulated sources."
+    ]
+  },
+  "closed": {
+    "heading": "Your case is closed",
+    "intro": "A clinician closed your case after reviewing the evidence.",
+    "closedOn": "Closed on {{date}}",
+    "by": "Closed by {{name}}",
+    "outcome": "What this means",
+    "evidence": {
+      "BP_CONTROLLED": "Your recent blood pressure readings were in the target range.",
+      "NOT_CONFIRMED": "Your repeat readings did not confirm a raised pressure, so no further follow-up is needed now.",
+      "CARE_TRANSFERRED": "Your care moved to another service.",
+      "PATIENT_DECLINED": "You chose not to continue with follow-up.",
+      "UNREACHABLE_AFTER_PROTOCOL": "We could not reach you after several attempts, so a clinician closed the case for now.",
+      "DECEASED_OR_MOVED": "Your case was closed because follow-up moved elsewhere.",
+      "OTHER_CLINICAL_DECISION": "A clinician decided that this follow-up can end."
+    },
+    "note": "You can ask your care team to look at your case again at any time.",
+    "summaryTitle": "Summary from your care team"
+  },
+  "shortcuts": {
+    "title": "Demo shortcuts",
+    "badge": "Demo aid, not part of the product",
+    "intro": "In real life, staff do these steps. Each button signs in as the right staff member in the background and uses the real action, so it appears in the audit log.",
+    "review": "Care team: review my readings",
+    "referral": "Care team: send and accept referral",
+    "book": "Care team: book my visit",
+    "visit": "Care team: record my visit",
+    "skip": "Skip ahead one week",
+    "sampleWeek": "Send a sample week of readings",
+    "unavailable": "Available later: {{reason}}",
+    "needs": {
+      "review": "after you have given enough readings",
+      "referral": "after your readings are reviewed",
+      "book": "after the referral is accepted",
+      "visit": "after your visit is booked",
+      "skip": "once you are in care",
+      "sampleWeek": "after you reply 1 to your first message",
+      "close": "once you are in care"
+    },
+    "working": "Working",
+    "did": {
+      "review": "{{who}} reviewed the readings and confirmed the raised average.",
+      "refer": "{{who}} sent the referral.",
+      "accept": "{{who}} accepted the referral.",
+      "book": "{{who}} booked the visit.",
+      "visit": "{{who}} recorded the visit and started treatment.",
+      "skip": "The demo clock moved forward by one week.",
+      "sampleWeek": "A sample week of readings was sent.",
+      "close": "{{who}} closed the case with a recorded decision."
+    },
+    "note": {
+      "review": "Demo shortcut: home average reviewed.",
+      "refer": "Demo shortcut: raised home average, referral to the clinic.",
+      "close": "Demo shortcut: closed to show the closed case screen."
+    },
+    "failed": "That did not work: {{message}}",
+    "close": "Care team: close my case"
+  },
+  "phone": {
+    "title": "Messages from your care team",
+    "noNext": "No step is due",
+    "channelLabel": "Look of the thread",
+    "sms": "SMS",
+    "whatsapp": "WhatsApp",
+    "simulated": "Simulated",
+    "channelNote": "The SMS or WhatsApp look is only a style. It does not change how messages are sent.",
+    "inputLabel": "Your reply",
+    "inputPlaceholder": "Type a reply",
+    "send": "Send",
+    "sending": "Sending",
+    "quickLabel": "Quick replies",
+    "quick": {
+      "understood": "1  Understood",
+      "callMe": "2  Call me",
+      "done": "A  Done",
+      "partly": "B  Part of it",
+      "missed": "C  Not this week",
+      "reading": "150/95"
+    },
+    "hint": "Reply 1 or 2. To send a blood pressure, type it like 150/95. Reply STOP to stop messages.",
+    "hintCare": "Reply A, B or C for your weekly check-in.",
+    "empty": "No messages yet.",
+    "loadError": "The messages did not load",
+    "you": "You",
+    "delivered": "Delivered",
+    "contact": "Your contact",
+    "stepOwner": "Step owner: {{name}}. Due {{date}}"
+  }
+}

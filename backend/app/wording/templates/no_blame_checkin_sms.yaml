@@ -1,0 +1,34 @@
+# Approved template. Edit the text here, bump `version`, and keep every {slot} listed in required_slots.
+id: no_blame_checkin_sms
+version: 1
+purpose: SMS no-blame check-in that makes the plan smaller.
+channel_limits:
+  sms:
+    en: 160
+    fr: 160
+    ar: 134
+required_slots:
+- name
+- action_text
+sample_slots:
+  en:
+    name: Khalid
+    action_text: leave the salt off one meal
+  ar:
+    name: خالد
+    action_text: وجبة واحدة بلا ملح مضاف
+  fr:
+    name: Jean-Paul
+    action_text: un repas sans sel ajouté
+text:
+  en: '{name}, a missed week is normal. We made your step smaller: {action_text}. Reply 2 if you would like a call.'
+  ar: '{name}، الأسبوع الذي يفوت أمر طبيعي. جعلنا خطوتك أصغر: {action_text}. أرسل 2 إن رغبت بمكالمة.'
+  fr: '{name}, une semaine manquée est normale. Votre action est plus petite : {action_text}. Répondez 2 pour un appel.'
+sms_chars_with_sample_slots:
+  en: 122
+  ar: 101
+  fr: 126
+gsm7_safe_with_sample_slots:
+  en: true
+  ar: false
+  fr: true

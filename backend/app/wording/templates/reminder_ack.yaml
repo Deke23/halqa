@@ -1,0 +1,24 @@
+# Approved template. Edit the text here, bump `version`, and keep every {slot} listed in required_slots.
+id: reminder_ack
+version: 1
+purpose: Gentle reminder to confirm understanding of the result.
+channel_limits:
+  app: 900
+  whatsapp: 1000
+required_slots:
+- name
+- due_date
+sample_slots:
+  en:
+    name: Khalid
+    due_date: Friday 22 November
+  ar:
+    name: خالد
+    due_date: الجمعة 22 نوفمبر
+  fr:
+    name: Jean-Paul
+    due_date: vendredi 22 novembre
+text:
+  en: Hello {name}. This is a reminder about your blood pressure reading. We would like to check that our message was clear. Please answer one short question by {due_date}. If you would like a call instead, tell us and we will call you.
+  ar: مرحبًا {name}. هذا تذكير بخصوص قراءة ضغط الدم. نودّ التأكد من أن رسالتنا كانت واضحة. يرجى الإجابة عن سؤال قصير واحد قبل {due_date}. إذا كنت تفضّل مكالمة هاتفية، أخبرنا وسنتصل بك.
+  fr: Bonjour {name}. Ceci est un rappel au sujet de votre mesure de tension. Nous voulons nous assurer que notre message était clair. Merci de répondre à une courte question avant le {due_date}. Si vous préférez un appel, dites-le-nous et nous vous appellerons.

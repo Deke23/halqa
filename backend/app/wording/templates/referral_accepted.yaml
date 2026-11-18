@@ -1,0 +1,24 @@
+# Approved template. Edit the text here, bump `version`, and keep every {slot} listed in required_slots.
+id: referral_accepted
+version: 1
+purpose: Referral accepted; next step is choosing a visit time.
+channel_limits:
+  app: 900
+  whatsapp: 1000
+required_slots:
+- name
+- clinic_name
+sample_slots:
+  en:
+    name: Khalid
+    clinic_name: Al Noor Clinic
+  ar:
+    name: خالد
+    clinic_name: عيادة النور
+  fr:
+    name: Jean-Paul
+    clinic_name: Centre Mvog-Ada
+text:
+  en: Hello {name}. {clinic_name} has accepted your request. Your next step is to choose a time for your visit. You will see the available times and any cost before you book.
+  ar: مرحبًا {name}. قبلت {clinic_name} طلبك. خطوتك التالية هي اختيار وقت الزيارة. ستظهر لك المواعيد المتاحة وأي تكلفة قبل الحجز.
+  fr: Bonjour {name}. {clinic_name} a accepté votre demande. Votre prochaine étape est de choisir l'heure de votre visite. Vous verrez les horaires disponibles et les frais éventuels avant de réserver.

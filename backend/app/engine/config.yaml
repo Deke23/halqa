@@ -1,0 +1,222 @@
+# Single source for clinical thresholds and service levels.
+# Every entry is a placeholder pending clinician sign-off. None of these values is clinically validated.
+# `basis` states where the number comes from or that it is an assumption.
+
+thresholds:
+  raised_systolic:
+    value: 140
+    unit: mmHg
+    basis: "Common outpatient cut-off for a raised reading, used here as a screening trigger only. Assumption pending sign-off."
+    status: placeholder_pending_clinician_signoff
+  raised_diastolic:
+    value: 90
+    unit: mmHg
+    basis: "Common outpatient cut-off for a raised reading, used here as a screening trigger only. Assumption pending sign-off."
+    status: placeholder_pending_clinician_signoff
+  severe_systolic:
+    value: 180
+    unit: mmHg
+    basis: "Routing rule from the project specification (section 4.2): same-day clinician review. Assumption pending sign-off."
+    status: placeholder_pending_clinician_signoff
+  severe_diastolic:
+    value: 110
+    unit: mmHg
+    basis: "Routing rule from the project specification (section 4.2): same-day clinician review. Assumption pending sign-off."
+    status: placeholder_pending_clinician_signoff
+  hbpm_systolic:
+    value: 135
+    unit: mmHg
+    basis: "Home blood pressure average threshold from the project specification. Assumption pending sign-off."
+    status: placeholder_pending_clinician_signoff
+  hbpm_diastolic:
+    value: 85
+    unit: mmHg
+    basis: "Home blood pressure average threshold from the project specification. Assumption pending sign-off."
+    status: placeholder_pending_clinician_signoff
+  hbpm_min_days:
+    value: 4
+    unit: days
+    basis: "Days with enough readings, counting the discarded first day. Assumption pending sign-off."
+    status: placeholder_pending_clinician_signoff
+  hbpm_min_readings_per_day:
+    value: 2
+    unit: readings
+    basis: "Minimum readings for a day to count. Assumption pending sign-off."
+    status: placeholder_pending_clinician_signoff
+  abpm_daytime_systolic:
+    value: 135
+    unit: mmHg
+    basis: "Daytime ambulatory average threshold from the project specification. Assumption pending sign-off."
+    status: placeholder_pending_clinician_signoff
+  abpm_daytime_diastolic:
+    value: 85
+    unit: mmHg
+    basis: "Daytime ambulatory average threshold from the project specification. Assumption pending sign-off."
+    status: placeholder_pending_clinician_signoff
+  abpm_daytime_start_hour:
+    value: 7
+    unit: hour of day (UTC)
+    basis: "Assumption: daytime window used for the ambulatory average."
+    status: placeholder_pending_clinician_signoff
+  abpm_daytime_end_hour:
+    value: 22
+    unit: hour of day (UTC)
+    basis: "Assumption: daytime window used for the ambulatory average."
+    status: placeholder_pending_clinician_signoff
+  abpm_min_daytime_readings:
+    value: 14
+    unit: readings
+    basis: "Assumption: minimum daytime readings for a usable ambulatory recording."
+    status: placeholder_pending_clinician_signoff
+  target_systolic:
+    value: 130
+    unit: mmHg
+    basis: "Assumption: a clinic reading below this and below the diastolic target counts as at target for the ready-to-close prompt."
+    status: placeholder_pending_clinician_signoff
+  target_diastolic:
+    value: 80
+    unit: mmHg
+    basis: "Assumption: see target_systolic."
+    status: placeholder_pending_clinician_signoff
+  target_consecutive_readings:
+    value: 3
+    unit: readings
+    basis: "Project specification (scenario ready_to_close): last three clinic readings at target. Assumption pending sign-off."
+    status: placeholder_pending_clinician_signoff
+
+service_levels:
+  result_issued:
+    value: 24
+    unit: hours
+    basis: "Project specification section 4.1. Placeholder pending sign-off."
+    status: placeholder_pending_clinician_signoff
+  result_issued_severe:
+    value: 2
+    unit: hours
+    basis: "Project specification section 4.1. Placeholder pending sign-off."
+    status: placeholder_pending_clinician_signoff
+  urgent_review:
+    value: 4
+    unit: hours
+    basis: "Same-day clinician review of a severe reading, project specification section 4.2. Placeholder pending sign-off."
+    status: placeholder_pending_clinician_signoff
+  notified:
+    value: 72
+    unit: hours
+    basis: "Project specification section 4.1. Placeholder pending sign-off."
+    status: placeholder_pending_clinician_signoff
+  acknowledged:
+    value: 14
+    unit: days
+    basis: "Project specification section 4.1. Placeholder pending sign-off."
+    status: placeholder_pending_clinician_signoff
+  confirmed:
+    value: 3
+    unit: days
+    basis: "Project specification section 4.1. Placeholder pending sign-off."
+    status: placeholder_pending_clinician_signoff
+  closure_decision:
+    value: 3
+    unit: days
+    basis: "Clinician closure decision after a not-confirmed review, project specification section 4.1 clarifications. Placeholder pending sign-off."
+    status: placeholder_pending_clinician_signoff
+  referral_accept:
+    value: 2
+    unit: days
+    basis: "Project specification section 4.1. Placeholder pending sign-off."
+    status: placeholder_pending_clinician_signoff
+  appointment_booking:
+    value: 5
+    unit: days
+    basis: "Project specification section 4.1. Placeholder pending sign-off."
+    status: placeholder_pending_clinician_signoff
+  visit_outcome:
+    value: 24
+    unit: hours
+    basis: "Hours after the appointment time, project specification section 4.1. Placeholder pending sign-off."
+    status: placeholder_pending_clinician_signoff
+  in_care_review:
+    value: 28
+    unit: days
+    basis: "Review at 4 weeks, project specification section 4.1. Placeholder pending sign-off."
+    status: placeholder_pending_clinician_signoff
+
+escalation:
+  level2_multiplier:
+    value: 2
+    unit: x service level
+    basis: "Project specification section 4.3. Placeholder pending sign-off."
+    status: placeholder_pending_clinician_signoff
+  level2_multiplier_severe:
+    value: 1
+    unit: x service level
+    basis: "Project specification section 4.3. Placeholder pending sign-off."
+    status: placeholder_pending_clinician_signoff
+
+unreachable_protocol:
+  reminder_after:
+    value: 24
+    unit: hours
+    basis: "Project specification section 4.3. Placeholder pending sign-off."
+    status: placeholder_pending_clinician_signoff
+  second_channel_after:
+    value: 48
+    unit: hours
+    basis: "Project specification section 4.3. Placeholder pending sign-off."
+    status: placeholder_pending_clinician_signoff
+  call_task_after:
+    value: 72
+    unit: hours
+    basis: "Project specification section 4.3. Placeholder pending sign-off."
+    status: placeholder_pending_clinician_signoff
+  clinician_decision_after:
+    value: 120
+    unit: hours
+    basis: "Assumption: two days after the call task, the case is flagged for a clinician decision. It is never closed automatically."
+    status: placeholder_pending_clinician_signoff
+
+closure:
+  note_min_chars:
+    value: 10
+    unit: characters
+    basis: "Project specification section 4.1: minimum length of a recorded decision note."
+    status: placeholder_pending_clinician_signoff
+  reopen_reason_min_chars:
+    value: 5
+    unit: characters
+    basis: "Assumption: a reopen needs a short stated reason."
+    status: placeholder_pending_clinician_signoff
+
+teach_back:
+  failures_before_call_task:
+    value: 2
+    unit: wrong answers
+    basis: "Project specification section 6: two wrong answers create a coordinator call task."
+    status: placeholder_pending_clinician_signoff
+
+lifestyle_plan:
+  week_length:
+    value: 7
+    unit: days
+    basis: "Weekly action."
+    status: placeholder_pending_clinician_signoff
+  lapse_grace:
+    value: 1
+    unit: days
+    basis: "Assumption: a week with no check-in after this grace period is recorded as missed, with no blame."
+    status: placeholder_pending_clinician_signoff
+  partly_in_row_to_shrink:
+    value: 2
+    unit: check-ins
+    basis: "Project specification section 4.6."
+    status: placeholder_pending_clinician_signoff
+  done_in_row_to_offer_larger:
+    value: 2
+    unit: check-ins
+    basis: "Project specification section 4.6."
+    status: placeholder_pending_clinician_signoff
+  missed_in_row_for_call_task:
+    value: 3
+    unit: check-ins
+    basis: "Project specification section 4.6."
+    status: placeholder_pending_clinician_signoff

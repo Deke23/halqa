@@ -1,0 +1,32 @@
+# Approved template. Edit the text here, bump `version`, and keep every {slot} listed in required_slots.
+id: confirmation_abpm_booking
+version: 1
+purpose: Booking of a 24-hour blood pressure monitor fitting.
+channel_limits:
+  app: 900
+  whatsapp: 1000
+required_slots:
+- name
+- clinic_name
+- appointment_date
+- appointment_time
+sample_slots:
+  en:
+    name: Khalid
+    clinic_name: Al Noor Clinic
+    appointment_date: Monday 25 November
+    appointment_time: 09:30
+  ar:
+    name: خالد
+    clinic_name: عيادة النور
+    appointment_date: الاثنين 25 نوفمبر
+    appointment_time: 09:30
+  fr:
+    name: Jean-Paul
+    clinic_name: Centre Mvog-Ada
+    appointment_date: lundi 25 novembre
+    appointment_time: 09:30
+text:
+  en: Hello {name}. Your clinician suggests a 24-hour blood pressure check. A small cuff stays on your arm for one day and night and measures automatically. It may feel tight each time it measures. Your fitting appointment is at {clinic_name} on {appointment_date} at {appointment_time}. A clinician will review the results afterwards.
+  ar: مرحبًا {name}. يقترح الطبيب إجراء قياس لضغط الدم على مدار 24 ساعة. يوضع على الذراع جهاز صغير ليوم وليلة ويقيس الضغط تلقائيًا، وقد تشعر بشدّ في الذراع عند كل قياس. موعد تركيب الجهاز في {clinic_name} يوم {appointment_date} الساعة {appointment_time}. سيراجع الطبيب النتائج بعد ذلك.
+  fr: Bonjour {name}. Votre médecin propose de mesurer votre tension pendant 24 heures. Un petit brassard reste sur votre bras pendant un jour et une nuit et mesure automatiquement. Il peut serrer un peu le bras à chaque mesure. Le rendez-vous de pose est à {clinic_name} le {appointment_date} à {appointment_time}. Un professionnel de santé regardera ensuite les résultats.

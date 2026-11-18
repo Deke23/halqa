@@ -1,0 +1,28 @@
+# Approved template. Edit the text here, bump `version`, and keep every {slot} listed in required_slots.
+id: result_raised
+version: 1
+purpose: 'Tell the patient about a raised screening reading: what it means, what it does not mean, urgency, one next step.'
+channel_limits:
+  app: 900
+  whatsapp: 1000
+required_slots:
+- name
+- reading
+- due_date
+sample_slots:
+  en:
+    name: Khalid
+    reading: 152/96
+    due_date: Friday 22 November
+  ar:
+    name: خالد
+    reading: 152/96
+    due_date: الجمعة 22 نوفمبر
+  fr:
+    name: Jean-Paul
+    reading: 164/102
+    due_date: vendredi 22 novembre
+text:
+  en: Hello {name}. At your screening, your blood pressure reading was {reading}. This is a raised reading that needs checking. It does not mean you are ill, and it is not a final result, because one reading can change from day to day. It is not an emergency, but it is best to act before {due_date}. Your next step is to check your blood pressure again, at home or at a clinic. We will show you how.
+  ar: مرحبًا {name}. كانت قراءة ضغط الدم في الفحص {reading}. هذه قراءة مرتفعة تحتاج إلى تأكيد. وهي لا تعني بالضرورة وجود مشكلة صحية، وليست نتيجة نهائية، لأن القراءة الواحدة قد تتغير من يوم إلى آخر. الأمر ليس طارئًا، لكن من الأفضل البدء قبل {due_date}. خطوتك التالية هي قياس ضغط الدم مرة أخرى، في المنزل أو في العيادة، وسنوضح لك الطريقة.
+  fr: Bonjour {name}. Lors de votre dépistage, votre tension artérielle était de {reading}. C'est une valeur élevée qui doit être vérifiée. Cela ne veut pas dire que vous êtes malade, et ce n'est pas un résultat définitif, car une seule mesure peut changer d'un jour à l'autre. Ce n'est pas une urgence, mais il vaut mieux agir avant le {due_date}. Votre prochaine étape est de mesurer à nouveau votre tension, à la maison ou dans un centre de santé. Nous vous expliquerons comment.

@@ -1,0 +1,42 @@
+# Approved template. Edit the text here, bump `version`, and keep every {slot} listed in required_slots.
+id: appointment_booked_sms
+version: 1
+purpose: SMS appointment booked.
+channel_limits:
+  sms:
+    en: 160
+    fr: 160
+    ar: 134
+required_slots:
+- name
+- clinic_name
+- appointment_date
+- appointment_time
+sample_slots:
+  en:
+    name: Khalid
+    clinic_name: Al Noor Clinic
+    appointment_date: Monday 25 November
+    appointment_time: 09:30
+  ar:
+    name: خالد
+    clinic_name: عيادة النور
+    appointment_date: الاثنين 25 نوفمبر
+    appointment_time: 09:30
+  fr:
+    name: Jean-Paul
+    clinic_name: Centre Mvog-Ada
+    appointment_date: lundi 25 novembre
+    appointment_time: 09:30
+text:
+  en: '{name}, your visit is booked at {clinic_name} on {appointment_date} at {appointment_time}. Reply 2 if you need to change it.'
+  ar: '{name}، تم حجز موعدك في {clinic_name} يوم {appointment_date} الساعة {appointment_time}. أرسل 2 للتغيير.'
+  fr: '{name}, rendez-vous réservé à {clinic_name} le {appointment_date} à {appointment_time}. Répondez 2 pour le changer.'
+sms_chars_with_sample_slots:
+  en: 112
+  ar: 85
+  fr: 106
+gsm7_safe_with_sample_slots:
+  en: true
+  ar: false
+  fr: true

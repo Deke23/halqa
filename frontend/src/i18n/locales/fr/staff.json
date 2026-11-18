@@ -1,0 +1,634 @@
+{
+  "nav": {
+    "queue": "File des dossiers",
+    "worklist": "Liste de travail"
+  },
+  "placeholder": "provisoire, en attente de validation par un clinicien",
+  "simulatedShort": "simulé",
+  "channel": {
+    "APP": "Application",
+    "SMS": "SMS",
+    "WHATSAPP": "WhatsApp"
+  },
+  "language": {
+    "en": "Anglais",
+    "ar": "Arabe",
+    "fr": "Français"
+  },
+  "sex": {
+    "F": "femme",
+    "M": "homme"
+  },
+  "roleShort": {
+    "patient": "patient",
+    "coordinator": "coordinateur",
+    "clinician": "clinicien",
+    "analyst": "analyste"
+  },
+  "sourceSystem": {
+    "IFHAS_SCREENING": "flux de dépistage IFHAS",
+    "CLINIC_READING": "mesure en clinique",
+    "OTHER": "autre source"
+  },
+  "method": {
+    "HBPM": "Auto-mesure à domicile",
+    "ABPM": "Mesure sur 24 heures",
+    "HBPMHint": "Le patient prend sa tension à domicile avec un tensiomètre validé.",
+    "ABPMHint": "Le patient porte un appareil de mesure ambulatoire pendant 24 heures."
+  },
+  "outcome": {
+    "CONFIRMED": "Tension élevée confirmée",
+    "NOT_CONFIRMED": "Non confirmée",
+    "CONFIRMEDHint": "Le dossier passe à l'orientation vers un spécialiste.",
+    "NOT_CONFIRMEDHint": "Le dossier reste ici pour une décision de clôture par un clinicien. Il n'est jamais clos automatiquement."
+  },
+  "visit": {
+    "TREATMENT_STARTED": "Traitement commencé",
+    "SURVEILLANCE": "Surveillance convenue"
+  },
+  "readingSource": {
+    "HOME_CUFF": "Tensiomètre à domicile",
+    "CLINIC": "Clinique",
+    "ABPM": "Mesure sur 24 heures"
+  },
+  "consentPurpose": {
+    "care_coordination": "Coordination des soins",
+    "messaging_channel": "Canal de messagerie",
+    "share_with_receiving_provider": "Partage avec le prestataire destinataire",
+    "lifestyle_programme": "Programme de mode de vie",
+    "research_aggregate": "Utilisation agrégée pour la recherche"
+  },
+  "planAction": {
+    "salt": "Sel",
+    "activity": "Activité",
+    "sleep": "Sommeil",
+    "home_bp_check": "Mesure de la tension à domicile"
+  },
+  "queue": {
+    "title": "File des dossiers",
+    "intro": "Chaque dossier a un responsable et une échéance. Les cas urgents viennent en premier, puis les plus en retard. Ouvrez un dossier pour agir.",
+    "listHeading": "Dossiers",
+    "tabsLabel": "Files",
+    "tableCaption": "Dossiers de la file : {{queue}}",
+    "cols": {
+      "patient": "Patient",
+      "reading": "Mesure initiale",
+      "state": "État",
+      "next": "Prochaine étape",
+      "owner": "Responsable",
+      "due": "Échéance",
+      "why": "Pourquoi il est ici"
+    },
+    "openCase": "Ouvrir le dossier {{id}} de {{initials}}",
+    "new": "Nouveau",
+    "closed": "Clos",
+    "escalationLevel": "Escalade de niveau {{level}}",
+    "empty": {
+      "urgent": "Aucun dossier urgent pour le moment.",
+      "overdue": "Aucun dossier en retard pour le moment.",
+      "rejected": "Aucune orientation refusée pour le moment.",
+      "unowned": "Aucun dossier sans responsable pour le moment.",
+      "escalated": "Aucun dossier escaladé pour le moment.",
+      "all": "Il n'y a pas encore de dossier."
+    },
+    "rejectedBy": "Refusé par {{name}} : {{reason}}",
+    "receiver": "le clinicien destinataire",
+    "escalatedReason": "Escaladé : {{reason}}",
+    "escalatedDefault": "l'étape n'a pas été faite à temps",
+    "lastContact": "Dernière tentative de contact le {{when}}"
+  },
+  "simulate": {
+    "title": "Simuler un résultat entrant",
+    "intro": "Envoie un résultat de dépistage fictif au point d'entrée, comme le ferait la source. Rien de réel n'est en jeu.",
+    "severe": "Simuler un résultat sévère (185/115)",
+    "or": "ou une mesure personnalisée",
+    "systolic": "Systolique (mmHg)",
+    "diastolic": "Diastolique (mmHg)",
+    "custom": "Envoyer le résultat personnalisé",
+    "landed": "Un nouveau dossier {{id}} a été ouvert.",
+    "landedSevere": "Un nouveau dossier urgent {{id}} a été ouvert en haut de la file urgente.",
+    "notActionable": "Aucun dossier n'a été ouvert. {{reason}}",
+    "range": "Saisissez des nombres entiers : systolique de 60 à 260, diastolique de 30 à 160."
+  },
+  "nextStep": {
+    "none": "Aucune",
+    "notify_patient": "Informer le patient",
+    "patient_acknowledge": "Le patient confirme avoir compris",
+    "choose_confirmation_method": "Choisir comment confirmer la mesure",
+    "complete_home_readings": "Terminer les mesures à domicile",
+    "attend_abpm": "Passer la mesure sur 24 heures",
+    "clinician_review_confirmation": "Le clinicien examine la confirmation",
+    "clinician_closure_decision": "Décision de clôture par le clinicien",
+    "send_referral": "Envoyer l'orientation",
+    "reassign_or_rerefer": "Réattribuer ou orienter à nouveau",
+    "accept_referral": "Le clinicien destinataire accepte ou refuse",
+    "book_appointment": "Réserver le rendez-vous",
+    "record_visit_outcome": "Enregistrer le résultat de la visite",
+    "four_week_review": "Bilan à quatre semaines",
+    "consider_closure": "Envisager la clôture du dossier"
+  },
+  "reasons": {
+    "URGENT_SEVERE": "Mesure sévère, examen par un clinicien le jour même",
+    "URGENT_RED_FLAG": "Le patient a signalé un symptôme d'alerte",
+    "REFERRAL_REJECTED": "Orientation refusée, il faut un nouveau responsable ou une nouvelle orientation",
+    "NO_OWNER": "Aucun responsable pour l'étape en cours",
+    "ESCALATED": "Escaladé",
+    "NEEDS_CLINICIAN_DECISION": "Patient non joint après les étapes de contact, décision d'un clinicien nécessaire",
+    "OVERDUE": "L'étape est en retard",
+    "READY_TO_CLOSE": "Dernières mesures dans la cible, en attente de clôture par un clinicien",
+    "ON_TRACK": "Dans les délais",
+    "CLOSED": "Clos"
+  },
+  "events": {
+    "CASE_OPENED": "Dossier ouvert",
+    "CASE_VIEWED": "Dossier consulté par le personnel",
+    "STATE_CHANGED": "État modifié",
+    "MESSAGE_SENT": "Message envoyé",
+    "MESSAGE_RECEIVED": "Message reçu",
+    "TEACH_BACK_PASSED": "Reformulation réussie",
+    "TEACH_BACK_FAILED": "Reformulation incorrecte",
+    "RED_FLAG_REPORTED": "Symptôme d'alerte signalé",
+    "URGENT_FLAGGED": "Marqué urgent",
+    "URGENT_REVIEW_COMPLETED": "Examen urgent terminé",
+    "CONFIRMATION_CHOSEN": "Méthode de confirmation choisie",
+    "READING_ADDED": "Mesure ajoutée",
+    "CONFIRMATION_REVIEWED": "Confirmation examinée",
+    "REFERRAL_SENT": "Orientation envoyée",
+    "REFERRAL_ACCEPTED": "Orientation acceptée",
+    "REFERRAL_REJECTED": "Orientation refusée",
+    "OWNER_CHANGED": "Responsable modifié",
+    "APPOINTMENT_BOOKED": "Rendez-vous réservé",
+    "VISIT_RECORDED": "Visite enregistrée",
+    "PLAN_CHECKIN": "Point hebdomadaire",
+    "PLAN_WEEK_LAPSED": "Semaine du plan passée sans point",
+    "ESCALATED": "Escaladé",
+    "UNREACHABLE_STEP": "Étape de contact avec le patient",
+    "TASK_CREATED": "Tâche créée",
+    "ECONSULT_ASKED": "Avis spécialisé demandé",
+    "ECONSULT_ANSWERED": "Avis spécialisé donné",
+    "CONSENT_CHANGED": "Consentement modifié",
+    "CASE_CLOSED": "Dossier clos",
+    "CASE_REOPENED": "Dossier rouvert"
+  },
+  "tasks": {
+    "title": "Tâches ouvertes",
+    "urgent_review": "Examen urgent le jour même",
+    "call_the_patient": "Appeler le patient",
+    "offer_a_call": "Proposer un appel au patient",
+    "decide_unreachable_patient": "Décider que faire d'un patient injoignable"
+  },
+  "evidence": {
+    "BP_CONTROLLED": "Tension maîtrisée",
+    "NOT_CONFIRMED": "Tension élevée non confirmée",
+    "CARE_TRANSFERRED": "Prise en charge transférée",
+    "PATIENT_DECLINED": "Patient ayant refusé",
+    "UNREACHABLE_AFTER_PROTOCOL": "Injoignable après le protocole de contact",
+    "DECEASED_OR_MOVED": "Décédé ou déménagé",
+    "OTHER_CLINICAL_DECISION": "Autre décision clinique"
+  },
+  "templates": {
+    "smsSuffix": "{{name}} (format SMS)",
+    "appointment_booked": "Rendez-vous réservé",
+    "appointment_reminder": "Rappel de rendez-vous",
+    "case_closed_summary": "Résumé de clôture",
+    "confirmation_abpm_booking": "Réservation de la mesure sur 24 heures",
+    "confirmation_hbpm_instructions": "Consignes de mesure à domicile",
+    "no_blame_checkin": "Point sans reproche",
+    "plan_smaller": "Plan rendu plus petit",
+    "referral_accepted": "Orientation acceptée",
+    "referral_sent": "Orientation envoyée",
+    "reminder_ack": "Rappel pour confirmer la compréhension",
+    "result_raised": "Résultat : mesure élevée",
+    "result_severe": "Résultat : mesure sévère",
+    "teach_back_question": "Question de reformulation",
+    "teach_back_simpler": "Explication plus simple",
+    "urgent_red_flags": "Conseils sur les symptômes d'alerte",
+    "weekly_action": "Action de la semaine"
+  },
+  "action": {
+    "cancel": "Annuler",
+    "choose": "Choisir",
+    "done": "{{action}} : fait.",
+    "fields": {
+      "channel": "Canal",
+      "template": "Modèle de message",
+      "language": "Langue",
+      "method": "Méthode de confirmation",
+      "systolic": "Systolique (mmHg)",
+      "diastolic": "Diastolique (mmHg)",
+      "pulse": "Pouls",
+      "source": "Source",
+      "outcome": "Résultat",
+      "note": "Note",
+      "receiver": "Orienter vers",
+      "reason": "Motif",
+      "newOwner": "Nouveau responsable",
+      "slot": "Heure du rendez-vous",
+      "reviewNote": "Note d'examen"
+    },
+    "notify": {
+      "title": "Informer le patient",
+      "submit": "Envoyer la notification"
+    },
+    "choose_confirmation": {
+      "title": "Choisir la méthode de confirmation",
+      "submit": "Enregistrer la méthode"
+    },
+    "add_reading": {
+      "title": "Ajouter une mesure",
+      "submit": "Ajouter la mesure",
+      "rule": "Seul un tensiomètre validé ou un appareil de mesure sur 24 heures donne une valeur de tension. Les données de montres connectées ne sont jamais utilisées."
+    },
+    "review_confirmation": {
+      "title": "Examiner la confirmation",
+      "submit": "Enregistrer l'examen"
+    },
+    "refer": {
+      "title": "Orienter",
+      "submit": "Envoyer l'orientation",
+      "service": "Clinique de l'hypertension (service)"
+    },
+    "accept_referral": {
+      "title": "Accepter l'orientation",
+      "submit": "Accepter l'orientation",
+      "body": "Vous acceptez cette orientation. Le coordinateur réserve ensuite le rendez-vous avec le patient."
+    },
+    "reject_referral": {
+      "title": "Refuser l'orientation",
+      "submit": "Refuser l'orientation",
+      "rule": "Une orientation refusée va dans la file du coordinateur avec votre motif. Dites ce qu'il faut faire à la place."
+    },
+    "assign_owner": {
+      "title": "Réattribuer le responsable",
+      "submit": "Attribuer",
+      "rule": "Le nouveau responsable devient redevable de l'étape en cours. Le changement est inscrit dans le journal d'audit."
+    },
+    "book_appointment": {
+      "title": "Réserver un rendez-vous",
+      "submit": "Réserver",
+      "rule": "La couverture d'assurance est affichée avant la réservation. Toutes les lignes de couverture sont simulées.",
+      "none": "Il n'y a aucun créneau libre."
+    },
+    "record_visit": {
+      "title": "Enregistrer la visite",
+      "submit": "Enregistrer la visite"
+    },
+    "escalate": {
+      "title": "Escalader",
+      "submit": "Escalader le dossier",
+      "rule": "L'escalade demande l'attention du niveau suivant. Elle ne change pas l'état."
+    },
+    "complete_urgent_review": {
+      "title": "Terminer l'examen urgent",
+      "submit": "Terminer l'examen",
+      "rule": "Seul un clinicien peut lever l'alerte d'urgence. Notez ce que vous avez décidé."
+    },
+    "reopen": {
+      "title": "Rouvrir le dossier",
+      "submit": "Rouvrir le dossier",
+      "rule": "Le dossier revient à l'état qu'il avait avant la clôture, avec une nouvelle échéance comptée à partir de maintenant."
+    },
+    "close": {
+      "title": "Clore le dossier"
+    }
+  },
+  "actions": {
+    "title": "Ce que vous pouvez faire",
+    "intro": "Ces actions viennent du serveur, selon votre rôle et ce dossier.",
+    "none": "Vous n'avez rien à faire sur ce dossier pour le moment.",
+    "referBlocked": "L'orientation est bloquée. Le patient a retiré son accord pour partager ses informations avec le prestataire destinataire. Demandez-lui avant d'orienter.",
+    "coordinatorCannotClose": "Seul un clinicien peut clore un dossier, et seulement avec une preuve ou une décision enregistrée. Un coordinateur peut plutôt escalader le dossier à un clinicien."
+  },
+  "closure": {
+    "title": "Clore le dossier",
+    "submit": "Clore le dossier",
+    "done": "Le dossier a été clos.",
+    "ruleTitle": "La règle de clôture",
+    "rule": "Seul un clinicien peut clore un dossier. Un dossier n'est jamais clos sans type de preuve, plus une référence de preuve ou une note de décision d'au moins {{min}} caractères. Aucun minuteur ni aucune règle ne clôt un dossier.",
+    "suggested": "Type de preuve suggéré par l'examen : {{type}}.",
+    "evidenceType": "Type de preuve",
+    "refLegend": "Référence de la preuve",
+    "pickReading": "Choisir une mesure",
+    "noReading": "Aucune mesure",
+    "docLabel": "Ou saisir le nom d'un document",
+    "docHint": "Par exemple le nom d'une lettre ou d'une note de clinique.",
+    "note": "Note de décision",
+    "noteHint": "Au moins {{min}} caractères si vous n'indiquez pas de référence. Écrits jusqu'ici : {{count}}.",
+    "refused": "Le dossier n'a pas été clos.",
+    "recorded": "Enregistrement de la clôture",
+    "closedBy": "Clos par"
+  },
+  "header": {
+    "patientLine": "{{age}} ans, {{sex}}, parle {{language}}",
+    "source": "Source du résultat : {{source}}.",
+    "severe": "Mesure sévère",
+    "urgentReviewPending": "Examen du jour en attente",
+    "rejected": "Orientation refusée",
+    "escalated": "Escaladé, niveau {{level}}",
+    "needsDecision": "Décision d'un clinicien nécessaire",
+    "closureReady": "Prêt à clore",
+    "urgentReason": "Urgent car : {{reason}}",
+    "urgentReasons": {
+      "SEVERE_READING": "mesure sévère",
+      "RED_FLAG": "le patient a signalé un symptôme d'alerte"
+    },
+    "nextStep": "Prochaine étape",
+    "owner": "Responsable",
+    "due": "Échéance",
+    "closedNoStep": "Aucune, le dossier est clos",
+    "noDue": "Pas d'échéance",
+    "serviceLevel": "Délai prévu : {{hours}} h",
+    "backQueue": "Retour à la file",
+    "backWorklist": "Retour à la liste de travail",
+    "emergencyAdvice": "Conseil d'urgence pour le patient"
+  },
+  "case": {
+    "title": "Dossier",
+    "loadError": "Ce dossier ne s'est pas chargé"
+  },
+  "fhir": {
+    "open": "Voir le dossier FHIR",
+    "title": "Dossier FHIR",
+    "explain": "Voici le dossier sous forme de lot FHIR R4 : un format standard qu'un autre système de santé pourrait lire. C'est une copie en lecture seule construite à partir du dossier, et elle n'est envoyée nulle part."
+  },
+  "readings": {
+    "title": "Mesures de tension",
+    "empty": "Aucune mesure pour le moment.",
+    "chartLabel": "Courbe de {{count}} mesures de tension",
+    "axisY": "mmHg",
+    "systolic": "Systolique",
+    "diastolic": "Diastolique",
+    "chartNote": "Les lignes pointillées montrent les seuils provisoires de confirmation, {{sys}} et {{dia}} mmHg.",
+    "showTable": "Afficher les mesures en tableau",
+    "when": "Prise le",
+    "value": "mmHg",
+    "pulse": "Pouls",
+    "source": "Source"
+  },
+  "confirmation": {
+    "title": "Évaluation de la confirmation",
+    "notStarted": "La confirmation n'a pas commencé. Le patient ou le coordinateur choisit d'abord l'auto-mesure à domicile ou la mesure sur 24 heures.",
+    "status": {
+      "CONFIRMED_RAISED": "Moyenne égale ou supérieure au seuil",
+      "NOT_CONFIRMED": "Moyenne inférieure au seuil",
+      "INSUFFICIENT": "Pas encore assez de mesures"
+    },
+    "average": "Moyenne des mesures retenues :",
+    "noAverage": "Pas encore de moyenne.",
+    "days": "{{enough}} jours sur {{required}} avec assez de mesures. Jours dans la moyenne : {{counted}}. Mesures utilisées : {{used}}.",
+    "threshold": "Seuil utilisé : {{sys}}/{{dia}} mmHg.",
+    "placeholderNote": "Le seuil et le nombre de jours viennent du fichier de configuration. Ils sont provisoires, en attente de validation par un clinicien. L'évaluation aide le clinicien et ne décide pas."
+  },
+  "referral": {
+    "title": "Orientation et rendez-vous",
+    "none": "Pas encore d'orientation.",
+    "status": {
+      "PENDING": "En attente",
+      "ACCEPTED": "Acceptée",
+      "REJECTED": "Refusée"
+    },
+    "route": "De {{from}} vers {{to}}.",
+    "unknown": "non nommé",
+    "reason": "Motif :",
+    "rejectionReason": "Motif du refus :",
+    "history": "Orientations précédentes ({{count}})"
+  },
+  "appointment": {
+    "title": "Rendez-vous",
+    "status": {
+      "BOOKED": "Réservé",
+      "ATTENDED": "Honoré",
+      "MISSED": "Manqué",
+      "CANCELLED": "Annulé"
+    }
+  },
+  "messages": {
+    "title": "Messages",
+    "empty": "Aucun message pour le moment.",
+    "fromPatient": "Du patient",
+    "toPatient": "Au patient",
+    "sentBy": "Envoyé par {{name}}.",
+    "approvedBy": "Approuvé par {{name}}.",
+    "draftTitle": "Écrire un message",
+    "draftIntro": "Choisissez un modèle approuvé et voyez d'abord le texte exact. Les modèles sont la méthode par défaut. L'aide à la rédaction est facultative.",
+    "toneLabel": "Reformulation facultative par IA",
+    "toneHint": "Un modèle de langage peut seulement changer la formulation. Un contrôle doit la valider, et vous devez l'approuver.",
+    "noRewording": "Pas de reformulation (texte du modèle)",
+    "tone": {
+      "warmer": "Plus chaleureux",
+      "simpler": "Plus simple",
+      "shorter": "Plus court"
+    },
+    "preview": "Voir le texte",
+    "sourceAi": "Reformulé par IA",
+    "sourceTemplate": "Modèle approuvé",
+    "templateVersion": "{{id}}, version {{version}}",
+    "providerOff": "La reformulation par IA est désactivée sur ce serveur. Voici le texte du modèle approuvé, sans changement.",
+    "rewordRejected": "La reformulation n'a pas passé le contrôle ({{reason}}). Le texte du modèle approuvé est affiché à la place.",
+    "aiNotice": "Ce texte a été reformulé par un modèle de langage.",
+    "validationPassed": "Le contrôle est réussi : les nombres, dates, noms et la longueur sont inchangés (fournisseur : {{provider}}).",
+    "validationFailed": "Le contrôle n'a pas validé ce texte.",
+    "approveLabel": "J'ai lu cette formulation et je l'approuve pour l'envoi.",
+    "send": "Envoyer par {{channel}}",
+    "needsApproval": "Approuvez la formulation pour l'envoyer.",
+    "sent": "Le message a été envoyé.",
+    "aiBoundary": "L'aide à la rédaction n'est jamais utilisée pour l'acheminement, l'urgence, la responsabilité, les échéances ou la clôture."
+  },
+  "econsult": {
+    "title": "Avis spécialisé",
+    "empty": "Aucun avis spécialisé pour ce dossier.",
+    "status": {
+      "OPEN": "Ouvert",
+      "ANSWERED": "Répondu"
+    },
+    "route": "De {{from}} vers {{to}}",
+    "questionLabel": "Question :",
+    "answerLabel": "Réponse :",
+    "waiting": "En attente de {{name}}.",
+    "yourAnswer": "Votre réponse",
+    "sendAnswer": "Envoyer la réponse",
+    "answered": "Votre réponse a été envoyée.",
+    "askTitle": "Interroger un autre clinicien",
+    "askTo": "Interroger",
+    "question": "Question",
+    "ask": "Envoyer la question",
+    "asked": "La question a été envoyée."
+  },
+  "progress": {
+    "title": "Progression dans les huit étapes"
+  },
+  "consent": {
+    "title": "Consentement",
+    "intro": "Ce à quoi le patient a consenti. Un accord retiré bloque l'action correspondante.",
+    "granted": "Accordé",
+    "withdrawn": "Retiré"
+  },
+  "plan": {
+    "title": "Plan de mode de vie",
+    "empty": "Le plan hebdomadaire commence avec la prise en charge.",
+    "intro": "Une petite action par semaine. Une semaine manquée rend la suivante plus petite. Rien n'est remis à zéro.",
+    "week": "Semaine {{n}}",
+    "size": {
+      "full": "Taille complète",
+      "smaller": "Plus petite",
+      "smallest": "La plus petite"
+    },
+    "status": {
+      "done": "Faite",
+      "partly": "En partie",
+      "missed": "Manquée",
+      "open": "En cours"
+    },
+    "barrier": "Obstacle cité : {{barrier}}",
+    "barriers": {
+      "TIME": "le temps",
+      "COST": "le coût",
+      "NOT_SURE_HOW": "ne sait pas comment faire",
+      "FELT_UNWELL": "ne se sentait pas bien",
+      "WORK_SCHEDULE": "les horaires de travail",
+      "OTHER": "autre"
+    }
+  },
+  "audit": {
+    "title": "Journal d'audit",
+    "intro": "Chaque changement apporté à ce dossier, avec son auteur. Ce journal ne peut pas être modifié.",
+    "showViews": "Afficher chaque ouverture de ce dossier par le personnel"
+  },
+  "worklist": {
+    "title": "Liste de travail du clinicien",
+    "intro": "Ce qui demande un clinicien. Chaque ligne ouvre le dossier.",
+    "urgent": "Examens urgents",
+    "urgentHint": "Mesures sévères et symptômes d'alerte en attente d'un examen le jour même.",
+    "confirmations": "Confirmations à examiner par moi",
+    "confirmationsHint": "Les mesures à domicile ou sur 24 heures sont prêtes pour votre examen.",
+    "referrals": "Orientations envoyées à moi",
+    "referralsHint": "Acceptez, ou refusez avec un motif.",
+    "econsults": "Avis spécialisés ouverts",
+    "econsultsHint": "Questions qui vous sont posées, et vos questions qui attendent encore une réponse.",
+    "ready": "Prêts à clore",
+    "readyHint": "Dossiers dont la prochaine étape est une décision ou une clôture par un clinicien.",
+    "emptySection": "Rien ici pour le moment.",
+    "cols": {
+      "case": "Dossier",
+      "route": "Entre",
+      "direction": "Statut",
+      "asked": "Demandé le"
+    },
+    "caseNumber": "Dossier {{id}}",
+    "askedOfMe": "Posée à moi",
+    "waitingOn": "En attente de la réponse"
+  },
+  "transparency": {
+    "title": "Comment {{app}} prend ses décisions",
+    "intro": "Cette page montre les règles que suit le système, les chiffres qu'il utilise, et où l'intelligence artificielle est utilisée ou non. Aucune connexion n'est nécessaire.",
+    "placeholderTitle": "Tous les seuils et délais sont provisoires",
+    "placeholderBody": "Les chiffres ci-dessous sont provisoires, en attente de validation par un clinicien. Aucun n'est validé cliniquement. Ils sont réunis dans un seul fichier de configuration et chacun a une base indiquée.",
+    "setting": "Paramètre",
+    "value": "Valeur",
+    "basis": "Base",
+    "status": "Statut",
+    "placeholder": "Provisoire, en attente de validation par un clinicien",
+    "template": "Modèle",
+    "version": "Version",
+    "purpose": "Objet",
+    "languages": "Langues",
+    "slots": "Informations insérées",
+    "rulesTitle": "Les quatre règles",
+    "rule1Title": "Les règles décident.",
+    "rule1": "L'acheminement, l'urgence, la responsabilité, les échéances et la clôture viennent de règles fixes. Elles fonctionnent de la même façon quand l'outil de rédaction est désactivé.",
+    "rule2Title": "Seul un clinicien clôt un dossier.",
+    "rule2": "La clôture exige un type de preuve, plus une référence de preuve ou une note de décision d'au moins {{min}} caractères. Aucun minuteur ni aucune règle ne clôt un dossier.",
+    "rule3Title": "Les valeurs de tension viennent uniquement d'un tensiomètre validé ou d'un appareil sur 24 heures.",
+    "rule3": "Les données de montres connectées sont affichées comme un journal d'activité et de sommeil, et ne servent jamais de valeur de tension.",
+    "rule4Title": "Données agrégées uniquement.",
+    "rule4": "Le tableau de bord n'affiche jamais une personne et masque tout groupe de moins de 5 personnes. Aucune donnée individuelle n'est transmise aux employeurs ou aux assureurs.",
+    "closureTitle": "La règle de clôture",
+    "closureBody": "Seul un clinicien peut clore un dossier, et jamais sans preuve ou décision enregistrée. Chaque clôture conserve qui l'a faite, quand, le type de preuve, et soit une référence de preuve, soit une note de décision d'au moins {{min}} caractères. Un clinicien peut rouvrir un dossier clos en indiquant un motif.",
+    "evidenceTypes": "Types de preuve au choix du clinicien :",
+    "aiTitle": "Où l'intelligence artificielle est utilisée",
+    "ai1": "Les messages utilisent par défaut des modèles approuvés en anglais, en arabe et en français. Le texte du modèle est fixe et relu.",
+    "ai2": "Le personnel peut demander une reformulation facultative d'un modèle par un modèle de langage. Elle est désactivée tant que le serveur n'est pas configuré pour elle.",
+    "ai3": "Un contrôle doit valider toute reformulation. Chaque nombre, date, heure, nom et numéro de téléphone doit rester inchangé, aucun nouveau nombre ne peut apparaître, aucun mot de diagnostic n'est permis, et la longueur et la langue doivent convenir. En cas d'échec, le texte du modèle est utilisé.",
+    "ai4": "Un membre du personnel doit lire et approuver un message reformulé avant son envoi. L'approbateur est enregistré.",
+    "ai5": "Un modèle de langage n'est jamais utilisé pour l'acheminement, l'urgence, la responsabilité, les échéances ou la clôture. Il ne fait que proposer une formulation.",
+    "sections": {
+      "thresholds": "Seuils de tension",
+      "service_levels": "Délais de service",
+      "escalation": "Escalade",
+      "unreachable_protocol": "Quand un patient est injoignable",
+      "closure": "Clôture",
+      "teach_back": "Reformulation",
+      "lifestyle_plan": "Plan hebdomadaire de mode de vie"
+    },
+    "sectionHints": {
+      "thresholds": "Une mesure élevée est le début d'une vérification, pas un diagnostic. Une mesure sévère va à un examen par un clinicien le jour même.",
+      "service_levels": "Le temps que peut prendre chaque étape avant d'être en retard.",
+      "escalation": "Quand une étape en retard passe au niveau suivant.",
+      "unreachable_protocol": "Rappels, second canal et tâche d'appel. Ensuite, un clinicien décide. Le dossier n'est jamais clos automatiquement.",
+      "closure": "Limites utilisées par la règle de clôture.",
+      "teach_back": "Comment les mauvaises réponses sont traitées.",
+      "lifestyle_plan": "Une semaine manquée rend la prochaine action plus petite. Rien n'est remis à zéro et il n'y a pas de séries."
+    },
+    "units": {
+      "mmHg": "mmHg",
+      "hours": "heures",
+      "days": "jours",
+      "readings": "mesures",
+      "characters": "caractères",
+      "check-ins": "points",
+      "wrong answers": "mauvaises réponses",
+      "x service level": "fois le délai de service",
+      "hour of day (UTC)": "heure du jour (UTC)"
+    },
+    "keys": {
+      "raised_systolic": "Mesure élevée, systolique",
+      "raised_diastolic": "Mesure élevée, diastolique",
+      "severe_systolic": "Mesure sévère, systolique",
+      "severe_diastolic": "Mesure sévère, diastolique",
+      "hbpm_systolic": "Moyenne à domicile, systolique",
+      "hbpm_diastolic": "Moyenne à domicile, diastolique",
+      "hbpm_min_days": "Mesures à domicile, jours nécessaires",
+      "hbpm_min_readings_per_day": "Mesures à domicile, mesures par jour",
+      "abpm_daytime_systolic": "Moyenne de jour sur 24 heures, systolique",
+      "abpm_daytime_diastolic": "Moyenne de jour sur 24 heures, diastolique",
+      "abpm_daytime_start_hour": "Début de la journée pour la mesure sur 24 heures",
+      "abpm_daytime_end_hour": "Fin de la journée pour la mesure sur 24 heures",
+      "abpm_min_daytime_readings": "Mesure sur 24 heures, mesures de jour nécessaires",
+      "target_systolic": "Cible, systolique",
+      "target_diastolic": "Cible, diastolique",
+      "target_consecutive_readings": "Mesures en clinique dans la cible avant l'invite de clôture",
+      "result_issued": "Informer le patient",
+      "result_issued_severe": "Informer le patient, mesure sévère",
+      "urgent_review": "Examen par un clinicien le jour même",
+      "notified": "Le patient confirme avoir compris",
+      "acknowledged": "Confirmation par auto-mesure ou mesure sur 24 heures",
+      "confirmed": "Envoyer l'orientation",
+      "closure_decision": "Décision de clôture par le clinicien",
+      "referral_accept": "Le clinicien destinataire accepte",
+      "appointment_booking": "Réserver le rendez-vous",
+      "visit_outcome": "Enregistrer le résultat de la visite",
+      "in_care_review": "Bilan en cours de soins",
+      "level2_multiplier": "Deuxième niveau d'escalade",
+      "level2_multiplier_severe": "Deuxième niveau d'escalade, mesure sévère",
+      "reminder_after": "Rappel après",
+      "second_channel_after": "Second canal après",
+      "call_task_after": "Tâche d'appel du coordinateur après",
+      "clinician_decision_after": "Signalement pour décision d'un clinicien après",
+      "note_min_chars": "Note de décision, longueur minimale",
+      "reopen_reason_min_chars": "Motif de réouverture, longueur minimale",
+      "failures_before_call_task": "Mauvaises réponses de reformulation avant une tâche d'appel",
+      "week_length": "Durée d'une semaine du plan",
+      "lapse_grace": "Délai de grâce avant qu'une semaine compte comme manquée",
+      "partly_in_row_to_shrink": "Semaines faites en partie de suite avant de réduire le plan",
+      "done_in_row_to_offer_larger": "Semaines faites de suite avant de proposer une taille plus grande",
+      "missed_in_row_for_call_task": "Semaines manquées de suite avant de proposer un appel"
+    },
+    "templatesTitle": "Catalogue des modèles de message",
+    "templatesIntro": "{{count}} modèles approuvés. Chacun a un texte fixe en anglais, en arabe et en français. Les versions SMS sont plus courtes.",
+    "dataTitle": "Les données utilisées par cette démonstration",
+    "data1": "Chaque personne, mesure, prestataire et message est fictif et produit par du code à graine fixe. Il n'y a aucune donnée de patient réel.",
+    "data2": "Des noms comme IFHAS, Thiqa et Malaffi apparaissent seulement comme étiquettes de sources simulées, et chaque écran concerné porte une étiquette Simulé.",
+    "data3": "Les fils de SMS et de WhatsApp sont simulés dans une vue de téléphone. Aucun message ne quitte ce système.",
+    "data4": "La simulation du tableau de bord porte sur des personnes synthétiques. Elle montre ce que le système mesure et ne prouve pas une efficacité clinique."
+  }
+}

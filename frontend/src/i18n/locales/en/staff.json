@@ -1,0 +1,634 @@
+{
+  "nav": {
+    "queue": "Queue",
+    "worklist": "Worklist"
+  },
+  "placeholder": "placeholder pending clinician sign-off",
+  "simulatedShort": "simulated",
+  "channel": {
+    "APP": "App",
+    "SMS": "SMS",
+    "WHATSAPP": "WhatsApp"
+  },
+  "language": {
+    "en": "English",
+    "ar": "Arabic",
+    "fr": "French"
+  },
+  "sex": {
+    "F": "female",
+    "M": "male"
+  },
+  "roleShort": {
+    "patient": "patient",
+    "coordinator": "coordinator",
+    "clinician": "clinician",
+    "analyst": "analyst"
+  },
+  "sourceSystem": {
+    "IFHAS_SCREENING": "IFHAS screening feed",
+    "CLINIC_READING": "Clinic reading",
+    "OTHER": "Other source"
+  },
+  "method": {
+    "HBPM": "Home monitoring",
+    "ABPM": "24-hour monitor",
+    "HBPMHint": "The patient takes readings at home with a validated cuff.",
+    "ABPMHint": "The patient wears an ambulatory monitor for 24 hours."
+  },
+  "outcome": {
+    "CONFIRMED": "Raised pressure confirmed",
+    "NOT_CONFIRMED": "Not confirmed",
+    "CONFIRMEDHint": "The case moves on to referral.",
+    "NOT_CONFIRMEDHint": "The case stays here for a clinician closure decision. It is never closed automatically."
+  },
+  "visit": {
+    "TREATMENT_STARTED": "Treatment started",
+    "SURVEILLANCE": "Surveillance agreed"
+  },
+  "readingSource": {
+    "HOME_CUFF": "Home cuff",
+    "CLINIC": "Clinic",
+    "ABPM": "24-hour monitor"
+  },
+  "consentPurpose": {
+    "care_coordination": "Care coordination",
+    "messaging_channel": "Messaging channel",
+    "share_with_receiving_provider": "Share with receiving provider",
+    "lifestyle_programme": "Lifestyle programme",
+    "research_aggregate": "Aggregate research use"
+  },
+  "planAction": {
+    "salt": "Salt",
+    "activity": "Activity",
+    "sleep": "Sleep",
+    "home_bp_check": "Home blood pressure check"
+  },
+  "queue": {
+    "title": "Case queue",
+    "intro": "Every case has one owner and one due date. Urgent cases come first, then the most overdue. Open a case to act on it.",
+    "listHeading": "Cases",
+    "tabsLabel": "Queues",
+    "tableCaption": "Cases in the {{queue}} queue",
+    "cols": {
+      "patient": "Patient",
+      "reading": "Index reading",
+      "state": "State",
+      "next": "Next step",
+      "owner": "Owner",
+      "due": "Due",
+      "why": "Why it is here"
+    },
+    "openCase": "Open case {{id}} for {{initials}}",
+    "new": "New",
+    "closed": "Closed",
+    "escalationLevel": "Escalation level {{level}}",
+    "empty": {
+      "urgent": "No urgent cases right now.",
+      "overdue": "No overdue cases right now.",
+      "rejected": "No rejected referrals right now.",
+      "unowned": "No cases without an owner right now.",
+      "escalated": "No escalated cases right now.",
+      "all": "There are no cases yet."
+    },
+    "rejectedBy": "Rejected by {{name}}: {{reason}}",
+    "receiver": "the receiving clinician",
+    "escalatedReason": "Escalated: {{reason}}",
+    "escalatedDefault": "the step was not done in time",
+    "lastContact": "Last contact attempt {{when}}"
+  },
+  "simulate": {
+    "title": "Simulate incoming result",
+    "intro": "Sends a fictional screening result to the intake endpoint, as the source feed would. Nothing real is involved.",
+    "severe": "Simulate severe result (185/115)",
+    "or": "or a custom reading",
+    "systolic": "Systolic (mmHg)",
+    "diastolic": "Diastolic (mmHg)",
+    "custom": "Send custom result",
+    "landed": "A new case {{id}} was opened.",
+    "landedSevere": "A new urgent case {{id}} was opened at the top of the urgent queue.",
+    "notActionable": "No case was opened. {{reason}}",
+    "range": "Enter whole numbers: systolic 60 to 260, diastolic 30 to 160."
+  },
+  "nextStep": {
+    "none": "None",
+    "notify_patient": "Notify the patient",
+    "patient_acknowledge": "Patient confirms understanding",
+    "choose_confirmation_method": "Choose how to confirm the reading",
+    "complete_home_readings": "Complete home readings",
+    "attend_abpm": "Attend the 24-hour monitor",
+    "clinician_review_confirmation": "Clinician reviews the confirmation",
+    "clinician_closure_decision": "Clinician closure decision",
+    "send_referral": "Send the referral",
+    "reassign_or_rerefer": "Reassign or refer again",
+    "accept_referral": "Receiving clinician accepts or rejects",
+    "book_appointment": "Book the appointment",
+    "record_visit_outcome": "Record the visit outcome",
+    "four_week_review": "Four-week review",
+    "consider_closure": "Consider closing the case"
+  },
+  "reasons": {
+    "URGENT_SEVERE": "Severe reading, same-day clinician review",
+    "URGENT_RED_FLAG": "Patient reported a warning symptom",
+    "REFERRAL_REJECTED": "Referral rejected, needs a new owner or referral",
+    "NO_OWNER": "No owner for the current step",
+    "ESCALATED": "Escalated",
+    "NEEDS_CLINICIAN_DECISION": "Patient not reached after the contact steps, clinician decision needed",
+    "OVERDUE": "The step is overdue",
+    "READY_TO_CLOSE": "Last readings at target, waiting for clinician closure",
+    "ON_TRACK": "On track",
+    "CLOSED": "Closed"
+  },
+  "events": {
+    "CASE_OPENED": "Case opened",
+    "CASE_VIEWED": "Case viewed by staff",
+    "STATE_CHANGED": "State changed",
+    "MESSAGE_SENT": "Message sent",
+    "MESSAGE_RECEIVED": "Message received",
+    "TEACH_BACK_PASSED": "Teach-back passed",
+    "TEACH_BACK_FAILED": "Teach-back answered wrongly",
+    "RED_FLAG_REPORTED": "Warning symptom reported",
+    "URGENT_FLAGGED": "Flagged urgent",
+    "URGENT_REVIEW_COMPLETED": "Urgent review completed",
+    "CONFIRMATION_CHOSEN": "Confirmation method chosen",
+    "READING_ADDED": "Reading added",
+    "CONFIRMATION_REVIEWED": "Confirmation reviewed",
+    "REFERRAL_SENT": "Referral sent",
+    "REFERRAL_ACCEPTED": "Referral accepted",
+    "REFERRAL_REJECTED": "Referral rejected",
+    "OWNER_CHANGED": "Owner changed",
+    "APPOINTMENT_BOOKED": "Appointment booked",
+    "VISIT_RECORDED": "Visit recorded",
+    "PLAN_CHECKIN": "Weekly check-in",
+    "PLAN_WEEK_LAPSED": "Plan week passed without a check-in",
+    "ESCALATED": "Escalated",
+    "UNREACHABLE_STEP": "Patient contact step",
+    "TASK_CREATED": "Task created",
+    "ECONSULT_ASKED": "E-consult asked",
+    "ECONSULT_ANSWERED": "E-consult answered",
+    "CONSENT_CHANGED": "Consent changed",
+    "CASE_CLOSED": "Case closed",
+    "CASE_REOPENED": "Case reopened"
+  },
+  "tasks": {
+    "title": "Open tasks",
+    "urgent_review": "Same-day urgent review",
+    "call_the_patient": "Call the patient",
+    "offer_a_call": "Offer the patient a call",
+    "decide_unreachable_patient": "Decide what to do about an unreachable patient"
+  },
+  "evidence": {
+    "BP_CONTROLLED": "Blood pressure controlled",
+    "NOT_CONFIRMED": "Raised pressure not confirmed",
+    "CARE_TRANSFERRED": "Care transferred",
+    "PATIENT_DECLINED": "Patient declined",
+    "UNREACHABLE_AFTER_PROTOCOL": "Unreachable after the contact protocol",
+    "DECEASED_OR_MOVED": "Deceased or moved away",
+    "OTHER_CLINICAL_DECISION": "Other clinical decision"
+  },
+  "templates": {
+    "smsSuffix": "{{name}} (SMS length)",
+    "appointment_booked": "Appointment booked",
+    "appointment_reminder": "Appointment reminder",
+    "case_closed_summary": "Case closed summary",
+    "confirmation_abpm_booking": "24-hour monitor booking",
+    "confirmation_hbpm_instructions": "Home reading instructions",
+    "no_blame_checkin": "No-blame check-in",
+    "plan_smaller": "Plan made smaller",
+    "referral_accepted": "Referral accepted",
+    "referral_sent": "Referral sent",
+    "reminder_ack": "Reminder to confirm understanding",
+    "result_raised": "Raised reading result",
+    "result_severe": "Severe reading result",
+    "teach_back_question": "Teach-back question",
+    "teach_back_simpler": "Simpler explanation",
+    "urgent_red_flags": "Warning symptom advice",
+    "weekly_action": "Weekly action"
+  },
+  "action": {
+    "cancel": "Cancel",
+    "choose": "Choose",
+    "done": "{{action}}: done.",
+    "fields": {
+      "channel": "Channel",
+      "template": "Message template",
+      "language": "Language",
+      "method": "Confirmation method",
+      "systolic": "Systolic (mmHg)",
+      "diastolic": "Diastolic (mmHg)",
+      "pulse": "Pulse",
+      "source": "Source",
+      "outcome": "Outcome",
+      "note": "Note",
+      "receiver": "Refer to",
+      "reason": "Reason",
+      "newOwner": "New owner",
+      "slot": "Appointment time",
+      "reviewNote": "Review note"
+    },
+    "notify": {
+      "title": "Notify patient",
+      "submit": "Send notification"
+    },
+    "choose_confirmation": {
+      "title": "Choose confirmation method",
+      "submit": "Save method"
+    },
+    "add_reading": {
+      "title": "Add reading",
+      "submit": "Add reading",
+      "rule": "Only a validated cuff or a 24-hour monitor counts as a blood pressure value. Wearable data is never used."
+    },
+    "review_confirmation": {
+      "title": "Review confirmation",
+      "submit": "Record review"
+    },
+    "refer": {
+      "title": "Refer",
+      "submit": "Send referral",
+      "service": "Hypertension clinic (service)"
+    },
+    "accept_referral": {
+      "title": "Accept referral",
+      "submit": "Accept referral",
+      "body": "You accept this referral. The coordinator then books the appointment with the patient."
+    },
+    "reject_referral": {
+      "title": "Reject referral",
+      "submit": "Reject referral",
+      "rule": "A rejected referral goes to the coordinator queue with your reason. Say what should happen instead."
+    },
+    "assign_owner": {
+      "title": "Reassign owner",
+      "submit": "Assign owner",
+      "rule": "The new owner becomes accountable for the current step. The change is recorded in the audit timeline."
+    },
+    "book_appointment": {
+      "title": "Book appointment",
+      "submit": "Book appointment",
+      "rule": "Insurance cover is shown before booking. All cover lines are simulated.",
+      "none": "There are no open appointment slots."
+    },
+    "record_visit": {
+      "title": "Record visit",
+      "submit": "Record visit"
+    },
+    "escalate": {
+      "title": "Escalate",
+      "submit": "Escalate case",
+      "rule": "Escalating asks for attention from the next level. It does not change the state."
+    },
+    "complete_urgent_review": {
+      "title": "Complete urgent review",
+      "submit": "Complete review",
+      "rule": "Only a clinician can end the urgent flag. Record what you decided."
+    },
+    "reopen": {
+      "title": "Reopen case",
+      "submit": "Reopen case",
+      "rule": "The case returns to the state it held before closure, with a new due date counted from now."
+    },
+    "close": {
+      "title": "Close case"
+    }
+  },
+  "actions": {
+    "title": "What you can do",
+    "intro": "These actions come from the server for your role and this case.",
+    "none": "There is nothing for you to do on this case right now.",
+    "referBlocked": "Referral is blocked. The patient has withdrawn permission to share their information with the receiving provider. Ask the patient before referring.",
+    "coordinatorCannotClose": "Only a clinician can close a case, and only with evidence or a recorded decision. A coordinator can escalate a case to a clinician instead."
+  },
+  "closure": {
+    "title": "Close case",
+    "submit": "Close case",
+    "done": "The case was closed.",
+    "ruleTitle": "The closure rule",
+    "rule": "Only a clinician can close a case. A case is never closed without an evidence type plus either an evidence reference or a decision note of at least {{min}} characters. No timer or rule ever closes a case.",
+    "suggested": "Suggested evidence type from the review: {{type}}.",
+    "evidenceType": "Evidence type",
+    "refLegend": "Evidence reference",
+    "pickReading": "Pick a reading",
+    "noReading": "No reading",
+    "docLabel": "Or type a document label",
+    "docHint": "For example the name of a letter or a clinic note.",
+    "note": "Decision note",
+    "noteHint": "At least {{min}} characters if you give no reference. Written so far: {{count}}.",
+    "refused": "The case was not closed.",
+    "recorded": "Closure record",
+    "closedBy": "Closed by"
+  },
+  "header": {
+    "patientLine": "{{age}} years, {{sex}}, speaks {{language}}",
+    "source": "Result source: {{source}}.",
+    "severe": "Severe reading",
+    "urgentReviewPending": "Same-day review pending",
+    "rejected": "Referral rejected",
+    "escalated": "Escalated, level {{level}}",
+    "needsDecision": "Clinician decision needed",
+    "closureReady": "Ready to close",
+    "urgentReason": "Urgent because: {{reason}}",
+    "nextStep": "Next step",
+    "owner": "Accountable owner",
+    "due": "Due",
+    "closedNoStep": "None, the case is closed",
+    "noDue": "No due date",
+    "serviceLevel": "Service level {{hours}} h",
+    "backQueue": "Back to the queue",
+    "backWorklist": "Back to the worklist",
+    "emergencyAdvice": "Emergency advice for the patient",
+    "urgentReasons": {
+      "SEVERE_READING": "severe reading",
+      "RED_FLAG": "the patient reported a warning symptom"
+    }
+  },
+  "case": {
+    "title": "Case",
+    "loadError": "This case did not load"
+  },
+  "fhir": {
+    "open": "View FHIR record",
+    "title": "FHIR record",
+    "explain": "This is the case as a FHIR R4 Bundle: a standard format that another health system could read. It is a read-only copy built from the case and it is not sent anywhere."
+  },
+  "readings": {
+    "title": "Blood pressure readings",
+    "empty": "No readings yet.",
+    "chartLabel": "Line chart of {{count}} blood pressure readings",
+    "axisY": "mmHg",
+    "systolic": "Systolic",
+    "diastolic": "Diastolic",
+    "chartNote": "Dotted lines show the placeholder confirmation thresholds, {{sys}} and {{dia}} mmHg.",
+    "showTable": "Show readings as a table",
+    "when": "Taken",
+    "value": "mmHg",
+    "pulse": "Pulse",
+    "source": "Source"
+  },
+  "confirmation": {
+    "title": "Confirmation evaluation",
+    "notStarted": "Confirmation has not started. The patient or coordinator chooses home monitoring or a 24-hour monitor first.",
+    "status": {
+      "CONFIRMED_RAISED": "Average at or above threshold",
+      "NOT_CONFIRMED": "Average below threshold",
+      "INSUFFICIENT": "Not enough readings yet"
+    },
+    "average": "Average of counted readings:",
+    "noAverage": "No average yet.",
+    "days": "{{enough}} of {{required}} days with enough readings. Days averaged: {{counted}}. Readings used: {{used}}.",
+    "threshold": "Threshold used: {{sys}}/{{dia}} mmHg.",
+    "placeholderNote": "The threshold and the number of days come from the config file. They are placeholders pending clinician sign-off. The evaluation supports the clinician and does not decide."
+  },
+  "referral": {
+    "title": "Referral and appointment",
+    "none": "No referral yet.",
+    "status": {
+      "PENDING": "Pending",
+      "ACCEPTED": "Accepted",
+      "REJECTED": "Rejected"
+    },
+    "route": "From {{from}} to {{to}}.",
+    "unknown": "not named",
+    "reason": "Reason:",
+    "rejectionReason": "Rejection reason:",
+    "history": "Earlier referrals ({{count}})"
+  },
+  "appointment": {
+    "title": "Appointment",
+    "status": {
+      "BOOKED": "Booked",
+      "ATTENDED": "Attended",
+      "MISSED": "Missed",
+      "CANCELLED": "Cancelled"
+    }
+  },
+  "messages": {
+    "title": "Messages",
+    "empty": "No messages yet.",
+    "fromPatient": "From patient",
+    "toPatient": "To patient",
+    "sentBy": "Sent by {{name}}.",
+    "approvedBy": "Approved by {{name}}.",
+    "draftTitle": "Write a message",
+    "draftIntro": "Choose an approved template and see the exact text first. Templates are the default. Wording help is optional.",
+    "toneLabel": "Optional AI re-wording",
+    "toneHint": "A language model may only change the wording. A checker must pass it, and you must approve it.",
+    "noRewording": "No re-wording (template text)",
+    "tone": {
+      "warmer": "Warmer",
+      "simpler": "Simpler",
+      "shorter": "Shorter"
+    },
+    "preview": "Show the text",
+    "sourceAi": "AI re-worded",
+    "sourceTemplate": "Approved template",
+    "templateVersion": "{{id}}, version {{version}}",
+    "providerOff": "AI re-wording is switched off on this server. This is the approved template text, unchanged.",
+    "rewordRejected": "The re-wording did not pass the checker ({{reason}}). The approved template text is shown instead.",
+    "aiNotice": "This text was re-worded by a language model.",
+    "validationPassed": "The checker passed it: numbers, dates, names and length are unchanged (provider: {{provider}}).",
+    "validationFailed": "The checker did not pass this text.",
+    "approveLabel": "I have read this wording and approve it for sending.",
+    "send": "Send by {{channel}}",
+    "needsApproval": "Approve the wording to send it.",
+    "sent": "The message was sent.",
+    "aiBoundary": "Wording help is never used for routing, urgency, ownership, due dates or closure."
+  },
+  "econsult": {
+    "title": "E-consult",
+    "empty": "No e-consults for this case.",
+    "status": {
+      "OPEN": "Open",
+      "ANSWERED": "Answered"
+    },
+    "route": "From {{from}} to {{to}}",
+    "questionLabel": "Question:",
+    "answerLabel": "Answer:",
+    "waiting": "Waiting for {{name}}.",
+    "yourAnswer": "Your answer",
+    "sendAnswer": "Send answer",
+    "answered": "Your answer was sent.",
+    "askTitle": "Ask another clinician",
+    "askTo": "Ask",
+    "question": "Question",
+    "ask": "Send question",
+    "asked": "The question was sent."
+  },
+  "progress": {
+    "title": "Progress through the eight steps"
+  },
+  "consent": {
+    "title": "Consent",
+    "intro": "What the patient has agreed to. Withdrawn permission blocks the matching action.",
+    "granted": "Granted",
+    "withdrawn": "Withdrawn"
+  },
+  "plan": {
+    "title": "Lifestyle plan",
+    "empty": "The weekly plan starts when care starts.",
+    "intro": "One small action each week. A missed week makes the next one smaller. Nothing is reset.",
+    "week": "Week {{n}}",
+    "size": {
+      "full": "Full size",
+      "smaller": "Smaller",
+      "smallest": "Smallest"
+    },
+    "status": {
+      "done": "Done",
+      "partly": "Partly",
+      "missed": "Missed",
+      "open": "Open"
+    },
+    "barrier": "Barrier named: {{barrier}}",
+    "barriers": {
+      "TIME": "time",
+      "COST": "cost",
+      "NOT_SURE_HOW": "not sure how",
+      "FELT_UNWELL": "felt unwell",
+      "WORK_SCHEDULE": "work schedule",
+      "OTHER": "other"
+    }
+  },
+  "audit": {
+    "title": "Audit timeline",
+    "intro": "Every change to this case, including who made it. This log cannot be edited.",
+    "showViews": "Show each time staff opened this case"
+  },
+  "worklist": {
+    "title": "Clinician worklist",
+    "intro": "What needs a clinician. Each row opens the case.",
+    "urgent": "Urgent reviews",
+    "urgentHint": "Severe readings and warning symptoms waiting for same-day review.",
+    "confirmations": "Confirmations awaiting my review",
+    "confirmationsHint": "Home or 24-hour readings are ready for you to review.",
+    "referrals": "Referrals sent to me",
+    "referralsHint": "Accept, or reject with a reason.",
+    "econsults": "Open e-consults",
+    "econsultsHint": "Questions asked of you, and questions you asked that are still waiting.",
+    "ready": "Ready to close",
+    "readyHint": "Cases where a clinician decision or closure is the next step.",
+    "emptySection": "Nothing here right now.",
+    "cols": {
+      "case": "Case",
+      "route": "Between",
+      "direction": "Status",
+      "asked": "Asked"
+    },
+    "caseNumber": "Case {{id}}",
+    "askedOfMe": "Asked of me",
+    "waitingOn": "Waiting for the answer"
+  },
+  "transparency": {
+    "title": "How {{app}} makes decisions",
+    "intro": "This page shows the rules the system follows, the numbers it uses, and where artificial intelligence is and is not used. Nothing here needs a sign in.",
+    "placeholderTitle": "Every threshold and service level is a placeholder",
+    "placeholderBody": "The numbers below are placeholders pending clinician sign-off. None of them is clinically validated. They live in one config file and each has a stated basis.",
+    "setting": "Setting",
+    "value": "Value",
+    "basis": "Basis",
+    "status": "Status",
+    "placeholder": "Placeholder pending clinician sign-off",
+    "template": "Template",
+    "version": "Version",
+    "purpose": "Purpose",
+    "languages": "Languages",
+    "slots": "Details filled in",
+    "rulesTitle": "The four rules",
+    "rule1Title": "Rules decide.",
+    "rule1": "Routing, urgency, ownership, due dates and closure come from fixed rules. They work the same way with the wording tool switched off.",
+    "rule2Title": "Only a clinician closes a case.",
+    "rule2": "Closing needs an evidence type plus an evidence reference or a decision note of at least {{min}} characters. No timer or rule ever closes a case.",
+    "rule3Title": "Blood pressure values come only from a validated cuff or a 24-hour monitor.",
+    "rule3": "Wearable data is shown as a diary of activity and sleep and is never used as a blood pressure value.",
+    "rule4Title": "Aggregate only.",
+    "rule4": "The dashboard never shows an individual and hides any group with fewer than 5 people. No individual data goes to employers or insurers.",
+    "closureTitle": "The closure rule",
+    "closureBody": "Only a clinician can close a case, and never without evidence or a recorded decision. Each closure stores who closed it, when, the evidence type, and either an evidence reference or a decision note of at least {{min}} characters. A clinician can reopen a closed case with a reason.",
+    "evidenceTypes": "Evidence types a clinician can choose from:",
+    "aiTitle": "Where artificial intelligence is used",
+    "ai1": "Messages use approved templates in English, Arabic and French by default. The template text is fixed and reviewed.",
+    "ai2": "Staff can ask for optional re-wording of a template by a language model. It is off unless the server is set up for it.",
+    "ai3": "A checker must pass any re-wording. Every number, date, time, name and phone value must be unchanged, no new numbers may appear, no diagnosis words are allowed, and the length and language must fit. If it fails, the template text is used.",
+    "ai4": "A staff member must read and approve a re-worded message before it is sent. The approver is recorded.",
+    "ai5": "A language model is never used for routing, urgency, ownership, due dates or closure. It only suggests wording.",
+    "sections": {
+      "thresholds": "Blood pressure thresholds",
+      "service_levels": "Service levels",
+      "escalation": "Escalation",
+      "unreachable_protocol": "When a patient cannot be reached",
+      "closure": "Closure",
+      "teach_back": "Teach-back",
+      "lifestyle_plan": "Weekly lifestyle plan"
+    },
+    "sectionHints": {
+      "thresholds": "A raised reading is the start of a check, not a diagnosis. A severe reading goes to same-day clinician review.",
+      "service_levels": "How long each step may take before it is overdue.",
+      "escalation": "When an overdue step is passed to the next level.",
+      "unreachable_protocol": "Reminders, a second channel and a call task. After that a clinician decides. The case is never closed automatically.",
+      "closure": "Limits used by the closure rule.",
+      "teach_back": "How wrong answers are handled.",
+      "lifestyle_plan": "A missed week makes the next action smaller. Nothing is reset and there are no streaks."
+    },
+    "units": {
+      "mmHg": "mmHg",
+      "hours": "hours",
+      "days": "days",
+      "readings": "readings",
+      "characters": "characters",
+      "check-ins": "check-ins",
+      "wrong answers": "wrong answers",
+      "x service level": "times the service level",
+      "hour of day (UTC)": "hour of day (UTC)"
+    },
+    "keys": {
+      "raised_systolic": "Raised reading, systolic",
+      "raised_diastolic": "Raised reading, diastolic",
+      "severe_systolic": "Severe reading, systolic",
+      "severe_diastolic": "Severe reading, diastolic",
+      "hbpm_systolic": "Home average, systolic",
+      "hbpm_diastolic": "Home average, diastolic",
+      "hbpm_min_days": "Home readings, days needed",
+      "hbpm_min_readings_per_day": "Home readings, readings per day",
+      "abpm_daytime_systolic": "24-hour monitor daytime average, systolic",
+      "abpm_daytime_diastolic": "24-hour monitor daytime average, diastolic",
+      "abpm_daytime_start_hour": "24-hour monitor daytime starts",
+      "abpm_daytime_end_hour": "24-hour monitor daytime ends",
+      "abpm_min_daytime_readings": "24-hour monitor, daytime readings needed",
+      "target_systolic": "Target, systolic",
+      "target_diastolic": "Target, diastolic",
+      "target_consecutive_readings": "Clinic readings at target before the ready-to-close prompt",
+      "result_issued": "Notify the patient",
+      "result_issued_severe": "Notify the patient, severe reading",
+      "urgent_review": "Same-day clinician review",
+      "notified": "Patient confirms understanding",
+      "acknowledged": "Confirmation by home or 24-hour monitoring",
+      "confirmed": "Send the referral",
+      "closure_decision": "Clinician closure decision",
+      "referral_accept": "Receiving clinician accepts",
+      "appointment_booking": "Book the appointment",
+      "visit_outcome": "Record the visit outcome",
+      "in_care_review": "Review in care",
+      "level2_multiplier": "Second level of escalation",
+      "level2_multiplier_severe": "Second level of escalation, severe reading",
+      "reminder_after": "Reminder after",
+      "second_channel_after": "Second channel after",
+      "call_task_after": "Coordinator call task after",
+      "clinician_decision_after": "Flag for clinician decision after",
+      "note_min_chars": "Decision note, minimum length",
+      "reopen_reason_min_chars": "Reopen reason, minimum length",
+      "failures_before_call_task": "Wrong teach-back answers before a call task",
+      "week_length": "Length of a plan week",
+      "lapse_grace": "Grace before a week counts as missed",
+      "partly_in_row_to_shrink": "Partly done in a row before the plan shrinks",
+      "done_in_row_to_offer_larger": "Done in a row before a larger size is offered",
+      "missed_in_row_for_call_task": "Missed in a row before a call is offered"
+    },
+    "templatesTitle": "Message template catalogue",
+    "templatesIntro": "{{count}} approved templates. Each has fixed text in English, Arabic and French. SMS versions are shorter.",
+    "dataTitle": "What data this demo uses",
+    "data1": "Every person, reading, provider and message is fictional and generated by seeded code. There is no real patient data.",
+    "data2": "Names such as IFHAS, Thiqa and Malaffi appear only as labels of simulated sources, and each such screen carries a Simulated tag.",
+    "data3": "SMS and WhatsApp threads are simulated in a phone-style view. No message leaves this system.",
+    "data4": "The dashboard simulation runs on synthetic people. It shows what the system measures and is not evidence of clinical effectiveness."
+  }
+}

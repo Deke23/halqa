@@ -1,0 +1,32 @@
+# Approved template. Edit the text here, bump `version`, and keep every {slot} listed in required_slots.
+id: result_severe
+version: 1
+purpose: Tell the patient about a very high reading that needs same-day clinician review, with red-flag advice from region config.
+channel_limits:
+  app: 900
+  whatsapp: 1000
+required_slots:
+- name
+- reading
+- review_time
+- emergency_instruction
+sample_slots:
+  en:
+    name: Khalid
+    reading: 152/96
+    review_time: '16:00'
+    emergency_instruction: Call 998 now.
+  ar:
+    name: خالد
+    reading: 152/96
+    review_time: '16:00'
+    emergency_instruction: اتصل بالإسعاف الآن.
+  fr:
+    name: Jean-Paul
+    reading: 164/102
+    review_time: '16:00'
+    emergency_instruction: Allez aux urgences les plus proches.
+text:
+  en: 'Hello {name}. Your blood pressure reading was {reading}. This is a very high reading and a clinician needs to look at it today. It does not mean something has already gone wrong, but it should not wait. Your next step: a clinician will review your result today, before {review_time}, and our team will contact you. If you have chest pain, trouble breathing, a severe headache, changes in your vision, confusion, or weakness on one side of the body, do this now: {emergency_instruction}'
+  ar: 'مرحبًا {name}. كانت قراءة ضغط الدم لديك {reading}. هذه قراءة مرتفعة جدًا ويجب أن ينظر فيها الطبيب اليوم. هذا لا يعني أن شيئًا قد حدث بالفعل، لكن لا ينبغي تأجيل الأمر. خطوتك التالية: سيراجع الطبيب نتيجتك اليوم قبل الساعة {review_time}، وسيتواصل معك فريقنا. إذا ظهر لديك ألم في الصدر، أو صعوبة في التنفس، أو صداع شديد، أو تغيّر في الرؤية، أو ارتباك، أو ضعف في جانب واحد من الجسم، فافعل ما يلي فورًا: {emergency_instruction}'
+  fr: 'Bonjour {name}. Votre tension artérielle était de {reading}. C''est une valeur très élevée et un professionnel de santé doit la regarder aujourd''hui. Cela ne veut pas dire qu''un problème est déjà arrivé, mais il ne faut pas attendre. Prochaine étape : un professionnel de santé vérifiera votre résultat aujourd''hui, avant {review_time}, et notre équipe vous contactera. Si vous avez une douleur à la poitrine, du mal à respirer, un mal de tête très fort, un changement de la vision, de la confusion ou une faiblesse d''un côté du corps, faites ceci tout de suite : {emergency_instruction}'

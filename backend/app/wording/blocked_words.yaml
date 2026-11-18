@@ -1,0 +1,13 @@
+# Words that must never appear in re-worded patient text.
+# Two groups: diagnosis words (screening is not a diagnosis) and alarm words (no fear framing).
+# Latin-script entries are matched as whole words, case-insensitive. Arabic entries are matched as substrings.
+# Our own approved templates must not contain any of these (tested).
+en:
+  diagnosis: [hypertension, hypertensive, diagnosis, diagnosed, diagnose, disease]
+  alarm: [dangerous, deadly, fatal, life-threatening, critical, alarming, stroke, "heart attack", "heart failure", terrifying]
+ar:
+  diagnosis: ["تشخيص", "تم تشخيص", "مصاب", "مصابة", "فرط ضغط الدم", "ارتفاع ضغط الدم المزمن"]
+  alarm: ["خطير", "خطيرة", "قاتل", "مميت", "جلطة", "سكتة", "نوبة قلبية", "مخيف"]
+fr:
+  diagnosis: [hypertension, hypertendu, hypertendue, diagnostic, diagnostiqué, diagnostiquée, maladie chronique]
+  alarm: [dangereux, dangereuse, mortel, mortelle, grave, gravement, critique, AVC, infarctus, "crise cardiaque", effrayant]

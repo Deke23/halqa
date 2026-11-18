@@ -1,0 +1,44 @@
+# Approved template. Edit the text here, bump `version`, and keep every {slot} listed in required_slots.
+id: teach_back_question_sms
+version: 1
+purpose: SMS teach-back question with three answers.
+channel_limits:
+  sms:
+    en: 160
+    fr: 160
+    ar: 134
+required_slots:
+- reading
+sample_slots:
+  en:
+    reading: 152/96
+  ar:
+    reading: 152/96
+  fr:
+    reading: 164/102
+text:
+  en: What does {reading} mean? 1 A lifelong illness, for sure. 2 A raised reading to check again. 3 Normal. Reply 1, 2 or 3.
+  ar: ماذا تعني {reading}؟ 1 مرض دائم حتمًا. 2 قراءة مرتفعة تحتاج فحصًا. 3 طبيعية. أرسل 1 أو 2 أو 3.
+  fr: Que signifie {reading} ? 1 Une maladie à vie, certain. 2 Valeur élevée à revérifier. 3 Normal. Répondez 1, 2 ou 3.
+options:
+  en:
+  - A lifelong illness, for sure.
+  - A raised reading to check again.
+  - Normal.
+  ar:
+  - مرض دائم حتمًا.
+  - قراءة مرتفعة تحتاج فحصًا.
+  - طبيعية.
+  fr:
+  - Une maladie à vie, certain.
+  - Valeur élevée à revérifier.
+  - Normal.
+correct: 2
+sms_chars_with_sample_slots:
+  en: 116
+  ar: 91
+  fr: 112
+gsm7_safe_with_sample_slots:
+  en: true
+  ar: false
+  fr: true

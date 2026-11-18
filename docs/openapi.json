@@ -1,0 +1,5164 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Halqa API",
+    "description": "Hypertension follow-up loop. Synthetic data only. Thresholds are placeholders pending clinician sign-off.",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/api/health": {
+      "get": {
+        "tags": [
+          "system"
+        ],
+        "summary": "Health",
+        "operationId": "health_api_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthOut"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/personas": {
+      "get": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Personas",
+        "operationId": "personas_api_personas_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/PersonaInfo"
+                  },
+                  "type": "array",
+                  "title": "Response Personas Api Personas Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/guest": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Guest",
+        "operationId": "guest_api_auth_guest_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GuestRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/me": {
+      "get": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Me",
+        "operationId": "me_api_me_get",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/users": {
+      "get": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Staff directory for owner assignment and referral",
+        "operationId": "users_api_users_get",
+        "parameters": [
+          {
+            "name": "role",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/RoleName"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Role"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserOut"
+                  },
+                  "title": "Response Users Api Users Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/config": {
+      "get": {
+        "tags": [
+          "system"
+        ],
+        "summary": "Config",
+        "operationId": "config_api_config_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConfigOut"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cases": {
+      "get": {
+        "tags": [
+          "cases"
+        ],
+        "summary": "List Cases",
+        "operationId": "list_cases_api_cases_get",
+        "parameters": [
+          {
+            "name": "queue",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/QueueName",
+              "default": "all"
+            }
+          },
+          {
+            "name": "region",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/Region"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Region"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CaseList"
+                }
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cases/{case_id}": {
+      "get": {
+        "tags": [
+          "cases"
+        ],
+        "summary": "Get Case",
+        "operationId": "get_case_api_cases__case_id__get",
+        "parameters": [
+          {
+            "name": "case_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Case Id"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CaseDetail"
+                }
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/my/case": {
+      "get": {
+        "tags": [
+          "patient"
+        ],
+        "summary": "My Case",
+        "operationId": "my_case_api_my_case_get",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CaseDetail"
+                }
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cases/{case_id}/actions": {
+      "post": {
+        "tags": [
+          "cases"
+        ],
+        "summary": "The only way to change case state",
+        "operationId": "post_action_api_cases__case_id__actions_post",
+        "parameters": [
+          {
+            "name": "case_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Case Id"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CaseDetail"
+                }
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          }
+        }
+      }
+    },
+    "/api/cases/{case_id}/slots": {
+      "get": {
+        "tags": [
+          "cases"
+        ],
+        "summary": "Slots",
+        "operationId": "slots_api_cases__case_id__slots_get",
+        "parameters": [
+          {
+            "name": "case_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Case Id"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SlotOut"
+                  },
+                  "title": "Response Slots Api Cases  Case Id  Slots Get"
+                }
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cases/{case_id}/econsults": {
+      "post": {
+        "tags": [
+          "econsults"
+        ],
+        "summary": "Ask Econsult",
+        "operationId": "ask_econsult_api_cases__case_id__econsults_post",
+        "parameters": [
+          {
+            "name": "case_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Case Id"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EConsultCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EConsultOut"
+                }
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/econsults/{econsult_id}/reply": {
+      "post": {
+        "tags": [
+          "econsults"
+        ],
+        "summary": "Reply Econsult",
+        "operationId": "reply_econsult_api_econsults__econsult_id__reply_post",
+        "parameters": [
+          {
+            "name": "econsult_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Econsult Id"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EConsultReply"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EConsultOut"
+                }
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/econsults": {
+      "get": {
+        "tags": [
+          "econsults"
+        ],
+        "summary": "E-consults asked by or to me",
+        "operationId": "my_econsults_api_econsults_get",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EConsultOut"
+                  },
+                  "title": "Response My Econsults Api Econsults Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cases/{case_id}/messages/draft": {
+      "post": {
+        "tags": [
+          "messages"
+        ],
+        "summary": "Draft Message",
+        "operationId": "draft_message_api_cases__case_id__messages_draft_post",
+        "parameters": [
+          {
+            "name": "case_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Case Id"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DraftRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DraftOut"
+                }
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cases/{case_id}/messages/send": {
+      "post": {
+        "tags": [
+          "messages"
+        ],
+        "summary": "Send Message",
+        "operationId": "send_message_api_cases__case_id__messages_send_post",
+        "parameters": [
+          {
+            "name": "case_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Case Id"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SendRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SendResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/my/messages": {
+      "get": {
+        "tags": [
+          "patient"
+        ],
+        "summary": "My Messages",
+        "description": "The thread. With `language`, template-based outgoing messages are re-rendered in that language (patient language switch).",
+        "operationId": "my_messages_api_my_messages_get",
+        "parameters": [
+          {
+            "name": "language",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/Language"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Language"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MessageOut"
+                  },
+                  "title": "Response My Messages Api My Messages Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/my/messages/reply": {
+      "post": {
+        "tags": [
+          "patient"
+        ],
+        "summary": "My Reply",
+        "operationId": "my_reply_api_my_messages_reply_post",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReplyRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MessageOut"
+                  },
+                  "title": "Response My Reply Api My Messages Reply Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/intake/result": {
+      "post": {
+        "tags": [
+          "intake"
+        ],
+        "summary": "Simulated source feed. Opens a case when the reading is actionable",
+        "operationId": "intake_api_intake_result_post",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/IntakeRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IntakeResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/demo/clock": {
+      "get": {
+        "tags": [
+          "demo"
+        ],
+        "summary": "Get Clock",
+        "operationId": "get_clock_api_demo_clock_get",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClockOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/demo/clock/advance": {
+      "post": {
+        "tags": [
+          "demo"
+        ],
+        "summary": "Advance the demo clock and re-evaluate every open case",
+        "operationId": "advance_clock_api_demo_clock_advance_post",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdvanceRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClockOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/demo/reset": {
+      "post": {
+        "tags": [
+          "demo"
+        ],
+        "summary": "Restore the seeded demo data exactly",
+        "operationId": "reset_api_demo_reset_post",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResetResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cases/{case_id}/fhir": {
+      "get": {
+        "tags": [
+          "cases"
+        ],
+        "summary": "FHIR R4 Bundle for the case (read-only)",
+        "operationId": "case_fhir_api_cases__case_id__fhir_get",
+        "parameters": [
+          {
+            "name": "case_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Case Id"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/my/diary": {
+      "get": {
+        "tags": [
+          "patient"
+        ],
+        "summary": "My Diary",
+        "operationId": "my_diary_api_my_diary_get",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DiaryOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/dashboard/live": {
+      "get": {
+        "tags": [
+          "dashboard"
+        ],
+        "summary": "Live",
+        "operationId": "live_api_dashboard_live_get",
+        "parameters": [
+          {
+            "name": "split",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/Split",
+              "default": "none"
+            }
+          },
+          {
+            "name": "region",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/Region"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Region"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DashboardLive"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/dashboard/simulation": {
+      "get": {
+        "tags": [
+          "dashboard"
+        ],
+        "summary": "Simulation",
+        "operationId": "simulation_api_dashboard_simulation_get",
+        "parameters": [
+          {
+            "name": "split",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/Split",
+              "default": "none"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SimulationResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Action": {
+        "type": "string",
+        "enum": [
+          "notify",
+          "acknowledge",
+          "choose_confirmation",
+          "add_reading",
+          "review_confirmation",
+          "refer",
+          "accept_referral",
+          "reject_referral",
+          "assign_owner",
+          "book_appointment",
+          "record_visit",
+          "plan_checkin",
+          "escalate",
+          "close",
+          "reopen",
+          "update_consent",
+          "complete_urgent_review"
+        ],
+        "title": "Action"
+      },
+      "ActionRequest": {
+        "properties": {
+          "action": {
+            "$ref": "#/components/schemas/Action"
+          },
+          "payload": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Payload"
+          }
+        },
+        "type": "object",
+        "required": [
+          "action"
+        ],
+        "title": "ActionRequest",
+        "description": "`payload` is validated against the model for `action` (see components.schemas *Payload) after role and state checks.",
+        "x-payload-models": {
+          "notify": "NotifyPayload",
+          "acknowledge": "AcknowledgePayload",
+          "choose_confirmation": "ChooseConfirmationPayload",
+          "add_reading": "AddReadingPayload",
+          "review_confirmation": "ReviewConfirmationPayload",
+          "refer": "ReferPayload",
+          "accept_referral": "EmptyPayload",
+          "reject_referral": "ReasonPayload",
+          "assign_owner": "AssignOwnerPayload",
+          "book_appointment": "BookAppointmentPayload",
+          "record_visit": "RecordVisitPayload",
+          "plan_checkin": "PlanCheckinPayload",
+          "escalate": "ReasonPayload",
+          "close": "ClosePayload",
+          "reopen": "ReasonPayload",
+          "update_consent": "ConsentPayload",
+          "complete_urgent_review": "UrgentReviewPayload"
+        }
+      },
+      "AdvanceRequest": {
+        "properties": {
+          "hours": {
+            "type": "number",
+            "maximum": 1440.0,
+            "exclusiveMinimum": 0.0,
+            "title": "Hours"
+          }
+        },
+        "type": "object",
+        "required": [
+          "hours"
+        ],
+        "title": "AdvanceRequest"
+      },
+      "AppointmentOut": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "starts_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Starts At"
+          },
+          "provider_name": {
+            "type": "string",
+            "title": "Provider Name"
+          },
+          "location": {
+            "type": "string",
+            "title": "Location"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "starts_at",
+          "provider_name",
+          "location",
+          "status"
+        ],
+        "title": "AppointmentOut"
+      },
+      "AuthResponse": {
+        "properties": {
+          "token": {
+            "type": "string",
+            "title": "Token"
+          },
+          "user": {
+            "$ref": "#/components/schemas/UserOut"
+          }
+        },
+        "type": "object",
+        "required": [
+          "token",
+          "user"
+        ],
+        "title": "AuthResponse"
+      },
+      "Barrier": {
+        "type": "string",
+        "enum": [
+          "TIME",
+          "COST",
+          "NOT_SURE_HOW",
+          "FELT_UNWELL",
+          "WORK_SCHEDULE",
+          "OTHER"
+        ],
+        "title": "Barrier"
+      },
+      "CaseDetail": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "state": {
+            "$ref": "#/components/schemas/State"
+          },
+          "severity": {
+            "$ref": "#/components/schemas/Severity"
+          },
+          "urgent": {
+            "type": "boolean",
+            "title": "Urgent"
+          },
+          "urgent_reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Urgent Reason"
+          },
+          "region": {
+            "$ref": "#/components/schemas/Region"
+          },
+          "opened_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Opened At"
+          },
+          "index_systolic": {
+            "type": "integer",
+            "title": "Index Systolic"
+          },
+          "index_diastolic": {
+            "type": "integer",
+            "title": "Index Diastolic"
+          },
+          "source_system": {
+            "type": "string",
+            "title": "Source System"
+          },
+          "patient": {
+            "$ref": "#/components/schemas/PatientSummary"
+          },
+          "owner_role": {
+            "$ref": "#/components/schemas/RoleName"
+          },
+          "owner_user_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Owner User Id"
+          },
+          "owner_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Owner Name"
+          },
+          "next_step": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/NextStepOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "progress": {
+            "items": {
+              "$ref": "#/components/schemas/ProgressStep"
+            },
+            "type": "array",
+            "title": "Progress"
+          },
+          "flags": {
+            "$ref": "#/components/schemas/CaseFlags"
+          },
+          "referral_status": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ReferralStatus"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "suggested_closure_type": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ClosureEvidence"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "readings": {
+            "items": {
+              "$ref": "#/components/schemas/ReadingOut"
+            },
+            "type": "array",
+            "title": "Readings"
+          },
+          "confirmation": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ConfirmationOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "referral": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ReferralOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "referrals_history": {
+            "items": {
+              "$ref": "#/components/schemas/ReferralOut"
+            },
+            "type": "array",
+            "title": "Referrals History"
+          },
+          "appointment": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AppointmentOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "messages": {
+            "items": {
+              "$ref": "#/components/schemas/MessageOut"
+            },
+            "type": "array",
+            "title": "Messages"
+          },
+          "econsults": {
+            "items": {
+              "$ref": "#/components/schemas/EConsultOut"
+            },
+            "type": "array",
+            "title": "Econsults"
+          },
+          "plan": {
+            "items": {
+              "$ref": "#/components/schemas/PlanWeekOut"
+            },
+            "type": "array",
+            "title": "Plan"
+          },
+          "consents": {
+            "items": {
+              "$ref": "#/components/schemas/ConsentOut"
+            },
+            "type": "array",
+            "title": "Consents"
+          },
+          "tasks": {
+            "items": {
+              "$ref": "#/components/schemas/TaskOut"
+            },
+            "type": "array",
+            "title": "Tasks"
+          },
+          "timeline": {
+            "items": {
+              "$ref": "#/components/schemas/EventOut"
+            },
+            "type": "array",
+            "title": "Timeline"
+          },
+          "closure": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ClosureOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "allowed_actions": {
+            "items": {
+              "$ref": "#/components/schemas/Action"
+            },
+            "type": "array",
+            "title": "Allowed Actions"
+          },
+          "emergency_advice": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/EmergencyAdvice"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "teach_back": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/TeachBackOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "feedback": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Feedback"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "view": {
+            "type": "string",
+            "enum": [
+              "STAFF",
+              "PATIENT"
+            ],
+            "title": "View"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "state",
+          "severity",
+          "urgent",
+          "urgent_reason",
+          "region",
+          "opened_at",
+          "index_systolic",
+          "index_diastolic",
+          "source_system",
+          "patient",
+          "owner_role",
+          "owner_user_id",
+          "owner_name",
+          "next_step",
+          "progress",
+          "flags",
+          "referral_status",
+          "suggested_closure_type",
+          "readings",
+          "confirmation",
+          "referral",
+          "referrals_history",
+          "appointment",
+          "messages",
+          "econsults",
+          "plan",
+          "consents",
+          "tasks",
+          "timeline",
+          "closure",
+          "allowed_actions",
+          "emergency_advice",
+          "view"
+        ],
+        "title": "CaseDetail"
+      },
+      "CaseFlags": {
+        "properties": {
+          "overdue": {
+            "type": "boolean",
+            "title": "Overdue"
+          },
+          "unowned": {
+            "type": "boolean",
+            "title": "Unowned"
+          },
+          "rejected": {
+            "type": "boolean",
+            "title": "Rejected"
+          },
+          "escalated": {
+            "type": "boolean",
+            "title": "Escalated"
+          },
+          "needs_clinician_decision": {
+            "type": "boolean",
+            "title": "Needs Clinician Decision"
+          },
+          "closure_ready": {
+            "type": "boolean",
+            "title": "Closure Ready"
+          },
+          "urgent_review_pending": {
+            "type": "boolean",
+            "title": "Urgent Review Pending"
+          }
+        },
+        "type": "object",
+        "required": [
+          "overdue",
+          "unowned",
+          "rejected",
+          "escalated",
+          "needs_clinician_decision",
+          "closure_ready",
+          "urgent_review_pending"
+        ],
+        "title": "CaseFlags"
+      },
+      "CaseList": {
+        "properties": {
+          "queue": {
+            "$ref": "#/components/schemas/QueueName"
+          },
+          "total": {
+            "type": "integer",
+            "title": "Total"
+          },
+          "cases": {
+            "items": {
+              "$ref": "#/components/schemas/CaseSummary"
+            },
+            "type": "array",
+            "title": "Cases"
+          }
+        },
+        "type": "object",
+        "required": [
+          "queue",
+          "total",
+          "cases"
+        ],
+        "title": "CaseList"
+      },
+      "CaseSummary": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "patient_initials": {
+            "type": "string",
+            "title": "Patient Initials"
+          },
+          "patient_ref": {
+            "type": "string",
+            "title": "Patient Ref"
+          },
+          "region": {
+            "$ref": "#/components/schemas/Region"
+          },
+          "language": {
+            "$ref": "#/components/schemas/Language"
+          },
+          "state": {
+            "$ref": "#/components/schemas/State"
+          },
+          "severity": {
+            "$ref": "#/components/schemas/Severity"
+          },
+          "urgent": {
+            "type": "boolean",
+            "title": "Urgent"
+          },
+          "owner_role": {
+            "$ref": "#/components/schemas/RoleName"
+          },
+          "owner_user_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Owner User Id"
+          },
+          "owner_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Owner Name"
+          },
+          "next_step_label_key": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Step Label Key"
+          },
+          "due_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Due At"
+          },
+          "overdue": {
+            "type": "boolean",
+            "title": "Overdue"
+          },
+          "overdue_hours": {
+            "type": "number",
+            "title": "Overdue Hours"
+          },
+          "escalation_level": {
+            "type": "integer",
+            "title": "Escalation Level"
+          },
+          "reason_code": {
+            "type": "string",
+            "title": "Reason Code"
+          },
+          "reason_text": {
+            "type": "string",
+            "title": "Reason Text"
+          },
+          "flags": {
+            "$ref": "#/components/schemas/CaseFlags"
+          },
+          "index_systolic": {
+            "type": "integer",
+            "title": "Index Systolic"
+          },
+          "index_diastolic": {
+            "type": "integer",
+            "title": "Index Diastolic"
+          },
+          "opened_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Opened At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "patient_initials",
+          "patient_ref",
+          "region",
+          "language",
+          "state",
+          "severity",
+          "urgent",
+          "owner_role",
+          "owner_user_id",
+          "owner_name",
+          "next_step_label_key",
+          "due_at",
+          "overdue",
+          "overdue_hours",
+          "escalation_level",
+          "reason_code",
+          "reason_text",
+          "flags",
+          "index_systolic",
+          "index_diastolic",
+          "opened_at"
+        ],
+        "title": "CaseSummary"
+      },
+      "Channel": {
+        "type": "string",
+        "enum": [
+          "APP",
+          "SMS",
+          "WHATSAPP"
+        ],
+        "title": "Channel"
+      },
+      "CheckinStatus": {
+        "type": "string",
+        "enum": [
+          "done",
+          "partly",
+          "missed"
+        ],
+        "title": "CheckinStatus"
+      },
+      "ClockOut": {
+        "properties": {
+          "now": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Now"
+          },
+          "real_now": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Real Now"
+          },
+          "offset_seconds": {
+            "type": "number",
+            "title": "Offset Seconds"
+          }
+        },
+        "type": "object",
+        "required": [
+          "now",
+          "real_now",
+          "offset_seconds"
+        ],
+        "title": "ClockOut"
+      },
+      "ClosureEvidence": {
+        "type": "string",
+        "enum": [
+          "BP_CONTROLLED",
+          "NOT_CONFIRMED",
+          "CARE_TRANSFERRED",
+          "PATIENT_DECLINED",
+          "UNREACHABLE_AFTER_PROTOCOL",
+          "DECEASED_OR_MOVED",
+          "OTHER_CLINICAL_DECISION"
+        ],
+        "title": "ClosureEvidence"
+      },
+      "ClosureOut": {
+        "properties": {
+          "closed_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Closed At"
+          },
+          "closed_by_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Closed By Name"
+          },
+          "evidence_type": {
+            "$ref": "#/components/schemas/ClosureEvidence"
+          },
+          "evidence_ref": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Evidence Ref"
+          },
+          "decision_note": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Decision Note"
+          }
+        },
+        "type": "object",
+        "required": [
+          "closed_at",
+          "closed_by_name",
+          "evidence_type",
+          "evidence_ref",
+          "decision_note"
+        ],
+        "title": "ClosureOut"
+      },
+      "ConfigEntryOut": {
+        "properties": {
+          "section": {
+            "type": "string",
+            "title": "Section"
+          },
+          "key": {
+            "type": "string",
+            "title": "Key"
+          },
+          "value": {
+            "title": "Value"
+          },
+          "unit": {
+            "type": "string",
+            "title": "Unit"
+          },
+          "basis": {
+            "type": "string",
+            "title": "Basis"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          }
+        },
+        "type": "object",
+        "required": [
+          "section",
+          "key",
+          "value",
+          "unit",
+          "basis",
+          "status"
+        ],
+        "title": "ConfigEntryOut"
+      },
+      "ConfigOut": {
+        "properties": {
+          "app_name": {
+            "type": "string",
+            "title": "App Name"
+          },
+          "notice": {
+            "type": "string",
+            "title": "Notice"
+          },
+          "entries": {
+            "items": {
+              "$ref": "#/components/schemas/ConfigEntryOut"
+            },
+            "type": "array",
+            "title": "Entries"
+          },
+          "closure_evidence_types": {
+            "items": {
+              "$ref": "#/components/schemas/ClosureEvidence"
+            },
+            "type": "array",
+            "title": "Closure Evidence Types"
+          },
+          "templates": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Templates"
+          },
+          "languages": {
+            "items": {
+              "$ref": "#/components/schemas/Language"
+            },
+            "type": "array",
+            "title": "Languages"
+          },
+          "regions": {
+            "items": {
+              "$ref": "#/components/schemas/RegionConfig"
+            },
+            "type": "array",
+            "title": "Regions"
+          },
+          "rules": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Rules"
+          }
+        },
+        "type": "object",
+        "required": [
+          "app_name",
+          "notice",
+          "entries",
+          "closure_evidence_types",
+          "templates",
+          "languages",
+          "regions",
+          "rules"
+        ],
+        "title": "ConfigOut"
+      },
+      "ConfirmationMethod": {
+        "type": "string",
+        "enum": [
+          "HBPM",
+          "ABPM"
+        ],
+        "title": "ConfirmationMethod"
+      },
+      "ConfirmationOut": {
+        "properties": {
+          "method": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ConfirmationMethod"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "status": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ConfirmationStatus"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "average_systolic": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Average Systolic"
+          },
+          "average_diastolic": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Average Diastolic"
+          },
+          "days_counted": {
+            "type": "integer",
+            "title": "Days Counted"
+          },
+          "readings_used": {
+            "type": "integer",
+            "title": "Readings Used"
+          },
+          "days_with_enough_readings": {
+            "type": "integer",
+            "title": "Days With Enough Readings"
+          },
+          "days_required": {
+            "type": "integer",
+            "title": "Days Required"
+          },
+          "threshold_status": {
+            "type": "string",
+            "title": "Threshold Status"
+          }
+        },
+        "type": "object",
+        "required": [
+          "method",
+          "status",
+          "average_systolic",
+          "average_diastolic",
+          "days_counted",
+          "readings_used",
+          "days_with_enough_readings",
+          "days_required",
+          "threshold_status"
+        ],
+        "title": "ConfirmationOut"
+      },
+      "ConfirmationStatus": {
+        "type": "string",
+        "enum": [
+          "CONFIRMED_RAISED",
+          "NOT_CONFIRMED",
+          "INSUFFICIENT"
+        ],
+        "title": "ConfirmationStatus"
+      },
+      "ConsentOut": {
+        "properties": {
+          "purpose": {
+            "$ref": "#/components/schemas/ConsentPurpose"
+          },
+          "channel": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Channel"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "granted": {
+            "type": "boolean",
+            "title": "Granted"
+          },
+          "granted_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Granted At"
+          },
+          "withdrawn_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Withdrawn At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "purpose",
+          "channel",
+          "granted",
+          "granted_at",
+          "withdrawn_at"
+        ],
+        "title": "ConsentOut"
+      },
+      "ConsentPurpose": {
+        "type": "string",
+        "enum": [
+          "care_coordination",
+          "messaging_channel",
+          "share_with_receiving_provider",
+          "lifestyle_programme",
+          "research_aggregate"
+        ],
+        "title": "ConsentPurpose"
+      },
+      "CoverOut": {
+        "properties": {
+          "covered": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Covered"
+          },
+          "copay": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Copay"
+          },
+          "estimated_price": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Estimated Price"
+          },
+          "currency": {
+            "type": "string",
+            "title": "Currency"
+          },
+          "label": {
+            "type": "string",
+            "title": "Label"
+          },
+          "simulated": {
+            "type": "boolean",
+            "const": true,
+            "title": "Simulated",
+            "default": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "covered",
+          "copay",
+          "estimated_price",
+          "currency",
+          "label"
+        ],
+        "title": "CoverOut"
+      },
+      "DashboardGroup": {
+        "properties": {
+          "key": {
+            "type": "string",
+            "title": "Key"
+          },
+          "label": {
+            "type": "string",
+            "title": "Label"
+          },
+          "measures": {
+            "items": {
+              "$ref": "#/components/schemas/Measure"
+            },
+            "type": "array",
+            "title": "Measures"
+          }
+        },
+        "type": "object",
+        "required": [
+          "key",
+          "label",
+          "measures"
+        ],
+        "title": "DashboardGroup"
+      },
+      "DashboardLive": {
+        "properties": {
+          "split": {
+            "$ref": "#/components/schemas/Split"
+          },
+          "region": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Region"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "generated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Generated At"
+          },
+          "simulated": {
+            "type": "boolean",
+            "const": false,
+            "title": "Simulated",
+            "default": false
+          },
+          "min_cell_size": {
+            "type": "integer",
+            "title": "Min Cell Size"
+          },
+          "groups": {
+            "items": {
+              "$ref": "#/components/schemas/DashboardGroup"
+            },
+            "type": "array",
+            "title": "Groups"
+          }
+        },
+        "type": "object",
+        "required": [
+          "split",
+          "region",
+          "generated_at",
+          "min_cell_size",
+          "groups"
+        ],
+        "title": "DashboardLive"
+      },
+      "DelayReason": {
+        "properties": {
+          "reason": {
+            "type": "string",
+            "title": "Reason"
+          },
+          "n": {
+            "type": "integer",
+            "title": "N"
+          },
+          "suppressed": {
+            "type": "boolean",
+            "title": "Suppressed"
+          }
+        },
+        "type": "object",
+        "required": [
+          "reason",
+          "n",
+          "suppressed"
+        ],
+        "title": "DelayReason"
+      },
+      "DiaryDay": {
+        "properties": {
+          "day": {
+            "type": "integer",
+            "title": "Day"
+          },
+          "steps": {
+            "type": "integer",
+            "title": "Steps"
+          },
+          "active_minutes": {
+            "type": "integer",
+            "title": "Active Minutes"
+          },
+          "sleep_hours": {
+            "type": "number",
+            "title": "Sleep Hours"
+          },
+          "sleep_efficiency_pct": {
+            "type": "integer",
+            "title": "Sleep Efficiency Pct"
+          }
+        },
+        "type": "object",
+        "required": [
+          "day",
+          "steps",
+          "active_minutes",
+          "sleep_hours",
+          "sleep_efficiency_pct"
+        ],
+        "title": "DiaryDay"
+      },
+      "DiaryOut": {
+        "properties": {
+          "wearable_used_for_bp": {
+            "type": "boolean",
+            "const": false,
+            "title": "Wearable Used For Bp",
+            "default": false
+          },
+          "wearable_days": {
+            "items": {
+              "$ref": "#/components/schemas/DiaryDay"
+            },
+            "type": "array",
+            "title": "Wearable Days"
+          },
+          "wearable_note": {
+            "type": "string",
+            "title": "Wearable Note"
+          },
+          "hbpm_sample": {
+            "items": {
+              "$ref": "#/components/schemas/SampleReading"
+            },
+            "type": "array",
+            "title": "Hbpm Sample"
+          },
+          "abpm_sample": {
+            "items": {
+              "$ref": "#/components/schemas/SampleReading"
+            },
+            "type": "array",
+            "title": "Abpm Sample"
+          },
+          "disclaimer": {
+            "type": "string",
+            "title": "Disclaimer"
+          }
+        },
+        "type": "object",
+        "required": [
+          "wearable_days",
+          "wearable_note",
+          "hbpm_sample",
+          "abpm_sample",
+          "disclaimer"
+        ],
+        "title": "DiaryOut",
+        "description": "Wearable data is a diary only. wearable_used_for_bp is always false."
+      },
+      "DraftOut": {
+        "properties": {
+          "text": {
+            "type": "string",
+            "title": "Text"
+          },
+          "source": {
+            "$ref": "#/components/schemas/MessageSource"
+          },
+          "template_id": {
+            "type": "string",
+            "title": "Template Id"
+          },
+          "template_version": {
+            "type": "string",
+            "title": "Template Version"
+          },
+          "language": {
+            "$ref": "#/components/schemas/Language"
+          },
+          "validation": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Validation"
+          }
+        },
+        "type": "object",
+        "required": [
+          "text",
+          "source",
+          "template_id",
+          "template_version",
+          "language",
+          "validation"
+        ],
+        "title": "DraftOut"
+      },
+      "DraftRequest": {
+        "properties": {
+          "template_id": {
+            "type": "string",
+            "title": "Template Id"
+          },
+          "language": {
+            "$ref": "#/components/schemas/Language"
+          },
+          "tone": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tone"
+          }
+        },
+        "type": "object",
+        "required": [
+          "template_id",
+          "language"
+        ],
+        "title": "DraftRequest"
+      },
+      "EConsultCreate": {
+        "properties": {
+          "to_user_id": {
+            "type": "integer",
+            "title": "To User Id"
+          },
+          "question": {
+            "type": "string",
+            "minLength": 3,
+            "title": "Question"
+          }
+        },
+        "type": "object",
+        "required": [
+          "to_user_id",
+          "question"
+        ],
+        "title": "EConsultCreate"
+      },
+      "EConsultOut": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "case_id": {
+            "type": "integer",
+            "title": "Case Id"
+          },
+          "from_user_id": {
+            "type": "integer",
+            "title": "From User Id"
+          },
+          "from_name": {
+            "type": "string",
+            "title": "From Name"
+          },
+          "to_user_id": {
+            "type": "integer",
+            "title": "To User Id"
+          },
+          "to_name": {
+            "type": "string",
+            "title": "To Name"
+          },
+          "question": {
+            "type": "string",
+            "title": "Question"
+          },
+          "answer": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Answer"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "OPEN",
+              "ANSWERED"
+            ],
+            "title": "Status"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "answered_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Answered At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "case_id",
+          "from_user_id",
+          "from_name",
+          "to_user_id",
+          "to_name",
+          "question",
+          "answer",
+          "status",
+          "created_at",
+          "answered_at"
+        ],
+        "title": "EConsultOut"
+      },
+      "EConsultReply": {
+        "properties": {
+          "answer": {
+            "type": "string",
+            "minLength": 3,
+            "title": "Answer"
+          }
+        },
+        "type": "object",
+        "required": [
+          "answer"
+        ],
+        "title": "EConsultReply"
+      },
+      "EmergencyAdvice": {
+        "properties": {
+          "text": {
+            "type": "string",
+            "title": "Text"
+          },
+          "number": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Number"
+          },
+          "region": {
+            "$ref": "#/components/schemas/Region"
+          }
+        },
+        "type": "object",
+        "required": [
+          "text",
+          "number",
+          "region"
+        ],
+        "title": "EmergencyAdvice"
+      },
+      "ErrorResponse": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "title": "Code"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          }
+        },
+        "type": "object",
+        "required": [
+          "code",
+          "message"
+        ],
+        "title": "ErrorResponse"
+      },
+      "EventOut": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "At"
+          },
+          "actor_name": {
+            "type": "string",
+            "title": "Actor Name"
+          },
+          "actor_role": {
+            "type": "string",
+            "title": "Actor Role"
+          },
+          "type": {
+            "$ref": "#/components/schemas/EventType"
+          },
+          "from_state": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/State"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "to_state": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/State"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "payload": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Payload"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "at",
+          "actor_name",
+          "actor_role",
+          "type",
+          "from_state",
+          "to_state",
+          "payload",
+          "reason"
+        ],
+        "title": "EventOut"
+      },
+      "EventType": {
+        "type": "string",
+        "enum": [
+          "CASE_OPENED",
+          "CASE_VIEWED",
+          "STATE_CHANGED",
+          "MESSAGE_SENT",
+          "MESSAGE_RECEIVED",
+          "TEACH_BACK_PASSED",
+          "TEACH_BACK_FAILED",
+          "RED_FLAG_REPORTED",
+          "URGENT_FLAGGED",
+          "URGENT_REVIEW_COMPLETED",
+          "CONFIRMATION_CHOSEN",
+          "READING_ADDED",
+          "CONFIRMATION_REVIEWED",
+          "REFERRAL_SENT",
+          "REFERRAL_ACCEPTED",
+          "REFERRAL_REJECTED",
+          "OWNER_CHANGED",
+          "APPOINTMENT_BOOKED",
+          "VISIT_RECORDED",
+          "PLAN_CHECKIN",
+          "PLAN_WEEK_LAPSED",
+          "ESCALATED",
+          "UNREACHABLE_STEP",
+          "TASK_CREATED",
+          "ECONSULT_ASKED",
+          "ECONSULT_ANSWERED",
+          "CONSENT_CHANGED",
+          "CASE_CLOSED",
+          "CASE_REOPENED"
+        ],
+        "title": "EventType"
+      },
+      "Feedback": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "title": "Code"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          },
+          "template_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Template Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "code",
+          "message"
+        ],
+        "title": "Feedback"
+      },
+      "GuestRequest": {
+        "properties": {
+          "persona": {
+            "$ref": "#/components/schemas/PersonaKey"
+          }
+        },
+        "type": "object",
+        "required": [
+          "persona"
+        ],
+        "title": "GuestRequest"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "HealthOut": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "const": "ok",
+            "title": "Status"
+          },
+          "app": {
+            "type": "string",
+            "title": "App"
+          },
+          "now": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Now"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status",
+          "app",
+          "now"
+        ],
+        "title": "HealthOut"
+      },
+      "IntakeReading": {
+        "properties": {
+          "systolic": {
+            "type": "integer",
+            "maximum": 300.0,
+            "minimum": 60.0,
+            "title": "Systolic"
+          },
+          "diastolic": {
+            "type": "integer",
+            "maximum": 200.0,
+            "minimum": 30.0,
+            "title": "Diastolic"
+          },
+          "pulse": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pulse"
+          },
+          "taken_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Taken At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "systolic",
+          "diastolic"
+        ],
+        "title": "IntakeReading"
+      },
+      "IntakeRequest": {
+        "properties": {
+          "patient_ref": {
+            "type": "string",
+            "title": "Patient Ref"
+          },
+          "source_system": {
+            "$ref": "#/components/schemas/IntakeSource"
+          },
+          "region": {
+            "$ref": "#/components/schemas/Region"
+          },
+          "readings": {
+            "items": {
+              "$ref": "#/components/schemas/IntakeReading"
+            },
+            "type": "array",
+            "minItems": 1,
+            "title": "Readings"
+          },
+          "patient": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/NewPatient"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "patient_ref",
+          "source_system",
+          "region",
+          "readings"
+        ],
+        "title": "IntakeRequest"
+      },
+      "IntakeResponse": {
+        "properties": {
+          "opened": {
+            "type": "boolean",
+            "title": "Opened"
+          },
+          "case_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Case Id"
+          },
+          "severity": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Severity"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "reason": {
+            "type": "string",
+            "title": "Reason"
+          }
+        },
+        "type": "object",
+        "required": [
+          "opened",
+          "case_id",
+          "severity",
+          "reason"
+        ],
+        "title": "IntakeResponse"
+      },
+      "IntakeSource": {
+        "type": "string",
+        "enum": [
+          "IFHAS_SCREENING",
+          "CLINIC_READING",
+          "OTHER"
+        ],
+        "title": "IntakeSource"
+      },
+      "Language": {
+        "type": "string",
+        "enum": [
+          "en",
+          "ar",
+          "fr"
+        ],
+        "title": "Language"
+      },
+      "Measure": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "unit": {
+            "type": "string",
+            "title": "Unit"
+          },
+          "n": {
+            "type": "integer",
+            "title": "N"
+          },
+          "suppressed": {
+            "type": "boolean",
+            "title": "Suppressed"
+          },
+          "value": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Value"
+          },
+          "median": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Median"
+          },
+          "p90": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "P90"
+          },
+          "count": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Count"
+          },
+          "delay_reasons": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/DelayReason"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Delay Reasons"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "unit",
+          "n",
+          "suppressed"
+        ],
+        "title": "Measure"
+      },
+      "MessageOut": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "direction": {
+            "type": "string",
+            "enum": [
+              "OUT",
+              "IN"
+            ],
+            "title": "Direction"
+          },
+          "channel": {
+            "$ref": "#/components/schemas/Channel"
+          },
+          "language": {
+            "$ref": "#/components/schemas/Language"
+          },
+          "text": {
+            "type": "string",
+            "title": "Text"
+          },
+          "template_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Template Id"
+          },
+          "template_version": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Template Version"
+          },
+          "source": {
+            "$ref": "#/components/schemas/MessageSource"
+          },
+          "sender_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sender Name"
+          },
+          "approved_by_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Approved By Name"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "direction",
+          "channel",
+          "language",
+          "text",
+          "template_id",
+          "template_version",
+          "source",
+          "sender_name",
+          "approved_by_name",
+          "created_at"
+        ],
+        "title": "MessageOut"
+      },
+      "MessageSource": {
+        "type": "string",
+        "enum": [
+          "TEMPLATE",
+          "AI_REWORDED"
+        ],
+        "title": "MessageSource"
+      },
+      "NewPatient": {
+        "properties": {
+          "display_name": {
+            "type": "string",
+            "title": "Display Name"
+          },
+          "age": {
+            "type": "integer",
+            "maximum": 110.0,
+            "minimum": 18.0,
+            "title": "Age"
+          },
+          "sex": {
+            "type": "string",
+            "enum": [
+              "F",
+              "M"
+            ],
+            "title": "Sex"
+          },
+          "nationality_group": {
+            "type": "string",
+            "title": "Nationality Group",
+            "default": "Other"
+          },
+          "language": {
+            "$ref": "#/components/schemas/Language",
+            "default": "en"
+          },
+          "insurance": {
+            "type": "string",
+            "title": "Insurance",
+            "default": "NONE"
+          },
+          "channel": {
+            "$ref": "#/components/schemas/Channel",
+            "default": "APP"
+          }
+        },
+        "type": "object",
+        "required": [
+          "display_name",
+          "age",
+          "sex"
+        ],
+        "title": "NewPatient"
+      },
+      "NextStepOut": {
+        "properties": {
+          "label_key": {
+            "type": "string",
+            "title": "Label Key"
+          },
+          "owner_role": {
+            "$ref": "#/components/schemas/RoleName"
+          },
+          "acting_role": {
+            "$ref": "#/components/schemas/RoleName"
+          },
+          "owner_user_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Owner User Id"
+          },
+          "owner_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Owner Name"
+          },
+          "started_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Started At"
+          },
+          "due_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Due At"
+          },
+          "service_level_h": {
+            "type": "number",
+            "title": "Service Level H"
+          },
+          "overdue": {
+            "type": "boolean",
+            "title": "Overdue"
+          },
+          "overdue_hours": {
+            "type": "number",
+            "title": "Overdue Hours"
+          },
+          "escalation_level": {
+            "type": "integer",
+            "title": "Escalation Level"
+          },
+          "escalation_target": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Escalation Target"
+          }
+        },
+        "type": "object",
+        "required": [
+          "label_key",
+          "owner_role",
+          "acting_role",
+          "owner_user_id",
+          "owner_name",
+          "started_at",
+          "due_at",
+          "service_level_h",
+          "overdue",
+          "overdue_hours",
+          "escalation_level",
+          "escalation_target"
+        ],
+        "title": "NextStepOut"
+      },
+      "PatientSummary": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "ref": {
+            "type": "string",
+            "title": "Ref"
+          },
+          "display_name": {
+            "type": "string",
+            "title": "Display Name"
+          },
+          "initials": {
+            "type": "string",
+            "title": "Initials"
+          },
+          "age": {
+            "type": "integer",
+            "title": "Age"
+          },
+          "sex": {
+            "type": "string",
+            "title": "Sex"
+          },
+          "nationality_group": {
+            "type": "string",
+            "title": "Nationality Group"
+          },
+          "language": {
+            "$ref": "#/components/schemas/Language"
+          },
+          "region": {
+            "$ref": "#/components/schemas/Region"
+          },
+          "insurance": {
+            "type": "string",
+            "title": "Insurance"
+          },
+          "channel": {
+            "$ref": "#/components/schemas/Channel"
+          },
+          "organisation": {
+            "type": "string",
+            "title": "Organisation"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "ref",
+          "display_name",
+          "initials",
+          "age",
+          "sex",
+          "nationality_group",
+          "language",
+          "region",
+          "insurance",
+          "channel",
+          "organisation"
+        ],
+        "title": "PatientSummary"
+      },
+      "PersonaInfo": {
+        "properties": {
+          "persona": {
+            "$ref": "#/components/schemas/PersonaKey"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "role": {
+            "$ref": "#/components/schemas/RoleName"
+          },
+          "region": {
+            "$ref": "#/components/schemas/Region"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          }
+        },
+        "type": "object",
+        "required": [
+          "persona",
+          "name",
+          "role",
+          "region",
+          "description"
+        ],
+        "title": "PersonaInfo"
+      },
+      "PersonaKey": {
+        "type": "string",
+        "enum": [
+          "patient_auh",
+          "coordinator_auh",
+          "clinician_pcp",
+          "clinician_specialist",
+          "patient_yde",
+          "nurse_yde",
+          "analyst",
+          "clinician_yde",
+          "specialist_yde"
+        ],
+        "title": "PersonaKey"
+      },
+      "PlanActionKey": {
+        "type": "string",
+        "enum": [
+          "salt",
+          "activity",
+          "sleep",
+          "home_bp_check"
+        ],
+        "title": "PlanActionKey"
+      },
+      "PlanSize": {
+        "type": "string",
+        "enum": [
+          "full",
+          "smaller",
+          "smallest"
+        ],
+        "title": "PlanSize"
+      },
+      "PlanWeekOut": {
+        "properties": {
+          "week_index": {
+            "type": "integer",
+            "title": "Week Index"
+          },
+          "action_key": {
+            "$ref": "#/components/schemas/PlanActionKey"
+          },
+          "size": {
+            "$ref": "#/components/schemas/PlanSize"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CheckinStatus"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "barrier": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Barrier"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "offered_larger": {
+            "type": "boolean",
+            "title": "Offered Larger"
+          },
+          "starts_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Starts At"
+          },
+          "checked_in_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Checked In At"
+          },
+          "label_key": {
+            "type": "string",
+            "title": "Label Key"
+          },
+          "default_text": {
+            "type": "string",
+            "title": "Default Text"
+          }
+        },
+        "type": "object",
+        "required": [
+          "week_index",
+          "action_key",
+          "size",
+          "status",
+          "barrier",
+          "offered_larger",
+          "starts_at",
+          "checked_in_at",
+          "label_key",
+          "default_text"
+        ],
+        "title": "PlanWeekOut"
+      },
+      "ProgressStep": {
+        "properties": {
+          "state": {
+            "$ref": "#/components/schemas/State"
+          },
+          "label_key": {
+            "type": "string",
+            "title": "Label Key"
+          },
+          "reached": {
+            "type": "boolean",
+            "title": "Reached"
+          },
+          "current": {
+            "type": "boolean",
+            "title": "Current"
+          },
+          "reached_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reached At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "state",
+          "label_key",
+          "reached",
+          "current",
+          "reached_at"
+        ],
+        "title": "ProgressStep"
+      },
+      "QueueName": {
+        "type": "string",
+        "enum": [
+          "all",
+          "urgent",
+          "overdue",
+          "rejected",
+          "unowned",
+          "escalated",
+          "mine"
+        ],
+        "title": "QueueName"
+      },
+      "ReadingOut": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "systolic": {
+            "type": "integer",
+            "title": "Systolic"
+          },
+          "diastolic": {
+            "type": "integer",
+            "title": "Diastolic"
+          },
+          "pulse": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pulse"
+          },
+          "taken_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Taken At"
+          },
+          "source": {
+            "$ref": "#/components/schemas/ReadingSource"
+          },
+          "entered_by_role": {
+            "type": "string",
+            "title": "Entered By Role"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "systolic",
+          "diastolic",
+          "pulse",
+          "taken_at",
+          "source",
+          "entered_by_role"
+        ],
+        "title": "ReadingOut"
+      },
+      "ReadingSource": {
+        "type": "string",
+        "enum": [
+          "HOME_CUFF",
+          "CLINIC",
+          "ABPM"
+        ],
+        "title": "ReadingSource",
+        "description": "Blood pressure values come only from a validated cuff or ambulatory monitor. There is no wearable source."
+      },
+      "ReferralOut": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "status": {
+            "$ref": "#/components/schemas/ReferralStatus"
+          },
+          "to_user_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "To User Id"
+          },
+          "to_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "To Name"
+          },
+          "to_service": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "To Service"
+          },
+          "from_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "From Name"
+          },
+          "reason": {
+            "type": "string",
+            "title": "Reason"
+          },
+          "rejection_reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rejection Reason"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "decided_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Decided At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "status",
+          "to_user_id",
+          "to_name",
+          "to_service",
+          "from_name",
+          "reason",
+          "rejection_reason",
+          "created_at",
+          "decided_at"
+        ],
+        "title": "ReferralOut"
+      },
+      "ReferralStatus": {
+        "type": "string",
+        "enum": [
+          "PENDING",
+          "ACCEPTED",
+          "REJECTED"
+        ],
+        "title": "ReferralStatus"
+      },
+      "Region": {
+        "type": "string",
+        "enum": [
+          "AUH",
+          "YDE"
+        ],
+        "title": "Region"
+      },
+      "RegionConfig": {
+        "properties": {
+          "region": {
+            "$ref": "#/components/schemas/Region"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "default_language": {
+            "$ref": "#/components/schemas/Language"
+          },
+          "languages": {
+            "items": {
+              "$ref": "#/components/schemas/Language"
+            },
+            "type": "array",
+            "title": "Languages"
+          },
+          "emergency_text": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object",
+            "title": "Emergency Text"
+          },
+          "emergency_number": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Emergency Number"
+          }
+        },
+        "type": "object",
+        "required": [
+          "region",
+          "name",
+          "default_language",
+          "languages",
+          "emergency_text",
+          "emergency_number"
+        ],
+        "title": "RegionConfig"
+      },
+      "ReplyRequest": {
+        "properties": {
+          "text": {
+            "type": "string",
+            "maxLength": 500,
+            "minLength": 1,
+            "title": "Text"
+          }
+        },
+        "type": "object",
+        "required": [
+          "text"
+        ],
+        "title": "ReplyRequest"
+      },
+      "ResetResponse": {
+        "properties": {
+          "reset": {
+            "type": "boolean",
+            "title": "Reset"
+          },
+          "cases": {
+            "type": "integer",
+            "title": "Cases"
+          },
+          "clock": {
+            "$ref": "#/components/schemas/ClockOut"
+          }
+        },
+        "type": "object",
+        "required": [
+          "reset",
+          "cases",
+          "clock"
+        ],
+        "title": "ResetResponse"
+      },
+      "RoleName": {
+        "type": "string",
+        "enum": [
+          "patient",
+          "coordinator",
+          "clinician",
+          "analyst"
+        ],
+        "title": "RoleName"
+      },
+      "SampleReading": {
+        "properties": {
+          "day": {
+            "type": "integer",
+            "title": "Day"
+          },
+          "time": {
+            "type": "string",
+            "title": "Time"
+          },
+          "systolic": {
+            "type": "integer",
+            "title": "Systolic"
+          },
+          "diastolic": {
+            "type": "integer",
+            "title": "Diastolic"
+          },
+          "pulse": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pulse"
+          }
+        },
+        "type": "object",
+        "required": [
+          "day",
+          "time",
+          "systolic",
+          "diastolic"
+        ],
+        "title": "SampleReading"
+      },
+      "SendRequest": {
+        "properties": {
+          "draft": {
+            "$ref": "#/components/schemas/DraftOut"
+          },
+          "channel": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Channel"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "approve": {
+            "type": "boolean",
+            "title": "Approve",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "draft"
+        ],
+        "title": "SendRequest"
+      },
+      "SendResponse": {
+        "properties": {
+          "message": {
+            "$ref": "#/components/schemas/MessageOut"
+          }
+        },
+        "type": "object",
+        "required": [
+          "message"
+        ],
+        "title": "SendResponse"
+      },
+      "Severity": {
+        "type": "string",
+        "enum": [
+          "RAISED",
+          "SEVERE"
+        ],
+        "title": "Severity"
+      },
+      "SimulationResponse": {
+        "properties": {
+          "available": {
+            "type": "boolean",
+            "title": "Available"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "available"
+        ],
+        "title": "SimulationResponse"
+      },
+      "SlotOut": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "starts_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Starts At"
+          },
+          "provider_name": {
+            "type": "string",
+            "title": "Provider Name"
+          },
+          "location": {
+            "type": "string",
+            "title": "Location"
+          },
+          "cover": {
+            "$ref": "#/components/schemas/CoverOut"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "starts_at",
+          "provider_name",
+          "location",
+          "cover"
+        ],
+        "title": "SlotOut"
+      },
+      "Split": {
+        "type": "string",
+        "enum": [
+          "none",
+          "language",
+          "nationality_group",
+          "sex",
+          "age_band"
+        ],
+        "title": "Split"
+      },
+      "State": {
+        "type": "string",
+        "enum": [
+          "RESULT_ISSUED",
+          "NOTIFIED",
+          "ACKNOWLEDGED",
+          "CONFIRMED",
+          "REFERRED",
+          "APPOINTMENT_BOOKED",
+          "IN_CARE",
+          "CLOSED"
+        ],
+        "title": "State"
+      },
+      "TaskOut": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "type": {
+            "type": "string",
+            "title": "Type"
+          },
+          "title_key": {
+            "type": "string",
+            "title": "Title Key"
+          },
+          "owner_role": {
+            "$ref": "#/components/schemas/RoleName"
+          },
+          "owner_user_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Owner User Id"
+          },
+          "due_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Due At"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "OPEN",
+              "DONE"
+            ],
+            "title": "Status"
+          },
+          "overdue": {
+            "type": "boolean",
+            "title": "Overdue"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "type",
+          "title_key",
+          "owner_role",
+          "owner_user_id",
+          "due_at",
+          "status",
+          "overdue",
+          "created_at"
+        ],
+        "title": "TaskOut"
+      },
+      "TeachBackOut": {
+        "properties": {
+          "question": {
+            "type": "string",
+            "title": "Question"
+          },
+          "options": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Options"
+          },
+          "language": {
+            "$ref": "#/components/schemas/Language"
+          }
+        },
+        "type": "object",
+        "required": [
+          "question",
+          "options",
+          "language"
+        ],
+        "title": "TeachBackOut"
+      },
+      "UserOut": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "persona": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PersonaKey"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "role": {
+            "$ref": "#/components/schemas/RoleName"
+          },
+          "region": {
+            "$ref": "#/components/schemas/Region"
+          },
+          "organisation": {
+            "type": "string",
+            "title": "Organisation"
+          },
+          "language": {
+            "$ref": "#/components/schemas/Language"
+          },
+          "patient_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Patient Id"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "persona",
+          "name",
+          "role",
+          "region",
+          "organisation",
+          "language",
+          "patient_id",
+          "description"
+        ],
+        "title": "UserOut"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      },
+      "NotifyPayload": {
+        "additionalProperties": false,
+        "properties": {
+          "template_id": {
+            "title": "Template Id",
+            "type": "string"
+          },
+          "language": {
+            "$ref": "#/components/schemas/Language"
+          },
+          "channel": {
+            "$ref": "#/components/schemas/Channel"
+          }
+        },
+        "required": [
+          "template_id",
+          "language",
+          "channel"
+        ],
+        "title": "NotifyPayload",
+        "type": "object"
+      },
+      "RedFlag": {
+        "enum": [
+          "chest_pain",
+          "shortness_of_breath",
+          "severe_headache",
+          "vision_change",
+          "confusion",
+          "one_sided_weakness"
+        ],
+        "title": "RedFlag",
+        "type": "string"
+      },
+      "AcknowledgePayload": {
+        "additionalProperties": false,
+        "properties": {
+          "teach_back_answer": {
+            "title": "Teach Back Answer",
+            "type": "string"
+          },
+          "red_flags": {
+            "items": {
+              "$ref": "#/components/schemas/RedFlag"
+            },
+            "title": "Red Flags",
+            "type": "array"
+          },
+          "confidence": {
+            "anyOf": [
+              {
+                "maximum": 5,
+                "minimum": 1,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Confidence"
+          }
+        },
+        "required": [
+          "teach_back_answer"
+        ],
+        "title": "AcknowledgePayload",
+        "type": "object"
+      },
+      "ChooseConfirmationPayload": {
+        "additionalProperties": false,
+        "properties": {
+          "method": {
+            "$ref": "#/components/schemas/ConfirmationMethod"
+          }
+        },
+        "required": [
+          "method"
+        ],
+        "title": "ChooseConfirmationPayload",
+        "type": "object"
+      },
+      "AddReadingPayload": {
+        "additionalProperties": false,
+        "properties": {
+          "systolic": {
+            "maximum": 300,
+            "minimum": 60,
+            "title": "Systolic",
+            "type": "integer"
+          },
+          "diastolic": {
+            "maximum": 200,
+            "minimum": 30,
+            "title": "Diastolic",
+            "type": "integer"
+          },
+          "pulse": {
+            "anyOf": [
+              {
+                "maximum": 250,
+                "minimum": 20,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Pulse"
+          },
+          "taken_at": {
+            "format": "date-time",
+            "title": "Taken At",
+            "type": "string"
+          },
+          "source": {
+            "$ref": "#/components/schemas/ReadingSource"
+          }
+        },
+        "required": [
+          "systolic",
+          "diastolic",
+          "taken_at",
+          "source"
+        ],
+        "title": "AddReadingPayload",
+        "type": "object"
+      },
+      "ReviewOutcome": {
+        "enum": [
+          "CONFIRMED",
+          "NOT_CONFIRMED"
+        ],
+        "title": "ReviewOutcome",
+        "type": "string"
+      },
+      "ReviewConfirmationPayload": {
+        "additionalProperties": false,
+        "properties": {
+          "outcome": {
+            "$ref": "#/components/schemas/ReviewOutcome"
+          },
+          "note": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Note"
+          }
+        },
+        "required": [
+          "outcome"
+        ],
+        "title": "ReviewConfirmationPayload",
+        "type": "object"
+      },
+      "ReferPayload": {
+        "additionalProperties": false,
+        "properties": {
+          "to_user_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "To User Id"
+          },
+          "to_service": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "To Service"
+          },
+          "reason": {
+            "minLength": 3,
+            "title": "Reason",
+            "type": "string"
+          }
+        },
+        "required": [
+          "reason"
+        ],
+        "title": "ReferPayload",
+        "type": "object"
+      },
+      "EmptyPayload": {
+        "additionalProperties": false,
+        "properties": {},
+        "title": "EmptyPayload",
+        "type": "object"
+      },
+      "ReasonPayload": {
+        "additionalProperties": false,
+        "properties": {
+          "reason": {
+            "minLength": 3,
+            "title": "Reason",
+            "type": "string"
+          }
+        },
+        "required": [
+          "reason"
+        ],
+        "title": "ReasonPayload",
+        "type": "object"
+      },
+      "AssignOwnerPayload": {
+        "additionalProperties": false,
+        "properties": {
+          "user_id": {
+            "title": "User Id",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "user_id"
+        ],
+        "title": "AssignOwnerPayload",
+        "type": "object"
+      },
+      "BookAppointmentPayload": {
+        "additionalProperties": false,
+        "properties": {
+          "slot_id": {
+            "title": "Slot Id",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "slot_id"
+        ],
+        "title": "BookAppointmentPayload",
+        "type": "object"
+      },
+      "VisitOutcome": {
+        "enum": [
+          "TREATMENT_STARTED",
+          "SURVEILLANCE"
+        ],
+        "title": "VisitOutcome",
+        "type": "string"
+      },
+      "RecordVisitPayload": {
+        "additionalProperties": false,
+        "properties": {
+          "outcome": {
+            "$ref": "#/components/schemas/VisitOutcome"
+          },
+          "note": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Note"
+          }
+        },
+        "required": [
+          "outcome"
+        ],
+        "title": "RecordVisitPayload",
+        "type": "object"
+      },
+      "PlanCheckinPayload": {
+        "additionalProperties": false,
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/CheckinStatus"
+          },
+          "barrier": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Barrier"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "accept_larger": {
+            "default": false,
+            "title": "Accept Larger",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "status"
+        ],
+        "title": "PlanCheckinPayload",
+        "type": "object"
+      },
+      "ClosePayload": {
+        "additionalProperties": false,
+        "description": "Fields are optional here so the closure gate, not the schema, explains what is missing.",
+        "properties": {
+          "evidence_type": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ClosureEvidence"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "evidence_ref": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Evidence Ref"
+          },
+          "decision_note": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Decision Note"
+          }
+        },
+        "title": "ClosePayload",
+        "type": "object"
+      },
+      "ConsentPayload": {
+        "additionalProperties": false,
+        "properties": {
+          "purpose": {
+            "$ref": "#/components/schemas/ConsentPurpose"
+          },
+          "granted": {
+            "title": "Granted",
+            "type": "boolean"
+          },
+          "channel": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Channel"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          }
+        },
+        "required": [
+          "purpose",
+          "granted"
+        ],
+        "title": "ConsentPayload",
+        "type": "object"
+      },
+      "UrgentReviewPayload": {
+        "additionalProperties": false,
+        "properties": {
+          "note": {
+            "minLength": 3,
+            "title": "Note",
+            "type": "string"
+          }
+        },
+        "required": [
+          "note"
+        ],
+        "title": "UrgentReviewPayload",
+        "type": "object"
+      }
+    }
+  }
+}

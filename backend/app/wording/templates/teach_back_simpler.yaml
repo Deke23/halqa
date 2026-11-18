@@ -1,0 +1,20 @@
+# Approved template. Edit the text here, bump `version`, and keep every {slot} listed in required_slots.
+id: teach_back_simpler
+version: 1
+purpose: Simpler re-explanation shown after a wrong teach-back answer.
+channel_limits:
+  app: 900
+  whatsapp: 1000
+required_slots:
+- reading
+sample_slots:
+  en:
+    reading: 152/96
+  ar:
+    reading: 152/96
+  fr:
+    reading: 164/102
+text:
+  en: Let us say it in a simpler way. Your reading of {reading} is higher than we like to see. One reading is not enough to know what is going on. The next step is to measure again. We do not need anything else from you today.
+  ar: دعنا نشرح بطريقة أبسط. قراءتك {reading} أعلى مما نفضّل. القراءة الواحدة لا تكفي لمعرفة ما يحدث فعلًا. الخطوة التالية هي القياس مرة أخرى. لا نحتاج منك شيئًا آخر اليوم.
+  fr: Disons-le plus simplement. Votre mesure de {reading} est plus haute que ce que nous souhaitons. Une seule mesure ne suffit pas pour savoir ce qui se passe. La prochaine étape est de mesurer à nouveau. Nous n'avons rien d'autre à vous demander aujourd'hui.
