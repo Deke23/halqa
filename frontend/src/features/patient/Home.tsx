@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { BPReading, Card } from "@/components";
 import { formatDate } from "@/lib/format";
 import { latestMessage, useThread } from "./api";
-import { NextStepCard, Notice, PageTitle, StatusBadge, firstName, plainName, useCurrentCase } from "./ui";
+import { NextStepCard, Notice, PageTitle, StatusBadge, firstName, useCurrentCase } from "./ui";
 
 const rowLink =
   "flex min-h-11 flex-col gap-0.5 rounded-lg border border-line bg-surface px-4 py-3 hover:bg-surface-2";
@@ -87,7 +87,7 @@ function ClosedSummary() {
           {closure && (
             <p className="text-sm text-muted">
               <bdi>{t("closed.closedOn", { date: formatDate(closure.closed_at, i18n.language) })}</bdi>
-              {closure.closed_by_name ? ` · ${t("closed.by", { name: plainName(closure.closed_by_name) })}` : ""}
+              {closure.closed_by_person ? ` · ${t("closed.by", { name: closure.closed_by_person.name })}` : ""}
             </p>
           )}
           <p>{t("closed.note")}</p>

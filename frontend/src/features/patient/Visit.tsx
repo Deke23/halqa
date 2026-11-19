@@ -1,14 +1,15 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Card, EmptyState, ErrorState, Loading, SimulatedTag, useErrorText, useToast } from "@/components";
-import { formatDateTime, formatNumber } from "@/lib/format";
+import { formatNumber } from "@/lib/format";
 import { cx } from "@/lib/cx";
-import { usePatientAction, usePatientSlots, type SlotOut } from "./api";
+import { formatLocal, usePatientAction, usePatientSlots, useRegionZone, type SlotOut } from "./api";
 import { Notice, PageTitle, useCurrentCase } from "./ui";
 
 export default function Visit() {
   const { t, i18n } = useTranslation("patient");
   const c = useCurrentCase();
+  const tz = useRegionZone(c.region);
   const accepted = c.state === "REFERRED" && c.referral_status === "ACCEPTED";
   const toName = c.referral?.to_name ?? null;
 
@@ -44,7 +45,7 @@ export default function Visit() {
           <dl className="m-0 grid grid-cols-[auto_1fr] gap-x-4 gap-y-2">
             <dt className="text-muted">{t("visit.when")}</dt>
             <dd className="m-0 font-medium">
-              <bdi>{formatDateTime(c.appointment.starts_at, i18n.language)}</bdi>
+              <bdi>{formatLocal(c.appointment.starts_at, i18n.language, tz)}</bdi>
             </dd>
             <dt className="text-muted">{t("visit.with")}</dt>
             <dd className="m-0 font-medium">
@@ -92,6 +93,7 @@ function SlotPicker() {
   const toast = useToast();
   const errorText = useErrorText();
   const c = useCurrentCase();
+  const tz = useRegionZone(c.region);
   const slots = usePatientSlots(c.id, true);
   const act = usePatientAction(c.id);
   const [slotId, setSlotId] = useState<number | null>(null);
@@ -137,7 +139,7 @@ function SlotPicker() {
                 />
                 <span className="flex min-w-0 flex-1 flex-col">
                   <span className="font-semibold">
-                    <bdi>{formatDateTime(s.starts_at, i18n.language)}</bdi>
+                    <bdi>{formatLocal(s.starts_at, i18n.language, tz)}</bdi>
                   </span>
                   <span className="text-sm">
                     <bdi>{s.provider_name}</bdi>

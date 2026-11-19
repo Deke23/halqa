@@ -223,7 +223,7 @@
     "systolic": "Chiffre du haut (systolique)",
     "diastolic": "Chiffre du bas (diastolique)",
     "pulse": "Pouls",
-    "when": "Moment de la mesure (UTC)",
+    "when": "Moment de la mesure (heure de {{zone}})",
     "add": "Ajouter cette mesure",
     "added": "Mesure ajoutée.",
     "errSystolic": "Saisissez un chiffre du haut entre 60 et 260.",
@@ -300,28 +300,16 @@
     },
     "action": {
       "salt": {
-        "name": "Moins de sel",
-        "full": "Cette semaine, goûtez votre plat avant d'ajouter du sel, à chaque repas où vous avez le choix.",
-        "smaller": "Cette semaine, goûtez votre plat avant d'ajouter du sel à un repas par jour.",
-        "smallest": "Cette semaine, goûtez votre plat avant d'ajouter du sel à un seul repas."
+        "name": "Moins de sel"
       },
       "activity": {
-        "name": "Bouger un peu plus",
-        "full": "Cette semaine, marchez 30 minutes pendant cinq jours.",
-        "smaller": "Cette semaine, marchez 15 minutes pendant trois jours.",
-        "smallest": "Cette semaine, marchez 10 minutes pendant un jour."
+        "name": "Bouger un peu plus"
       },
       "sleep": {
-        "name": "Sommeil régulier",
-        "full": "Cette semaine, couchez-vous à peu près à la même heure pendant cinq nuits.",
-        "smaller": "Cette semaine, couchez-vous à peu près à la même heure pendant trois nuits.",
-        "smallest": "Cette semaine, couchez-vous à peu près à la même heure pendant une nuit."
+        "name": "Sommeil régulier"
       },
       "home_bp_check": {
-        "name": "Mesure de la tension à domicile",
-        "full": "Cette semaine, mesurez votre tension chez vous trois matins et notez les chiffres.",
-        "smaller": "Cette semaine, mesurez votre tension chez vous deux matins et notez les chiffres.",
-        "smallest": "Cette semaine, mesurez votre tension chez vous un matin et notez les chiffres."
+        "name": "Mesure de la tension à domicile"
       }
     },
     "checkinTitle": "Comment s'est passée cette semaine ?",
@@ -367,7 +355,11 @@
     "steps": "{{n}} pas",
     "activeMinutes": "{{n}} min d'activité",
     "sleepHours": "{{n}} h de sommeil",
-    "diaryEmpty": "Pas encore de données dans le journal."
+    "diaryEmpty": "Pas encore de données dans le journal.",
+    "pausedTitle": "Vos actions hebdomadaires sont en pause",
+    "pausedText": "Vous avez désactivé les actions hebdomadaires, rien n'est donc demandé. Rien n'est perdu et il n'y a aucune pénalité. Vous pouvez les reprendre quand vous voulez.",
+    "restart": "Reprendre mes actions hebdomadaires",
+    "restarted": "Vos actions hebdomadaires ont repris."
   },
   "messages": {
     "heading": "Messages",
@@ -398,12 +390,12 @@
       "care_coordination": {
         "name": "Coordination des soins",
         "text": "Permet à votre équipe de soins de suivre votre dossier et de vous rappeler chaque étape.",
-        "withdraw": "Votre suivi dépend de ce choix. Sa désactivation est enregistrée avec la date. Vous pouvez le réactiver à tout moment."
+        "withdraw": "Les messages automatiques de votre équipe de soins s'arrêtent, et un médecin est invité à décider de la suite. Rien n'est clos automatiquement. Vous pouvez réactiver ce choix ici à tout moment et les messages reprennent."
       },
       "messaging_channel": {
         "name": "Messages",
         "text": "Permet à votre équipe de soins de vous envoyer des messages {{channel}}.",
-        "withdraw": "Vous ne recevrez plus de messages {{channel}}. Votre équipe de soins pourra utiliser un autre moyen de vous joindre. Vous pouvez le réactiver à tout moment."
+        "withdraw": "Vous ne recevrez plus de messages {{channel}}. Votre équipe de soins sera invitée à vous joindre autrement, par un moyen que vous avez accepté. Vous pouvez le réactiver ici à tout moment."
       },
       "share_with_receiving_provider": {
         "name": "Partage avec la clinique qui reçoit votre orientation",
@@ -413,12 +405,12 @@
       "lifestyle_programme": {
         "name": "Actions hebdomadaires",
         "text": "Nous permet de proposer un petit pas chaque semaine.",
-        "withdraw": "Vous ne recevrez plus d'actions hebdomadaires. Rien d'autre ne change dans votre suivi. Vous pouvez le réactiver à tout moment."
+        "withdraw": "Vos actions hebdomadaires sont en pause. Aucune nouvelle action ni rappel, et aucune semaine n'est notée comme manquée. Réactivez ce choix pour reprendre."
       },
       "research_aggregate": {
         "name": "Synthèses anonymes",
         "text": "Vous compte dans des chiffres de synthèse qui ne peuvent pas être reliés à vous.",
-        "withdraw": "Vous ne serez plus compté dans les chiffres de synthèse. Cela ne change pas votre suivi."
+        "withdraw": "Vous ne serez plus compté dans les statistiques agrégées. Cela ne change pas votre suivi. Vous pouvez le réactiver à tout moment."
       }
     },
     "confirmTitle": "Désactiver ce choix ?",
@@ -433,7 +425,13 @@
       "L'IA sert seulement à aider à formuler les messages. Une personne approuve tout message reformulé. Elle ne décide jamais qui est urgent, qui est responsable ni si un dossier est clos.",
       "Seul un médecin peut clore votre dossier, avec des éléments ou une décision enregistrée.",
       "Des noms comme IFHAS, Thiqa et Malaffi n'apparaissent que comme étiquettes de sources simulées."
-    ]
+    ],
+    "changedOffCare": "Choix désactivé. Un médecin décidera avec vous de la suite. Vous pouvez le réactiver ici à tout moment.",
+    "channelName": {
+      "APP": "application",
+      "SMS": "SMS",
+      "WHATSAPP": "WhatsApp"
+    }
   },
   "closed": {
     "heading": "Votre dossier est clos",
@@ -470,8 +468,9 @@
       "book": "quand l'orientation aura été acceptée",
       "visit": "quand votre consultation sera réservée",
       "skip": "quand vous serez suivi",
-      "sampleWeek": "quand vous aurez répondu 1 à votre premier message",
-      "close": "quand vous serez suivi"
+      "sampleWeek": "quand vous aurez répondu aux questions du fil",
+      "close": "quand vous serez suivi",
+      "abpm": "quand vous aurez choisi l'appareil de 24 heures"
     },
     "working": "En cours",
     "did": {
@@ -482,7 +481,8 @@
       "visit": "{{who}} a enregistré la consultation et commencé le traitement.",
       "skip": "L'horloge de démonstration a avancé d'une semaine.",
       "sampleWeek": "Une semaine d'exemple de mesures a été envoyée.",
-      "close": "{{who}} a clos le dossier avec une décision enregistrée."
+      "close": "{{who}} a clos le dossier avec une décision enregistrée.",
+      "abpm": "{{who}} a saisi les mesures de votre appareil de 24 heures."
     },
     "note": {
       "review": "Demo shortcut: home average reviewed.",
@@ -490,7 +490,8 @@
       "close": "Demo shortcut: closed to show the closed case screen."
     },
     "failed": "Cela n'a pas fonctionné : {{message}}",
-    "close": "Équipe de soins : clore mon dossier"
+    "close": "Équipe de soins : clore mon dossier",
+    "abpm": "Équipe de soins : enregistrer mon appareil de 24 heures"
   },
   "phone": {
     "title": "Messages de votre équipe de soins",
@@ -498,28 +499,32 @@
     "channelLabel": "Aspect de la conversation",
     "sms": "SMS",
     "whatsapp": "WhatsApp",
-    "simulated": "Simulé",
     "channelNote": "L'aspect SMS ou WhatsApp est seulement un style. Il ne change pas la façon dont les messages sont envoyés.",
     "inputLabel": "Votre réponse",
     "inputPlaceholder": "Écrire une réponse",
     "send": "Envoyer",
     "sending": "Envoi",
     "quickLabel": "Réponses rapides",
-    "quick": {
-      "understood": "1  Compris",
-      "callMe": "2  Appelez-moi",
-      "done": "A  Fait",
-      "partly": "B  En partie",
-      "missed": "C  Pas cette semaine",
-      "reading": "150/95"
-    },
-    "hint": "Répondez 1 ou 2. Pour envoyer une tension, écrivez-la ainsi : 150/95. Répondez STOP pour arrêter les messages.",
-    "hintCare": "Répondez A, B ou C pour votre bilan de la semaine.",
+    "hint": "Utilisez les boutons ou écrivez votre réponse. Pour envoyer une tension, écrivez-la ainsi : 150/95. Répondez STOP pour arrêter les messages.",
     "empty": "Aucun message pour le moment.",
     "loadError": "Les messages n'ont pas pu être chargés",
     "you": "Vous",
     "delivered": "Remis",
     "contact": "Votre contact",
-    "stepOwner": "Responsable de l'étape : {{name}}. Avant le {{date}}"
+    "stepOwner": "Responsable de l'étape : {{name}}. Avant le {{date}}",
+    "reply": {
+      "read": "Lu",
+      "yes": "Oui",
+      "no": "Non",
+      "option_a": "Choix A",
+      "option_b": "Choix B",
+      "option_c": "Choix C",
+      "reading": "Envoyer une mesure",
+      "done": "Fait",
+      "partly": "En partie",
+      "missed": "Pas cette semaine",
+      "call_me": "Appelez-moi"
+    },
+    "readingHint": "Écrivez-la ainsi : 150/95"
   }
 }

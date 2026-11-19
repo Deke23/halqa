@@ -1,0 +1,24 @@
+// Dev aid: reset the API and drive Khalid to a given state through real actions. Usage: node drive-khalid.mjs [NOTIFIED|ACKNOWLEDGED|IN_CARE]
+const B = process.env.API || 'http://localhost:8010/api';
+const tok = {};
+const g = async p => (tok[p] ??= (await (await fetch(B + '/auth/guest', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ persona: p }) })).json()).token);
+const call = async (p, path, method = 'GET', body) => { const r = await fetch(B + path, { method, headers: { Authorization: 'Bearer ' + await g(p), 'content-type': 'application/json' }, body: body && JSON.stringify(body) }); const j = await r.json().catch(() => ({})); if (!r.ok) throw new Error(path + ' ' + r.status + ' ' + JSON.stringify(j)); return j; };
+const upto = process.argv[2] || 'IN_CARE';
+await call('coordinator_auh', '/demo/reset', 'POST');
+const c = await call('patient_auh', '/my/case'); const id = c.id;
+const act = (p, a, payload = {}) => call(p, `/cases/${id}/actions`, 'POST', { action: a, payload });
+if (upto === 'NOTIFIED') process.exit(0);
+await act('patient_auh', 'acknowledge', { teach_back_answer: '2', red_flags: [], confidence: 4 });
+if (upto === 'ACKNOWLEDGED') process.exit(0);
+await act('patient_auh', 'choose_confirmation', { method: 'HBPM' });
+const now = Date.now();
+for (let d = 5; d >= 1; d--) for (const h of [7, 19]) await act('patient_auh', 'add_reading', { systolic: 142, diastolic: 90, taken_at: new Date(now - d * 86400000 + (h - 12) * 3600000).toISOString(), source: 'HOME_CUFF' });
+await act('clinician_pcp', 'review_confirmation', { outcome: 'CONFIRMED' });
+await act('clinician_pcp', 'refer', { to_service: 'hypertension_clinic', reason: 'Raised average' });
+await act('clinician_specialist', 'accept_referral');
+if (upto === 'REFERRED') process.exit(0);
+const slots = await call('patient_auh', `/cases/${id}/slots`);
+await act('patient_auh', 'book_appointment', { slot_id: slots[0].id });
+await act('clinician_specialist', 'record_visit', { outcome: 'TREATMENT_STARTED' });
+await act('patient_auh', 'plan_checkin', { status: 'missed', barrier: 'TIME' });
+console.log('ok', upto);

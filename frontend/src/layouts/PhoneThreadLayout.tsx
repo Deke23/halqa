@@ -11,8 +11,8 @@ import { SimulatedTag } from "@/components/Tag";
 export function PhoneThreadLayout() {
   const { t } = useTranslation();
   return (
-    <div className="flex flex-1 items-start justify-center bg-surface-2 p-4 sm:p-8">
-      <div className="flex h-[min(780px,calc(100dvh-6rem))] w-full max-w-[380px] flex-col overflow-hidden rounded-[2.5rem] border-[10px] border-ink bg-surface shadow-xl">
+    <div className="flex flex-1 items-start justify-center bg-surface-2 p-2 sm:p-8">
+      <div className="flex h-[min(780px,calc(100dvh-6.5rem))] w-full max-w-[380px] flex-col overflow-hidden rounded-[2rem] border-[6px] sm:rounded-[2.5rem] sm:border-[10px] border-ink bg-surface shadow-xl">
         <div aria-hidden="true" className="mx-auto mt-1 h-1.5 w-20 rounded-full bg-ink/70" />
         <div className="flex items-center justify-between gap-2 border-b border-line px-4 py-2">
           <span className="text-sm font-semibold">{t("nav.phone")}</span>

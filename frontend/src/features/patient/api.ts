@@ -4,7 +4,8 @@
  */
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { api, type ApiError } from "@/api/client";
-import { qk, useCaseAction, useConfig, useMyCase } from "@/api/hooks";
+import { useTranslation } from "react-i18next";
+import { qk, useCaseAction, useConfig } from "@/api/hooks";
 import type { components } from "@/api/schema";
 
 type S = components["schemas"];
@@ -19,9 +20,15 @@ export type ConfigOut = S["ConfigOut"];
 export type Feedback = S["Feedback"];
 export type Language = S["Language"];
 export type Action = S["Action"];
+export type ValidReply = S["ReplyOption"];
 
+/** The patient's case. `language` selects the structured teach-back and the plan texts. */
 export function usePatientCase() {
-  return useMyCase<PatientCase>();
+  const { i18n } = useTranslation();
+  return useQuery<PatientCase>({
+    queryKey: [...qk.myCase, i18n.language],
+    queryFn: () => api<PatientCase>("/my/case", { query: { language: i18n.language } }),
+  });
 }
 
 /** Posts an action as the signed-in patient. The result carries `feedback` when the backend has a message. */
@@ -69,19 +76,6 @@ export function useSendReply() {
 
 // ---------------------------------------------------------------------------------------------
 // Helpers shared by several screens
-
-/** Teach-back options are the numbers in the question text. The backend text is used as written. */
-export function parseTeachBack(text: string): { question: string; options: { id: string; label: string }[] } {
-  const lines = text.split("\n");
-  const options: { id: string; label: string }[] = [];
-  const stem: string[] = [];
-  for (const line of lines) {
-    const m = /^\s*(\d)\.\s+(.*)$/.exec(line);
-    if (m) options.push({ id: m[1]!, label: m[2]!.trim() });
-    else stem.push(line);
-  }
-  return { question: stem.join(" ").trim(), options };
-}
 
 export function latestMessage(messages: MessageOut[] | undefined, templateId: string): MessageOut | undefined {
   return [...(messages ?? [])].reverse().find((m) => m.template_id === templateId);
@@ -147,7 +141,7 @@ async function tokenFor(persona: string, fresh = false): Promise<{ token: string
   const cached = tokenCache.get(persona);
   if (cached && !fresh) return cached;
   const res = await rawFetch<S["AuthResponse"]>("/auth/guest", null, "POST", { persona });
-  const entry = { token: res.token, name: res.user.name };
+  const entry = { token: res.token, name: res.user.display_name };
   tokenCache.set(persona, entry);
   return entry;
 }
@@ -201,4 +195,57 @@ async function currentToken(): Promise<string | null> {
 export function useRefreshAll() {
   const qc = useQueryClient();
   return () => qc.invalidateQueries();
+}
+
+// ---------------------------------------------------------------------------------------------
+// Local time in the patient's region. The backend stores UTC. The reading form works in local time.
+
+function parts(d: Date, tz: string): Record<string, number> {
+  const out: Record<string, number> = {};
+  for (const p of new Intl.DateTimeFormat("en-CA", {
+    timeZone: tz, hourCycle: "h23", year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit",
+  }).formatToParts(d)) {
+    if (p.type !== "literal") out[p.type] = Number(p.value);
+  }
+  return out;
+}
+
+function offsetMs(d: Date, tz: string): number {
+  const p = parts(d, tz);
+  return Date.UTC(p.year!, p.month! - 1, p.day!, p.hour!, p.minute!) - Math.floor(d.getTime() / 60000) * 60000;
+}
+
+/** Value for a datetime-local input showing `d` on the wall clock of `tz`. */
+export function toZonedInput(d: Date, tz: string): string {
+  const p = parts(d, tz);
+  const z = (n: number, w = 2) => String(n).padStart(w, "0");
+  return `${z(p.year!, 4)}-${z(p.month!)}-${z(p.day!)}T${z(p.hour!)}:${z(p.minute!)}`;
+}
+
+/** ISO UTC string for a datetime-local value read on the wall clock of `tz`. */
+export function fromZonedInput(value: string, tz: string): string {
+  const [date, time] = value.split("T");
+  const [y, m, d] = date!.split("-").map(Number);
+  const [hh, mm] = time!.split(":").map(Number);
+  const asUtc = Date.UTC(y!, m! - 1, d!, hh!, mm!);
+  let guess = asUtc - offsetMs(new Date(asUtc), tz);
+  guess = asUtc - offsetMs(new Date(guess), tz);
+  return new Date(guess).toISOString();
+}
+
+export function zoneLabel(tz: string): string {
+  return tz.split("/").pop()!.replace(/_/g, " ");
+}
+
+/** Date and time on the wall clock of the patient's region. Latin digits in every language. */
+export function formatLocal(iso: string, lng: string, tz: string): string {
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return "";
+  const loc = lng === "ar" ? "ar-AE-u-nu-latn" : lng === "fr" ? "fr-FR-u-nu-latn" : "en-GB-u-nu-latn";
+  return new Intl.DateTimeFormat(loc, { day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit", timeZone: tz }).format(d);
+}
+
+/** Time zone of the signed-in patient's region, from the public config. Falls back to UTC. */
+export function useRegionZone(region: string | undefined): string {
+  return useRegionConfig(region).region?.timezone ?? "UTC";
 }

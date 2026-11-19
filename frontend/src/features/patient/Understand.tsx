@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { Button, Card, Loading, RadioGroup, useErrorText, useToast } from "@/components";
+import { Button, Card, RadioGroup, useErrorText, useToast } from "@/components";
 import type { components } from "@/api/schema";
-import { latestMessage, parseTeachBack, useRegionConfig, useThread, usePatientAction, type Feedback } from "./api";
+import { useRegionConfig, usePatientAction, type Feedback } from "./api";
 import { Notice, PageTitle, useCurrentCase } from "./ui";
 
 type RedFlag = components["schemas"]["RedFlag"];
@@ -16,7 +16,6 @@ export default function Understand() {
   const toast = useToast();
   const errorText = useErrorText();
   const c = useCurrentCase();
-  const thread = useThread(i18n.language);
   const region = useRegionConfig(c.region);
   const act = usePatientAction(c.id);
 
@@ -68,9 +67,7 @@ export default function Understand() {
     );
   }
 
-  const question = latestMessage(thread.data, "teach_back_question");
-  const tb = question ? parseTeachBack(question.text) : null;
-  const simpler = latestMessage(thread.data, "teach_back_simpler");
+  const tb = c.teach_back ?? null;
 
   const submit = () => {
     setSubmitted(true);
@@ -131,16 +128,14 @@ export default function Understand() {
       </Card>
 
       <Card title={t("understand.tbTitle")}>
-        {thread.isLoading ? (
-          <Loading />
-        ) : !tb || tb.options.length === 0 ? (
+        {!tb || tb.options.length === 0 ? (
           <p className="text-muted">{t("understand.tbMissing")}</p>
         ) : (
           <div className="flex flex-col gap-4">
             <p className="font-medium">{tb.question}</p>
             {feedback && feedback.code === "TEACH_BACK_RETRY" && (
               <Notice tone="accent" title={t("understand.retryTitle")}>
-                <p className="m-0 whitespace-pre-line">{simpler?.text ?? feedback.message}</p>
+                <p className="m-0 whitespace-pre-line">{tb?.simpler || feedback.message}</p>
                 <p className="m-0 mt-2 text-sm">{t("understand.retryHint")}</p>
               </Notice>
             )}
@@ -150,7 +145,7 @@ export default function Understand() {
               value={answer}
               onChange={setAnswer}
               error={submitted && !answer ? t("understand.needAnswer") : undefined}
-              options={tb.options.map((o) => ({ value: o.id, label: o.label }))}
+              options={tb.options.map((label, i) => ({ value: String(i + 1), label }))}
             />
             <RadioGroup
               name="confidence"

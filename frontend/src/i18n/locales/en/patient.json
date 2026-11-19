@@ -223,7 +223,7 @@
     "systolic": "Top number (systolic)",
     "diastolic": "Bottom number (diastolic)",
     "pulse": "Pulse",
-    "when": "When you measured (UTC)",
+    "when": "When you measured ({{zone}} time)",
     "add": "Add this reading",
     "added": "Reading added.",
     "errSystolic": "Enter a top number between 60 and 260.",
@@ -300,28 +300,16 @@
     },
     "action": {
       "salt": {
-        "name": "Less salt",
-        "full": "This week, taste your food before you add salt, at every meal where you have a choice.",
-        "smaller": "This week, taste your food before you add salt at one meal a day.",
-        "smallest": "This week, taste your food before you add salt at one meal."
+        "name": "Less salt"
       },
       "activity": {
-        "name": "Move a little more",
-        "full": "This week, walk for 30 minutes on five days.",
-        "smaller": "This week, walk for 15 minutes on three days.",
-        "smallest": "This week, walk for 10 minutes on one day."
+        "name": "Move a little more"
       },
       "sleep": {
-        "name": "Steady sleep",
-        "full": "This week, go to bed at about the same time on five nights.",
-        "smaller": "This week, go to bed at about the same time on three nights.",
-        "smallest": "This week, go to bed at about the same time on one night."
+        "name": "Steady sleep"
       },
       "home_bp_check": {
-        "name": "Home blood pressure check",
-        "full": "This week, check your blood pressure at home on three mornings and write the numbers down.",
-        "smaller": "This week, check your blood pressure at home on two mornings and write the numbers down.",
-        "smallest": "This week, check your blood pressure at home on one morning and write the numbers down."
+        "name": "Home blood pressure check"
       }
     },
     "checkinTitle": "How did this week go?",
@@ -367,7 +355,11 @@
     "steps": "{{n}} steps",
     "activeMinutes": "{{n}} active minutes",
     "sleepHours": "{{n}} h sleep",
-    "diaryEmpty": "No diary data yet."
+    "diaryEmpty": "No diary data yet.",
+    "pausedTitle": "Your weekly steps are paused",
+    "pausedText": "You turned off weekly actions, so nothing is asked of you. Nothing is lost and there is no penalty. You can restart whenever you like.",
+    "restart": "Restart my weekly steps",
+    "restarted": "Your weekly steps are back on."
   },
   "messages": {
     "heading": "Messages",
@@ -398,12 +390,12 @@
       "care_coordination": {
         "name": "Care coordination",
         "text": "Lets your care team follow your case and remind you of each step.",
-        "withdraw": "Your follow-up depends on this choice. Turning it off is recorded with the date. You can turn it back on at any time."
+        "withdraw": "Automated messages from your care team stop, and a clinician is asked to decide what happens next. Nothing closes automatically. You can turn this back on here at any time and messages start again."
       },
       "messaging_channel": {
         "name": "Messages",
         "text": "Lets your care team send you messages {{channel}}.",
-        "withdraw": "You will not get messages {{channel}}. Your care team may use another way to reach you. You can turn it back on at any time."
+        "withdraw": "You will not get messages {{channel}}. Your care team will be asked to reach you another way you agreed to. You can turn it back on here at any time."
       },
       "share_with_receiving_provider": {
         "name": "Share with the clinic that receives your referral",
@@ -413,12 +405,12 @@
       "lifestyle_programme": {
         "name": "Weekly actions",
         "text": "Lets us suggest one small step each week.",
-        "withdraw": "You will not get weekly actions. Nothing else about your care changes. You can turn it back on at any time."
+        "withdraw": "Your weekly steps are paused. There are no new weekly actions or reminders, and nothing is recorded as missed. Turn it back on to restart."
       },
       "research_aggregate": {
         "name": "Anonymous summaries",
         "text": "Counts you in summary figures that cannot be traced to you.",
-        "withdraw": "You will not be counted in summary figures. This does not change your care."
+        "withdraw": "You will not be counted in aggregate statistics. This does not change your care. You can turn it back on at any time."
       }
     },
     "confirmTitle": "Turn off this choice?",
@@ -433,7 +425,13 @@
       "AI is only used to help word messages. A person approves any reworded message. It never decides who is urgent, who is responsible or whether a case closes.",
       "Only a clinician can close your case, and only with evidence or a recorded decision.",
       "Names such as IFHAS, Thiqa and Malaffi appear only as labels of simulated sources."
-    ]
+    ],
+    "changedOffCare": "Choice turned off. A clinician will decide the next step with you. You can turn it back on here at any time.",
+    "channelName": {
+      "APP": "app",
+      "SMS": "SMS",
+      "WHATSAPP": "WhatsApp"
+    }
   },
   "closed": {
     "heading": "Your case is closed",
@@ -470,8 +468,9 @@
       "book": "after the referral is accepted",
       "visit": "after your visit is booked",
       "skip": "once you are in care",
-      "sampleWeek": "after you reply 1 to your first message",
-      "close": "once you are in care"
+      "sampleWeek": "after you answer the questions in the thread",
+      "close": "once you are in care",
+      "abpm": "after you choose the 24 hour monitor"
     },
     "working": "Working",
     "did": {
@@ -482,7 +481,8 @@
       "visit": "{{who}} recorded the visit and started treatment.",
       "skip": "The demo clock moved forward by one week.",
       "sampleWeek": "A sample week of readings was sent.",
-      "close": "{{who}} closed the case with a recorded decision."
+      "close": "{{who}} closed the case with a recorded decision.",
+      "abpm": "{{who}} entered the readings from your 24 hour monitor."
     },
     "note": {
       "review": "Demo shortcut: home average reviewed.",
@@ -490,7 +490,8 @@
       "close": "Demo shortcut: closed to show the closed case screen."
     },
     "failed": "That did not work: {{message}}",
-    "close": "Care team: close my case"
+    "close": "Care team: close my case",
+    "abpm": "Care team: record my 24 hour monitor"
   },
   "phone": {
     "title": "Messages from your care team",
@@ -498,28 +499,32 @@
     "channelLabel": "Look of the thread",
     "sms": "SMS",
     "whatsapp": "WhatsApp",
-    "simulated": "Simulated",
     "channelNote": "The SMS or WhatsApp look is only a style. It does not change how messages are sent.",
     "inputLabel": "Your reply",
     "inputPlaceholder": "Type a reply",
     "send": "Send",
     "sending": "Sending",
     "quickLabel": "Quick replies",
-    "quick": {
-      "understood": "1  Understood",
-      "callMe": "2  Call me",
-      "done": "A  Done",
-      "partly": "B  Part of it",
-      "missed": "C  Not this week",
-      "reading": "150/95"
-    },
-    "hint": "Reply 1 or 2. To send a blood pressure, type it like 150/95. Reply STOP to stop messages.",
-    "hintCare": "Reply A, B or C for your weekly check-in.",
+    "hint": "Use the buttons, or type your reply. To send a blood pressure, type it like 150/95. Reply STOP to stop messages.",
     "empty": "No messages yet.",
     "loadError": "The messages did not load",
     "you": "You",
     "delivered": "Delivered",
     "contact": "Your contact",
-    "stepOwner": "Step owner: {{name}}. Due {{date}}"
+    "stepOwner": "Step owner: {{name}}. Due {{date}}",
+    "reply": {
+      "read": "Read",
+      "yes": "Yes",
+      "no": "No",
+      "option_a": "Option A",
+      "option_b": "Option B",
+      "option_c": "Option C",
+      "reading": "Send a reading",
+      "done": "Done",
+      "partly": "Part of it",
+      "missed": "Not this week",
+      "call_me": "Call me"
+    },
+    "readingHint": "Type it like 150/95"
   }
 }

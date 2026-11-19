@@ -10,7 +10,8 @@ It answers Future Health Digital Innovation Challenge, Population Health, Challe
 > - IFHAS, Malaffi, Thiqa, SMS and WhatsApp are simulated. Nothing is connected to a real system and no message is really delivered.
 > - All thresholds and service levels are placeholders pending clinician sign-off. No clinician has reviewed the pathway.
 > - Outcome results come from a simulation on synthetic people, mostly using our own assumptions. They are not evidence of clinical effectiveness.
-> - The optional AI re-wording was tested only with mocked HTTP calls and is off by default.
+> - The optional AI re-wording was tested only with mocked HTTP calls and is off by default. Staff can send only stored, approved templates, never free text.
+- The front-end screens have been clicked through only by the people who built them. An independent end-to-end check is still to come. No public deployment exists.
 > - The prototype is not a medical device and has not been assessed against any medical device regulation.
 
 ## Quick start
@@ -22,7 +23,7 @@ wsl -e bash /mnt/d/Projects/Hackathon/dev/run.sh build
 wsl -e bash /mnt/d/Projects/Hackathon/dev/run.sh up 8000
 ```
 
-Open `http://localhost:8000/api/docs` for the API. To work on the front end:
+Open `http://localhost:8000/api/docs` for the API. Set `DEMO_MODE=false` to switch off guest login, the demo clock, the reset and the intake simulator (default is on). To work on the front end:
 
 ```
 cd frontend
@@ -59,7 +60,7 @@ All are fictional. Choose one on the landing page ("Continue as Guest"). "Reset 
 | `backend/app/db/` | SQLAlchemy models and session |
 | `backend/data/` | Synthetic cohorts, simulation results, demo series, data card |
 | `backend/tests/`, `backend/tests_data_ai/` | Automated tests |
-| `frontend/src/` | React single-page app: shell, design system, i18n, feature screens |
+| `frontend/src/` | React single-page app: shell, design system, i18n, and the screens for patients, the phone thread, coordinators, clinicians, the dashboard and the transparency page |
 | `docs/` | Documentation, specification, diagrams, OpenAPI file |
 | `dev/` | Development helper for Docker in WSL |
 | `Dockerfile` | Production image: API and built front end in one container |
@@ -68,6 +69,7 @@ All are fictional. Choose one on the landing page ("Continue as Guest"). "Reset 
 
 - [Technical documentation](docs/TECHNICAL_DOCUMENTATION.md): architecture, case model, clinical boundaries, responsible AI, data, governance, simulation, interoperability, testing, assumptions and limitations, how to run.
 - [Safety case](docs/SAFETY_CASE.md): hazards, controls and residual risk.
+- [Demo script](docs/DEMO_SCRIPT.md): shooting script for a demonstration video of at most 5 minutes.
 - [Specification](docs/SPEC.md) and [decisions](docs/DECISIONS.md): the build contract and the recorded deviations.
 - [Data card](backend/data/DATA_CARD.md): how the synthetic data is generated.
 - [Diagrams](docs/diagrams/diagrams.md): architecture, lifecycle, severe escalation, AI boundary, closure gate.
@@ -79,7 +81,7 @@ All are fictional. Choose one on the landing page ("Continue as Guest"). "Reset 
 wsl -e bash /mnt/d/Projects/Hackathon/dev/run.sh test tests tests_data_ai -q
 ```
 
-On 2026-11-18 this gave `346 passed, 1 warning in 44.93s`. The tests cover the engine, the API, the wording validator and the simulation. There is no front-end test suite. See section 10 of the technical documentation for what is and is not tested.
+On 2026-11-19 this gave `506 passed, 1 warning in 131.30s (0:02:11)`. The tests cover the engine, the API (including a hardening suite for messaging, consent and access), the wording validator and the simulation. There is no front-end test suite. The production Docker image was built and run by the team on 18 November 2026. The first GitHub Actions run failed on the front-end `npm ci` step, the lockfile has been repaired, and the workflow has not been rerun. PostgreSQL has not been exercised. See section 10 of the technical documentation.
 
 ## Synthetic data statement
 

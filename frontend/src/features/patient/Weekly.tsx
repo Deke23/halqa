@@ -21,21 +21,50 @@ export default function Weekly() {
 
   const week = currentWeek(c.plan);
   const history = pastWeeks(c.plan);
+  const lifestyle = c.consents.find((x) => x.purpose === "lifestyle_programme");
+  const paused = c.state === "IN_CARE" && lifestyle !== undefined && !lifestyle.granted;
 
   return (
     <div className="flex flex-col gap-4">
       <PageTitle>{t("weekly.heading")}</PageTitle>
       <p className="text-muted">{t("weekly.intro")}</p>
-      {!week && history.length === 0 ? <Notice>{t("weekly.notYet")}</Notice> : null}
-      {week && <ThisWeek week={week} lastWeek={history[0]} />}
+      {paused && <Paused />}
+      {!paused && !week && history.length === 0 ? <Notice>{t("weekly.notYet")}</Notice> : null}
+      {!paused && week && <ThisWeek week={week} lastWeek={history[0]} />}
       <History weeks={history} />
       <Diary />
     </div>
   );
 }
 
+function Paused() {
+  const { t } = useTranslation("patient");
+  const toast = useToast();
+  const errorText = useErrorText();
+  const c = useCurrentCase();
+  const act = usePatientAction(c.id);
+  return (
+    <Notice tone="info" title={t("weekly.pausedTitle")}>
+      <p className="m-0">{t("weekly.pausedText")}</p>
+      <div className="mt-3">
+        <Button
+          loading={act.isPending}
+          onClick={() =>
+            act.mutate(
+              { action: "update_consent", payload: { purpose: "lifestyle_programme", granted: true, channel: null } },
+              { onSuccess: () => toast.show(t("weekly.restarted")), onError: (e) => toast.show(errorText(e), "due") },
+            )
+          }
+        >
+          {t("weekly.restart")}
+        </Button>
+      </div>
+    </Notice>
+  );
+}
+
 function actionText(t: (k: string) => string, w: PlanWeekOut) {
-  return { name: t(`weekly.action.${w.action_key}.name`), text: t(`weekly.action.${w.action_key}.${w.size}`) };
+  return { name: t(`weekly.action.${w.action_key}.name`), text: w.default_text };
 }
 
 function ThisWeek({ week, lastWeek }: { week: PlanWeekOut; lastWeek: PlanWeekOut | undefined }) {

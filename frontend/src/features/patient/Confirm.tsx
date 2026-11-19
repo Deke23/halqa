@@ -3,18 +3,12 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Badge, BPReading, Button, Card, EmptyState, Field, Input, RadioGroup, Tag, useErrorText, useToast } from "@/components";
 import { useDemoClock } from "@/api/hooks";
-import { formatDateTime } from "@/lib/format";
-import { homeReadingDays, useDiary, usePatientAction, type PatientCase } from "./api";
+import { formatLocal, fromZonedInput, homeReadingDays, toZonedInput, useDiary, usePatientAction, useRegionZone, zoneLabel, type PatientCase } from "./api";
 import { Notice, PageTitle, useCurrentCase } from "./ui";
 
 const TOTAL_DAYS = 7;
 const linkBtn =
   "inline-flex min-h-11 items-center justify-center rounded-lg bg-accent px-4 py-2 font-semibold text-white hover:bg-accent-strong";
-
-/** datetime-local value in UTC, because the demo clock and the rest of the app are shown in UTC. */
-function toLocalInput(d: Date): string {
-  return d.toISOString().slice(0, 16);
-}
 
 export default function Confirm() {
   const { t } = useTranslation("patient");
@@ -46,7 +40,17 @@ export default function Confirm() {
       {method === "HBPM" && <Readings c={c} locked={reviewed} />}
       {method === "ABPM" && !reviewed && (
         <Card>
-          <p>{t("confirm.abpmBody")}</p>
+          <div className="flex flex-col gap-3">
+            <p className="m-0">{t("confirm.abpmBody")}</p>
+            {conf && conf.average_systolic !== null && conf.average_diastolic !== null && (
+              <div>
+                <p className="m-0 text-sm font-medium text-muted">{t("confirm.averageTitle")}</p>
+                <BPReading systolic={conf.average_systolic} diastolic={conf.average_diastolic} size="md" />
+                <p className="m-0 text-sm text-muted">{t("confirm.averageBasis", { n: conf.readings_used })}</p>
+              </div>
+            )}
+            {conf?.status === "CONFIRMED_RAISED" && <Notice tone="accent">{t("confirm.enough")}</Notice>}
+          </div>
         </Card>
       )}
     </div>
@@ -106,6 +110,7 @@ function Readings({ c, locked }: { c: PatientCase; locked: boolean }) {
   const act = usePatientAction(c.id);
   const clock = useDemoClock();
   const diary = useDiary();
+  const tz = useRegionZone(c.region);
 
   const [sys, setSys] = useState("");
   const [dia, setDia] = useState("");
@@ -115,7 +120,7 @@ function Readings({ c, locked }: { c: PatientCase; locked: boolean }) {
   const [loadingSample, setLoadingSample] = useState(false);
 
   const nowIso = clock.data?.now ?? new Date().toISOString();
-  const whenValue = when || toLocalInput(new Date(nowIso));
+  const whenValue = when || toZonedInput(new Date(nowIso), tz);
 
   const s = Number(sys);
   const d = Number(dia);
@@ -140,7 +145,7 @@ function Readings({ c, locked }: { c: PatientCase; locked: boolean }) {
           systolic: s,
           diastolic: d,
           pulse: pulse === "" ? null : p,
-          taken_at: `${whenValue}:00Z`,
+          taken_at: fromZonedInput(whenValue, tz),
           source: "HOME_CUFF",
         },
       },
@@ -245,7 +250,7 @@ function Readings({ c, locked }: { c: PatientCase; locked: boolean }) {
             <Field label={t("confirm.pulse")} optional error={tried ? errors.pulse : null}>
               <Input inputMode="numeric" value={pulse} onChange={(e) => setPulse(e.target.value)} autoComplete="off" dir="ltr" />
             </Field>
-            <Field label={t("confirm.when")} error={tried ? errors.when : null}>
+            <Field label={t("confirm.when", { zone: zoneLabel(tz) })} error={tried ? errors.when : null}>
               <Input type="datetime-local" value={whenValue} onChange={(e) => setWhen(e.target.value)} dir="ltr" />
             </Field>
             <Button type="submit" loading={act.isPending && !loadingSample}>
@@ -275,7 +280,7 @@ function Readings({ c, locked }: { c: PatientCase; locked: boolean }) {
               <li key={r.id} className="flex items-center justify-between gap-3 py-2">
                 <BPReading systolic={r.systolic} diastolic={r.diastolic} size="sm" />
                 <span className="text-end text-sm text-muted">
-                  <bdi>{formatDateTime(r.taken_at, i18n.language)}</bdi>
+                  <bdi>{formatLocal(r.taken_at, i18n.language, tz)}</bdi>
                   {r.pulse ? (
                     <>
                       {" · "}

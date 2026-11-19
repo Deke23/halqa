@@ -1,12 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, EmptyState, ErrorState, Loading, SimulatedTag, useErrorText } from "@/components";
+import { Button, EmptyState, ErrorState, Loading, useErrorText } from "@/components";
 import { cx } from "@/lib/cx";
 import { formatDate, localeFor } from "@/lib/format";
 import { initials } from "@/lib/format";
-import { usePatientCase, useSendReply, useThread, type MessageOut, type PatientCase } from "@/features/patient/api";
+import { usePatientCase, useSendReply, useThread, type MessageOut, type PatientCase, type ValidReply } from "@/features/patient/api";
 import { Shortcuts } from "@/features/patient/Shortcuts";
-import { plainName } from "@/features/patient/ui";
 
 type Look = "sms" | "whatsapp";
 
@@ -24,6 +23,8 @@ export default function PhoneThread() {
   const [look, setLook] = useState<Look>("sms");
   const [text, setText] = useState("");
   const endRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [hint, setHint] = useState(false);
   const count = thread.data?.length ?? 0;
 
   useEffect(() => {
@@ -36,7 +37,17 @@ export default function PhoneThread() {
   if (!c) return <EmptyState title={t("noCase.title")} description={t("noCase.description")} />;
 
   const wa = look === "whatsapp";
-  const contact = plainName(thread.data?.find((m) => m.direction === "OUT" && m.sender_name)?.sender_name ?? c.owner_name);
+  const contact = thread.data?.find((m) => m.direction === "OUT" && m.sender_person)?.sender_person?.name ?? c.owner_person?.name ?? "";
+  const replies = [...(thread.data ?? [])].reverse().find((m) => m.direction === "OUT")?.valid_replies ?? [];
+  const pick = (r: ValidReply) => {
+    if (r.meaning_key === "reply.reading") {
+      setHint(true);
+      inputRef.current?.focus();
+      return;
+    }
+    setHint(false);
+    post(r.reply);
+  };
   const post = (value: string) => {
     const v = value.trim();
     if (!v || send.isPending) return;
@@ -74,7 +85,7 @@ export default function PhoneThread() {
       </div>
 
       <div className="border-t border-line bg-surface p-2">
-        <QuickReplies state={c.state} onPick={post} disabled={send.isPending} />
+        <QuickReplies replies={replies} onPick={pick} disabled={send.isPending} />
         {send.isError && (
           <p role="alert" className="m-0 mb-1 rounded bg-due-soft px-2 py-1 text-sm text-due-ink">
             {errorText(send.error)}
@@ -94,7 +105,8 @@ export default function PhoneThread() {
             id="phone-reply"
             value={text}
             onChange={(e) => setText(e.target.value)}
-            placeholder={t("phone.inputPlaceholder")}
+            placeholder={hint ? t("phone.readingHint") : t("phone.inputPlaceholder")}
+            ref={inputRef}
             autoComplete="off"
             inputMode="text"
             className="min-h-11 min-w-0 flex-1 rounded-full border border-line bg-surface px-4 text-base placeholder:text-muted"
@@ -103,7 +115,7 @@ export default function PhoneThread() {
             {t("phone.send")}
           </Button>
         </form>
-        <p className="m-0 mt-1 px-1 text-xs text-muted">{c.state === "IN_CARE" ? t("phone.hintCare") : t("phone.hint")}</p>
+        <p className="m-0 mt-1 px-1 text-xs text-muted">{t("phone.hint")}</p>
       </div>
     </div>
   );
@@ -112,7 +124,7 @@ export default function PhoneThread() {
 function Header({ c, contact, look, onLook }: { c: PatientCase; contact: string; look: Look; onLook: (l: Look) => void }) {
   const { t, i18n } = useTranslation("patient");
   const wa = look === "whatsapp";
-  const owner = plainName(c.next_step?.owner_name ?? c.owner_name);
+  const owner = c.next_step?.owner_person?.name ?? c.owner_person?.name ?? "";
   const due = c.next_step?.due_at;
   return (
     <div className={cx("flex flex-col gap-2 border-b border-line px-3 py-2", wa ? "bg-accent-strong text-white" : "bg-surface")}>
@@ -152,7 +164,6 @@ function Header({ c, contact, look, onLook }: { c: PatientCase; contact: string;
             </button>
           ))}
         </div>
-        <SimulatedTag label={t("phone.simulated")} />
       </div>
     </div>
   );
@@ -181,31 +192,26 @@ function Bubble({ m, wa, lng }: { m: MessageOut; wa: boolean; lng: string }) {
   );
 }
 
-function QuickReplies({ state, onPick, disabled }: { state: string; onPick: (v: string) => void; disabled: boolean }) {
+function QuickReplies({ replies, onPick, disabled }: { replies: ValidReply[]; onPick: (r: ValidReply) => void; disabled: boolean }) {
   const { t } = useTranslation("patient");
-  const chips: { send: string; label: string }[] = [];
-  if (state === "NOTIFIED") chips.push({ send: "1", label: t("phone.quick.understood") });
-  if (state === "ACKNOWLEDGED") chips.push({ send: "150/95", label: t("phone.quick.reading") });
-  if (state === "IN_CARE") {
-    chips.push({ send: "A", label: t("phone.quick.done") });
-    chips.push({ send: "B", label: t("phone.quick.partly") });
-    chips.push({ send: "C", label: t("phone.quick.missed") });
-  }
-  if (state !== "CLOSED") chips.push({ send: "2", label: t("phone.quick.callMe") });
-  if (chips.length === 0) return null;
+  if (replies.length === 0) return null;
   return (
     <div role="group" aria-label={t("phone.quickLabel")} className="mb-2 flex flex-wrap gap-2">
-      {chips.map((ch) => (
-        <button
-          key={ch.send}
-          type="button"
-          disabled={disabled}
-          onClick={() => onPick(ch.send)}
-          className="min-h-9 rounded-full border border-accent bg-accent-soft px-3 text-sm font-semibold text-accent-ink hover:bg-surface-2 disabled:opacity-60"
-        >
-          <bdi>{ch.label}</bdi>
-        </button>
-      ))}
+      {replies.map((r) => {
+        const meaning = t(`phone.${r.meaning_key}`, { defaultValue: "" });
+        const label = r.meaning_key === "reply.reading" ? meaning : `${r.reply}  ${meaning}`.trim();
+        return (
+          <button
+            key={r.reply + r.meaning_key}
+            type="button"
+            disabled={disabled}
+            onClick={() => onPick(r)}
+            className="min-h-9 rounded-full border border-accent bg-accent-soft px-3 text-sm font-semibold text-accent-ink hover:bg-surface-2 disabled:opacity-60"
+          >
+            <bdi>{label}</bdi>
+          </button>
+        );
+      })}
     </div>
   );
 }

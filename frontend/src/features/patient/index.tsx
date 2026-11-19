@@ -1,4 +1,4 @@
-import { lazy, Suspense, useLayoutEffect, useRef } from "react";
+import { lazy, Suspense } from "react";
 import { NavLink, Navigate, Route, Routes } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { EmptyState, ErrorState, Loading } from "@/components";
@@ -33,20 +33,6 @@ const NAV = [
 export default function PatientApp() {
   const { t } = useTranslation("patient");
   const q = usePatientCase();
-  const wrap = useRef<HTMLDivElement>(null);
-
-  // Keep the menu at the bottom of the screen on short pages. The layout around us does not size its content area.
-  useLayoutEffect(() => {
-    const fit = () => {
-      const el = wrap.current;
-      if (!el) return;
-      const top = el.getBoundingClientRect().top + window.scrollY;
-      el.style.minHeight = `${Math.max(0, window.innerHeight - top - 16)}px`;
-    };
-    fit();
-    window.addEventListener("resize", fit);
-    return () => window.removeEventListener("resize", fit);
-  });
 
   if (q.isLoading) return <Loading />;
   if (q.error) return <ErrorState error={q.error} onRetry={() => void q.refetch()} />;
@@ -54,7 +40,7 @@ export default function PatientApp() {
 
   return (
     <CaseProvider value={q.data}>
-      <div ref={wrap} className="flex flex-col gap-6">
+      <div className="flex flex-1 flex-col gap-6">
         <div className="flex flex-1 flex-col gap-4">
           <Suspense fallback={<Loading />}>
             <Routes>

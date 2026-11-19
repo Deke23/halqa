@@ -15,11 +15,6 @@ export function useCurrentCase(): PatientCase {
   return c;
 }
 
-/** "Mariam (care coordinator)" becomes "Mariam". The role is shown separately and translated. */
-export function plainName(name: string | null | undefined): string {
-  return (name ?? "").replace(/\s*\(.*\)\s*$/, "").trim();
-}
-
 export function firstName(name: string | null | undefined): string {
   return (name ?? "").trim().split(/\s+/)[0] ?? "";
 }
@@ -94,7 +89,7 @@ export function NextStepCard({ compact = false }: { compact?: boolean }) {
           <dd className="m-0 font-medium">{patientActs ? t("next.you") : t("next.careTeam")}</dd>
           <dt className="text-muted">{t("next.responsible")}</dt>
           <dd className="m-0">
-            <OwnerChip name={plainName(step.owner_name)} role={step.owner_role} />
+            <OwnerChip name={step.owner_person?.name} role={step.owner_role} />
           </dd>
           <dt className="text-muted">{t("next.by")}</dt>
           <dd className="m-0 flex flex-wrap items-center gap-2">

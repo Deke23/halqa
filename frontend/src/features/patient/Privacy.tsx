@@ -23,7 +23,7 @@ export default function Privacy() {
       { action: "update_consent", payload: { purpose: consent.purpose, granted, channel: consent.channel } },
       {
         onSuccess: () => {
-          toast.show(granted ? t("privacy.changedOn") : t("privacy.changedOff"));
+          toast.show(granted ? t("privacy.changedOn") : consent.purpose === "care_coordination" ? t("privacy.changedOffCare") : t("privacy.changedOff"));
           setPending(null);
         },
         onError: (e) => {
@@ -50,6 +50,7 @@ export default function Privacy() {
                   <div className="min-w-0">
                     <p id={id} className="m-0 font-medium">
                       {t(`privacy.purpose.${cs.purpose}.name`)}
+                      {cs.channel ? ` (${t(`privacy.channelName.${cs.channel}`)})` : ""}
                     </p>
                     <p className="m-0 text-sm text-muted">{t(`privacy.purpose.${cs.purpose}.text`, { channel: channelText(cs) })}</p>
                   </div>

@@ -18,7 +18,7 @@ export function PatientLayout() {
           <span className="text-lg font-semibold text-accent-ink">{APP_NAME}</span>
           <SimulatedTag />
         </header>
-        <main aria-label={t("nav.patient")} className="flex-1 overflow-y-auto p-4">
+        <main aria-label={t("nav.patient")} className="flex flex-1 flex-col overflow-y-auto p-4">
           <Suspense fallback={<Loading />}>
             <Outlet />
           </Suspense>

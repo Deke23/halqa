@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 import { EmptyState, ErrorState, Loading, SimulatedTag, Tag } from "@/components";
 import { formatDateTime } from "@/lib/format";
 import { useThread } from "./api";
-import { PageTitle, plainName } from "./ui";
+import { PageTitle } from "./ui";
 
 export default function Messages() {
   const { t, i18n } = useTranslation("patient");
@@ -28,8 +28,8 @@ export default function Messages() {
                   <bdi>
                     {m.direction === "IN"
                       ? t("messages.you")
-                      : m.sender_name
-                        ? t("messages.from", { name: plainName(m.sender_name) })
+                      : m.sender_person
+                        ? t("messages.from", { name: m.sender_person.name })
                         : t("messages.fromTeam")}
                   </bdi>
                 </span>
