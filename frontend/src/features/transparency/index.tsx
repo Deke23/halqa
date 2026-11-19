@@ -122,6 +122,18 @@ export default function Transparency() {
         <Table caption={t("transparency.templatesTitle")} columns={tplColumns} rows={templates} rowKey={(x) => x.id} />
       </section>
 
+      <Card title={t("transparency.regionsTitle")}>
+        <p className="mb-2 text-sm">{t("transparency.regionsBody")}</p>
+        <ul className="flex flex-col gap-1 text-sm">
+          {cfg.regions.map((r) => (
+            <li key={r.region}>
+              <span className="font-medium">{r.name}</span>: <span className="clinical">{r.timezone}</span>
+            </li>
+          ))}
+        </ul>
+        <p className="mt-3 text-sm text-muted">{t(cfg.demo_mode ? "transparency.demoOn" : "transparency.demoOff")}</p>
+      </Card>
+
       <Card title={t("transparency.dataTitle")} action={<SimulatedTag />}>
         <ul className="flex list-disc flex-col gap-2 ps-5 text-sm">
           <li>{t("transparency.data1")}</li>

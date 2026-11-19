@@ -17,7 +17,8 @@ from app.fhir.bundle import build_bundle
 from . import schemas as S
 from .constants import DATA_DIR
 from .core import ApiError, log, tick_all
-from .deps import current_user, get_db, load_case, patient_only, staff
+from .demo_mode import require_demo
+from .deps import anyone_but_patient, clinician_only, current_user, get_db, load_case, patient_only
 
 router = APIRouter(prefix="/api")
 
@@ -33,14 +34,17 @@ def get_clock(user: User = Depends(current_user), db: Session = Depends(get_db))
 
 @router.post("/demo/clock/advance", response_model=S.ClockOut, tags=["demo"],
              summary="Advance the demo clock and re-evaluate every open case")
-def advance_clock(req: S.AdvanceRequest, user: User = Depends(current_user), db: Session = Depends(get_db)):
+def advance_clock(req: S.AdvanceRequest, _demo: None = Depends(require_demo), user: User = Depends(current_user),
+                  db: Session = Depends(get_db)):
+    """Demo control. Any signed-in guest may skip ahead (the patient demo shortcut); DEMO_MODE off answers 403."""
     now = clock.advance(db, req.hours)
     tick_all(db, now)
     return _clock_out(db)
 
 
 @router.post("/demo/reset", response_model=S.ResetResponse, tags=["demo"], summary="Restore the seeded demo data exactly")
-def reset(request: Request):
+def reset(request: Request, _demo: None = Depends(require_demo), user: User = Depends(anyone_but_patient)):
+    """Demo control. Needs a signed-in staff or analyst user; DEMO_MODE off answers 403. Drops and recreates the schema."""
     database = request.app.state.db
     database.reset_schema()  # DDL: the only way audit events are removed
     with database.session() as db:
@@ -48,8 +52,8 @@ def reset(request: Request):
         return S.ResetResponse(reset=True, cases=db.scalar(select(func.count(Case.id))), clock=_clock_out(db))
 
 
-@router.get("/cases/{case_id}/fhir", tags=["cases"], summary="FHIR R4 Bundle for the case (read-only)")
-def case_fhir(case_id: int, user: User = Depends(staff), db: Session = Depends(get_db)):
+@router.get("/cases/{case_id}/fhir", tags=["cases"], summary="FHIR R4 Bundle for the case (read-only, clinician only)")
+def case_fhir(case_id: int, user: User = Depends(clinician_only), db: Session = Depends(get_db)):
     case = load_case(db, user, case_id)
     now = clock.now(db)
     log(db, case, now, EventType.CASE_VIEWED, user, payload={"view": "fhir"})

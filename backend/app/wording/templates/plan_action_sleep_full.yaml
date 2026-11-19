@@ -1,0 +1,16 @@
+# Approved template. Edit the text here, bump `version`, and keep every {slot} listed in required_slots.
+id: plan_action_sleep_full
+version: 1
+purpose: 'Weekly action text: sleep, full size. Used inside the weekly messages and in the plan view.'
+channel_limits:
+  app: 900
+  whatsapp: 1000
+required_slots: []
+sample_slots:
+  en: {}
+  ar: {}
+  fr: {}
+text:
+  en: Go to bed at the same time every night this week
+  ar: نم في الموعد نفسه كل ليلة هذا الأسبوع
+  fr: Couchez-vous à la même heure chaque soir cette semaine

@@ -17,9 +17,9 @@ sample_slots:
   fr:
     reading: 164/102
 text:
-  en: What does {reading} mean? 1 A lifelong illness, for sure. 2 A raised reading to check again. 3 Normal. Reply 1, 2 or 3.
-  ar: ماذا تعني {reading}؟ 1 مرض دائم حتمًا. 2 قراءة مرتفعة تحتاج فحصًا. 3 طبيعية. أرسل 1 أو 2 أو 3.
-  fr: Que signifie {reading} ? 1 Une maladie à vie, certain. 2 Valeur élevée à revérifier. 3 Normal. Répondez 1, 2 ou 3.
+  en: What does {reading} mean? A) A lifelong illness, for sure. B) A raised reading to check again. C) Normal. Reply A, B or C.
+  ar: ماذا تعني {reading}؟ A) مرض دائم حتمًا. B) قراءة مرتفعة تحتاج فحصًا. C) طبيعية. أرسل A أو B أو C.
+  fr: Que signifie {reading} ? A) Une maladie à vie, certain. B) Valeur élevée à revérifier. C) Normal. Répondez A, B ou C.
 options:
   en:
   - A lifelong illness, for sure.
@@ -35,9 +35,9 @@ options:
   - Normal.
 correct: 2
 sms_chars_with_sample_slots:
-  en: 116
-  ar: 91
-  fr: 112
+  en: 119
+  ar: 94
+  fr: 115
 gsm7_safe_with_sample_slots:
   en: true
   ar: false

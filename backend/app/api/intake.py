@@ -7,6 +7,8 @@ reads a patient's text.
 from __future__ import annotations
 
 import re
+from collections.abc import Callable
+from dataclasses import dataclass, field
 from datetime import datetime
 
 from sqlalchemy import select
@@ -17,12 +19,13 @@ from app.db.models import Case, CaseEvent, Consent, Patient, Reading, User
 from app.engine.types import Action, EventType, ReadingSource, Role, Severity, State
 
 from . import schemas as S
-from .actions_impl import perform
+from .actions_impl import Ctx, perform, record_red_flags
 from .core import (
-    ApiError, _active, add_message, add_task, default_owner, flag_urgent, log, open_task, open_week, readings_of, send_template,
+    FINAL, REPLY, SAFETY_REPLY, ApiError, add_message, add_task, contact_other_route_task, default_owner, explicit_consent, flag_urgent, log,
+    open_task, open_week, plan_active, send_message,
 )
 from . import wording_port
-from .regions import REGIONS
+from .regions import REGIONS, is_stop_keyword
 
 ORG = {"AUH": "Abu Dhabi Primary Care (simulated)", "YDE": "Yaoundé Health Centre (simulated)"}
 _SYNTHETIC_NAMES = {
@@ -36,10 +39,11 @@ def initials_of(name: str) -> str:
     return "".join(p[0].upper() for p in parts[:2])
 
 
-def default_consents(db: Session, patient: Patient, now: datetime) -> None:
+def default_consents(db: Session, patient: Patient, now: datetime, research: bool = False) -> None:
+    """The consent records a new patient starts with. Research use is opt-in: it is off unless `research` is True."""
     for purpose, channel, granted in (
         ("care_coordination", None, True), ("messaging_channel", patient.channel, True),
-        ("share_with_receiving_provider", None, True), ("lifestyle_programme", None, True), ("research_aggregate", None, False),
+        ("share_with_receiving_provider", None, True), ("lifestyle_programme", None, True), ("research_aggregate", None, research),
     ):
         db.add(Consent(patient_id=patient.id, purpose=purpose, channel=channel, granted=granted,
                        granted_at=now if granted else None))
@@ -113,7 +117,6 @@ _CHECKIN = {
     "B": "partly", "PARTIEL": "partly", "PARTLY": "partly",
     "C": "missed", "NON": "missed", "PAS FAIT": "missed", "MISSED": "missed",
 }
-_STOP = ("STOP", "ARRET", "ARRÊT")
 UNPARSED_LIMIT = 2
 
 
@@ -137,43 +140,153 @@ def _unparsed_in_a_row(db: Session, case: Case) -> int:
     return n
 
 
+# ------------------------------------------------------------------ SMS reply grammar
+#
+# One table, state-driven (SPEC section 6). Yes/no questions take digits, multiple-choice questions take letters, so a
+# number can never be read as a teach-back answer. `0` (call me) and STOP work in every state.
+
+CALL_ME = "0"
+_TRAILING = re.compile(r"[.)\]]+$")
+LETTERS = ("A", "B", "C")
+
+
+@dataclass
+class Turn:
+    db: Session
+    case: Case
+    patient: Patient
+    user: User | None
+    now: datetime
+    text: str
+    token: str  # upper case, trailing dot or bracket removed
+    replies: list[tuple[str, str, dict]] = field(default_factory=list)  # template id, kind, neutral extras
+
+    def say(self, template_id: str, kind: str = REPLY, **extra) -> None:
+        self.replies.append((template_id, kind, extra))
+
+    def do(self, action: Action, payload: dict) -> None:
+        perform(self.db, self.case, self.user, Role.PATIENT, action, payload, self.now)
+
+
+def _read_result(t: Turn) -> None:
+    t.case.sms_prompt = "RED_FLAG"
+    t.say("red_flag_check")
+
+
+def _red_flag_answer(yes: bool):
+    def handler(t: Turn) -> None:
+        if yes:
+            ctx = Ctx(t.db, t.case, t.user, Role.PATIENT, t.now)
+            record_red_flags(ctx, ["unspecified"])  # the same urgent flag and audit event as the app path
+            t.say("urgent_red_flags_sms" if t.patient.channel == "SMS" else "urgent_red_flags", SAFETY_REPLY)
+        t.case.sms_prompt = "TEACH_BACK"
+        t.say("teach_back_question")
+    return handler
+
+
+def _teach_back_answer(t: Turn) -> None:
+    # No confidence rating is asked on SMS: it stays empty rather than getting an invented value.
+    t.do(Action.ACKNOWLEDGE, {"teach_back_answer": str(LETTERS.index(t.token) + 1), "red_flags": []})
+    if t.case.state == State.ACKNOWLEDGED.value:
+        t.case.sms_prompt = None
+        t.say("confirmation_hbpm_instructions")
+    else:  # wrong: the simpler explanation was sent by the action; ask again (a second wrong answer made the call task)
+        t.say("teach_back_question")
+
+
+def _checkin(t: Turn) -> None:
+    t.do(Action.PLAN_CHECKIN, {"status": _CHECKIN[t.token]})
+    t.say("reply_received")
+
+
+# state -> accepted token -> handler
+REPLY_GRAMMAR: dict[str, dict[str, Callable[[Turn], None]]] = {
+    "RESULT": {"1": _read_result},
+    "RED_FLAG": {"1": _red_flag_answer(True), "OUI": _red_flag_answer(True), "2": _red_flag_answer(False), "NON": _red_flag_answer(False)},
+    "TEACH_BACK": {letter: _teach_back_answer for letter in LETTERS},
+    "HOME": {},  # a strict SYS/DIA reading, handled in handle_reply
+    "CHECKIN": {k: _checkin for k in _CHECKIN},
+}
+
+
+def reply_state(db: Session, case: Case) -> str:
+    """Where the SMS conversation is, from the case: this picks the row of REPLY_GRAMMAR."""
+    if case.state == State.NOTIFIED.value:
+        return case.sms_prompt if case.sms_prompt in ("RED_FLAG", "TEACH_BACK") else "RESULT"
+    if case.state == State.ACKNOWLEDGED.value and case.confirmation_method in (None, "HBPM"):
+        return "HOME"
+    if case.state == State.IN_CARE.value and plan_active(db, case) and open_week(db, case.id) is not None:
+        return "CHECKIN"
+    return "NONE"
+
+
+# What the latest outbound message offers, for quick-reply buttons: state -> [(reply, meaning_key)]
+VALID_REPLIES: dict[str, list[tuple[str, str]]] = {
+    "RESULT": [("1", "reply.read")],
+    "RED_FLAG": [("1", "reply.yes"), ("2", "reply.no")],
+    "TEACH_BACK": [("A", "reply.option_a"), ("B", "reply.option_b"), ("C", "reply.option_c")],
+    "HOME": [("SYS/DIA", "reply.reading")],
+    "CHECKIN": [("A", "reply.done"), ("B", "reply.partly"), ("C", "reply.missed")],
+    "NONE": [],
+}
+
+
+def valid_replies(db: Session, case: Case) -> list[tuple[str, str]]:
+    return VALID_REPLIES[reply_state(db, case)] + [(CALL_ME, "reply.call_me")]
+
+
 def handle_reply(db: Session, case: Case, patient: Patient, text: str, now: datetime) -> None:
-    """Fixed rules only: 1 understood, 2 call me, STOP, A/B/C weekly check-in, and a strict SYS/DIA reading."""
-    add_message(db, case, now, None, text, language=patient.language, channel=patient.channel, direction="IN")
-    kw = text.strip().upper()
+    """Fixed rules only. No model reads the text. See REPLY_GRAMMAR, and the severe-reading and STOP rules below.
+
+    A severe reading gets the urgent template with the region's emergency instruction, not the generic reply.
+    """
+    chan = patient.channel
+    add_message(db, case, now, None, text, language=patient.language, channel=chan, direction="IN")
     user = db.scalars(select(User).where(User.patient_id == patient.id)).first()
-    reply: str | None = "reply_received"
+    token = _TRAILING.sub("", text.strip().upper())
+    state = reply_state(db, case)
+    t = Turn(db, case, patient, user, now, text, token)
     parsed = True
     try:
         bp = parse_bp(text)
-        if kw == "2":
+        if is_stop_keyword(text):
+            was_active = explicit_consent(db, patient.id, "messaging_channel", chan)
+            t.do(Action.UPDATE_CONSENT, {"purpose": "messaging_channel", "granted": False, "channel": chan})
+            contact_other_route_task(db, case, now)
+            if was_active:  # one final fixed confirmation, not one per repeated STOP
+                t.say("stop_confirmed", FINAL)
+            else:
+                t.say("")
+        elif token == CALL_ME:
             if open_task(db, case.id, "COORDINATOR_CALL") is None:
                 add_task(db, case, now, "COORDINATOR_CALL", "call_the_patient", "coordinator", default_owner(db, case, Role.COORDINATOR))
-            reply = "call_requested"
-        elif kw == "1" and case.state == State.NOTIFIED.value:
-            tb = wording_port.teach_back(patient.language, {"reading": f"{case.index_systolic}/{case.index_diastolic}"}, sms=True)
-            perform(db, case, user, Role.PATIENT, Action.ACKNOWLEDGE, {"teach_back_answer": str(tb["correct"])}, now)
-            reply = "confirmation_hbpm_instructions"
-        elif kw in _STOP:
-            for ch in ("SMS", "WHATSAPP"):
-                perform(db, case, user, Role.PATIENT, Action.UPDATE_CONSENT, {"purpose": "messaging_channel", "granted": False, "channel": ch}, now)
-            reply = None
-        elif bp and case.state == State.ACKNOWLEDGED.value and case.confirmation_method in (None, "HBPM"):
+            t.say("call_requested")
+        elif token in REPLY_GRAMMAR.get(state, {}):
+            REPLY_GRAMMAR[state][token](t)
+        elif bp and state == "HOME":
             if case.confirmation_method is None:
-                perform(db, case, user, Role.PATIENT, Action.CHOOSE_CONFIRMATION, {"method": "HBPM"}, now)
-            perform(db, case, user, Role.PATIENT, Action.ADD_READING,
-                    {"systolic": bp[0], "diastolic": bp[1], "taken_at": now.isoformat(), "source": "HOME_CUFF"}, now)
-        elif kw in _CHECKIN and case.state == State.IN_CARE.value and open_week(db, case.id) is not None:
-            perform(db, case, user, Role.PATIENT, Action.PLAN_CHECKIN, {"status": _CHECKIN[kw]}, now)
+                t.do(Action.CHOOSE_CONFIRMATION, {"method": "HBPM"})
+            t.do(Action.ADD_READING, {"systolic": bp[0], "diastolic": bp[1], "taken_at": now.isoformat(), "source": "HOME_CUFF"})
+            if engine.classify(bp[0], bp[1]) is Severity.SEVERE:
+                t.say("result_severe", SAFETY_REPLY, systolic=bp[0], diastolic=bp[1], reading=f"{bp[0]}/{bp[1]}")
+            else:
+                t.say("reply_received")
         else:
             parsed = False
     except ApiError:
         parsed = False
     if not parsed:
-        reply = "reply_not_understood"
-    log(db, case, now, EventType.MESSAGE_RECEIVED, payload={"channel": patient.channel, "parsed": parsed})
+        t.replies = [("reply_not_understood", REPLY, {})]
+        if state == "RED_FLAG":  # say the open question again so the valid replies are in front of the patient
+            t.say("red_flag_check")
+        elif state == "TEACH_BACK":
+            t.say("teach_back_question")
+    elif not t.replies:
+        t.say("reply_received")
+    log(db, case, now, EventType.MESSAGE_RECEIVED, payload={"channel": chan, "parsed": parsed})
     if not parsed and _unparsed_in_a_row(db, case) >= UNPARSED_LIMIT and open_task(db, case.id, "COORDINATOR_CALL") is None:
         add_task(db, case, now, "COORDINATOR_CALL", "call_the_patient", "coordinator", default_owner(db, case, Role.COORDINATOR),
                  payload={"reason": "two replies could not be read"})
-    if reply:
-        send_template(db, case, now, reply)
+    for template_id, kind, extra in t.replies:
+        if template_id:
+            send_message(db, case, now, template_id, kind=kind, extra=extra)

@@ -10,7 +10,7 @@ from __future__ import annotations
 from datetime import datetime, timezone
 from typing import Any
 
-from sqlalchemy import JSON, Boolean, DateTime, Float, ForeignKey, Integer, String, Text, event
+from sqlalchemy import JSON, Boolean, DateTime, Float, ForeignKey, Integer, String, Text, event, false
 from sqlalchemy.engine import Dialect
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 from sqlalchemy.types import TypeDecorator
@@ -109,6 +109,10 @@ class Case(Base):
     closure_evidence_type: Mapped[str | None] = mapped_column(String(40), nullable=True)
     closure_evidence_ref: Mapped[str | None] = mapped_column(String(200), nullable=True)
     closure_decision_note: Mapped[str | None] = mapped_column(Text, nullable=True)
+    # Patient withdrew care_coordination: automated messaging stops and a clinician decides. Nothing closes automatically.
+    care_coordination_withdrawn: Mapped[bool] = mapped_column(Boolean, default=False, server_default=false())
+    # Which question the SMS thread waits on: RED_FLAG or TEACH_BACK (null: none open). See api/intake.py REPLY_GRAMMAR.
+    sms_prompt: Mapped[str | None] = mapped_column(String(12), nullable=True)
 
     patient: Mapped[Patient] = relationship()
 
@@ -177,6 +181,29 @@ class Message(Base):
     sender_user_id: Mapped[int | None] = mapped_column(ForeignKey("users.id"), nullable=True)
     approved_by_user_id: Mapped[int | None] = mapped_column(ForeignKey("users.id"), nullable=True)
     created_at: Mapped[datetime]
+    # Language-neutral slot values the text was rendered from, so a re-render never drifts (dates are ISO, see api/message_slots.py).
+    slots: Mapped[dict[str, Any] | None] = mapped_column(JSON, nullable=True)
+    draft_id: Mapped[int | None] = mapped_column(Integer, nullable=True)
+
+
+class MessageDraft(Base):
+    """A staff draft stored on the server. Sending takes this row's id, never client-supplied text."""
+
+    __tablename__ = "message_drafts"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    case_id: Mapped[int] = mapped_column(ForeignKey("cases.id"), index=True)
+    template_id: Mapped[str] = mapped_column(String(60))
+    template_version: Mapped[str] = mapped_column(String(20))
+    language: Mapped[str] = mapped_column(String(5))
+    channel: Mapped[str] = mapped_column(String(12))
+    slots: Mapped[dict[str, Any]] = mapped_column(JSON, default=dict)
+    text: Mapped[str] = mapped_column(Text)
+    source: Mapped[str] = mapped_column(String(14), default="TEMPLATE")  # TEMPLATE or AI_REWORDED
+    tone: Mapped[str | None] = mapped_column(String(40), nullable=True)
+    validation: Mapped[dict[str, Any]] = mapped_column(JSON, default=dict)
+    created_by_user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
+    created_at: Mapped[datetime]
+    sent_message_id: Mapped[int | None] = mapped_column(Integer, nullable=True)
 
 
 class EConsult(Base):

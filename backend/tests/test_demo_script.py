@@ -104,8 +104,12 @@ def test_flow_3_patient_yaounde_phone_thread(api, app):
     assert thread[0]["channel"] == "SMS" and thread[0]["language"] == "fr" and "164/102" in thread[0]["text"]
     assert jp["owner_name"].startswith("Clarisse") and jp["owner_role"] == "coordinator"
 
-    # reply 1 = understood; the nurse stays accountable for the patient-facing steps
+    # reply 1 = understood, then the red-flag question (1 yes, 2 no); the nurse stays accountable for the patient-facing steps
     thread = api.post("patient_yde", "/api/my/messages/reply", {"text": "1"}).json()
+    assert thread[-1]["template_id"] == "red_flag_check" and thread[-1]["language"] == "fr" and len(thread[-1]["text"]) <= 160
+    thread = api.post("patient_yde", "/api/my/messages/reply", {"text": "2"}).json()
+    assert thread[-1]["template_id"] == "teach_back_question" and "A)" in thread[-1]["text"]
+    thread = api.post("patient_yde", "/api/my/messages/reply", {"text": "b."}).json()  # letters, any case, trailing dot allowed
     assert thread[-1]["direction"] == "OUT" and thread[-1]["language"] == "fr" and len(thread[-1]["text"]) <= 160
     assert api.get("nurse_yde", f"/api/cases/{cid}").json()["state"] == "ACKNOWLEDGED"
 

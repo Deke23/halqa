@@ -1,0 +1,26 @@
+# Approved template. Edit the text here, bump `version`, and keep every {slot} listed in required_slots.
+id: teach_back_simpler_sms
+version: 1
+purpose: SMS simpler re-explanation after a wrong teach-back answer.
+channel_limits:
+  sms:
+    en: 160
+    fr: 160
+    ar: 134
+required_slots: []
+sample_slots:
+  en: {}
+  ar: {}
+  fr: {}
+text:
+  en: 'One reading is not enough to know what is going on. Next: measure again. Please try the question again.'
+  ar: 'قراءة واحدة لا تكفي لمعرفة ما يحدث. التالي: قياس جديد. جرّب السؤال مرة أخرى.'
+  fr: 'Une seule mesure ne suffit pas. Ensuite : mesurer à nouveau. Essayez la question encore une fois.'
+sms_chars_with_sample_slots:
+  en: 103
+  ar: 76
+  fr: 97
+gsm7_safe_with_sample_slots:
+  en: true
+  ar: false
+  fr: true

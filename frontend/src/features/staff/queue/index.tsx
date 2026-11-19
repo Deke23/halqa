@@ -1,9 +1,6 @@
 import { useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { useQueries } from "@tanstack/react-query";
-import { api } from "@/api/client";
-import { qk } from "@/api/hooks";
 import { useAuth } from "@/api/auth";
 import {
   Badge,
@@ -20,10 +17,9 @@ import {
 } from "@/components";
 import { formatDateTime } from "@/lib/format";
 import { useCaseList } from "../api";
-import { OwnerCell } from "../OwnerCell";
+import { OwnerCell } from "../PersonLabel";
 import { useLabels } from "../labels";
-import { detailReason } from "../reasonDetail";
-import type { CaseDetail, CaseSummary } from "../types";
+import type { CaseSummary } from "../types";
 import { SimulatePanel } from "./SimulatePanel";
 
 const TABS = ["urgent", "overdue", "rejected", "unowned", "escalated", "all"] as const;
@@ -39,8 +35,6 @@ const MEMBER: Record<Tab, (c: CaseSummary) => boolean> = {
   all: () => true,
 };
 
-const ENRICH_TABS: Tab[] = ["overdue", "rejected", "escalated", "unowned"];
-const ENRICH_LIMIT = 10;
 
 export default function StaffQueue() {
   const { t, i18n } = useTranslation("staff");
@@ -64,20 +58,6 @@ export default function StaffQueue() {
   const setTab = setChosen;
   const rows = byTab[tab];
 
-  // Rows on the reason-heavy tabs read the case detail once, to show the rejection reason, the escalation or the last contact.
-  const enrich = ENRICH_TABS.includes(tab) ? rows.slice(0, ENRICH_LIMIT) : [];
-  const details = useQueries({
-    queries: enrich.map((c) => ({
-      queryKey: qk.caseDetail(String(c.id)),
-      queryFn: () => api<CaseDetail>(`/cases/${c.id}`),
-      staleTime: 30_000,
-    })),
-  });
-  const detailById = new Map<number, CaseDetail>();
-  details.forEach((q, i) => {
-    if (q.data) detailById.set(enrich[i]!.id, q.data);
-  });
-
   const columns: Column<CaseSummary>[] = [
     {
       key: "patient",
@@ -93,6 +73,7 @@ export default function StaffQueue() {
             >
               {c.patient_initials}
             </Link>
+            <span className="text-xs text-muted">{t("queue.ageBand", { band: `⁦${c.age_band}⁩` })}</span>
             {c.id === newId && <Badge tone="accent">{t("queue.new")}</Badge>}
           </div>
           <p className="text-xs text-muted">
@@ -120,7 +101,7 @@ export default function StaffQueue() {
       ),
     },
     { key: "next", header: t("queue.cols.next"), cell: (c) => labels.nextStep(c.next_step_label_key) },
-    { key: "owner", header: t("queue.cols.owner"), cell: (c) => <OwnerCell name={c.owner_name} role={c.owner_role} /> },
+    { key: "owner", header: t("queue.cols.owner"), cell: (c) => <OwnerCell person={c.owner_person} role={c.owner_role} /> },
     {
       key: "due",
       header: t("queue.cols.due"),
@@ -139,12 +120,19 @@ export default function StaffQueue() {
       key: "why",
       header: t("queue.cols.why"),
       cell: (c) => {
-        const d = detailById.get(c.id);
-        const extra = d ? detailReason(d, t, i18n.language) : null;
+        const extra: string[] = [];
+        if (c.rejection_reason) extra.push(t("queue.rejectionReason", { reason: c.rejection_reason }));
+        if (c.escalation_reason && c.flags.escalated) extra.push(t("queue.escalationReason", { reason: c.escalation_reason }));
+        if (c.last_contact_attempt && c.last_contact_attempt_at && c.state !== "CLOSED")
+          extra.push(t("queue.lastContact", { what: labels.contact(c.last_contact_attempt), when: formatDateTime(c.last_contact_attempt_at, i18n.language) }));
         return (
           <div className="max-w-64">
             <p>{labels.reason(c.reason_code)}</p>
-            {extra && <p className="mt-0.5 text-xs text-muted">{extra}</p>}
+            {extra.map((x) => (
+              <p key={x} className="mt-0.5 text-xs text-muted">
+                {x}
+              </p>
+            ))}
           </div>
         );
       },

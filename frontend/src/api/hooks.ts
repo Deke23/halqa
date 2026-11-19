@@ -6,7 +6,7 @@
  * change the aliases in types.ts to the generated schemas and the defaults here follow.
  */
 import { useMutation, useQuery, useQueryClient, type UseQueryOptions } from "@tanstack/react-query";
-import { api } from "./client";
+import { api, readStoredUser } from "./client";
 import { useAuth } from "./auth";
 import type {
   CaseActionBody,
@@ -233,7 +233,15 @@ export function useAdvanceClock() {
 export function useResetDemo() {
   const qc = useQueryClient();
   return useMutation<unknown, unknown, void>({
-    mutationFn: () => api("/demo/reset", { method: "POST", anonymous: false }),
+    mutationFn: async () => {
+      // Reset needs a staff or analyst user. A patient session asks for it through a staff guest token.
+      const role = readStoredUser<{ role?: string }>()?.role;
+      if (role !== "patient") return api("/demo/reset", { method: "POST", anonymous: false });
+      const g = await api<{ token: string }>("/auth/guest", { method: "POST", body: { persona: "coordinator_auh" }, anonymous: true });
+      const res = await fetch("/api/demo/reset", { method: "POST", headers: { Authorization: `Bearer ${g.token}` } });
+      if (!res.ok) throw { status: res.status, code: "reset_failed", message: res.statusText };
+      return res.json();
+    },
     onSuccess: () => void qc.invalidateQueries(),
   });
 }

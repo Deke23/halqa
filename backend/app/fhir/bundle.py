@@ -16,7 +16,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.db.models import Case, CaseEvent, Consent, Patient
-from app.api.core import case_data, appointment_of, messages_of, plan_weeks, readings_of, referrals_of, user_name
+from app.api.core import case_data, appointment_of, messages_of, plan_weeks, readings_of, referrals_of, split_name, user_name
 from app.api.wording_port import plan_text
 from app import engine
 from app.engine.types import State, STATE_ORDER
@@ -28,6 +28,11 @@ SIMULATED_TAG = {"system": "https://halqa.invalid/simulated", "code": "simulated
 
 def _iso(dt: datetime) -> str:
     return dt.isoformat().replace("+00:00", "Z")
+
+
+def _plain(name: str | None) -> str | None:
+    """A person's name without the `(role)` suffix. The role is not repeated in the display."""
+    return split_name(name)[0] if name else name
 
 
 def _ref(kind: str, rid: str, display: str | None = None) -> dict[str, Any]:
@@ -79,7 +84,7 @@ def build_bundle(db: Session, case: Case, now: datetime) -> dict[str, Any]:
         if i == current and step is not None and case.state != State.CLOSED.value:
             task["description"] = f"{st.value}: {step.label_key}"
             task["restriction"] = {"period": {"end": _iso(step.due_at)}}
-            task["owner"] = {"display": f"{step.owner_role.value}" + (f" ({user_name(db, case.owner_user_id)})" if case.owner_user_id else " (no owner)")}
+            task["owner"] = {"display": _plain(user_name(db, case.owner_user_id)) if case.owner_user_id else f"{step.owner_role.value} (no owner)"}
         res.append(task)
 
     for ref in referrals_of(db, case.id):
@@ -89,7 +94,7 @@ def build_bundle(db: Session, case: Case, now: datetime) -> dict[str, Any]:
             "subject": _ref("Patient", pid), "authoredOn": _iso(ref.created_at), "reasonCode": [{"text": ref.reason}],
         }
         if ref.to_user_id:
-            sr["performer"] = [{"display": user_name(db, ref.to_user_id)}]
+            sr["performer"] = [{"display": _plain(user_name(db, ref.to_user_id))}]
         res.append(sr)
 
     for m in messages_of(db, case.id):
@@ -105,7 +110,7 @@ def build_bundle(db: Session, case: Case, now: datetime) -> dict[str, Any]:
             "resourceType": "Appointment", "id": f"appt-{appt.id}", "meta": meta,
             "status": {"BOOKED": "booked", "ATTENDED": "fulfilled"}.get(appt.status, "booked"),
             "start": _iso(appt.starts_at), "end": _iso(appt.starts_at + timedelta(minutes=30)),
-            "participant": [{"actor": _ref("Patient", pid), "status": "accepted"}, {"actor": {"display": appt.provider_name}, "status": "accepted"}],
+            "participant": [{"actor": _ref("Patient", pid), "status": "accepted"}, {"actor": {"display": _plain(appt.provider_name)}, "status": "accepted"}],
         })
 
     weeks = plan_weeks(db, case.id)
@@ -135,7 +140,7 @@ def build_bundle(db: Session, case: Case, now: datetime) -> dict[str, Any]:
             "resourceType": "Provenance", "id": f"prov-{case.id}", "meta": meta,
             "target": [_ref("Patient", pid)], "recorded": _iso(case.closed_at),
             "reason": [{"text": f"{case.closure_evidence_type}: {case.closure_evidence_ref or case.closure_decision_note}"}],
-            "agent": [{"who": {"display": user_name(db, case.closed_by_user_id) or "clinician"},
+            "agent": [{"who": {"display": _plain(user_name(db, case.closed_by_user_id)) or "clinician"},
                        "type": {"coding": [{"system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type", "code": "author"}]}}],
             "activity": {"text": "Case closed by clinician" + (f" (event {closure.id})" if closure else "")},
         })

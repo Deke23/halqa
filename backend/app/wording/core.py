@@ -74,14 +74,17 @@ def render(template_id: str, language: str, slots: dict | None = None) -> Render
     if "options" in tpl:
         extra["options"] = list(tpl["options"][language])
         extra["correct"] = tpl["correct"]
-        if not template_id.endswith("_sms"):
-            text += "\n" + "\n".join(f"{i}. {o}" for i, o in enumerate(extra["options"], 1))
+        if not template_id.endswith(("_sms", "_app")):  # SMS lists them inline; the app shows them as structured options; chat variants label them A, B, C
+            text += "\n" + "\n".join(f"{chr(64 + i)}. {o}" for i, o in enumerate(extra["options"], 1))
     return Rendered(text=text, template_id=template_id, template_version=tpl["version"], language=language, extra=extra)
 
 
-def teach_back(language: str, slots: dict, sms: bool = False) -> dict:
-    """Question text, options, correct option number and the simpler re-explanation, in one dict."""
-    q = render("teach_back_question_sms" if sms else "teach_back_question", language, slots)
+def teach_back(language: str, slots: dict, sms: bool = False, app: bool = False) -> dict:
+    """Question text, options, correct option number and the simpler re-explanation, in one dict.
+
+    `app=True` returns the in-app question, which has no "reply 1, 2 or 3" sentence (that belongs to the SMS variant only).
+    """
+    q = render("teach_back_question_sms" if sms else "teach_back_question_app" if app else "teach_back_question", language, slots)
     simpler = render("teach_back_simpler", language, slots)
     return {"question": q.text, "options": q.extra["options"], "correct": q.extra["correct"], "simpler": simpler.text}
 

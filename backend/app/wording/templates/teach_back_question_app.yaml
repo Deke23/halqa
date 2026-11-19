@@ -1,0 +1,34 @@
+# Approved template. Edit the text here, bump `version`, and keep every {slot} listed in required_slots.
+id: teach_back_question_app
+version: 1
+purpose: In-app teach-back question. The options are shown as structured choices, so the text has no reply instruction.
+channel_limits:
+  app: 900
+  whatsapp: 1000
+required_slots:
+- reading
+sample_slots:
+  en:
+    reading: 152/96
+  ar:
+    reading: 152/96
+  fr:
+    reading: 164/102
+text:
+  en: 'To check that we explained things clearly: what does your reading of {reading} mean?'
+  ar: 'للتأكد من أننا شرحنا الأمر بوضوح: ماذا تعني قراءتك {reading}؟'
+  fr: 'Pour vérifier que nous avons été clairs : que signifie votre mesure de {reading} ?'
+options:
+  en:
+  - It means I surely have a lifelong illness.
+  - It is a raised reading that needs checking again.
+  - It is normal, so I can ignore it.
+  ar:
+  - تعني أن لدي مرضًا دائمًا بالتأكيد.
+  - قراءة مرتفعة تحتاج إلى فحص آخر للتأكد.
+  - قراءة طبيعية ويمكنني تجاهلها.
+  fr:
+  - Cela veut dire que j'ai sûrement une maladie pour la vie.
+  - C'est une valeur élevée qui doit être vérifiée à nouveau.
+  - C'est normal, je peux l'ignorer.
+correct: 2

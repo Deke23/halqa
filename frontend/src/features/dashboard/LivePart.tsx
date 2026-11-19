@@ -60,6 +60,7 @@ export function LivePart({ split, region }: Props) {
 
   return (
     <div className="flex flex-col gap-5">
+      <p className="text-sm font-medium">{t("live.research")}</p>
       <p className="text-sm text-muted">
         {t("live.intro", { when: formatDateTime(data.generated_at, i18n.language), min: data.min_cell_size })}
       </p>

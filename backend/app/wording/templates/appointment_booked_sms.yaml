@@ -29,9 +29,9 @@ sample_slots:
     appointment_date: lundi 25 novembre
     appointment_time: 09:30
 text:
-  en: '{name}, your visit is booked at {clinic_name} on {appointment_date} at {appointment_time}. Reply 2 if you need to change it.'
-  ar: '{name}، تم حجز موعدك في {clinic_name} يوم {appointment_date} الساعة {appointment_time}. أرسل 2 للتغيير.'
-  fr: '{name}, rendez-vous réservé à {clinic_name} le {appointment_date} à {appointment_time}. Répondez 2 pour le changer.'
+  en: '{name}, your visit is booked at {clinic_name} on {appointment_date} at {appointment_time}. Reply 0 if you need to change it.'
+  ar: '{name}، تم حجز موعدك في {clinic_name} يوم {appointment_date} الساعة {appointment_time}. أرسل 0 للتغيير.'
+  fr: '{name}, rendez-vous réservé à {clinic_name} le {appointment_date} à {appointment_time}. Répondez 0 pour le changer.'
 sms_chars_with_sample_slots:
   en: 112
   ar: 85

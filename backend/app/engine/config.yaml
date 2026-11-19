@@ -55,12 +55,12 @@ thresholds:
     status: placeholder_pending_clinician_signoff
   abpm_daytime_start_hour:
     value: 7
-    unit: hour of day (UTC)
+    unit: hour of day (patient region local time)
     basis: "Assumption: daytime window used for the ambulatory average."
     status: placeholder_pending_clinician_signoff
   abpm_daytime_end_hour:
     value: 22
-    unit: hour of day (UTC)
+    unit: hour of day (patient region local time)
     basis: "Assumption: daytime window used for the ambulatory average."
     status: placeholder_pending_clinician_signoff
   abpm_min_daytime_readings:

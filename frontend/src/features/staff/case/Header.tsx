@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { useAuth } from "@/api/auth";
 import { Badge, BPReading, Button, DueChip, SimulatedTag, StateBadge } from "@/components";
 import { formatDateTime } from "@/lib/format";
-import { OwnerCell } from "../OwnerCell";
+import { OwnerCell } from "../PersonLabel";
 import { useLabels } from "../labels";
 import type { CaseDetail } from "../types";
 
@@ -25,7 +25,7 @@ export function CaseHeader({ detail, onOpenFhir }: { detail: CaseDetail; onOpenF
             {user?.role === "clinician" ? t("header.backWorklist") : t("header.backQueue")}
           </Link>
           <h1 className="mt-1 flex flex-wrap items-center gap-3 text-2xl font-semibold">
-            <span>{p.display_name}</span>
+            <bdi>{p.display_name}</bdi>
             <BPReading systolic={detail.index_systolic} diastolic={detail.index_diastolic} size="md" />
           </h1>
           <p className="text-sm text-muted">
@@ -40,9 +40,11 @@ export function CaseHeader({ detail, onOpenFhir }: { detail: CaseDetail; onOpenF
             <SimulatedTag />
           </p>
         </div>
-        <Button variant="secondary" onClick={onOpenFhir}>
-          {t("fhir.open")}
-        </Button>
+        {user?.role === "clinician" && (
+          <Button variant="secondary" onClick={onOpenFhir}>
+            {t("fhir.open")}
+          </Button>
+        )}
       </div>
 
       <div className="flex flex-wrap items-center gap-2">
@@ -53,6 +55,7 @@ export function CaseHeader({ detail, onOpenFhir }: { detail: CaseDetail; onOpenF
         {flags.rejected && <Badge tone="urgent">{t("header.rejected")}</Badge>}
         {flags.escalated && !closed && <Badge tone="urgent">{t("header.escalated", { level: step?.escalation_level ?? 2 })}</Badge>}
         {flags.needs_clinician_decision && <Badge tone="due">{t("header.needsDecision")}</Badge>}
+        {flags.care_coordination_withdrawn && <Badge tone="due">{t("header.coordinationWithdrawn")}</Badge>}
         {flags.closure_ready && <Badge tone="accent">{t("header.closureReady")}</Badge>}
       </div>
       {detail.urgent && detail.urgent_reason && !closed && (
@@ -67,7 +70,7 @@ export function CaseHeader({ detail, onOpenFhir }: { detail: CaseDetail; onOpenF
         <div>
           <dt className="text-xs font-semibold uppercase tracking-wide text-muted">{t("header.owner")}</dt>
           <dd className="mt-1">
-            <OwnerCell name={detail.owner_name} role={detail.owner_role} />
+            <OwnerCell person={detail.next_step?.owner_person ?? detail.owner_person} role={detail.owner_role} />
           </dd>
         </div>
         <div>

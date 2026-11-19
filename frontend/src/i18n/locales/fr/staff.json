@@ -91,11 +91,11 @@
       "escalated": "Aucun dossier escaladé pour le moment.",
       "all": "Il n'y a pas encore de dossier."
     },
-    "rejectedBy": "Refusé par {{name}} : {{reason}}",
-    "receiver": "le clinicien destinataire",
     "escalatedReason": "Escaladé : {{reason}}",
-    "escalatedDefault": "l'étape n'a pas été faite à temps",
-    "lastContact": "Dernière tentative de contact le {{when}}"
+    "lastContact": "Dernière tentative de contact : {{what}}, {{when}}",
+    "ageBand": "{{band}} ans",
+    "rejectionReason": "Motif du refus : {{reason}}",
+    "escalationReason": "Escaladé : {{reason}}"
   },
   "simulate": {
     "title": "Simuler un résultat entrant",
@@ -137,7 +137,8 @@
     "OVERDUE": "L'étape est en retard",
     "READY_TO_CLOSE": "Dernières mesures dans la cible, en attente de clôture par un clinicien",
     "ON_TRACK": "Dans les délais",
-    "CLOSED": "Clos"
+    "CLOSED": "Clos",
+    "CARE_COORDINATION_WITHDRAWN": "Coordination des soins retirée, décision d'un clinicien nécessaire"
   },
   "events": {
     "CASE_OPENED": "Dossier ouvert",
@@ -168,14 +169,17 @@
     "ECONSULT_ANSWERED": "Avis spécialisé donné",
     "CONSENT_CHANGED": "Consentement modifié",
     "CASE_CLOSED": "Dossier clos",
-    "CASE_REOPENED": "Dossier rouvert"
+    "CASE_REOPENED": "Dossier rouvert",
+    "MESSAGE_SUPPRESSED": "Message arrêté par le consentement"
   },
   "tasks": {
     "title": "Tâches ouvertes",
     "urgent_review": "Examen urgent le jour même",
     "call_the_patient": "Appeler le patient",
     "offer_a_call": "Proposer un appel au patient",
-    "decide_unreachable_patient": "Décider que faire d'un patient injoignable"
+    "decide_unreachable_patient": "Décider que faire d'un patient injoignable",
+    "contact_by_another_agreed_route": "Joindre le patient par un autre moyen convenu",
+    "decide_after_care_coordination_withdrawn": "Décider après le retrait de la coordination des soins"
   },
   "evidence": {
     "BP_CONTROLLED": "Tension maîtrisée",
@@ -290,7 +294,10 @@
     },
     "close": {
       "title": "Clore le dossier"
-    }
+    },
+    "dismiss": "Fermer",
+    "suppressedTitle": "Aucun message n'a été envoyé.",
+    "suppressedBody": "Le patient a retiré son accord pour ce canal : rien n'a été envoyé et le dossier n'a pas avancé. Une tâche a été créée pour joindre le patient par un autre moyen convenu."
   },
   "actions": {
     "title": "Ce que vous pouvez faire",
@@ -340,7 +347,8 @@
     "serviceLevel": "Délai prévu : {{hours}} h",
     "backQueue": "Retour à la file",
     "backWorklist": "Retour à la liste de travail",
-    "emergencyAdvice": "Conseil d'urgence pour le patient"
+    "emergencyAdvice": "Conseil d'urgence pour le patient",
+    "coordinationWithdrawn": "Coordination des soins retirée"
   },
   "case": {
     "title": "Dossier",
@@ -432,7 +440,8 @@
     "send": "Envoyer par {{channel}}",
     "needsApproval": "Approuvez la formulation pour l'envoyer.",
     "sent": "Le message a été envoyé.",
-    "aiBoundary": "L'aide à la rédaction n'est jamais utilisée pour l'acheminement, l'urgence, la responsabilité, les échéances ou la clôture."
+    "aiBoundary": "L'aide à la rédaction n'est jamais utilisée pour l'acheminement, l'urgence, la responsabilité, les échéances ou la clôture.",
+    "noFreeText": "Vous ne pouvez envoyer qu'un modèle approuvé. Le texte libre n'est pas possible. Une version reformulée par IA peut être affichée, mais elle ne peut être envoyée qu'après avoir coché la case d'approbation."
   },
   "econsult": {
     "title": "Avis spécialisé",
@@ -452,7 +461,8 @@
     "askTo": "Interroger",
     "question": "Question",
     "ask": "Envoyer la question",
-    "asked": "La question a été envoyée."
+    "asked": "La question a été envoyée.",
+    "coordinatorHidden": "Les questions et réponses d'avis spécialisé sont visibles des cliniciens seulement."
   },
   "progress": {
     "title": "Progression dans les huit étapes"
@@ -487,7 +497,8 @@
       "FELT_UNWELL": "ne se sentait pas bien",
       "WORK_SCHEDULE": "les horaires de travail",
       "OTHER": "autre"
-    }
+    },
+    "stopped": "Le patient a retiré son accord pour le programme de mode de vie. Le plan est arrêté et aucun point n'est attendu."
   },
   "audit": {
     "title": "Journal d'audit",
@@ -516,7 +527,9 @@
     },
     "caseNumber": "Dossier {{id}}",
     "askedOfMe": "Posée à moi",
-    "waitingOn": "En attente de la réponse"
+    "waitingOn": "En attente de la réponse",
+    "consent": "Décisions liées au consentement",
+    "consentHint": "Patients ayant retiré la coordination des soins. Les messages automatiques sont arrêtés et un clinicien décide, par exemple une clôture pour refus du patient."
   },
   "transparency": {
     "title": "Comment {{app}} prend ses décisions",
@@ -629,6 +642,28 @@
     "data1": "Chaque personne, mesure, prestataire et message est fictif et produit par du code à graine fixe. Il n'y a aucune donnée de patient réel.",
     "data2": "Des noms comme IFHAS, Thiqa et Malaffi apparaissent seulement comme étiquettes de sources simulées, et chaque écran concerné porte une étiquette Simulé.",
     "data3": "Les fils de SMS et de WhatsApp sont simulés dans une vue de téléphone. Aucun message ne quitte ce système.",
-    "data4": "La simulation du tableau de bord porte sur des personnes synthétiques. Elle montre ce que le système mesure et ne prouve pas une efficacité clinique."
+    "data4": "La simulation du tableau de bord porte sur des personnes synthétiques. Elle montre ce que le système mesure et ne prouve pas une efficacité clinique.",
+    "regionsTitle": "Régions et fuseaux horaires",
+    "regionsBody": "Chaque région a un fuseau horaire. Les dates des messages et les jours retenus pour les mesures à domicile suivent la région du patient et la langue du message.",
+    "demoOn": "Le mode démonstration est activé : la connexion invité, l'horloge de démonstration, la réinitialisation et le flux d'entrée simulé sont disponibles.",
+    "demoOff": "Le mode démonstration est désactivé : la connexion invité, l'horloge de démonstration, la réinitialisation et le flux d'entrée simulé sont coupés."
+  },
+  "clinicianOnly": "Visible des cliniciens seulement",
+  "banner": {
+    "coordinationTitle": "Les messages automatiques sont arrêtés.",
+    "coordinationBody": "Une décision d'un clinicien est nécessaire. Le patient a retiré son accord pour la coordination des soins."
+  },
+  "contactAttempt": {
+    "CLINICIAN_DECISION": "décision d'un clinicien demandée",
+    "UNREACHABLE_STEP": "étape de rappel",
+    "MESSAGE_SUPPRESSED": "message arrêté par le consentement"
+  },
+  "roleTitle": {
+    "care_coordinator": "coordinatrice des soins",
+    "nurse_coordinator": "infirmière coordinatrice",
+    "family_medicine": "médecine de famille",
+    "hypertension_clinic": "clinique de l'hypertension",
+    "general_practice_yaound": "médecine générale, Yaoundé",
+    "hypertension_clinic_yaound": "clinique de l'hypertension, Yaoundé"
   }
 }

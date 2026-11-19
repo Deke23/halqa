@@ -1,16 +1,16 @@
 /**
  * The one place where the live endpoint and the simulation file are made to line up.
  *
- * Mismatches handled here:
+ * Split keys now match (sex F and M, age bands 18-34, 35-49, 50-64 and 65+, nationality Cameroonian), so no key
+ * translation is needed. What still differs:
  * - Live rates are {value, count, unit "share"}. Simulation rates are {value, numerator} with no unit.
  * - Live unresolved is {count, value (share), delay_reasons: list of {reason, n}}. Simulation unresolved is
  *   {count, rate, delay_reasons: object keyed by reason with a label}.
  * - Live and simulation use different delay-reason codes (live reads engine flags, simulation reads the step
  *   that was not reached in time), so each has its own label table in the locale file.
- * - Live age bands are 18-34, 35-49, 50-64 and 65+. Simulation bands are 18-29, 30-39, 40-49, 50-59 and 60+.
- * - Live sex values are F and M. Simulation uses female and male.
  * - `care_reached_rate` exists only in the simulation. The other measure names are identical.
  * - Teach-back, confidence, plan and re-engagement measures are not measured in the simulated baseline arm.
+ * - The simulation endpoint ignores `split` and `region`; the page selects from the full file.
  */
 import type { LiveMeasure, SimMeasure } from "./types";
 
@@ -94,9 +94,9 @@ export function normSim(m: SimMeasure | number | undefined): Norm | undefined {
   };
 }
 
-/** Key to label: live and simulation group keys differ for sex. */
+/** Translation key for the group of a split, or null when the key is shown as it is. */
 export function groupLabelKey(split: string, key: string): string | null {
   if (split === "language") return `language.${key}`;
-  if (split === "sex") return `sex.${key === "F" ? "female" : key === "M" ? "male" : key}`;
+  if (split === "sex") return `sex.${key}`;
   return null;
 }

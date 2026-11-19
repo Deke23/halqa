@@ -1,0 +1,16 @@
+# Approved template. Edit the text here, bump `version`, and keep every {slot} listed in required_slots.
+id: plan_action_salt_smaller
+version: 1
+purpose: 'Weekly action text: salt, smaller size. Used inside the weekly messages and in the plan view.'
+channel_limits:
+  app: 900
+  whatsapp: 1000
+required_slots: []
+sample_slots:
+  en: {}
+  ar: {}
+  fr: {}
+text:
+  en: Leave the salt shaker off the table at one meal a day this week
+  ar: لا تضع الملح على المائدة في وجبة واحدة يوميًا هذا الأسبوع
+  fr: Ne mettez pas la salière sur la table à un repas par jour cette semaine

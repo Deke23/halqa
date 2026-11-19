@@ -1,0 +1,26 @@
+# Approved template. Edit the text here, bump `version`, and keep every {slot} listed in required_slots.
+id: red_flag_check_sms
+version: 1
+purpose: SMS red-flag symptom question. Answered with 1 for yes or 2 for no.
+channel_limits:
+  sms:
+    en: 160
+    fr: 160
+    ar: 134
+required_slots: []
+sample_slots:
+  en: {}
+  ar: {}
+  fr: {}
+text:
+  en: 'Now: chest pain, trouble breathing, severe headache, vision change, confusion or weakness on one side? Reply 1 for yes, 2 for no, 0 for a call.'
+  ar: هل لديك الآن ألم في الصدر أو ضيق تنفس أو صداع شديد أو تغيّر في الرؤية أو ارتباك أو ضعف في جانب؟ أرسل 1 لنعم، 2 للا، 0 لمكالمة.
+  fr: 'Maintenant : douleur poitrine, souffle court, fort mal de tête, trouble de la vue, confusion ou faiblesse d''un côté ? Répondez 1 oui, 2 non, 0 appel.'
+sms_chars_with_sample_slots:
+  en: 143
+  ar: 126
+  fr: 149
+gsm7_safe_with_sample_slots:
+  en: true
+  ar: false
+  fr: false

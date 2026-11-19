@@ -27,13 +27,18 @@ _FALLBACK: dict[str, str] = {
         "get emergency help now."
     ),
     "teach_back_question": (
-        "What is the next step? Reply 1 if you understand that you need to check your blood pressure again, or 2 if you would like a call."
+        "What is the next step? A) Nothing, the reading is normal. B) Check my blood pressure again. C) Start medicine now. Reply A, B or C."
     ),
     "teach_back_simpler": (
         "One high reading is not enough to know what is happening. The next step is to measure again, at home or at a clinic. "
-        "Reply 1 if this is clear, or 2 if you would like a call."
+        "Please try the question again."
     ),
-    "reminder_ack": "A reminder: your blood pressure reading {reading} still needs checking. Reply 1 if you understand, or 2 for a call.",
+    "reminder_ack": "A reminder: your blood pressure reading {reading} still needs checking. Reply 0 for a call.",
+    "reminder_home_readings": "A reminder: your follow-up blood pressure check is not finished yet. Please send your readings by {due_date}. If you need help, tell us.",
+    "reminder_booking": "A reminder: you can now choose a visit time. Please choose one by {due_date}. If you need help, tell us.",
+    "appointment_reminder": "A reminder: your visit is on {appointment_date} at {appointment_time}, {clinic_name}.",
+    "red_flag_check": "Do you have chest pain, trouble breathing, a severe headache, a change in vision, confusion or weakness on one side now? Reply 1 for yes, 2 for no, or 0 for a call.",
+    "urgent_red_flags_sms": "{emergency_instruction}",
     "confirmation_hbpm_instructions": (
         "Measure your blood pressure twice a day, morning and evening, for at least 4 days. Sit quietly for 5 minutes first. "
         "Enter each result in the app, or reply with it, for example 150/95."
@@ -53,7 +58,7 @@ _FALLBACK: dict[str, str] = {
     ),
     "reply_received": "Thank you. We received your reply.",
     "call_requested": "Thank you. A member of the care team will call you.",
-    "reply_not_understood": "We could not read that reply. Reply 1 if you understand, or 2 if you would like a call.",
+    "reply_not_understood": "We could not read that reply. Reply 0 if you would like a call.",
 }
 
 PLAN_TEXT: dict[tuple[str, str], str] = {
@@ -101,24 +106,13 @@ _FIXED = {  # fixed replies for the phone thread when no approved template exist
     "call_requested": {"en": "Thank you. A member of the care team will call you.",
                        "fr": "Merci. Un membre de l'équipe de soins vous appellera.",
                        "ar": "شكراً. سيتصل بك أحد أعضاء فريق الرعاية."},
-    "reply_not_understood": {"en": "Sorry, please reply with 1 if you understand, 2 for a call, or a reading such as 150/95.",
-                             "fr": "Désolé, répondez 1 si vous avez compris, 2 pour un appel, ou une mesure comme 150/95.",
-                             "ar": "معذرة، أرسل 1 إذا فهمت، أو 2 للاتصال، أو قراءة مثل 150/95."},
+    "stop_confirmed": {"en": "You will not get more messages on this number. Your care team will reach you another way you have agreed to.",
+                       "fr": "Vous ne recevrez plus de messages sur ce numéro. L'équipe de soins vous contactera d'une autre façon que vous avez acceptée.",
+                       "ar": "لن تصلك رسائل أخرى على هذا الرقم. سيتواصل معك فريق الرعاية بطريقة أخرى سبق أن وافقت عليها."},
+    "reply_not_understood": {"en": "Sorry, we could not read that. Please use one of the replies we offered, or reply 0 for a call.",
+                             "fr": "Désolé, nous n'avons pas compris. Utilisez l'une des réponses proposées, ou répondez 0 pour un appel.",
+                             "ar": "معذرة، لم نفهم ردك. استخدم أحد الردود المقترحة، أو أرسل 0 لمكالمة."},
 }
-
-_MONTHS = {
-    "en": ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-    "fr": ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"],
-    "ar": ["يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو",
-           "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"],
-}
-
-
-def format_date(dt, language: str) -> str:
-    """Localised month name, Latin digits for the day (clinical and scheduling numbers stay Latin)."""
-    months = _MONTHS.get(language, _MONTHS["en"])
-    return f"{dt.day} {months[dt.month - 1]}"
-
 
 def _catalogue_ids(mod: Any) -> set[str]:
     try:
@@ -127,30 +121,54 @@ def _catalogue_ids(mod: Any) -> set[str]:
         return set()
 
 
-def render(template_id: str, language: str, slots: dict[str, Any], channel: str | None = None) -> Rendered:
-    """Approved template text. SMS uses the `_sms` variant when one exists."""
+class WordingUnavailable(Exception):
+    """Raised by `render(..., strict=True)` when the approved template cannot be rendered."""
+
+
+def _channel_variant(template_id: str, channel: str | None, ids: set[str]) -> str:
+    """SMS uses the `_sms` variant and the in-app thread uses the `_app` variant when one exists."""
+    suffix = {"SMS": "_sms", "APP": "_app"}.get(channel or "")
+    if suffix and not template_id.endswith(("_sms", "_app")) and f"{template_id}{suffix}" in ids:
+        return f"{template_id}{suffix}"
+    return template_id
+
+
+def known_template(template_id: str) -> bool:
+    mod = _wording()
+    if mod is not None and hasattr(mod, "list_templates"):
+        return template_id in _catalogue_ids(mod)
+    return template_id in _FALLBACK
+
+
+def render(template_id: str, language: str, slots: dict[str, Any], channel: str | None = None, *, strict: bool = False) -> Rendered:
+    """Approved template text, deterministic. With `strict`, a template that cannot render raises WordingUnavailable."""
     mod = _wording()
     if mod is not None and hasattr(mod, "render"):
-        tid = template_id
-        if channel == "SMS" and not tid.endswith("_sms") and f"{tid}_sms" in _catalogue_ids(mod):
-            tid = f"{tid}_sms"
+        tid = _channel_variant(template_id, channel, _catalogue_ids(mod))
         try:
             out = mod.render(tid, language, slots)
             return Rendered(out.text, out.template_id, str(out.template_version), out.language)
         except Exception as exc:
             log.debug("wording.render failed for %s: %s", tid, exc)
+            if strict:
+                raise WordingUnavailable(f"{tid} in {language}: {exc}") from exc
     if template_id in _FIXED:
         return Rendered(_FIXED[template_id].get(language, _FIXED[template_id]["en"]), template_id, FALLBACK_VERSION, language)
     text = _FALLBACK.get(template_id, "")
+    if strict and not text:
+        raise WordingUnavailable(f"No text for {template_id}")
     return Rendered(text.format_map(_Blank(slots)), template_id, FALLBACK_VERSION, "en")
 
 
-def teach_back(language: str, slots: dict[str, Any], sms: bool = False) -> dict[str, Any]:
-    """Question, options, correct option number and simpler text. Built-in English if the module is missing."""
+def teach_back(language: str, slots: dict[str, Any], sms: bool = False, app: bool = False) -> dict[str, Any]:
+    """Question, options, correct option number and simpler text. Built-in English if the module is missing.
+
+    `app=True` gives the in-app question without the "reply 1, 2 or 3" sentence (that belongs to the SMS variant only).
+    """
     mod = _wording()
     if mod is not None and hasattr(mod, "teach_back"):
         try:
-            return dict(mod.teach_back(language, slots, sms=sms))
+            return dict(mod.teach_back(language, slots, sms=sms, app=app))
         except Exception as exc:
             log.debug("wording.teach_back failed: %s", exc)
     return {
@@ -175,8 +193,37 @@ def reword(text: str, language: str, tone: str | None, slots: dict[str, Any], ba
     return Rendered(out.text, base.template_id, base.template_version, base.language, "AI_REWORDED", validation)
 
 
-def plan_text(action_key: str, size: str) -> str:
-    return PLAN_TEXT.get((action_key, size), "")
+def plan_text(action_key: str, size: str, language: str = "en") -> str:
+    """Weekly action text from the approved templates (`plan_action_<key>_<size>`), in the given language."""
+    try:
+        return render(f"plan_action_{action_key}_{size}", language, {}, strict=True).text
+    except WordingUnavailable:
+        return PLAN_TEXT.get((action_key, size), "")
+
+
+def validate_text(original: str, candidate: str, language: str, slots: dict[str, Any], max_length: int | None) -> dict[str, Any]:
+    """Re-run the wording validator. Raises WordingUnavailable when the validator cannot be reached."""
+    mod = _wording()
+    if mod is None or not hasattr(mod, "validate"):
+        raise WordingUnavailable("The wording validator is not available.")
+    return dict(mod.validate(original, candidate, language, slots, max_length))
+
+
+def channel_limit(template_id: str, channel: str, language: str) -> int | None:
+    """Channel character limit for a template (SMS limit by language, else the app or WhatsApp limit), if declared."""
+    mod = _wording()
+    if mod is None or not hasattr(mod, "get_template"):
+        return None
+    try:
+        limits = mod.get_template(template_id)["channel_limits"]
+    except Exception:
+        return None
+    if channel == "SMS":
+        sms = limits.get("sms") if isinstance(limits, dict) else None
+        return sms.get(language) if isinstance(sms, dict) else None
+    key = "whatsapp" if channel == "WHATSAPP" else "app"
+    value = limits.get(key) if isinstance(limits, dict) else None
+    return int(value) if isinstance(value, int) else None
 
 
 def template_catalogue() -> list[dict[str, Any]]:

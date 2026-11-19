@@ -21,13 +21,13 @@ sample_slots:
     name: Jean-Paul
     action_text: un repas sans sel ajouté
 text:
-  en: '{name}, this week''s small step: {action_text}. Do what you can. Less is fine.'
-  ar: '{name}، خطوتك الصغيرة هذا الأسبوع: {action_text}. افعل ما تستطيع، والأقل مقبول.'
-  fr: '{name}, petite action de la semaine : {action_text}. Faites ce que vous pouvez. Moins, c''est bien aussi.'
+  en: '{name}, this week''s small step: {action_text}. Less is fine. Next week reply A done, B partly, C not done.'
+  ar: '{name}، خطوتك الصغيرة هذا الأسبوع: {action_text}. الأقل مقبول. الأسبوع القادم أرسل A تمت، B جزئيًا، C لم تتم.'
+  fr: '{name}, petite action de la semaine : {action_text}. Moins, c''est bien. Semaine prochaine : A fait, B en partie, C pas fait.'
 sms_chars_with_sample_slots:
-  en: 91
-  ar: 87
-  fr: 118
+  en: 120
+  ar: 117
+  fr: 138
 gsm7_safe_with_sample_slots:
   en: true
   ar: false

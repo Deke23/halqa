@@ -1,0 +1,30 @@
+# Approved template. Edit the text here, bump `version`, and keep every {slot} listed in required_slots.
+id: urgent_red_flags_sms
+version: 1
+purpose: 'SMS answer to a yes on the red-flag question: the region''s emergency instruction at once.'
+channel_limits:
+  sms:
+    en: 160
+    fr: 160
+    ar: 134
+required_slots:
+- emergency_instruction
+sample_slots:
+  en:
+    emergency_instruction: Call 998 now.
+  ar:
+    emergency_instruction: اتصل بالإسعاف الآن.
+  fr:
+    emergency_instruction: Allez aux urgences les plus proches.
+text:
+  en: Your answer means you need help now. {emergency_instruction} Do not wait for a reply.
+  ar: إجابتك تعني أنك بحاجة إلى مساعدة الآن. {emergency_instruction} لا تنتظر ردًا.
+  fr: Votre réponse indique qu'il faut de l'aide maintenant. {emergency_instruction} N'attendez pas de réponse.
+sms_chars_with_sample_slots:
+  en: 75
+  ar: 73
+  fr: 118
+gsm7_safe_with_sample_slots:
+  en: true
+  ar: false
+  fr: true

@@ -1701,7 +1701,7 @@
      }
     },
     "sex": {
-     "female": {
+     "F": {
       "n_actionable": 306,
       "time_to_notification_h": {
        "n": 260,
@@ -1835,7 +1835,7 @@
        "note": "Not measured in the baseline arm: it has no teach-back, plan or check-ins."
       }
      },
-     "male": {
+     "M": {
       "n_actionable": 487,
       "time_to_notification_h": {
        "n": 416,
@@ -1971,360 +1971,92 @@
      }
     },
     "age_band": {
-     "18-29": {
-      "n_actionable": 112,
+     "18-34": {
+      "n_actionable": 201,
       "time_to_notification_h": {
-       "n": 93,
+       "n": 167,
        "suppressed": false,
-       "median": 71.85,
-       "p90": 222.6,
+       "median": 67.51,
+       "p90": 210.15,
        "unit": "hours"
       },
       "time_to_acknowledgement_h": {
-       "n": 64,
+       "n": 113,
        "suppressed": false,
-       "median": 315.16,
-       "p90": 976.62,
+       "median": 298.98,
+       "p90": 669.58,
        "unit": "hours"
       },
       "time_to_confirmation_d": {
-       "n": 36,
+       "n": 67,
        "suppressed": false,
-       "median": 51.05,
-       "p90": 87.28,
-       "unit": "days"
-      },
-      "time_to_consultation_d": {
-       "n": 11,
-       "suppressed": false,
-       "median": 106.56,
-       "p90": 130.78,
-       "unit": "days"
-      },
-      "time_to_care_d": {
-       "n": 10,
-       "suppressed": false,
-       "median": 103.78,
-       "p90": 135.11,
-       "unit": "days"
-      },
-      "referral_completion_rate": {
-       "n": 29,
-       "suppressed": false,
-       "numerator": 26,
-       "value": 0.8966
-      },
-      "appointment_completion_rate": {
-       "n": 18,
-       "suppressed": false,
-       "numerator": 11,
-       "value": 0.6111
-      },
-      "treatment_initiation_rate": {
-       "n": 11,
-       "suppressed": false,
-       "numerator": 6,
-       "value": 0.5455
-      },
-      "care_reached_rate": {
-       "n": 112,
-       "suppressed": false,
-       "numerator": 10,
-       "value": 0.0893
-      },
-      "unresolved_results": {
-       "n": 112,
-       "suppressed": false,
-       "count": 95,
-       "rate": 0.8482,
-       "delay_reasons": {
-        "result_not_delivered": {
-         "label": "Result not delivered in time",
-         "count": 19,
-         "suppressed": false
-        },
-        "no_acknowledgement": {
-         "label": "Patient did not acknowledge in time",
-         "count": 29,
-         "suppressed": false
-        },
-        "confirmation_not_completed": {
-         "label": "Confirmation by home or 24-hour monitoring not completed in time",
-         "count": 28,
-         "suppressed": false
-        },
-        "referral_not_sent": {
-         "label": "Referral not sent in time",
-         "count": null,
-         "suppressed": true
-        },
-        "referral_not_accepted": {
-         "label": "Referral not accepted in time",
-         "count": null,
-         "suppressed": true
-        },
-        "appointment_not_booked": {
-         "label": "Appointment not booked in time",
-         "count": 8,
-         "suppressed": false
-        },
-        "visit_not_attended": {
-         "label": "Visit not attended in time",
-         "count": 7,
-         "suppressed": false
-        },
-        "care_not_recorded": {
-         "label": "Visit outcome not recorded in time",
-         "count": null,
-         "suppressed": true
-        }
-       }
-      },
-      "teach_back_pass_rate": {
-       "n": 0,
-       "suppressed": true,
-       "value": null,
-       "note": "Not measured in the baseline arm: it has no teach-back, plan or check-ins."
-      },
-      "patient_confidence_mean": {
-       "n": 0,
-       "suppressed": true,
-       "value": null,
-       "note": "Not measured in the baseline arm: it has no teach-back, plan or check-ins."
-      },
-      "plan_checkin_rate": {
-       "n": 0,
-       "suppressed": true,
-       "value": null,
-       "note": "Not measured in the baseline arm: it has no teach-back, plan or check-ins."
-      },
-      "re_engagement_after_lapse_rate": {
-       "n": 0,
-       "suppressed": true,
-       "value": null,
-       "note": "Not measured in the baseline arm: it has no teach-back, plan or check-ins."
-      }
-     },
-     "30-39": {
-      "n_actionable": 209,
-      "time_to_notification_h": {
-       "n": 179,
-       "suppressed": false,
-       "median": 67.19,
-       "p90": 158.97,
-       "unit": "hours"
-      },
-      "time_to_acknowledgement_h": {
-       "n": 127,
-       "suppressed": false,
-       "median": 296.43,
-       "p90": 772.17,
-       "unit": "hours"
-      },
-      "time_to_confirmation_d": {
-       "n": 73,
-       "suppressed": false,
-       "median": 49.64,
-       "p90": 101.31,
-       "unit": "days"
-      },
-      "time_to_consultation_d": {
-       "n": 17,
-       "suppressed": false,
-       "median": 92.55,
-       "p90": 154.51,
-       "unit": "days"
-      },
-      "time_to_care_d": {
-       "n": 16,
-       "suppressed": false,
-       "median": 96.59,
-       "p90": 155.6,
-       "unit": "days"
-      },
-      "referral_completion_rate": {
-       "n": 54,
-       "suppressed": false,
-       "numerator": 43,
-       "value": 0.7963
-      },
-      "appointment_completion_rate": {
-       "n": 29,
-       "suppressed": false,
-       "numerator": 17,
-       "value": 0.5862
-      },
-      "treatment_initiation_rate": {
-       "n": 17,
-       "suppressed": false,
-       "numerator": 13,
-       "value": 0.7647
-      },
-      "care_reached_rate": {
-       "n": 209,
-       "suppressed": false,
-       "numerator": 16,
-       "value": 0.0766
-      },
-      "unresolved_results": {
-       "n": 209,
-       "suppressed": false,
-       "count": 174,
-       "rate": 0.8325,
-       "delay_reasons": {
-        "result_not_delivered": {
-         "label": "Result not delivered in time",
-         "count": 30,
-         "suppressed": false
-        },
-        "no_acknowledgement": {
-         "label": "Patient did not acknowledge in time",
-         "count": 52,
-         "suppressed": false
-        },
-        "confirmation_not_completed": {
-         "label": "Confirmation by home or 24-hour monitoring not completed in time",
-         "count": 54,
-         "suppressed": false
-        },
-        "referral_not_sent": {
-         "label": "Referral not sent in time",
-         "count": 5,
-         "suppressed": false
-        },
-        "referral_not_accepted": {
-         "label": "Referral not accepted in time",
-         "count": 6,
-         "suppressed": false
-        },
-        "appointment_not_booked": {
-         "label": "Appointment not booked in time",
-         "count": 14,
-         "suppressed": false
-        },
-        "visit_not_attended": {
-         "label": "Visit not attended in time",
-         "count": 12,
-         "suppressed": false
-        },
-        "care_not_recorded": {
-         "label": "Visit outcome not recorded in time",
-         "count": null,
-         "suppressed": true
-        }
-       }
-      },
-      "teach_back_pass_rate": {
-       "n": 0,
-       "suppressed": true,
-       "value": null,
-       "note": "Not measured in the baseline arm: it has no teach-back, plan or check-ins."
-      },
-      "patient_confidence_mean": {
-       "n": 0,
-       "suppressed": true,
-       "value": null,
-       "note": "Not measured in the baseline arm: it has no teach-back, plan or check-ins."
-      },
-      "plan_checkin_rate": {
-       "n": 0,
-       "suppressed": true,
-       "value": null,
-       "note": "Not measured in the baseline arm: it has no teach-back, plan or check-ins."
-      },
-      "re_engagement_after_lapse_rate": {
-       "n": 0,
-       "suppressed": true,
-       "value": null,
-       "note": "Not measured in the baseline arm: it has no teach-back, plan or check-ins."
-      }
-     },
-     "40-49": {
-      "n_actionable": 251,
-      "time_to_notification_h": {
-       "n": 214,
-       "suppressed": false,
-       "median": 68.9,
-       "p90": 202.39,
-       "unit": "hours"
-      },
-      "time_to_acknowledgement_h": {
-       "n": 154,
-       "suppressed": false,
-       "median": 299.97,
-       "p90": 739.9,
-       "unit": "hours"
-      },
-      "time_to_confirmation_d": {
-       "n": 98,
-       "suppressed": false,
-       "median": 51.21,
-       "p90": 99.66,
+       "median": 50.85,
+       "p90": 96.39,
        "unit": "days"
       },
       "time_to_consultation_d": {
        "n": 14,
        "suppressed": false,
-       "median": 99.48,
-       "p90": 142.87,
+       "median": 106.88,
+       "p90": 128.37,
        "unit": "days"
       },
       "time_to_care_d": {
        "n": 12,
        "suppressed": false,
-       "median": 109.1,
-       "p90": 147.92,
+       "median": 109.82,
+       "p90": 131.22,
        "unit": "days"
       },
       "referral_completion_rate": {
-       "n": 73,
+       "n": 53,
        "suppressed": false,
-       "numerator": 55,
-       "value": 0.7534
+       "numerator": 44,
+       "value": 0.8302
       },
       "appointment_completion_rate": {
-       "n": 37,
+       "n": 26,
        "suppressed": false,
        "numerator": 14,
-       "value": 0.3784
+       "value": 0.5385
       },
       "treatment_initiation_rate": {
        "n": 14,
        "suppressed": false,
-       "numerator": 7,
-       "value": 0.5
+       "numerator": 6,
+       "value": 0.4286
       },
       "care_reached_rate": {
-       "n": 251,
+       "n": 201,
        "suppressed": false,
        "numerator": 12,
-       "value": 0.0478
+       "value": 0.0597
       },
       "unresolved_results": {
-       "n": 251,
+       "n": 201,
        "suppressed": false,
-       "count": 214,
-       "rate": 0.8526,
+       "count": 175,
+       "rate": 0.8706,
        "delay_reasons": {
         "result_not_delivered": {
          "label": "Result not delivered in time",
-         "count": 37,
+         "count": 34,
          "suppressed": false
         },
         "no_acknowledgement": {
          "label": "Patient did not acknowledge in time",
-         "count": 60,
+         "count": 54,
          "suppressed": false
         },
         "confirmation_not_completed": {
          "label": "Confirmation by home or 24-hour monitoring not completed in time",
-         "count": 56,
+         "count": 46,
          "suppressed": false
         },
         "referral_not_sent": {
          "label": "Referral not sent in time",
-         "count": 12,
-         "suppressed": false
+         "count": null,
+         "suppressed": true
         },
         "referral_not_accepted": {
          "label": "Referral not accepted in time",
@@ -2338,140 +2070,6 @@
         },
         "visit_not_attended": {
          "label": "Visit not attended in time",
-         "count": 23,
-         "suppressed": false
-        },
-        "care_not_recorded": {
-         "label": "Visit outcome not recorded in time",
-         "count": null,
-         "suppressed": true
-        }
-       }
-      },
-      "teach_back_pass_rate": {
-       "n": 0,
-       "suppressed": true,
-       "value": null,
-       "note": "Not measured in the baseline arm: it has no teach-back, plan or check-ins."
-      },
-      "patient_confidence_mean": {
-       "n": 0,
-       "suppressed": true,
-       "value": null,
-       "note": "Not measured in the baseline arm: it has no teach-back, plan or check-ins."
-      },
-      "plan_checkin_rate": {
-       "n": 0,
-       "suppressed": true,
-       "value": null,
-       "note": "Not measured in the baseline arm: it has no teach-back, plan or check-ins."
-      },
-      "re_engagement_after_lapse_rate": {
-       "n": 0,
-       "suppressed": true,
-       "value": null,
-       "note": "Not measured in the baseline arm: it has no teach-back, plan or check-ins."
-      }
-     },
-     "50-59": {
-      "n_actionable": 158,
-      "time_to_notification_h": {
-       "n": 133,
-       "suppressed": false,
-       "median": 68.29,
-       "p90": 182.95,
-       "unit": "hours"
-      },
-      "time_to_acknowledgement_h": {
-       "n": 93,
-       "suppressed": false,
-       "median": 256.84,
-       "p90": 620.07,
-       "unit": "hours"
-      },
-      "time_to_confirmation_d": {
-       "n": 56,
-       "suppressed": false,
-       "median": 44.03,
-       "p90": 98.69,
-       "unit": "days"
-      },
-      "time_to_consultation_d": {
-       "n": 9,
-       "suppressed": false,
-       "median": 87.41,
-       "p90": 132.97,
-       "unit": "days"
-      },
-      "time_to_care_d": {
-       "n": 7,
-       "suppressed": false,
-       "median": 112.0,
-       "p90": 145.02,
-       "unit": "days"
-      },
-      "referral_completion_rate": {
-       "n": 40,
-       "suppressed": false,
-       "numerator": 26,
-       "value": 0.65
-      },
-      "appointment_completion_rate": {
-       "n": 21,
-       "suppressed": false,
-       "numerator": 9,
-       "value": 0.4286
-      },
-      "treatment_initiation_rate": {
-       "n": 9,
-       "suppressed": false,
-       "numerator": 6,
-       "value": 0.6667
-      },
-      "care_reached_rate": {
-       "n": 158,
-       "suppressed": false,
-       "numerator": 7,
-       "value": 0.0443
-      },
-      "unresolved_results": {
-       "n": 158,
-       "suppressed": false,
-       "count": 135,
-       "rate": 0.8544,
-       "delay_reasons": {
-        "result_not_delivered": {
-         "label": "Result not delivered in time",
-         "count": 25,
-         "suppressed": false
-        },
-        "no_acknowledgement": {
-         "label": "Patient did not acknowledge in time",
-         "count": 40,
-         "suppressed": false
-        },
-        "confirmation_not_completed": {
-         "label": "Confirmation by home or 24-hour monitoring not completed in time",
-         "count": 37,
-         "suppressed": false
-        },
-        "referral_not_sent": {
-         "label": "Referral not sent in time",
-         "count": 10,
-         "suppressed": false
-        },
-        "referral_not_accepted": {
-         "label": "Referral not accepted in time",
-         "count": null,
-         "suppressed": true
-        },
-        "appointment_not_booked": {
-         "label": "Appointment not booked in time",
-         "count": 5,
-         "suppressed": false
-        },
-        "visit_not_attended": {
-         "label": "Visit not attended in time",
          "count": 12,
          "suppressed": false
         },
@@ -2507,31 +2105,299 @@
        "note": "Not measured in the baseline arm: it has no teach-back, plan or check-ins."
       }
      },
-     "60+": {
-      "n_actionable": 63,
+     "35-49": {
+      "n_actionable": 371,
       "time_to_notification_h": {
-       "n": 57,
+       "n": 319,
        "suppressed": false,
-       "median": 72.86,
-       "p90": 216.44,
+       "median": 68.13,
+       "p90": 194.19,
        "unit": "hours"
       },
       "time_to_acknowledgement_h": {
-       "n": 45,
+       "n": 232,
        "suppressed": false,
-       "median": 265.96,
-       "p90": 625.84,
+       "median": 302.8,
+       "p90": 773.44,
        "unit": "hours"
       },
       "time_to_confirmation_d": {
-       "n": 30,
+       "n": 140,
        "suppressed": false,
-       "median": 44.31,
-       "p90": 77.07,
+       "median": 50.17,
+       "p90": 99.49,
        "unit": "days"
       },
       "time_to_consultation_d": {
-       "n": 2,
+       "n": 28,
+       "suppressed": false,
+       "median": 93.71,
+       "p90": 153.86,
+       "unit": "days"
+      },
+      "time_to_care_d": {
+       "n": 26,
+       "suppressed": false,
+       "median": 96.59,
+       "p90": 155.6,
+       "unit": "days"
+      },
+      "referral_completion_rate": {
+       "n": 103,
+       "suppressed": false,
+       "numerator": 80,
+       "value": 0.7767
+      },
+      "appointment_completion_rate": {
+       "n": 58,
+       "suppressed": false,
+       "numerator": 28,
+       "value": 0.4828
+      },
+      "treatment_initiation_rate": {
+       "n": 28,
+       "suppressed": false,
+       "numerator": 20,
+       "value": 0.7143
+      },
+      "care_reached_rate": {
+       "n": 371,
+       "suppressed": false,
+       "numerator": 26,
+       "value": 0.0701
+      },
+      "unresolved_results": {
+       "n": 371,
+       "suppressed": false,
+       "count": 308,
+       "rate": 0.8302,
+       "delay_reasons": {
+        "result_not_delivered": {
+         "label": "Result not delivered in time",
+         "count": 52,
+         "suppressed": false
+        },
+        "no_acknowledgement": {
+         "label": "Patient did not acknowledge in time",
+         "count": 87,
+         "suppressed": false
+        },
+        "confirmation_not_completed": {
+         "label": "Confirmation by home or 24-hour monitoring not completed in time",
+         "count": 92,
+         "suppressed": false
+        },
+        "referral_not_sent": {
+         "label": "Referral not sent in time",
+         "count": 14,
+         "suppressed": false
+        },
+        "referral_not_accepted": {
+         "label": "Referral not accepted in time",
+         "count": 9,
+         "suppressed": false
+        },
+        "appointment_not_booked": {
+         "label": "Appointment not booked in time",
+         "count": 22,
+         "suppressed": false
+        },
+        "visit_not_attended": {
+         "label": "Visit not attended in time",
+         "count": 30,
+         "suppressed": false
+        },
+        "care_not_recorded": {
+         "label": "Visit outcome not recorded in time",
+         "count": null,
+         "suppressed": true
+        }
+       }
+      },
+      "teach_back_pass_rate": {
+       "n": 0,
+       "suppressed": true,
+       "value": null,
+       "note": "Not measured in the baseline arm: it has no teach-back, plan or check-ins."
+      },
+      "patient_confidence_mean": {
+       "n": 0,
+       "suppressed": true,
+       "value": null,
+       "note": "Not measured in the baseline arm: it has no teach-back, plan or check-ins."
+      },
+      "plan_checkin_rate": {
+       "n": 0,
+       "suppressed": true,
+       "value": null,
+       "note": "Not measured in the baseline arm: it has no teach-back, plan or check-ins."
+      },
+      "re_engagement_after_lapse_rate": {
+       "n": 0,
+       "suppressed": true,
+       "value": null,
+       "note": "Not measured in the baseline arm: it has no teach-back, plan or check-ins."
+      }
+     },
+     "50-64": {
+      "n_actionable": 190,
+      "time_to_notification_h": {
+       "n": 162,
+       "suppressed": false,
+       "median": 68.43,
+       "p90": 195.31,
+       "unit": "hours"
+      },
+      "time_to_acknowledgement_h": {
+       "n": 118,
+       "suppressed": false,
+       "median": 265.27,
+       "p90": 612.42,
+       "unit": "hours"
+      },
+      "time_to_confirmation_d": {
+       "n": 73,
+       "suppressed": false,
+       "median": 44.48,
+       "p90": 94.76,
+       "unit": "days"
+      },
+      "time_to_consultation_d": {
+       "n": 10,
+       "suppressed": false,
+       "median": 99.02,
+       "p90": 145.52,
+       "unit": "days"
+      },
+      "time_to_care_d": {
+       "n": 7,
+       "suppressed": false,
+       "median": 112.0,
+       "p90": 145.02,
+       "unit": "days"
+      },
+      "referral_completion_rate": {
+       "n": 47,
+       "suppressed": false,
+       "numerator": 30,
+       "value": 0.6383
+      },
+      "appointment_completion_rate": {
+       "n": 23,
+       "suppressed": false,
+       "numerator": 10,
+       "value": 0.4348
+      },
+      "treatment_initiation_rate": {
+       "n": 10,
+       "suppressed": false,
+       "numerator": 6,
+       "value": 0.6
+      },
+      "care_reached_rate": {
+       "n": 190,
+       "suppressed": false,
+       "numerator": 7,
+       "value": 0.0368
+      },
+      "unresolved_results": {
+       "n": 190,
+       "suppressed": false,
+       "count": 157,
+       "rate": 0.8263,
+       "delay_reasons": {
+        "result_not_delivered": {
+         "label": "Result not delivered in time",
+         "count": 28,
+         "suppressed": false
+        },
+        "no_acknowledgement": {
+         "label": "Patient did not acknowledge in time",
+         "count": 44,
+         "suppressed": false
+        },
+        "confirmation_not_completed": {
+         "label": "Confirmation by home or 24-hour monitoring not completed in time",
+         "count": 45,
+         "suppressed": false
+        },
+        "referral_not_sent": {
+         "label": "Referral not sent in time",
+         "count": 11,
+         "suppressed": false
+        },
+        "referral_not_accepted": {
+         "label": "Referral not accepted in time",
+         "count": 6,
+         "suppressed": false
+        },
+        "appointment_not_booked": {
+         "label": "Appointment not booked in time",
+         "count": 7,
+         "suppressed": false
+        },
+        "visit_not_attended": {
+         "label": "Visit not attended in time",
+         "count": 13,
+         "suppressed": false
+        },
+        "care_not_recorded": {
+         "label": "Visit outcome not recorded in time",
+         "count": null,
+         "suppressed": true
+        }
+       }
+      },
+      "teach_back_pass_rate": {
+       "n": 0,
+       "suppressed": true,
+       "value": null,
+       "note": "Not measured in the baseline arm: it has no teach-back, plan or check-ins."
+      },
+      "patient_confidence_mean": {
+       "n": 0,
+       "suppressed": true,
+       "value": null,
+       "note": "Not measured in the baseline arm: it has no teach-back, plan or check-ins."
+      },
+      "plan_checkin_rate": {
+       "n": 0,
+       "suppressed": true,
+       "value": null,
+       "note": "Not measured in the baseline arm: it has no teach-back, plan or check-ins."
+      },
+      "re_engagement_after_lapse_rate": {
+       "n": 0,
+       "suppressed": true,
+       "value": null,
+       "note": "Not measured in the baseline arm: it has no teach-back, plan or check-ins."
+      }
+     },
+     "65+": {
+      "n_actionable": 31,
+      "time_to_notification_h": {
+       "n": 28,
+       "suppressed": false,
+       "median": 80.42,
+       "p90": 212.44,
+       "unit": "hours"
+      },
+      "time_to_acknowledgement_h": {
+       "n": 20,
+       "suppressed": false,
+       "median": 243.51,
+       "p90": 659.33,
+       "unit": "hours"
+      },
+      "time_to_confirmation_d": {
+       "n": 13,
+       "suppressed": false,
+       "median": 43.77,
+       "p90": 84.56,
+       "unit": "days"
+      },
+      "time_to_consultation_d": {
+       "n": 1,
        "suppressed": true,
        "median": null,
        "p90": null,
@@ -2545,48 +2411,48 @@
        "unit": "days"
       },
       "referral_completion_rate": {
-       "n": 15,
+       "n": 8,
        "suppressed": false,
-       "numerator": 10,
-       "value": 0.6667
+       "numerator": 6,
+       "value": 0.75
       },
       "appointment_completion_rate": {
-       "n": 5,
-       "suppressed": false,
-       "numerator": 2,
-       "value": 0.4
+       "n": 3,
+       "suppressed": true,
+       "numerator": null,
+       "value": null
       },
       "treatment_initiation_rate": {
-       "n": 2,
+       "n": 1,
        "suppressed": true,
        "numerator": null,
        "value": null
       },
       "care_reached_rate": {
-       "n": 63,
+       "n": 31,
        "suppressed": false,
        "numerator": 1,
-       "value": 0.0159
+       "value": 0.0323
       },
       "unresolved_results": {
-       "n": 63,
+       "n": 31,
        "suppressed": false,
-       "count": 47,
-       "rate": 0.746,
+       "count": 25,
+       "rate": 0.8065,
        "delay_reasons": {
         "result_not_delivered": {
          "label": "Result not delivered in time",
-         "count": 6,
-         "suppressed": false
+         "count": null,
+         "suppressed": true
         },
         "no_acknowledgement": {
          "label": "Patient did not acknowledge in time",
-         "count": 12,
+         "count": 8,
          "suppressed": false
         },
         "confirmation_not_completed": {
          "label": "Confirmation by home or 24-hour monitoring not completed in time",
-         "count": 15,
+         "count": 7,
          "suppressed": false
         },
         "referral_not_sent": {
@@ -2601,8 +2467,8 @@
         },
         "appointment_not_booked": {
          "label": "Appointment not booked in time",
-         "count": 5,
-         "suppressed": false
+         "count": null,
+         "suppressed": true
         },
         "visit_not_attended": {
          "label": "Visit not attended in time",
@@ -3582,7 +3448,7 @@
      }
     },
     "sex": {
-     "female": {
+     "F": {
       "n_actionable": 306,
       "time_to_notification_h": {
        "n": 295,
@@ -3715,7 +3581,7 @@
        "value": 0.8519
       }
      },
-     "male": {
+     "M": {
       "n_actionable": 487,
       "time_to_notification_h": {
        "n": 462,
@@ -3850,358 +3716,92 @@
      }
     },
     "age_band": {
-     "18-29": {
-      "n_actionable": 112,
+     "18-34": {
+      "n_actionable": 201,
       "time_to_notification_h": {
-       "n": 106,
+       "n": 190,
        "suppressed": false,
-       "median": 5.58,
-       "p90": 13.89,
+       "median": 5.57,
+       "p90": 13.39,
        "unit": "hours"
       },
       "time_to_acknowledgement_h": {
-       "n": 81,
+       "n": 147,
        "suppressed": false,
-       "median": 44.0,
-       "p90": 107.62,
+       "median": 42.87,
+       "p90": 93.95,
        "unit": "hours"
       },
       "time_to_confirmation_d": {
-       "n": 57,
+       "n": 109,
        "suppressed": false,
-       "median": 14.51,
-       "p90": 26.18,
+       "median": 14.44,
+       "p90": 26.35,
        "unit": "days"
       },
       "time_to_consultation_d": {
-       "n": 21,
+       "n": 37,
        "suppressed": false,
        "median": 32.84,
-       "p90": 41.71,
+       "p90": 47.9,
        "unit": "days"
       },
       "time_to_care_d": {
-       "n": 21,
+       "n": 36,
        "suppressed": false,
-       "median": 34.47,
-       "p90": 42.49,
+       "median": 34.6,
+       "p90": 49.39,
        "unit": "days"
       },
       "referral_completion_rate": {
-       "n": 42,
+       "n": 83,
        "suppressed": false,
-       "numerator": 38,
-       "value": 0.9048
+       "numerator": 69,
+       "value": 0.8313
       },
       "appointment_completion_rate": {
-       "n": 30,
+       "n": 54,
        "suppressed": false,
-       "numerator": 21,
-       "value": 0.7
+       "numerator": 37,
+       "value": 0.6852
       },
       "treatment_initiation_rate": {
-       "n": 21,
+       "n": 37,
        "suppressed": false,
-       "numerator": 13,
-       "value": 0.619
+       "numerator": 24,
+       "value": 0.6486
       },
       "care_reached_rate": {
-       "n": 112,
+       "n": 201,
        "suppressed": false,
-       "numerator": 21,
-       "value": 0.1875
+       "numerator": 36,
+       "value": 0.1791
       },
       "unresolved_results": {
-       "n": 112,
+       "n": 201,
        "suppressed": false,
-       "count": 76,
-       "rate": 0.6786,
+       "count": 139,
+       "rate": 0.6915,
        "delay_reasons": {
         "result_not_delivered": {
          "label": "Result not delivered in time",
-         "count": 6,
+         "count": 11,
          "suppressed": false
         },
         "no_acknowledgement": {
          "label": "Patient did not acknowledge in time",
-         "count": 25,
+         "count": 43,
          "suppressed": false
         },
         "confirmation_not_completed": {
          "label": "Confirmation by home or 24-hour monitoring not completed in time",
-         "count": 24,
-         "suppressed": false
-        },
-        "referral_not_sent": {
-         "label": "Referral not sent in time",
-         "count": null,
-         "suppressed": true
-        },
-        "referral_not_accepted": {
-         "label": "Referral not accepted in time",
-         "count": null,
-         "suppressed": true
-        },
-        "appointment_not_booked": {
-         "label": "Appointment not booked in time",
-         "count": 8,
-         "suppressed": false
-        },
-        "visit_not_attended": {
-         "label": "Visit not attended in time",
-         "count": 9,
-         "suppressed": false
-        },
-        "care_not_recorded": {
-         "label": "Visit outcome not recorded in time",
-         "count": null,
-         "suppressed": true
-        }
-       }
-      },
-      "teach_back_pass_rate": {
-       "n": 81,
-       "suppressed": false,
-       "numerator": 55,
-       "value": 0.679
-      },
-      "patient_confidence_mean": {
-       "n": 81,
-       "suppressed": false,
-       "value": 3.74
-      },
-      "plan_checkin_rate": {
-       "n": 252,
-       "suppressed": false,
-       "numerator": 151,
-       "value": 0.5992
-      },
-      "re_engagement_after_lapse_rate": {
-       "n": 21,
-       "suppressed": false,
-       "numerator": 16,
-       "value": 0.7619
-      }
-     },
-     "30-39": {
-      "n_actionable": 209,
-      "time_to_notification_h": {
-       "n": 200,
-       "suppressed": false,
-       "median": 5.66,
-       "p90": 10.85,
-       "unit": "hours"
-      },
-      "time_to_acknowledgement_h": {
-       "n": 162,
-       "suppressed": false,
-       "median": 45.82,
-       "p90": 107.65,
-       "unit": "hours"
-      },
-      "time_to_confirmation_d": {
-       "n": 118,
-       "suppressed": false,
-       "median": 14.45,
-       "p90": 25.91,
-       "unit": "days"
-      },
-      "time_to_consultation_d": {
-       "n": 45,
-       "suppressed": false,
-       "median": 32.93,
-       "p90": 45.48,
-       "unit": "days"
-      },
-      "time_to_care_d": {
-       "n": 44,
-       "suppressed": false,
-       "median": 34.53,
-       "p90": 46.57,
-       "unit": "days"
-      },
-      "referral_completion_rate": {
-       "n": 90,
-       "suppressed": false,
-       "numerator": 75,
-       "value": 0.8333
-      },
-      "appointment_completion_rate": {
-       "n": 59,
-       "suppressed": false,
-       "numerator": 45,
-       "value": 0.7627
-      },
-      "treatment_initiation_rate": {
-       "n": 45,
-       "suppressed": false,
-       "numerator": 36,
-       "value": 0.8
-      },
-      "care_reached_rate": {
-       "n": 209,
-       "suppressed": false,
-       "numerator": 44,
-       "value": 0.2105
-      },
-      "unresolved_results": {
-       "n": 209,
-       "suppressed": false,
-       "count": 137,
-       "rate": 0.6555,
-       "delay_reasons": {
-        "result_not_delivered": {
-         "label": "Result not delivered in time",
-         "count": 9,
-         "suppressed": false
-        },
-        "no_acknowledgement": {
-         "label": "Patient did not acknowledge in time",
          "count": 38,
          "suppressed": false
         },
-        "confirmation_not_completed": {
-         "label": "Confirmation by home or 24-hour monitoring not completed in time",
-         "count": 44,
-         "suppressed": false
-        },
         "referral_not_sent": {
          "label": "Referral not sent in time",
-         "count": 5,
-         "suppressed": false
-        },
-        "referral_not_accepted": {
-         "label": "Referral not accepted in time",
-         "count": 10,
-         "suppressed": false
-        },
-        "appointment_not_booked": {
-         "label": "Appointment not booked in time",
-         "count": 16,
-         "suppressed": false
-        },
-        "visit_not_attended": {
-         "label": "Visit not attended in time",
-         "count": 14,
-         "suppressed": false
-        },
-        "care_not_recorded": {
-         "label": "Visit outcome not recorded in time",
          "count": null,
          "suppressed": true
-        }
-       }
-      },
-      "teach_back_pass_rate": {
-       "n": 162,
-       "suppressed": false,
-       "numerator": 113,
-       "value": 0.6975
-      },
-      "patient_confidence_mean": {
-       "n": 162,
-       "suppressed": false,
-       "value": 3.64
-      },
-      "plan_checkin_rate": {
-       "n": 528,
-       "suppressed": false,
-       "numerator": 335,
-       "value": 0.6345
-      },
-      "re_engagement_after_lapse_rate": {
-       "n": 44,
-       "suppressed": false,
-       "numerator": 34,
-       "value": 0.7727
-      }
-     },
-     "40-49": {
-      "n_actionable": 251,
-      "time_to_notification_h": {
-       "n": 239,
-       "suppressed": false,
-       "median": 5.75,
-       "p90": 12.77,
-       "unit": "hours"
-      },
-      "time_to_acknowledgement_h": {
-       "n": 197,
-       "suppressed": false,
-       "median": 44.92,
-       "p90": 98.49,
-       "unit": "hours"
-      },
-      "time_to_confirmation_d": {
-       "n": 147,
-       "suppressed": false,
-       "median": 15.79,
-       "p90": 27.58,
-       "unit": "days"
-      },
-      "time_to_consultation_d": {
-       "n": 49,
-       "suppressed": false,
-       "median": 31.87,
-       "p90": 47.48,
-       "unit": "days"
-      },
-      "time_to_care_d": {
-       "n": 48,
-       "suppressed": false,
-       "median": 32.91,
-       "p90": 49.1,
-       "unit": "days"
-      },
-      "referral_completion_rate": {
-       "n": 106,
-       "suppressed": false,
-       "numerator": 85,
-       "value": 0.8019
-      },
-      "appointment_completion_rate": {
-       "n": 64,
-       "suppressed": false,
-       "numerator": 49,
-       "value": 0.7656
-      },
-      "treatment_initiation_rate": {
-       "n": 49,
-       "suppressed": false,
-       "numerator": 32,
-       "value": 0.6531
-      },
-      "care_reached_rate": {
-       "n": 251,
-       "suppressed": false,
-       "numerator": 48,
-       "value": 0.1912
-      },
-      "unresolved_results": {
-       "n": 251,
-       "suppressed": false,
-       "count": 162,
-       "rate": 0.6454,
-       "delay_reasons": {
-        "result_not_delivered": {
-         "label": "Result not delivered in time",
-         "count": 12,
-         "suppressed": false
-        },
-        "no_acknowledgement": {
-         "label": "Patient did not acknowledge in time",
-         "count": 42,
-         "suppressed": false
-        },
-        "confirmation_not_completed": {
-         "label": "Confirmation by home or 24-hour monitoring not completed in time",
-         "count": 50,
-         "suppressed": false
-        },
-        "referral_not_sent": {
-         "label": "Referral not sent in time",
-         "count": 10,
-         "suppressed": false
         },
         "referral_not_accepted": {
          "label": "Referral not accepted in time",
@@ -4210,12 +3810,12 @@
         },
         "appointment_not_booked": {
          "label": "Appointment not booked in time",
-         "count": 21,
+         "count": 15,
          "suppressed": false
         },
         "visit_not_attended": {
          "label": "Visit not attended in time",
-         "count": 15,
+         "count": 17,
          "suppressed": false
         },
         "care_not_recorded": {
@@ -4226,129 +3826,129 @@
        }
       },
       "teach_back_pass_rate": {
-       "n": 197,
+       "n": 147,
        "suppressed": false,
-       "numerator": 139,
-       "value": 0.7056
+       "numerator": 103,
+       "value": 0.7007
       },
       "patient_confidence_mean": {
-       "n": 197,
+       "n": 147,
        "suppressed": false,
-       "value": 3.62
+       "value": 3.74
       },
       "plan_checkin_rate": {
-       "n": 576,
+       "n": 432,
        "suppressed": false,
-       "numerator": 372,
-       "value": 0.6458
+       "numerator": 260,
+       "value": 0.6019
       },
       "re_engagement_after_lapse_rate": {
-       "n": 48,
+       "n": 36,
        "suppressed": false,
-       "numerator": 42,
-       "value": 0.875
+       "numerator": 27,
+       "value": 0.75
       }
      },
-     "50-59": {
-      "n_actionable": 158,
+     "35-49": {
+      "n_actionable": 371,
       "time_to_notification_h": {
-       "n": 151,
+       "n": 355,
        "suppressed": false,
-       "median": 5.48,
-       "p90": 11.7,
+       "median": 5.72,
+       "p90": 12.32,
        "unit": "hours"
       },
       "time_to_acknowledgement_h": {
-       "n": 124,
+       "n": 293,
        "suppressed": false,
-       "median": 40.28,
-       "p90": 83.4,
+       "median": 46.5,
+       "p90": 109.13,
        "unit": "hours"
       },
       "time_to_confirmation_d": {
-       "n": 88,
+       "n": 213,
        "suppressed": false,
-       "median": 13.98,
-       "p90": 28.24,
+       "median": 15.4,
+       "p90": 26.9,
        "unit": "days"
       },
       "time_to_consultation_d": {
-       "n": 26,
+       "n": 78,
        "suppressed": false,
-       "median": 33.24,
-       "p90": 44.21,
+       "median": 31.87,
+       "p90": 45.16,
        "unit": "days"
       },
       "time_to_care_d": {
-       "n": 26,
+       "n": 77,
        "suppressed": false,
-       "median": 34.79,
-       "p90": 45.44,
+       "median": 33.17,
+       "p90": 46.65,
        "unit": "days"
       },
       "referral_completion_rate": {
-       "n": 59,
+       "n": 155,
        "suppressed": false,
-       "numerator": 44,
-       "value": 0.7458
+       "numerator": 129,
+       "value": 0.8323
       },
       "appointment_completion_rate": {
-       "n": 36,
+       "n": 99,
        "suppressed": false,
-       "numerator": 26,
-       "value": 0.7222
+       "numerator": 78,
+       "value": 0.7879
       },
       "treatment_initiation_rate": {
-       "n": 26,
+       "n": 78,
        "suppressed": false,
-       "numerator": 19,
+       "numerator": 57,
        "value": 0.7308
       },
       "care_reached_rate": {
-       "n": 158,
+       "n": 371,
        "suppressed": false,
-       "numerator": 26,
-       "value": 0.1646
+       "numerator": 77,
+       "value": 0.2075
       },
       "unresolved_results": {
-       "n": 158,
+       "n": 371,
        "suppressed": false,
-       "count": 103,
-       "rate": 0.6519,
+       "count": 236,
+       "rate": 0.6361,
        "delay_reasons": {
         "result_not_delivered": {
          "label": "Result not delivered in time",
-         "count": 7,
+         "count": 16,
          "suppressed": false
         },
         "no_acknowledgement": {
          "label": "Patient did not acknowledge in time",
-         "count": 27,
+         "count": 62,
          "suppressed": false
         },
         "confirmation_not_completed": {
          "label": "Confirmation by home or 24-hour monitoring not completed in time",
-         "count": 36,
+         "count": 80,
          "suppressed": false
         },
         "referral_not_sent": {
          "label": "Referral not sent in time",
-         "count": 8,
+         "count": 12,
          "suppressed": false
         },
         "referral_not_accepted": {
          "label": "Referral not accepted in time",
-         "count": 7,
+         "count": 14,
          "suppressed": false
         },
         "appointment_not_booked": {
          "label": "Appointment not booked in time",
-         "count": 8,
+         "count": 30,
          "suppressed": false
         },
         "visit_not_attended": {
          "label": "Visit not attended in time",
-         "count": 10,
+         "count": 21,
          "suppressed": false
         },
         "care_not_recorded": {
@@ -4359,95 +3959,228 @@
        }
       },
       "teach_back_pass_rate": {
-       "n": 124,
+       "n": 293,
        "suppressed": false,
-       "numerator": 90,
-       "value": 0.7258
+       "numerator": 204,
+       "value": 0.6962
       },
       "patient_confidence_mean": {
-       "n": 124,
+       "n": 293,
+       "suppressed": false,
+       "value": 3.61
+      },
+      "plan_checkin_rate": {
+       "n": 924,
+       "suppressed": false,
+       "numerator": 598,
+       "value": 0.6472
+      },
+      "re_engagement_after_lapse_rate": {
+       "n": 77,
+       "suppressed": false,
+       "numerator": 65,
+       "value": 0.8442
+      }
+     },
+     "50-64": {
+      "n_actionable": 190,
+      "time_to_notification_h": {
+       "n": 182,
+       "suppressed": false,
+       "median": 5.55,
+       "p90": 11.73,
+       "unit": "hours"
+      },
+      "time_to_acknowledgement_h": {
+       "n": 153,
+       "suppressed": false,
+       "median": 42.03,
+       "p90": 83.43,
+       "unit": "hours"
+      },
+      "time_to_confirmation_d": {
+       "n": 110,
+       "suppressed": false,
+       "median": 13.98,
+       "p90": 27.53,
+       "unit": "days"
+      },
+      "time_to_consultation_d": {
+       "n": 29,
+       "suppressed": false,
+       "median": 32.12,
+       "p90": 43.14,
+       "unit": "days"
+      },
+      "time_to_care_d": {
+       "n": 28,
+       "suppressed": false,
+       "median": 32.53,
+       "p90": 44.8,
+       "unit": "days"
+      },
+      "referral_completion_rate": {
+       "n": 71,
+       "suppressed": false,
+       "numerator": 52,
+       "value": 0.7324
+      },
+      "appointment_completion_rate": {
+       "n": 40,
+       "suppressed": false,
+       "numerator": 29,
+       "value": 0.725
+      },
+      "treatment_initiation_rate": {
+       "n": 29,
+       "suppressed": false,
+       "numerator": 21,
+       "value": 0.7241
+      },
+      "care_reached_rate": {
+       "n": 190,
+       "suppressed": false,
+       "numerator": 28,
+       "value": 0.1474
+      },
+      "unresolved_results": {
+       "n": 190,
+       "suppressed": false,
+       "count": 123,
+       "rate": 0.6474,
+       "delay_reasons": {
+        "result_not_delivered": {
+         "label": "Result not delivered in time",
+         "count": 8,
+         "suppressed": false
+        },
+        "no_acknowledgement": {
+         "label": "Patient did not acknowledge in time",
+         "count": 29,
+         "suppressed": false
+        },
+        "confirmation_not_completed": {
+         "label": "Confirmation by home or 24-hour monitoring not completed in time",
+         "count": 43,
+         "suppressed": false
+        },
+        "referral_not_sent": {
+         "label": "Referral not sent in time",
+         "count": 9,
+         "suppressed": false
+        },
+        "referral_not_accepted": {
+         "label": "Referral not accepted in time",
+         "count": 10,
+         "suppressed": false
+        },
+        "appointment_not_booked": {
+         "label": "Appointment not booked in time",
+         "count": 12,
+         "suppressed": false
+        },
+        "visit_not_attended": {
+         "label": "Visit not attended in time",
+         "count": 11,
+         "suppressed": false
+        },
+        "care_not_recorded": {
+         "label": "Visit outcome not recorded in time",
+         "count": null,
+         "suppressed": true
+        }
+       }
+      },
+      "teach_back_pass_rate": {
+       "n": 153,
+       "suppressed": false,
+       "numerator": 110,
+       "value": 0.719
+      },
+      "patient_confidence_mean": {
+       "n": 153,
        "suppressed": false,
        "value": 3.68
       },
       "plan_checkin_rate": {
-       "n": 312,
+       "n": 336,
        "suppressed": false,
-       "numerator": 201,
-       "value": 0.6442
+       "numerator": 217,
+       "value": 0.6458
       },
       "re_engagement_after_lapse_rate": {
-       "n": 26,
+       "n": 28,
        "suppressed": false,
-       "numerator": 24,
-       "value": 0.9231
+       "numerator": 26,
+       "value": 0.9286
       }
      },
-     "60+": {
-      "n_actionable": 63,
+     "65+": {
+      "n_actionable": 31,
       "time_to_notification_h": {
-       "n": 61,
+       "n": 30,
        "suppressed": false,
-       "median": 5.96,
-       "p90": 13.65,
+       "median": 6.23,
+       "p90": 13.43,
        "unit": "hours"
       },
       "time_to_acknowledgement_h": {
-       "n": 54,
+       "n": 25,
        "suppressed": false,
-       "median": 44.1,
-       "p90": 88.25,
+       "median": 45.05,
+       "p90": 93.2,
        "unit": "hours"
       },
       "time_to_confirmation_d": {
-       "n": 41,
+       "n": 19,
        "suppressed": false,
-       "median": 13.81,
-       "p90": 19.35,
+       "median": 13.3,
+       "p90": 19.36,
        "unit": "days"
       },
       "time_to_consultation_d": {
-       "n": 7,
-       "suppressed": false,
-       "median": 33.85,
-       "p90": 39.12,
+       "n": 4,
+       "suppressed": true,
+       "median": null,
+       "p90": null,
        "unit": "days"
       },
       "time_to_care_d": {
-       "n": 6,
-       "suppressed": false,
-       "median": 32.8,
-       "p90": 38.23,
+       "n": 4,
+       "suppressed": true,
+       "median": null,
+       "p90": null,
        "unit": "days"
       },
       "referral_completion_rate": {
-       "n": 25,
+       "n": 13,
        "suppressed": false,
-       "numerator": 19,
-       "value": 0.76
+       "numerator": 11,
+       "value": 0.8462
       },
       "appointment_completion_rate": {
-       "n": 10,
-       "suppressed": false,
-       "numerator": 7,
-       "value": 0.7
-      },
-      "treatment_initiation_rate": {
-       "n": 7,
+       "n": 6,
        "suppressed": false,
        "numerator": 4,
-       "value": 0.5714
+       "value": 0.6667
+      },
+      "treatment_initiation_rate": {
+       "n": 4,
+       "suppressed": true,
+       "numerator": null,
+       "value": null
       },
       "care_reached_rate": {
-       "n": 63,
+       "n": 31,
        "suppressed": false,
-       "numerator": 6,
-       "value": 0.0952
+       "numerator": 4,
+       "value": 0.129
       },
       "unresolved_results": {
-       "n": 63,
+       "n": 31,
        "suppressed": false,
-       "count": 41,
-       "rate": 0.6508,
+       "count": 21,
+       "rate": 0.6774,
        "delay_reasons": {
         "result_not_delivered": {
          "label": "Result not delivered in time",
@@ -4456,12 +4189,12 @@
         },
         "no_acknowledgement": {
          "label": "Patient did not acknowledge in time",
-         "count": 7,
+         "count": 5,
          "suppressed": false
         },
         "confirmation_not_completed": {
          "label": "Confirmation by home or 24-hour monitoring not completed in time",
-         "count": 13,
+         "count": 6,
          "suppressed": false
         },
         "referral_not_sent": {
@@ -4476,7 +4209,7 @@
         },
         "appointment_not_booked": {
          "label": "Appointment not booked in time",
-         "count": 9,
+         "count": 5,
          "suppressed": false
         },
         "visit_not_attended": {
@@ -4492,27 +4225,27 @@
        }
       },
       "teach_back_pass_rate": {
-       "n": 54,
+       "n": 25,
        "suppressed": false,
-       "numerator": 38,
-       "value": 0.7037
+       "numerator": 18,
+       "value": 0.72
       },
       "patient_confidence_mean": {
-       "n": 54,
+       "n": 25,
        "suppressed": false,
-       "value": 3.67
+       "value": 3.64
       },
       "plan_checkin_rate": {
-       "n": 72,
+       "n": 48,
        "suppressed": false,
-       "numerator": 46,
-       "value": 0.6389
+       "numerator": 30,
+       "value": 0.625
       },
       "re_engagement_after_lapse_rate": {
-       "n": 6,
-       "suppressed": false,
-       "numerator": 6,
-       "value": 1.0
+       "n": 4,
+       "suppressed": true,
+       "numerator": null,
+       "value": null
       }
      }
     }
@@ -4927,7 +4660,7 @@
      }
     },
     "nationality_group": {
-     "Cameroonian (single group)": {
+     "Cameroonian": {
       "n_actionable": 712,
       "time_to_notification_h": {
        "n": 621,
@@ -5063,7 +4796,7 @@
      }
     },
     "sex": {
-     "female": {
+     "F": {
       "n_actionable": 334,
       "time_to_notification_h": {
        "n": 284,
@@ -5197,7 +4930,7 @@
        "note": "Not measured in the baseline arm: it has no teach-back, plan or check-ins."
       }
      },
-     "male": {
+     "M": {
       "n_actionable": 378,
       "time_to_notification_h": {
        "n": 337,
@@ -5333,86 +5066,86 @@
      }
     },
     "age_band": {
-     "18-29": {
-      "n_actionable": 155,
+     "18-34": {
+      "n_actionable": 239,
       "time_to_notification_h": {
-       "n": 134,
+       "n": 202,
        "suppressed": false,
-       "median": 72.11,
-       "p90": 212.03,
+       "median": 66.42,
+       "p90": 218.41,
        "unit": "hours"
       },
       "time_to_acknowledgement_h": {
-       "n": 86,
+       "n": 133,
        "suppressed": false,
-       "median": 280.4,
-       "p90": 641.91,
+       "median": 282.29,
+       "p90": 657.61,
        "unit": "hours"
       },
       "time_to_confirmation_d": {
-       "n": 47,
+       "n": 74,
        "suppressed": false,
-       "median": 53.18,
-       "p90": 87.1,
+       "median": 52.7,
+       "p90": 89.19,
        "unit": "days"
       },
       "time_to_consultation_d": {
-       "n": 4,
-       "suppressed": true,
-       "median": null,
-       "p90": null,
+       "n": 9,
+       "suppressed": false,
+       "median": 97.61,
+       "p90": 123.34,
        "unit": "days"
       },
       "time_to_care_d": {
-       "n": 3,
-       "suppressed": true,
-       "median": null,
-       "p90": null,
+       "n": 7,
+       "suppressed": false,
+       "median": 98.07,
+       "p90": 124.84,
        "unit": "days"
       },
       "referral_completion_rate": {
-       "n": 35,
+       "n": 49,
        "suppressed": false,
-       "numerator": 28,
-       "value": 0.8
+       "numerator": 38,
+       "value": 0.7755
       },
       "appointment_completion_rate": {
-       "n": 16,
+       "n": 25,
+       "suppressed": false,
+       "numerator": 9,
+       "value": 0.36
+      },
+      "treatment_initiation_rate": {
+       "n": 9,
        "suppressed": false,
        "numerator": 4,
-       "value": 0.25
-      },
-      "treatment_initiation_rate": {
-       "n": 4,
-       "suppressed": true,
-       "numerator": null,
-       "value": null
+       "value": 0.4444
       },
       "care_reached_rate": {
-       "n": 155,
+       "n": 239,
        "suppressed": false,
-       "numerator": 3,
-       "value": 0.0194
+       "numerator": 7,
+       "value": 0.0293
       },
       "unresolved_results": {
-       "n": 155,
+       "n": 239,
        "suppressed": false,
-       "count": 140,
-       "rate": 0.9032,
+       "count": 207,
+       "rate": 0.8661,
        "delay_reasons": {
         "result_not_delivered": {
          "label": "Result not delivered in time",
-         "count": 21,
+         "count": 37,
          "suppressed": false
         },
         "no_acknowledgement": {
          "label": "Patient did not acknowledge in time",
-         "count": 48,
+         "count": 69,
          "suppressed": false
         },
         "confirmation_not_completed": {
          "label": "Confirmation by home or 24-hour monitoring not completed in time",
-         "count": 39,
+         "count": 59,
          "suppressed": false
         },
         "referral_not_sent": {
@@ -5422,151 +5155,17 @@
         },
         "referral_not_accepted": {
          "label": "Referral not accepted in time",
-         "count": null,
-         "suppressed": true
-        },
-        "appointment_not_booked": {
-         "label": "Appointment not booked in time",
-         "count": 12,
-         "suppressed": false
-        },
-        "visit_not_attended": {
-         "label": "Visit not attended in time",
-         "count": 12,
-         "suppressed": false
-        },
-        "care_not_recorded": {
-         "label": "Visit outcome not recorded in time",
-         "count": null,
-         "suppressed": true
-        }
-       }
-      },
-      "teach_back_pass_rate": {
-       "n": 0,
-       "suppressed": true,
-       "value": null,
-       "note": "Not measured in the baseline arm: it has no teach-back, plan or check-ins."
-      },
-      "patient_confidence_mean": {
-       "n": 0,
-       "suppressed": true,
-       "value": null,
-       "note": "Not measured in the baseline arm: it has no teach-back, plan or check-ins."
-      },
-      "plan_checkin_rate": {
-       "n": 0,
-       "suppressed": true,
-       "value": null,
-       "note": "Not measured in the baseline arm: it has no teach-back, plan or check-ins."
-      },
-      "re_engagement_after_lapse_rate": {
-       "n": 0,
-       "suppressed": true,
-       "value": null,
-       "note": "Not measured in the baseline arm: it has no teach-back, plan or check-ins."
-      }
-     },
-     "30-39": {
-      "n_actionable": 184,
-      "time_to_notification_h": {
-       "n": 151,
-       "suppressed": false,
-       "median": 62.58,
-       "p90": 188.18,
-       "unit": "hours"
-      },
-      "time_to_acknowledgement_h": {
-       "n": 101,
-       "suppressed": false,
-       "median": 270.42,
-       "p90": 626.29,
-       "unit": "hours"
-      },
-      "time_to_confirmation_d": {
-       "n": 58,
-       "suppressed": false,
-       "median": 44.67,
-       "p90": 77.32,
-       "unit": "days"
-      },
-      "time_to_consultation_d": {
-       "n": 10,
-       "suppressed": false,
-       "median": 88.81,
-       "p90": 102.57,
-       "unit": "days"
-      },
-      "time_to_care_d": {
-       "n": 8,
-       "suppressed": false,
-       "median": 89.47,
-       "p90": 100.06,
-       "unit": "days"
-      },
-      "referral_completion_rate": {
-       "n": 36,
-       "suppressed": false,
-       "numerator": 27,
-       "value": 0.75
-      },
-      "appointment_completion_rate": {
-       "n": 20,
-       "suppressed": false,
-       "numerator": 10,
-       "value": 0.5
-      },
-      "treatment_initiation_rate": {
-       "n": 10,
-       "suppressed": false,
-       "numerator": 5,
-       "value": 0.5
-      },
-      "care_reached_rate": {
-       "n": 184,
-       "suppressed": false,
-       "numerator": 8,
-       "value": 0.0435
-      },
-      "unresolved_results": {
-       "n": 184,
-       "suppressed": false,
-       "count": 154,
-       "rate": 0.837,
-       "delay_reasons": {
-        "result_not_delivered": {
-         "label": "Result not delivered in time",
-         "count": 33,
-         "suppressed": false
-        },
-        "no_acknowledgement": {
-         "label": "Patient did not acknowledge in time",
-         "count": 50,
-         "suppressed": false
-        },
-        "confirmation_not_completed": {
-         "label": "Confirmation by home or 24-hour monitoring not completed in time",
-         "count": 43,
-         "suppressed": false
-        },
-        "referral_not_sent": {
-         "label": "Referral not sent in time",
-         "count": null,
-         "suppressed": true
-        },
-        "referral_not_accepted": {
-         "label": "Referral not accepted in time",
-         "count": 5,
-         "suppressed": false
-        },
-        "appointment_not_booked": {
-         "label": "Appointment not booked in time",
          "count": 7,
          "suppressed": false
         },
+        "appointment_not_booked": {
+         "label": "Appointment not booked in time",
+         "count": 13,
+         "suppressed": false
+        },
         "visit_not_attended": {
          "label": "Visit not attended in time",
-         "count": 10,
+         "count": 16,
          "suppressed": false
         },
         "care_not_recorded": {
@@ -5601,106 +5200,106 @@
        "note": "Not measured in the baseline arm: it has no teach-back, plan or check-ins."
       }
      },
-     "40-49": {
-      "n_actionable": 190,
+     "35-49": {
+      "n_actionable": 290,
       "time_to_notification_h": {
-       "n": 168,
+       "n": 251,
        "suppressed": false,
-       "median": 67.88,
-       "p90": 191.08,
+       "median": 66.75,
+       "p90": 180.38,
        "unit": "hours"
       },
       "time_to_acknowledgement_h": {
-       "n": 118,
+       "n": 172,
        "suppressed": false,
-       "median": 256.92,
-       "p90": 610.19,
+       "median": 255.06,
+       "p90": 609.79,
        "unit": "hours"
       },
       "time_to_confirmation_d": {
-       "n": 76,
+       "n": 107,
        "suppressed": false,
-       "median": 40.8,
-       "p90": 93.89,
+       "median": 41.4,
+       "p90": 84.96,
        "unit": "days"
       },
       "time_to_consultation_d": {
-       "n": 10,
+       "n": 15,
        "suppressed": false,
-       "median": 90.04,
-       "p90": 114.09,
+       "median": 90.27,
+       "p90": 111.17,
        "unit": "days"
       },
       "time_to_care_d": {
-       "n": 9,
+       "n": 13,
        "suppressed": false,
-       "median": 93.33,
-       "p90": 117.73,
+       "median": 90.84,
+       "p90": 111.62,
        "unit": "days"
       },
       "referral_completion_rate": {
-       "n": 52,
+       "n": 74,
        "suppressed": false,
-       "numerator": 34,
-       "value": 0.6538
+       "numerator": 51,
+       "value": 0.6892
       },
       "appointment_completion_rate": {
-       "n": 18,
+       "n": 29,
        "suppressed": false,
-       "numerator": 10,
-       "value": 0.5556
+       "numerator": 15,
+       "value": 0.5172
       },
       "treatment_initiation_rate": {
-       "n": 10,
+       "n": 15,
        "suppressed": false,
-       "numerator": 8,
-       "value": 0.8
+       "numerator": 11,
+       "value": 0.7333
       },
       "care_reached_rate": {
-       "n": 190,
+       "n": 290,
        "suppressed": false,
-       "numerator": 9,
-       "value": 0.0474
+       "numerator": 13,
+       "value": 0.0448
       },
       "unresolved_results": {
-       "n": 190,
+       "n": 290,
        "suppressed": false,
-       "count": 157,
-       "rate": 0.8263,
+       "count": 244,
+       "rate": 0.8414,
        "delay_reasons": {
         "result_not_delivered": {
          "label": "Result not delivered in time",
-         "count": 22,
+         "count": 39,
          "suppressed": false
         },
         "no_acknowledgement": {
          "label": "Patient did not acknowledge in time",
-         "count": 50,
+         "count": 79,
          "suppressed": false
         },
         "confirmation_not_completed": {
          "label": "Confirmation by home or 24-hour monitoring not completed in time",
-         "count": 42,
+         "count": 65,
          "suppressed": false
         },
         "referral_not_sent": {
          "label": "Referral not sent in time",
-         "count": 6,
+         "count": 9,
          "suppressed": false
         },
         "referral_not_accepted": {
          "label": "Referral not accepted in time",
-         "count": 12,
+         "count": 14,
          "suppressed": false
         },
         "appointment_not_booked": {
          "label": "Appointment not booked in time",
-         "count": 16,
+         "count": 22,
          "suppressed": false
         },
         "visit_not_attended": {
          "label": "Visit not attended in time",
-         "count": 8,
+         "count": 14,
          "suppressed": false
         },
         "care_not_recorded": {
@@ -5735,27 +5334,27 @@
        "note": "Not measured in the baseline arm: it has no teach-back, plan or check-ins."
       }
      },
-     "50-59": {
-      "n_actionable": 128,
+     "50-64": {
+      "n_actionable": 154,
       "time_to_notification_h": {
-       "n": 117,
+       "n": 141,
        "suppressed": false,
-       "median": 66.69,
-       "p90": 190.75,
+       "median": 65.34,
+       "p90": 180.05,
        "unit": "hours"
       },
       "time_to_acknowledgement_h": {
-       "n": 81,
+       "n": 100,
        "suppressed": false,
-       "median": 300.2,
-       "p90": 610.01,
+       "median": 280.85,
+       "p90": 616.74,
        "unit": "hours"
       },
       "time_to_confirmation_d": {
-       "n": 49,
+       "n": 61,
        "suppressed": false,
-       "median": 50.71,
-       "p90": 84.89,
+       "median": 48.99,
+       "p90": 81.87,
        "unit": "days"
       },
       "time_to_consultation_d": {
@@ -5773,10 +5372,10 @@
        "unit": "days"
       },
       "referral_completion_rate": {
-       "n": 36,
+       "n": 43,
        "suppressed": false,
-       "numerator": 24,
-       "value": 0.6667
+       "numerator": 26,
+       "value": 0.6047
       },
       "appointment_completion_rate": {
        "n": 14,
@@ -5791,45 +5390,45 @@
        "value": 0.8333
       },
       "care_reached_rate": {
-       "n": 128,
+       "n": 154,
        "suppressed": false,
        "numerator": 5,
-       "value": 0.0391
+       "value": 0.0325
       },
       "unresolved_results": {
-       "n": 128,
+       "n": 154,
        "suppressed": false,
-       "count": 110,
-       "rate": 0.8594,
+       "count": 131,
+       "rate": 0.8506,
        "delay_reasons": {
         "result_not_delivered": {
          "label": "Result not delivered in time",
-         "count": 11,
+         "count": 13,
          "suppressed": false
         },
         "no_acknowledgement": {
          "label": "Patient did not acknowledge in time",
-         "count": 36,
+         "count": 41,
          "suppressed": false
         },
         "confirmation_not_completed": {
          "label": "Confirmation by home or 24-hour monitoring not completed in time",
-         "count": 32,
+         "count": 39,
          "suppressed": false
         },
         "referral_not_sent": {
          "label": "Referral not sent in time",
-         "count": 6,
+         "count": 9,
          "suppressed": false
         },
         "referral_not_accepted": {
          "label": "Referral not accepted in time",
-         "count": 6,
+         "count": 8,
          "suppressed": false
         },
         "appointment_not_booked": {
          "label": "Appointment not booked in time",
-         "count": 10,
+         "count": 12,
          "suppressed": false
         },
         "visit_not_attended": {
@@ -5869,27 +5468,27 @@
        "note": "Not measured in the baseline arm: it has no teach-back, plan or check-ins."
       }
      },
-     "60+": {
-      "n_actionable": 55,
+     "65+": {
+      "n_actionable": 29,
       "time_to_notification_h": {
-       "n": 51,
+       "n": 27,
        "suppressed": false,
-       "median": 63.78,
-       "p90": 154.5,
+       "median": 65.59,
+       "p90": 199.41,
        "unit": "hours"
       },
       "time_to_acknowledgement_h": {
-       "n": 39,
+       "n": 20,
        "suppressed": false,
-       "median": 248.7,
-       "p90": 606.32,
+       "median": 316.24,
+       "p90": 597.86,
        "unit": "hours"
       },
       "time_to_confirmation_d": {
-       "n": 22,
+       "n": 10,
        "suppressed": false,
-       "median": 33.73,
-       "p90": 79.51,
+       "median": 48.09,
+       "p90": 82.56,
        "unit": "days"
       },
       "time_to_consultation_d": {
@@ -5907,10 +5506,10 @@
        "unit": "days"
       },
       "referral_completion_rate": {
-       "n": 13,
+       "n": 6,
        "suppressed": false,
-       "numerator": 7,
-       "value": 0.5385
+       "numerator": 5,
+       "value": 0.8333
       },
       "appointment_completion_rate": {
        "n": 5,
@@ -5925,16 +5524,16 @@
        "value": null
       },
       "care_reached_rate": {
-       "n": 55,
+       "n": 29,
        "suppressed": false,
        "numerator": 1,
-       "value": 0.0182
+       "value": 0.0345
       },
       "unresolved_results": {
-       "n": 55,
+       "n": 29,
        "suppressed": false,
-       "count": 45,
-       "rate": 0.8182,
+       "count": 24,
+       "rate": 0.8276,
        "delay_reasons": {
         "result_not_delivered": {
          "label": "Result not delivered in time",
@@ -5943,12 +5542,12 @@
         },
         "no_acknowledgement": {
          "label": "Patient did not acknowledge in time",
-         "count": 12,
+         "count": 7,
          "suppressed": false
         },
         "confirmation_not_completed": {
          "label": "Confirmation by home or 24-hour monitoring not completed in time",
-         "count": 17,
+         "count": 10,
          "suppressed": false
         },
         "referral_not_sent": {
@@ -6410,7 +6009,7 @@
      }
     },
     "nationality_group": {
-     "Cameroonian (single group)": {
+     "Cameroonian": {
       "n_actionable": 712,
       "time_to_notification_h": {
        "n": 685,
@@ -6545,7 +6144,7 @@
      }
     },
     "sex": {
-     "female": {
+     "F": {
       "n_actionable": 334,
       "time_to_notification_h": {
        "n": 320,
@@ -6678,7 +6277,7 @@
        "value": 0.9118
       }
      },
-     "male": {
+     "M": {
       "n_actionable": 378,
       "time_to_notification_h": {
        "n": 365,
@@ -6813,86 +6412,86 @@
      }
     },
     "age_band": {
-     "18-29": {
-      "n_actionable": 155,
+     "18-34": {
+      "n_actionable": 239,
       "time_to_notification_h": {
-       "n": 149,
+       "n": 228,
        "suppressed": false,
-       "median": 6.0,
-       "p90": 13.03,
+       "median": 5.59,
+       "p90": 13.41,
        "unit": "hours"
       },
       "time_to_acknowledgement_h": {
-       "n": 119,
+       "n": 186,
        "suppressed": false,
-       "median": 43.58,
-       "p90": 92.57,
+       "median": 43.19,
+       "p90": 93.18,
        "unit": "hours"
       },
       "time_to_confirmation_d": {
-       "n": 84,
+       "n": 125,
        "suppressed": false,
-       "median": 15.53,
-       "p90": 24.5,
+       "median": 15.61,
+       "p90": 24.8,
        "unit": "days"
       },
       "time_to_consultation_d": {
-       "n": 21,
+       "n": 34,
        "suppressed": false,
-       "median": 33.83,
-       "p90": 45.74,
+       "median": 32.7,
+       "p90": 45.24,
        "unit": "days"
       },
       "time_to_care_d": {
-       "n": 19,
+       "n": 30,
        "suppressed": false,
-       "median": 35.49,
-       "p90": 47.52,
+       "median": 33.96,
+       "p90": 47.39,
        "unit": "days"
       },
       "referral_completion_rate": {
-       "n": 59,
+       "n": 82,
        "suppressed": false,
-       "numerator": 49,
-       "value": 0.8305
+       "numerator": 65,
+       "value": 0.7927
       },
       "appointment_completion_rate": {
-       "n": 33,
+       "n": 49,
        "suppressed": false,
-       "numerator": 21,
-       "value": 0.6364
+       "numerator": 34,
+       "value": 0.6939
       },
       "treatment_initiation_rate": {
-       "n": 21,
+       "n": 34,
        "suppressed": false,
-       "numerator": 13,
-       "value": 0.619
+       "numerator": 22,
+       "value": 0.6471
       },
       "care_reached_rate": {
-       "n": 155,
+       "n": 239,
        "suppressed": false,
-       "numerator": 19,
-       "value": 0.1226
+       "numerator": 30,
+       "value": 0.1255
       },
       "unresolved_results": {
-       "n": 155,
+       "n": 239,
        "suppressed": false,
-       "count": 111,
-       "rate": 0.7161,
+       "count": 166,
+       "rate": 0.6946,
        "delay_reasons": {
         "result_not_delivered": {
          "label": "Result not delivered in time",
-         "count": 6,
+         "count": 11,
          "suppressed": false
         },
         "no_acknowledgement": {
          "label": "Patient did not acknowledge in time",
-         "count": 30,
+         "count": 42,
          "suppressed": false
         },
         "confirmation_not_completed": {
          "label": "Confirmation by home or 24-hour monitoring not completed in time",
-         "count": 35,
+         "count": 61,
          "suppressed": false
         },
         "referral_not_sent": {
@@ -6902,7 +6501,7 @@
         },
         "referral_not_accepted": {
          "label": "Referral not accepted in time",
-         "count": 9,
+         "count": 14,
          "suppressed": false
         },
         "appointment_not_booked": {
@@ -6912,7 +6511,7 @@
         },
         "visit_not_attended": {
          "label": "Visit not attended in time",
-         "count": 12,
+         "count": 15,
          "suppressed": false
         },
         "care_not_recorded": {
@@ -6923,262 +6522,129 @@
        }
       },
       "teach_back_pass_rate": {
-       "n": 119,
+       "n": 186,
        "suppressed": false,
-       "numerator": 85,
-       "value": 0.7143
+       "numerator": 134,
+       "value": 0.7204
       },
       "patient_confidence_mean": {
-       "n": 119,
+       "n": 186,
        "suppressed": false,
-       "value": 3.59
+       "value": 3.74
       },
       "plan_checkin_rate": {
-       "n": 228,
+       "n": 360,
        "suppressed": false,
-       "numerator": 146,
-       "value": 0.6404
+       "numerator": 216,
+       "value": 0.6
       },
       "re_engagement_after_lapse_rate": {
-       "n": 19,
+       "n": 30,
        "suppressed": false,
-       "numerator": 16,
-       "value": 0.8421
+       "numerator": 26,
+       "value": 0.8667
       }
      },
-     "30-39": {
-      "n_actionable": 184,
+     "35-49": {
+      "n_actionable": 290,
       "time_to_notification_h": {
-       "n": 173,
+       "n": 276,
        "suppressed": false,
-       "median": 5.29,
-       "p90": 11.1,
+       "median": 5.46,
+       "p90": 10.84,
        "unit": "hours"
       },
       "time_to_acknowledgement_h": {
-       "n": 136,
+       "n": 221,
        "suppressed": false,
-       "median": 39.63,
-       "p90": 93.11,
+       "median": 39.59,
+       "p90": 94.37,
        "unit": "hours"
       },
       "time_to_confirmation_d": {
-       "n": 90,
+       "n": 164,
        "suppressed": false,
-       "median": 14.5,
-       "p90": 24.86,
+       "median": 13.63,
+       "p90": 24.64,
        "unit": "days"
       },
       "time_to_consultation_d": {
-       "n": 30,
+       "n": 43,
        "suppressed": false,
-       "median": 30.0,
-       "p90": 37.16,
+       "median": 29.68,
+       "p90": 38.71,
        "unit": "days"
       },
       "time_to_care_d": {
-       "n": 27,
+       "n": 40,
        "suppressed": false,
-       "median": 30.81,
-       "p90": 39.45,
+       "median": 30.14,
+       "p90": 37.99,
        "unit": "days"
       },
       "referral_completion_rate": {
-       "n": 57,
+       "n": 116,
        "suppressed": false,
-       "numerator": 46,
-       "value": 0.807
+       "numerator": 87,
+       "value": 0.75
       },
       "appointment_completion_rate": {
-       "n": 37,
+       "n": 57,
        "suppressed": false,
-       "numerator": 30,
-       "value": 0.8108
+       "numerator": 43,
+       "value": 0.7544
       },
       "treatment_initiation_rate": {
-       "n": 30,
+       "n": 43,
        "suppressed": false,
-       "numerator": 22,
-       "value": 0.7333
+       "numerator": 31,
+       "value": 0.7209
       },
       "care_reached_rate": {
-       "n": 184,
+       "n": 290,
        "suppressed": false,
-       "numerator": 27,
-       "value": 0.1467
+       "numerator": 40,
+       "value": 0.1379
       },
       "unresolved_results": {
-       "n": 184,
+       "n": 290,
        "suppressed": false,
-       "count": 124,
-       "rate": 0.6739,
+       "count": 202,
+       "rate": 0.6966,
        "delay_reasons": {
         "result_not_delivered": {
          "label": "Result not delivered in time",
-         "count": 11,
+         "count": 14,
          "suppressed": false
         },
         "no_acknowledgement": {
          "label": "Patient did not acknowledge in time",
-         "count": 37,
+         "count": 55,
          "suppressed": false
         },
         "confirmation_not_completed": {
          "label": "Confirmation by home or 24-hour monitoring not completed in time",
-         "count": 46,
+         "count": 57,
          "suppressed": false
         },
         "referral_not_sent": {
          "label": "Referral not sent in time",
-         "count": null,
-         "suppressed": true
+         "count": 8,
+         "suppressed": false
         },
         "referral_not_accepted": {
          "label": "Referral not accepted in time",
-         "count": 9,
+         "count": 21,
          "suppressed": false
         },
         "appointment_not_booked": {
          "label": "Appointment not booked in time",
-         "count": 9,
-         "suppressed": false
-        },
-        "visit_not_attended": {
-         "label": "Visit not attended in time",
-         "count": 7,
-         "suppressed": false
-        },
-        "care_not_recorded": {
-         "label": "Visit outcome not recorded in time",
-         "count": null,
-         "suppressed": true
-        }
-       }
-      },
-      "teach_back_pass_rate": {
-       "n": 136,
-       "suppressed": false,
-       "numerator": 95,
-       "value": 0.6985
-      },
-      "patient_confidence_mean": {
-       "n": 136,
-       "suppressed": false,
-       "value": 3.85
-      },
-      "plan_checkin_rate": {
-       "n": 324,
-       "suppressed": false,
-       "numerator": 203,
-       "value": 0.6265
-      },
-      "re_engagement_after_lapse_rate": {
-       "n": 27,
-       "suppressed": false,
-       "numerator": 26,
-       "value": 0.963
-      }
-     },
-     "40-49": {
-      "n_actionable": 190,
-      "time_to_notification_h": {
-       "n": 182,
-       "suppressed": false,
-       "median": 5.64,
-       "p90": 12.17,
-       "unit": "hours"
-      },
-      "time_to_acknowledgement_h": {
-       "n": 152,
-       "suppressed": false,
-       "median": 42.21,
-       "p90": 99.98,
-       "unit": "hours"
-      },
-      "time_to_confirmation_d": {
-       "n": 115,
-       "suppressed": false,
-       "median": 13.59,
-       "p90": 24.63,
-       "unit": "days"
-      },
-      "time_to_consultation_d": {
-       "n": 26,
-       "suppressed": false,
-       "median": 28.36,
-       "p90": 39.78,
-       "unit": "days"
-      },
-      "time_to_care_d": {
-       "n": 24,
-       "suppressed": false,
-       "median": 29.13,
-       "p90": 39.06,
-       "unit": "days"
-      },
-      "referral_completion_rate": {
-       "n": 82,
-       "suppressed": false,
-       "numerator": 57,
-       "value": 0.6951
-      },
-      "appointment_completion_rate": {
-       "n": 36,
-       "suppressed": false,
-       "numerator": 26,
-       "value": 0.7222
-      },
-      "treatment_initiation_rate": {
-       "n": 26,
-       "suppressed": false,
-       "numerator": 18,
-       "value": 0.6923
-      },
-      "care_reached_rate": {
-       "n": 190,
-       "suppressed": false,
-       "numerator": 24,
-       "value": 0.1263
-      },
-      "unresolved_results": {
-       "n": 190,
-       "suppressed": false,
-       "count": 133,
-       "rate": 0.7,
-       "delay_reasons": {
-        "result_not_delivered": {
-         "label": "Result not delivered in time",
-         "count": 8,
-         "suppressed": false
-        },
-        "no_acknowledgement": {
-         "label": "Patient did not acknowledge in time",
          "count": 30,
          "suppressed": false
         },
-        "confirmation_not_completed": {
-         "label": "Confirmation by home or 24-hour monitoring not completed in time",
-         "count": 37,
-         "suppressed": false
-        },
-        "referral_not_sent": {
-         "label": "Referral not sent in time",
-         "count": 8,
-         "suppressed": false
-        },
-        "referral_not_accepted": {
-         "label": "Referral not accepted in time",
-         "count": 17,
-         "suppressed": false
-        },
-        "appointment_not_booked": {
-         "label": "Appointment not booked in time",
-         "count": 21,
-         "suppressed": false
-        },
         "visit_not_attended": {
          "label": "Visit not attended in time",
-         "count": 10,
+         "count": 14,
          "suppressed": false
         },
         "care_not_recorded": {
@@ -7189,293 +6655,293 @@
        }
       },
       "teach_back_pass_rate": {
-       "n": 152,
+       "n": 221,
        "suppressed": false,
-       "numerator": 104,
-       "value": 0.6842
+       "numerator": 150,
+       "value": 0.6787
       },
       "patient_confidence_mean": {
-       "n": 152,
-       "suppressed": false,
-       "value": 3.66
-      },
-      "plan_checkin_rate": {
-       "n": 288,
-       "suppressed": false,
-       "numerator": 179,
-       "value": 0.6215
-      },
-      "re_engagement_after_lapse_rate": {
-       "n": 24,
-       "suppressed": false,
-       "numerator": 19,
-       "value": 0.7917
-      }
-     },
-     "50-59": {
-      "n_actionable": 128,
-      "time_to_notification_h": {
-       "n": 126,
-       "suppressed": false,
-       "median": 5.57,
-       "p90": 12.49,
-       "unit": "hours"
-      },
-      "time_to_acknowledgement_h": {
-       "n": 105,
-       "suppressed": false,
-       "median": 46.11,
-       "p90": 83.85,
-       "unit": "hours"
-      },
-      "time_to_confirmation_d": {
-       "n": 76,
-       "suppressed": false,
-       "median": 15.51,
-       "p90": 24.2,
-       "unit": "days"
-      },
-      "time_to_consultation_d": {
-       "n": 22,
-       "suppressed": false,
-       "median": 34.44,
-       "p90": 47.12,
-       "unit": "days"
-      },
-      "time_to_care_d": {
-       "n": 21,
-       "suppressed": false,
-       "median": 35.71,
-       "p90": 48.65,
-       "unit": "days"
-      },
-      "referral_completion_rate": {
-       "n": 57,
-       "suppressed": false,
-       "numerator": 46,
-       "value": 0.807
-      },
-      "appointment_completion_rate": {
-       "n": 34,
-       "suppressed": false,
-       "numerator": 22,
-       "value": 0.6471
-      },
-      "treatment_initiation_rate": {
-       "n": 22,
-       "suppressed": false,
-       "numerator": 13,
-       "value": 0.5909
-      },
-      "care_reached_rate": {
-       "n": 128,
-       "suppressed": false,
-       "numerator": 21,
-       "value": 0.1641
-      },
-      "unresolved_results": {
-       "n": 128,
-       "suppressed": false,
-       "count": 88,
-       "rate": 0.6875,
-       "delay_reasons": {
-        "result_not_delivered": {
-         "label": "Result not delivered in time",
-         "count": null,
-         "suppressed": true
-        },
-        "no_acknowledgement": {
-         "label": "Patient did not acknowledge in time",
-         "count": 21,
-         "suppressed": false
-        },
-        "confirmation_not_completed": {
-         "label": "Confirmation by home or 24-hour monitoring not completed in time",
-         "count": 29,
-         "suppressed": false
-        },
-        "referral_not_sent": {
-         "label": "Referral not sent in time",
-         "count": null,
-         "suppressed": true
-        },
-        "referral_not_accepted": {
-         "label": "Referral not accepted in time",
-         "count": 8,
-         "suppressed": false
-        },
-        "appointment_not_booked": {
-         "label": "Appointment not booked in time",
-         "count": 12,
-         "suppressed": false
-        },
-        "visit_not_attended": {
-         "label": "Visit not attended in time",
-         "count": 12,
-         "suppressed": false
-        },
-        "care_not_recorded": {
-         "label": "Visit outcome not recorded in time",
-         "count": null,
-         "suppressed": true
-        }
-       }
-      },
-      "teach_back_pass_rate": {
-       "n": 105,
-       "suppressed": false,
-       "numerator": 77,
-       "value": 0.7333
-      },
-      "patient_confidence_mean": {
-       "n": 105,
-       "suppressed": false,
-       "value": 3.68
-      },
-      "plan_checkin_rate": {
-       "n": 252,
-       "suppressed": false,
-       "numerator": 155,
-       "value": 0.6151
-      },
-      "re_engagement_after_lapse_rate": {
-       "n": 21,
-       "suppressed": false,
-       "numerator": 17,
-       "value": 0.8095
-      }
-     },
-     "60+": {
-      "n_actionable": 55,
-      "time_to_notification_h": {
-       "n": 55,
-       "suppressed": false,
-       "median": 4.9,
-       "p90": 10.15,
-       "unit": "hours"
-      },
-      "time_to_acknowledgement_h": {
-       "n": 45,
-       "suppressed": false,
-       "median": 44.65,
-       "p90": 80.25,
-       "unit": "hours"
-      },
-      "time_to_confirmation_d": {
-       "n": 32,
-       "suppressed": false,
-       "median": 15.02,
-       "p90": 25.91,
-       "unit": "days"
-      },
-      "time_to_consultation_d": {
-       "n": 12,
-       "suppressed": false,
-       "median": 39.65,
-       "p90": 58.06,
-       "unit": "days"
-      },
-      "time_to_care_d": {
-       "n": 12,
-       "suppressed": false,
-       "median": 40.15,
-       "p90": 58.76,
-       "unit": "days"
-      },
-      "referral_completion_rate": {
-       "n": 21,
-       "suppressed": false,
-       "numerator": 16,
-       "value": 0.7619
-      },
-      "appointment_completion_rate": {
-       "n": 13,
-       "suppressed": false,
-       "numerator": 12,
-       "value": 0.9231
-      },
-      "treatment_initiation_rate": {
-       "n": 12,
-       "suppressed": false,
-       "numerator": 10,
-       "value": 0.8333
-      },
-      "care_reached_rate": {
-       "n": 55,
-       "suppressed": false,
-       "numerator": 12,
-       "value": 0.2182
-      },
-      "unresolved_results": {
-       "n": 55,
-       "suppressed": false,
-       "count": 32,
-       "rate": 0.5818,
-       "delay_reasons": {
-        "result_not_delivered": {
-         "label": "Result not delivered in time",
-         "count": null,
-         "suppressed": true
-        },
-        "no_acknowledgement": {
-         "label": "Patient did not acknowledge in time",
-         "count": 10,
-         "suppressed": false
-        },
-        "confirmation_not_completed": {
-         "label": "Confirmation by home or 24-hour monitoring not completed in time",
-         "count": 13,
-         "suppressed": false
-        },
-        "referral_not_sent": {
-         "label": "Referral not sent in time",
-         "count": null,
-         "suppressed": true
-        },
-        "referral_not_accepted": {
-         "label": "Referral not accepted in time",
-         "count": null,
-         "suppressed": true
-        },
-        "appointment_not_booked": {
-         "label": "Appointment not booked in time",
-         "count": null,
-         "suppressed": true
-        },
-        "visit_not_attended": {
-         "label": "Visit not attended in time",
-         "count": null,
-         "suppressed": true
-        },
-        "care_not_recorded": {
-         "label": "Visit outcome not recorded in time",
-         "count": null,
-         "suppressed": true
-        }
-       }
-      },
-      "teach_back_pass_rate": {
-       "n": 45,
-       "suppressed": false,
-       "numerator": 29,
-       "value": 0.6444
-      },
-      "patient_confidence_mean": {
-       "n": 45,
+       "n": 221,
        "suppressed": false,
        "value": 3.67
       },
       "plan_checkin_rate": {
-       "n": 144,
+       "n": 480,
        "suppressed": false,
-       "numerator": 93,
-       "value": 0.6458
+       "numerator": 312,
+       "value": 0.65
       },
       "re_engagement_after_lapse_rate": {
-       "n": 12,
+       "n": 40,
        "suppressed": false,
-       "numerator": 11,
-       "value": 0.9167
+       "numerator": 35,
+       "value": 0.875
+      }
+     },
+     "50-64": {
+      "n_actionable": 154,
+      "time_to_notification_h": {
+       "n": 152,
+       "suppressed": false,
+       "median": 5.53,
+       "p90": 11.92,
+       "unit": "hours"
+      },
+      "time_to_acknowledgement_h": {
+       "n": 128,
+       "suppressed": false,
+       "median": 43.56,
+       "p90": 81.48,
+       "unit": "hours"
+      },
+      "time_to_confirmation_d": {
+       "n": 95,
+       "suppressed": false,
+       "median": 15.05,
+       "p90": 23.87,
+       "unit": "days"
+      },
+      "time_to_consultation_d": {
+       "n": 26,
+       "suppressed": false,
+       "median": 34.44,
+       "p90": 49.16,
+       "unit": "days"
+      },
+      "time_to_care_d": {
+       "n": 25,
+       "suppressed": false,
+       "median": 35.71,
+       "p90": 50.14,
+       "unit": "days"
+      },
+      "referral_completion_rate": {
+       "n": 69,
+       "suppressed": false,
+       "numerator": 54,
+       "value": 0.7826
+      },
+      "appointment_completion_rate": {
+       "n": 39,
+       "suppressed": false,
+       "numerator": 26,
+       "value": 0.6667
+      },
+      "treatment_initiation_rate": {
+       "n": 26,
+       "suppressed": false,
+       "numerator": 16,
+       "value": 0.6154
+      },
+      "care_reached_rate": {
+       "n": 154,
+       "suppressed": false,
+       "numerator": 25,
+       "value": 0.1623
+      },
+      "unresolved_results": {
+       "n": 154,
+       "suppressed": false,
+       "count": 103,
+       "rate": 0.6688,
+       "delay_reasons": {
+        "result_not_delivered": {
+         "label": "Result not delivered in time",
+         "count": null,
+         "suppressed": true
+        },
+        "no_acknowledgement": {
+         "label": "Patient did not acknowledge in time",
+         "count": 24,
+         "suppressed": false
+        },
+        "confirmation_not_completed": {
+         "label": "Confirmation by home or 24-hour monitoring not completed in time",
+         "count": 33,
+         "suppressed": false
+        },
+        "referral_not_sent": {
+         "label": "Referral not sent in time",
+         "count": null,
+         "suppressed": true
+        },
+        "referral_not_accepted": {
+         "label": "Referral not accepted in time",
+         "count": 12,
+         "suppressed": false
+        },
+        "appointment_not_booked": {
+         "label": "Appointment not booked in time",
+         "count": 15,
+         "suppressed": false
+        },
+        "visit_not_attended": {
+         "label": "Visit not attended in time",
+         "count": 13,
+         "suppressed": false
+        },
+        "care_not_recorded": {
+         "label": "Visit outcome not recorded in time",
+         "count": null,
+         "suppressed": true
+        }
+       }
+      },
+      "teach_back_pass_rate": {
+       "n": 128,
+       "suppressed": false,
+       "numerator": 89,
+       "value": 0.6953
+      },
+      "patient_confidence_mean": {
+       "n": 128,
+       "suppressed": false,
+       "value": 3.63
+      },
+      "plan_checkin_rate": {
+       "n": 300,
+       "suppressed": false,
+       "numerator": 184,
+       "value": 0.6133
+      },
+      "re_engagement_after_lapse_rate": {
+       "n": 25,
+       "suppressed": false,
+       "numerator": 20,
+       "value": 0.8
+      }
+     },
+     "65+": {
+      "n_actionable": 29,
+      "time_to_notification_h": {
+       "n": 29,
+       "suppressed": false,
+       "median": 5.38,
+       "p90": 11.18,
+       "unit": "hours"
+      },
+      "time_to_acknowledgement_h": {
+       "n": 22,
+       "suppressed": false,
+       "median": 52.22,
+       "p90": 84.19,
+       "unit": "hours"
+      },
+      "time_to_confirmation_d": {
+       "n": 13,
+       "suppressed": false,
+       "median": 17.6,
+       "p90": 40.95,
+       "unit": "days"
+      },
+      "time_to_consultation_d": {
+       "n": 8,
+       "suppressed": false,
+       "median": 42.63,
+       "p90": 63.92,
+       "unit": "days"
+      },
+      "time_to_care_d": {
+       "n": 8,
+       "suppressed": false,
+       "median": 43.79,
+       "p90": 64.55,
+       "unit": "days"
+      },
+      "referral_completion_rate": {
+       "n": 9,
+       "suppressed": false,
+       "numerator": 8,
+       "value": 0.8889
+      },
+      "appointment_completion_rate": {
+       "n": 8,
+       "suppressed": false,
+       "numerator": 8,
+       "value": 1.0
+      },
+      "treatment_initiation_rate": {
+       "n": 8,
+       "suppressed": false,
+       "numerator": 7,
+       "value": 0.875
+      },
+      "care_reached_rate": {
+       "n": 29,
+       "suppressed": false,
+       "numerator": 8,
+       "value": 0.2759
+      },
+      "unresolved_results": {
+       "n": 29,
+       "suppressed": false,
+       "count": 17,
+       "rate": 0.5862,
+       "delay_reasons": {
+        "result_not_delivered": {
+         "label": "Result not delivered in time",
+         "count": null,
+         "suppressed": true
+        },
+        "no_acknowledgement": {
+         "label": "Patient did not acknowledge in time",
+         "count": 7,
+         "suppressed": false
+        },
+        "confirmation_not_completed": {
+         "label": "Confirmation by home or 24-hour monitoring not completed in time",
+         "count": 9,
+         "suppressed": false
+        },
+        "referral_not_sent": {
+         "label": "Referral not sent in time",
+         "count": null,
+         "suppressed": true
+        },
+        "referral_not_accepted": {
+         "label": "Referral not accepted in time",
+         "count": null,
+         "suppressed": true
+        },
+        "appointment_not_booked": {
+         "label": "Appointment not booked in time",
+         "count": null,
+         "suppressed": true
+        },
+        "visit_not_attended": {
+         "label": "Visit not attended in time",
+         "count": null,
+         "suppressed": true
+        },
+        "care_not_recorded": {
+         "label": "Visit outcome not recorded in time",
+         "count": null,
+         "suppressed": true
+        }
+       }
+      },
+      "teach_back_pass_rate": {
+       "n": 22,
+       "suppressed": false,
+       "numerator": 17,
+       "value": 0.7727
+      },
+      "patient_confidence_mean": {
+       "n": 22,
+       "suppressed": false,
+       "value": 3.91
+      },
+      "plan_checkin_rate": {
+       "n": 96,
+       "suppressed": false,
+       "numerator": 64,
+       "value": 0.6667
+      },
+      "re_engagement_after_lapse_rate": {
+       "n": 8,
+       "suppressed": false,
+       "numerator": 8,
+       "value": 1.0
       }
      }
     }

@@ -22,10 +22,15 @@ export function ReadingsCard({ detail }: { detail: CaseDetail }) {
   const diaT = entry(config.data, usesAbpm ? "abpm_daytime_diastolic" : "hbpm_diastolic");
   const data = readings.map((r, i) => ({
     i,
-    when: formatDate(r.taken_at, i18n.language),
+    t: new Date(r.taken_at).getTime(),
     systolic: r.systolic,
     diastolic: r.diastolic,
   }));
+  const span = data.length > 1 ? data[data.length - 1]!.t - data[0]!.t : 0;
+  const tick = (v: number) => {
+    const iso = new Date(v).toISOString();
+    return span < 3 * 86_400_000 ? formatDateTime(iso, i18n.language).replace(/ UTC$/, "") : formatDate(iso, i18n.language);
+  };
   const sysName = t("readings.systolic");
   const diaName = t("readings.diastolic");
 
@@ -41,13 +46,13 @@ export function ReadingsCard({ detail }: { detail: CaseDetail }) {
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={data} margin={{ top: 8, right: 30, bottom: 8, left: 0 }}>
                 <CartesianGrid stroke="var(--color-line)" strokeDasharray="3 3" />
-                <XAxis dataKey="when" tick={{ fontSize: 11 }} interval="preserveStartEnd" />
+                <XAxis dataKey="t" type="number" scale="time" domain={["dataMin", "dataMax"]} tickCount={5} tickFormatter={tick} tick={{ fontSize: 11 }} />
                 <YAxis
                   domain={[50, "dataMax + 10"]}
                   tick={{ fontSize: 11 }}
                   label={{ value: t("readings.axisY"), angle: -90, position: "insideLeft", fontSize: 11 }}
                 />
-                <Tooltip />
+                <Tooltip labelFormatter={(v) => tick(Number(v))} />
                 <Legend wrapperStyle={{ fontSize: 12 }} />
                 {sysT !== undefined && (
                   <ReferenceLine y={sysT} stroke="var(--color-muted)" strokeDasharray="2 4" label={{ value: String(sysT), fontSize: 10, position: "right" }} />

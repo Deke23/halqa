@@ -21,9 +21,9 @@ sample_slots:
     name: Jean-Paul
     action_text: un repas sans sel ajouté
 text:
-  en: '{name}, a missed week is normal. We made your step smaller: {action_text}. Reply 2 if you would like a call.'
-  ar: '{name}، الأسبوع الذي يفوت أمر طبيعي. جعلنا خطوتك أصغر: {action_text}. أرسل 2 إن رغبت بمكالمة.'
-  fr: '{name}, une semaine manquée est normale. Votre action est plus petite : {action_text}. Répondez 2 pour un appel.'
+  en: '{name}, a missed week is normal. We made your step smaller: {action_text}. Reply 0 if you would like a call.'
+  ar: '{name}، الأسبوع الذي يفوت أمر طبيعي. جعلنا خطوتك أصغر: {action_text}. أرسل 0 إن رغبت بمكالمة.'
+  fr: '{name}, une semaine manquée est normale. Votre action est plus petite : {action_text}. Répondez 0 pour un appel.'
 sms_chars_with_sample_slots:
   en: 122
   ar: 101

@@ -1,0 +1,24 @@
+# Approved template. Edit the text here, bump `version`, and keep every {slot} listed in required_slots.
+id: reminder_home_readings
+version: 1
+purpose: Reminder that the home blood pressure readings are not finished.
+channel_limits:
+  app: 900
+  whatsapp: 1000
+required_slots:
+- name
+- due_date
+sample_slots:
+  en:
+    name: Khalid
+    due_date: 22 November
+  ar:
+    name: خالد
+    due_date: 22 نوفمبر
+  fr:
+    name: Jean-Paul
+    due_date: 22 novembre
+text:
+  en: 'Hello {name}. A reminder: checking your blood pressure reading is not finished yet. Please send your home readings by {due_date}: two a day, morning and evening, after sitting quietly for 5 minutes. If a monitor visit is planned, please keep it. If this is hard, tell us and we will help or call you.'
+  ar: 'مرحبًا {name}. تذكير: لم نكمل بعد فحص قراءة ضغط الدم. يرجى إرسال قراءاتك المنزلية قبل {due_date}: قراءتان في اليوم، صباحًا ومساءً، بعد الجلوس بهدوء لمدة 5 دقائق. وإذا كان لديك موعد لجهاز المراقبة، فيرجى الحضور إليه. وإذا كان الأمر صعبًا، أخبرنا وسنساعدك أو نتصل بك.'
+  fr: 'Bonjour {name}. Rappel : la vérification de votre tension n''est pas encore terminée. Merci d''envoyer vos mesures à la maison avant le {due_date} : deux par jour, matin et soir, après 5 minutes assis au calme. Si un rendez-vous avec l''appareil de mesure sur 24 heures est prévu, merci d''y aller. Si c''est difficile, dites-le-nous et nous vous aiderons ou vous appellerons.'

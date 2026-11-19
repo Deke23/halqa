@@ -95,6 +95,7 @@ class RedFlag(StrEnum):
     VISION_CHANGE = "vision_change"
     CONFUSION = "confusion"
     ONE_SIDED_WEAKNESS = "one_sided_weakness"
+    UNSPECIFIED = "unspecified"  # a "yes" to the phone-thread red-flag question, which does not say which symptom
 
 
 class Barrier(StrEnum):
@@ -135,10 +136,19 @@ class ErrorResponse(BaseModel):
 # ---------------------------------------------------------------- auth and users
 
 
+class PersonRef(BaseModel):
+    """A person shown to a reader. `name` has no role in brackets; `role` is the job title, for example `nurse coordinator`."""
+
+    name: str
+    role: str
+
+
 class UserOut(BaseModel):
     id: int
     persona: PersonaKey | None
-    name: str
+    name: str  # kept for compatibility, may carry the role in brackets, for example `Clarisse (nurse coordinator)`
+    display_name: str  # the same person without the role in brackets
+    role_title: str  # the job title from the brackets, or the access role when there is none
     role: RoleName
     region: Region
     organisation: str
@@ -295,6 +305,7 @@ class NextStepOut(BaseModel):
     acting_role: RoleName
     owner_user_id: int | None
     owner_name: str | None
+    owner_person: PersonRef | None
     started_at: datetime
     due_at: datetime
     service_level_h: float
@@ -339,8 +350,10 @@ class ReferralOut(BaseModel):
     status: ReferralStatus
     to_user_id: int | None
     to_name: str | None
+    to_person: PersonRef | None
     to_service: str | None
     from_name: str | None
+    from_person: PersonRef | None
     reason: str
     rejection_reason: str | None
     created_at: datetime
@@ -355,6 +368,13 @@ class AppointmentOut(BaseModel):
     status: str
 
 
+class ReplyOption(BaseModel):
+    """One reply the patient can send now. `meaning_key` is for the front end's own label (reply.yes, reply.option_a, ...)."""
+
+    reply: str
+    meaning_key: str
+
+
 class MessageOut(BaseModel):
     id: int
     direction: Literal["OUT", "IN"]
@@ -365,8 +385,11 @@ class MessageOut(BaseModel):
     template_version: str | None
     source: MessageSource
     sender_name: str | None
+    sender_person: PersonRef | None
     approved_by_name: str | None
+    approved_by_person: PersonRef | None
     created_at: datetime
+    valid_replies: list[ReplyOption] = []  # only on the latest outbound message of an open case, for quick-reply buttons
 
 
 class EConsultOut(BaseModel):
@@ -374,8 +397,10 @@ class EConsultOut(BaseModel):
     case_id: int
     from_user_id: int
     from_name: str
+    from_person: PersonRef
     to_user_id: int
     to_name: str
+    to_person: PersonRef
     question: str
     answer: str | None
     status: Literal["OPEN", "ANSWERED"]
@@ -393,7 +418,7 @@ class PlanWeekOut(BaseModel):
     starts_at: datetime
     checked_in_at: datetime | None
     label_key: str
-    default_text: str
+    default_text: str  # in the patient's language (or the requested `language`), from the approved templates
 
 
 class ConsentOut(BaseModel):
@@ -408,6 +433,7 @@ class EventOut(BaseModel):
     id: int
     at: datetime
     actor_name: str
+    actor_person: PersonRef | None
     actor_role: str
     type: EventType
     from_state: State | None
@@ -431,6 +457,7 @@ class TaskOut(BaseModel):
 class ClosureOut(BaseModel):
     closed_at: datetime
     closed_by_name: str | None
+    closed_by_person: PersonRef | None
     evidence_type: ClosureEvidence
     evidence_ref: str | None
     decision_note: str | None
@@ -456,11 +483,15 @@ class CaseFlags(BaseModel):
     needs_clinician_decision: bool
     closure_ready: bool
     urgent_review_pending: bool
+    care_coordination_withdrawn: bool = False
 
 
 class TeachBackOut(BaseModel):
-    question: str
-    options: list[str]
+    """The teach-back question as structured fields in one language. The front end never parses message text."""
+
+    question: str  # no "reply 1, 2 or 3" sentence in the app variant
+    options: list[str]  # answer with the 1-based option number
+    simpler: str  # shown after a wrong answer
     language: Language
 
 
@@ -479,6 +510,8 @@ class CaseDetail(BaseModel):
     owner_role: RoleName
     owner_user_id: int | None
     owner_name: str | None
+    owner_person: PersonRef | None
+    plan_active: bool  # false while the lifestyle programme is withdrawn: no weekly actions or check-ins
     next_step: NextStepOut | None
     progress: list[ProgressStep]
     flags: CaseFlags
@@ -515,13 +548,19 @@ class CaseSummary(BaseModel):
     owner_role: RoleName
     owner_user_id: int | None
     owner_name: str | None
+    owner_person: PersonRef | None
+    age_band: str
     next_step_label_key: str | None
     due_at: datetime | None
     overdue: bool
     overdue_hours: float
     escalation_level: int
     reason_code: str
-    reason_text: str
+    reason_text: str  # includes the rejection reason or the escalation reason when there is one
+    rejection_reason: str | None  # the receiving clinician's reason, only while the referral is rejected
+    escalation_reason: str | None  # the reason given on the latest escalation, or the automatic one
+    last_contact_attempt_at: datetime | None
+    last_contact_attempt: str | None  # MESSAGE_SENT, MESSAGE_SUPPRESSED or the unreachable-protocol step
     flags: CaseFlags
     index_systolic: int
     index_diastolic: int
@@ -567,9 +606,12 @@ class DraftRequest(BaseModel):
     template_id: str
     language: Language
     tone: str | None = None
+    channel: Channel | None = None  # default: the patient's channel
 
 
 class DraftOut(BaseModel):
+    id: int  # the server-stored draft; send takes this id, never text
+    channel: Channel
     text: str
     source: MessageSource
     template_id: str
@@ -579,9 +621,12 @@ class DraftOut(BaseModel):
 
 
 class SendRequest(BaseModel):
-    draft: DraftOut
-    channel: Channel | None = None
-    approve: bool = False
+    """Send a stored draft. Free text is refused: the server re-renders the template and re-validates AI wording."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    draft_id: int
+    approve: bool = False  # required (true) for an AI re-worded draft; the approver is the signed-in staff member
 
 
 class SendResponse(BaseModel):
@@ -700,10 +745,12 @@ class RegionConfig(BaseModel):
     languages: list[Language]
     emergency_text: dict[str, str]
     emergency_number: str | None
+    timezone: str
 
 
 class ConfigOut(BaseModel):
     app_name: str
+    demo_mode: bool  # false: guest login, clock advance, reset and the intake simulator are disabled
     notice: str
     entries: list[ConfigEntryOut]
     closure_evidence_types: list[ClosureEvidence]
@@ -716,6 +763,8 @@ class ConfigOut(BaseModel):
 class PersonaInfo(BaseModel):
     persona: PersonaKey
     name: str
+    display_name: str
+    role_title: str
     role: RoleName
     region: Region
     description: str

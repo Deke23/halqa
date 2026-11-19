@@ -58,6 +58,7 @@
           "auth"
         ],
         "summary": "Guest",
+        "description": "Guest sign-in is a demo control: with DEMO_MODE off it answers 403 DEMO_MODE_OFF.",
         "operationId": "guest_api_auth_guest_post",
         "requestBody": {
           "content": {
@@ -430,8 +431,25 @@
           "patient"
         ],
         "summary": "My Case",
+        "description": "The patient's own case. `language` selects the language of the structured teach-back and the plan texts.",
         "operationId": "my_case_api_my_case_get",
         "parameters": [
+          {
+            "name": "language",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/Language"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Language"
+            }
+          },
           {
             "name": "authorization",
             "in": "header",
@@ -948,6 +966,7 @@
           "messages"
         ],
         "summary": "Draft Message",
+        "description": "Render an approved template into a draft stored on the server. Optional re-wording (`tone`) is validated here.",
         "operationId": "draft_message_api_cases__case_id__messages_draft_post",
         "parameters": [
           {
@@ -1045,8 +1064,9 @@
         "tags": [
           "messages"
         ],
-        "summary": "Send Message",
-        "operationId": "send_message_api_cases__case_id__messages_send_post",
+        "summary": "Send Message Route",
+        "description": "Send a stored draft. The server re-renders the template, re-runs the validator for an AI re-worded draft and\nrequires explicit approval by the signed-in staff member for it. The client cannot supply text or a source.",
+        "operationId": "send_message_route_api_cases__case_id__messages_send_post",
         "parameters": [
           {
             "name": "case_id",
@@ -1144,7 +1164,7 @@
           "patient"
         ],
         "summary": "My Messages",
-        "description": "The thread. With `language`, template-based outgoing messages are re-rendered in that language (patient language switch).",
+        "description": "The thread. With `language`, template-based outgoing messages are re-rendered in that language (patient language switch).\n\nThe re-render uses the slots stored with each message, so its reading and dates are the ones from when it was created.\nA message stored before slots were kept, or one that cannot render in the language, keeps its stored text.",
         "operationId": "my_messages_api_my_messages_get",
         "parameters": [
           {
@@ -1277,6 +1297,7 @@
           "intake"
         ],
         "summary": "Simulated source feed. Opens a case when the reading is actionable",
+        "description": "Demo control: with DEMO_MODE off this route answers 403 DEMO_MODE_OFF.",
         "operationId": "intake_api_intake_result_post",
         "parameters": [
           {
@@ -1415,6 +1436,7 @@
           "demo"
         ],
         "summary": "Advance the demo clock and re-evaluate every open case",
+        "description": "Demo control. Any signed-in guest may skip ahead (the patient demo shortcut); DEMO_MODE off answers 403.",
         "operationId": "advance_clock_api_demo_clock_advance_post",
         "parameters": [
           {
@@ -1474,7 +1496,26 @@
           "demo"
         ],
         "summary": "Restore the seeded demo data exactly",
+        "description": "Demo control. Needs a signed-in staff or analyst user; DEMO_MODE off answers 403. Drops and recreates the schema.",
         "operationId": "reset_api_demo_reset_post",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Successful Response",
@@ -1482,6 +1523,16 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ResetResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
                 }
               }
             }
@@ -1494,7 +1545,7 @@
         "tags": [
           "cases"
         ],
-        "summary": "FHIR R4 Bundle for the case (read-only)",
+        "summary": "FHIR R4 Bundle for the case (read-only, clinician only)",
         "operationId": "case_fhir_api_cases__case_id__fhir_get",
         "parameters": [
           {
@@ -1942,6 +1993,20 @@
             ],
             "title": "Owner Name"
           },
+          "owner_person": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PersonRef"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "plan_active": {
+            "type": "boolean",
+            "title": "Plan Active"
+          },
           "next_step": {
             "anyOf": [
               {
@@ -2140,6 +2205,8 @@
           "owner_role",
           "owner_user_id",
           "owner_name",
+          "owner_person",
+          "plan_active",
           "next_step",
           "progress",
           "flags",
@@ -2192,6 +2259,11 @@
           "urgent_review_pending": {
             "type": "boolean",
             "title": "Urgent Review Pending"
+          },
+          "care_coordination_withdrawn": {
+            "type": "boolean",
+            "title": "Care Coordination Withdrawn",
+            "default": false
           }
         },
         "type": "object",
@@ -2286,6 +2358,20 @@
             ],
             "title": "Owner Name"
           },
+          "owner_person": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PersonRef"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "age_band": {
+            "type": "string",
+            "title": "Age Band"
+          },
           "next_step_label_key": {
             "anyOf": [
               {
@@ -2329,6 +2415,51 @@
             "type": "string",
             "title": "Reason Text"
           },
+          "rejection_reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rejection Reason"
+          },
+          "escalation_reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Escalation Reason"
+          },
+          "last_contact_attempt_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Contact Attempt At"
+          },
+          "last_contact_attempt": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Contact Attempt"
+          },
           "flags": {
             "$ref": "#/components/schemas/CaseFlags"
           },
@@ -2359,6 +2490,8 @@
           "owner_role",
           "owner_user_id",
           "owner_name",
+          "owner_person",
+          "age_band",
           "next_step_label_key",
           "due_at",
           "overdue",
@@ -2366,6 +2499,10 @@
           "escalation_level",
           "reason_code",
           "reason_text",
+          "rejection_reason",
+          "escalation_reason",
+          "last_contact_attempt_at",
+          "last_contact_attempt",
           "flags",
           "index_systolic",
           "index_diastolic",
@@ -2447,6 +2584,16 @@
             ],
             "title": "Closed By Name"
           },
+          "closed_by_person": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PersonRef"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
           "evidence_type": {
             "$ref": "#/components/schemas/ClosureEvidence"
           },
@@ -2477,6 +2624,7 @@
         "required": [
           "closed_at",
           "closed_by_name",
+          "closed_by_person",
           "evidence_type",
           "evidence_ref",
           "decision_note"
@@ -2525,6 +2673,10 @@
           "app_name": {
             "type": "string",
             "title": "App Name"
+          },
+          "demo_mode": {
+            "type": "boolean",
+            "title": "Demo Mode"
           },
           "notice": {
             "type": "string",
@@ -2577,6 +2729,7 @@
         "type": "object",
         "required": [
           "app_name",
+          "demo_mode",
           "notice",
           "entries",
           "closure_evidence_types",
@@ -2989,6 +3142,13 @@
       },
       "DraftOut": {
         "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "channel": {
+            "$ref": "#/components/schemas/Channel"
+          },
           "text": {
             "type": "string",
             "title": "Text"
@@ -3015,6 +3175,8 @@
         },
         "type": "object",
         "required": [
+          "id",
+          "channel",
           "text",
           "source",
           "template_id",
@@ -3043,6 +3205,16 @@
               }
             ],
             "title": "Tone"
+          },
+          "channel": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Channel"
+              },
+              {
+                "type": "null"
+              }
+            ]
           }
         },
         "type": "object",
@@ -3089,6 +3261,9 @@
             "type": "string",
             "title": "From Name"
           },
+          "from_person": {
+            "$ref": "#/components/schemas/PersonRef"
+          },
           "to_user_id": {
             "type": "integer",
             "title": "To User Id"
@@ -3096,6 +3271,9 @@
           "to_name": {
             "type": "string",
             "title": "To Name"
+          },
+          "to_person": {
+            "$ref": "#/components/schemas/PersonRef"
           },
           "question": {
             "type": "string",
@@ -3144,8 +3322,10 @@
           "case_id",
           "from_user_id",
           "from_name",
+          "from_person",
           "to_user_id",
           "to_name",
+          "to_person",
           "question",
           "answer",
           "status",
@@ -3230,6 +3410,16 @@
             "type": "string",
             "title": "Actor Name"
           },
+          "actor_person": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PersonRef"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
           "actor_role": {
             "type": "string",
             "title": "Actor Role"
@@ -3279,6 +3469,7 @@
           "id",
           "at",
           "actor_name",
+          "actor_person",
           "actor_role",
           "type",
           "from_state",
@@ -3296,6 +3487,7 @@
           "STATE_CHANGED",
           "MESSAGE_SENT",
           "MESSAGE_RECEIVED",
+          "MESSAGE_SUPPRESSED",
           "TEACH_BACK_PASSED",
           "TEACH_BACK_FAILED",
           "RED_FLAG_REPORTED",
@@ -3692,6 +3884,16 @@
             ],
             "title": "Sender Name"
           },
+          "sender_person": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PersonRef"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
           "approved_by_name": {
             "anyOf": [
               {
@@ -3703,10 +3905,28 @@
             ],
             "title": "Approved By Name"
           },
+          "approved_by_person": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PersonRef"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
           "created_at": {
             "type": "string",
             "format": "date-time",
             "title": "Created At"
+          },
+          "valid_replies": {
+            "items": {
+              "$ref": "#/components/schemas/ReplyOption"
+            },
+            "type": "array",
+            "title": "Valid Replies",
+            "default": []
           }
         },
         "type": "object",
@@ -3720,7 +3940,9 @@
           "template_version",
           "source",
           "sender_name",
+          "sender_person",
           "approved_by_name",
+          "approved_by_person",
           "created_at"
         ],
         "title": "MessageOut"
@@ -3814,6 +4036,16 @@
             ],
             "title": "Owner Name"
           },
+          "owner_person": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PersonRef"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
           "started_at": {
             "type": "string",
             "format": "date-time",
@@ -3859,6 +4091,7 @@
           "acting_role",
           "owner_user_id",
           "owner_name",
+          "owner_person",
           "started_at",
           "due_at",
           "service_level_h",
@@ -3934,6 +4167,25 @@
         ],
         "title": "PatientSummary"
       },
+      "PersonRef": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "role": {
+            "type": "string",
+            "title": "Role"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "role"
+        ],
+        "title": "PersonRef",
+        "description": "A person shown to a reader. `name` has no role in brackets; `role` is the job title, for example `nurse coordinator`."
+      },
       "PersonaInfo": {
         "properties": {
           "persona": {
@@ -3942,6 +4194,14 @@
           "name": {
             "type": "string",
             "title": "Name"
+          },
+          "display_name": {
+            "type": "string",
+            "title": "Display Name"
+          },
+          "role_title": {
+            "type": "string",
+            "title": "Role Title"
           },
           "role": {
             "$ref": "#/components/schemas/RoleName"
@@ -3958,6 +4218,8 @@
         "required": [
           "persona",
           "name",
+          "display_name",
+          "role_title",
           "role",
           "region",
           "description"
@@ -4219,6 +4481,16 @@
             ],
             "title": "To Name"
           },
+          "to_person": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PersonRef"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
           "to_service": {
             "anyOf": [
               {
@@ -4240,6 +4512,16 @@
               }
             ],
             "title": "From Name"
+          },
+          "from_person": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PersonRef"
+              },
+              {
+                "type": "null"
+              }
+            ]
           },
           "reason": {
             "type": "string",
@@ -4280,8 +4562,10 @@
           "status",
           "to_user_id",
           "to_name",
+          "to_person",
           "to_service",
           "from_name",
+          "from_person",
           "reason",
           "rejection_reason",
           "created_at",
@@ -4342,6 +4626,10 @@
               }
             ],
             "title": "Emergency Number"
+          },
+          "timezone": {
+            "type": "string",
+            "title": "Timezone"
           }
         },
         "type": "object",
@@ -4351,9 +4639,29 @@
           "default_language",
           "languages",
           "emergency_text",
-          "emergency_number"
+          "emergency_number",
+          "timezone"
         ],
         "title": "RegionConfig"
+      },
+      "ReplyOption": {
+        "properties": {
+          "reply": {
+            "type": "string",
+            "title": "Reply"
+          },
+          "meaning_key": {
+            "type": "string",
+            "title": "Meaning Key"
+          }
+        },
+        "type": "object",
+        "required": [
+          "reply",
+          "meaning_key"
+        ],
+        "title": "ReplyOption",
+        "description": "One reply the patient can send now. `meaning_key` is for the front end's own label (reply.yes, reply.option_a, ...)."
       },
       "ReplyRequest": {
         "properties": {
@@ -4443,18 +4751,9 @@
       },
       "SendRequest": {
         "properties": {
-          "draft": {
-            "$ref": "#/components/schemas/DraftOut"
-          },
-          "channel": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/Channel"
-              },
-              {
-                "type": "null"
-              }
-            ]
+          "draft_id": {
+            "type": "integer",
+            "title": "Draft Id"
           },
           "approve": {
             "type": "boolean",
@@ -4462,11 +4761,13 @@
             "default": false
           }
         },
+        "additionalProperties": false,
         "type": "object",
         "required": [
-          "draft"
+          "draft_id"
         ],
-        "title": "SendRequest"
+        "title": "SendRequest",
+        "description": "Send a stored draft. Free text is refused: the server re-renders the template and re-validates AI wording."
       },
       "SendResponse": {
         "properties": {
@@ -4645,6 +4946,10 @@
             "type": "array",
             "title": "Options"
           },
+          "simpler": {
+            "type": "string",
+            "title": "Simpler"
+          },
           "language": {
             "$ref": "#/components/schemas/Language"
           }
@@ -4653,9 +4958,11 @@
         "required": [
           "question",
           "options",
+          "simpler",
           "language"
         ],
-        "title": "TeachBackOut"
+        "title": "TeachBackOut",
+        "description": "The teach-back question as structured fields in one language. The front end never parses message text."
       },
       "UserOut": {
         "properties": {
@@ -4676,6 +4983,14 @@
           "name": {
             "type": "string",
             "title": "Name"
+          },
+          "display_name": {
+            "type": "string",
+            "title": "Display Name"
+          },
+          "role_title": {
+            "type": "string",
+            "title": "Role Title"
           },
           "role": {
             "$ref": "#/components/schemas/RoleName"
@@ -4711,6 +5026,8 @@
           "id",
           "persona",
           "name",
+          "display_name",
+          "role_title",
           "role",
           "region",
           "organisation",
@@ -4789,7 +5106,8 @@
           "severe_headache",
           "vision_change",
           "confusion",
-          "one_sided_weakness"
+          "one_sided_weakness",
+          "unspecified"
         ],
         "title": "RedFlag",
         "type": "string"

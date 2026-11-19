@@ -113,7 +113,7 @@ def test_teach_back_structure():
         for lang in LANGUAGES:
             assert len(tpl["options"][lang]) == 3
     r = render("teach_back_question", "fr", {"reading": "164/102"})
-    assert r.extra["correct"] == 2 and "2. " in r.text
+    assert r.extra["correct"] == 2 and "B. " in r.text
 
 
 def test_arabic_templates_are_arabic_with_latin_clinical_values():

@@ -199,6 +199,20 @@ Other:
 - `POST /api/cases/{id}/econsults {to_user_id, question}`, `POST /api/econsults/{id}/reply {answer}`.
 - `POST /api/cases/{id}/messages/draft {template_id, language, tone?}` returns `{text, source: TEMPLATE or AI_REWORDED, template_id, template_version, validation}`. `POST /api/cases/{id}/messages/send {draft}` staff must approve an AI re-worded draft before it is sent; the event records the approver.
 - `GET /api/my/messages`, `POST /api/my/messages/reply {text}` for the phone thread. Replies are parsed by fixed rules only, never by a model: numbered keywords (for example `1` = understood, `2` = call me) and, during home monitoring, a strict blood pressure pattern `SYS/DIA` (two or three digits, a slash, two or three digits, plausible range 60 to 260 over 30 to 160) that is stored through the same `add_reading` path. Anything else gets a fixed "sorry, please reply with ..." message and, after two unparsed replies, a coordinator call task.
+
+  SMS reply grammar (one table in code, state-driven, no collisions):
+
+  | Where the case is | Accepted replies | Effect |
+  |---|---|---|
+  | Result sent, not yet read | `1` | Marks the result as read and sends the red-flag question |
+  | Red-flag question open | `1` yes, `2` no | Yes: emergency instruction at once, case urgent. Either answer then sends the teach-back question |
+  | Teach-back question open | `A`, `B`, `C` (case-insensitive) | Correct: case becomes ACKNOWLEDGED and home monitoring instructions follow. Wrong: simpler explanation and the question again. Second wrong answer: coordinator call task |
+  | Home monitoring | `SYS/DIA` | Stored as a reading. Severe value gets the urgent template |
+  | Weekly action check-in | the letters the check-in message offers | Recorded as done, partly or missed |
+  | Any time | `0` | "Call me": coordinator call task |
+  | Any time | STOP (and the French and Arabic words in config) | Withdraws consent for that channel |
+
+  Acknowledgement by SMS therefore always includes a teach-back, the same as in the app. Yes/no questions always use digits, multiple-choice questions always use letters, so a number can never be read as a teach-back answer.
 - `GET /api/cases/{id}/fhir` FHIR R4 Bundle: Patient, Observation (BP panel with LOINC 85354-9, components 8480-6 and 8462-4), Task per step (owner, status, restriction period as due date), ServiceRequest (referral), Communication (messages), Appointment, CarePlan (lifestyle), Consent, Provenance for closure. Must validate with `fhir.resources`.
 - `POST /api/intake/result` simulated source feed. Accepts a small JSON (patient ref, readings, source system, region). Opens a case when actionable. Used by the "simulate incoming result" button.
 - `GET /api/dashboard/live?split=none|language|nationality_group|sex|age_band&region=` measures from cases in the DB.

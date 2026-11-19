@@ -1,10 +1,22 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useAuth } from "@/api/auth";
 import { Badge, Card, DueChip, EmptyState, JourneySteps, Timeline } from "@/components";
 import type { JourneyStepData, TimelineEvent } from "@/api/types";
 import { formatDateTime } from "@/lib/format";
 import { useLabels } from "../labels";
+import { usePersonText } from "../PersonLabel";
 import type { CaseDetail } from "../types";
+
+const CLINICAL_TEXT_EVENTS = new Set([
+  "CASE_CLOSED",
+  "VISIT_RECORDED",
+  "URGENT_REVIEW_COMPLETED",
+  "CONFIRMATION_REVIEWED",
+  "REFERRAL_SENT",
+  "ECONSULT_ASKED",
+  "ECONSULT_ANSWERED",
+]);
 
 export function ProgressCard({ detail }: { detail: CaseDetail }) {
   const { t } = useTranslation("staff");
@@ -51,6 +63,7 @@ export function PlanCard({ detail }: { detail: CaseDetail }) {
         <EmptyState description={t("plan.empty")} />
       ) : (
         <>
+          {!detail.plan_active && <p className="mb-2 rounded-lg bg-due-soft px-3 py-2 text-sm text-due-ink">{t("plan.stopped")}</p>}
           <p className="mb-2 text-sm text-muted">{t("plan.intro")}</p>
           <ul className="flex flex-col gap-2 text-sm">
             {detail.plan.map((w) => (
@@ -104,7 +117,17 @@ export function AuditCard({ detail }: { detail: CaseDetail }) {
   const { t } = useTranslation("staff");
   const labels = useLabels();
   const [showViews, setShowViews] = useState(false);
-  const events: TimelineEvent[] = detail.timeline.filter((e) => showViews || e.type !== "CASE_VIEWED");
+  const { user } = useAuth();
+  const person = usePersonText();
+  const coordinator = user?.role === "coordinator";
+  // A coordinator never receives the clinical free text of these events. Say so instead of leaving a gap.
+  const events: TimelineEvent[] = detail.timeline
+    .filter((e) => showViews || e.type !== "CASE_VIEWED")
+    .map((e) => ({
+      ...e,
+      actor_name: e.actor_person ? person(e.actor_person) : e.actor_name,
+      reason: e.reason ?? (coordinator && CLINICAL_TEXT_EVENTS.has(e.type) ? t("clinicianOnly") : null),
+    }));
   return (
     <Card title={t("audit.title")}>
       <p className="mb-2 text-sm text-muted">{t("audit.intro")}</p>
@@ -122,6 +145,7 @@ export function AuditCard({ detail }: { detail: CaseDetail }) {
 export function ClosureSummary({ detail }: { detail: CaseDetail }) {
   const { t, i18n } = useTranslation("staff");
   const labels = useLabels();
+  const person = usePersonText();
   const c = detail.closure;
   if (!c) return null;
   return (
@@ -134,7 +158,7 @@ export function ClosureSummary({ detail }: { detail: CaseDetail }) {
         <div>
           <dt className="text-muted">{t("closure.closedBy")}</dt>
           <dd className="font-medium">
-            {c.closed_by_name ?? ""}, {formatDateTime(c.closed_at, i18n.language)}
+            {person(c.closed_by_person)}, {formatDateTime(c.closed_at, i18n.language)}
           </dd>
         </div>
         {c.evidence_ref && (
@@ -143,12 +167,10 @@ export function ClosureSummary({ detail }: { detail: CaseDetail }) {
             <dd className="font-medium">{c.evidence_ref}</dd>
           </div>
         )}
-        {c.decision_note && (
-          <div className="sm:col-span-2">
-            <dt className="text-muted">{t("closure.note")}</dt>
-            <dd className="font-medium">{c.decision_note}</dd>
-          </div>
-        )}
+        <div className="sm:col-span-2">
+          <dt className="text-muted">{t("closure.note")}</dt>
+          <dd className={c.decision_note ? "font-medium" : "text-muted"}>{c.decision_note ?? t("clinicianOnly")}</dd>
+        </div>
       </dl>
     </Card>
   );

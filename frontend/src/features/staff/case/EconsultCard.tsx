@@ -3,6 +3,8 @@ import { useTranslation } from "react-i18next";
 import { useAuth } from "@/api/auth";
 import { Badge, Button, Card, EmptyState, Field, Select, Textarea, useErrorText, useToast } from "@/components";
 import { formatDateTime } from "@/lib/format";
+import { useLabels } from "../labels";
+import { usePersonText } from "../PersonLabel";
 import { useAnswerEconsult, useAskEconsult, useMyUserId, useStaffUsers } from "../api";
 import type { CaseDetail, EConsult } from "../types";
 
@@ -48,13 +50,14 @@ function AskForm({ detail }: { detail: CaseDetail }) {
   const errorText = useErrorText();
   const users = useStaffUsers();
   const myId = useMyUserId();
+  const labels = useLabels();
   const ask = useAskEconsult(String(detail.id));
   const [to, setTo] = useState("");
   const [question, setQuestion] = useState("");
   const [error, setError] = useState<string | null>(null);
   const options = (users.data ?? [])
     .filter((u) => u.role === "clinician" && u.id !== myId && u.region === detail.patient.region)
-    .map((u) => ({ value: String(u.id), label: u.name }));
+    .map((u) => ({ value: String(u.id), label: `${u.display_name}, ${labels.roleTitle(u.role_title)}` }));
   return (
     <details className="mt-3">
       <summary className="cursor-pointer text-sm font-medium text-accent-ink">{t("econsult.askTitle")}</summary>
@@ -100,10 +103,13 @@ export function EconsultCard({ detail }: { detail: CaseDetail }) {
   const { t, i18n } = useTranslation("staff");
   const { user } = useAuth();
   const myId = useMyUserId();
+  const person = usePersonText();
   const items = [...detail.econsults].sort((a, b) => a.created_at.localeCompare(b.created_at));
   return (
     <Card title={t("econsult.title")}>
-      {items.length === 0 ? (
+      {items.length === 0 && user?.role === "coordinator" ? (
+        <p className="text-sm text-muted">{t("econsult.coordinatorHidden")}</p>
+      ) : items.length === 0 ? (
         <EmptyState description={t("econsult.empty")} />
       ) : (
         <ul className="flex flex-col gap-3">
@@ -111,7 +117,7 @@ export function EconsultCard({ detail }: { detail: CaseDetail }) {
             <li key={e.id} className="rounded-lg border border-line p-3 text-sm">
               <div className="mb-1 flex flex-wrap items-center gap-2 text-xs text-muted">
                 <Badge tone={e.status === "OPEN" ? "due" : "accent"}>{t(`econsult.status.${e.status}`)}</Badge>
-                <span>{t("econsult.route", { from: e.from_name, to: e.to_name })}</span>
+                <span>{t("econsult.route", { from: person(e.from_person), to: person(e.to_person) })}</span>
                 <span>{formatDateTime(e.created_at, i18n.language)}</span>
               </div>
               <p>
@@ -123,7 +129,7 @@ export function EconsultCard({ detail }: { detail: CaseDetail }) {
                 </p>
               )}
               {e.status === "OPEN" && myId === e.to_user_id && <ReplyForm e={e} />}
-              {e.status === "OPEN" && myId !== e.to_user_id && <p className="mt-1 text-muted">{t("econsult.waiting", { name: e.to_name })}</p>}
+              {e.status === "OPEN" && myId !== e.to_user_id && <p className="mt-1 text-muted">{t("econsult.waiting", { name: person(e.to_person) })}</p>}
             </li>
           ))}
         </ul>

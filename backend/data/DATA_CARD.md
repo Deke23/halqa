@@ -25,9 +25,9 @@ No Synthea: Java is not available in the build environment. A purpose-built seed
 | person_id | Generated id, region prefix plus a running number. |
 | region | `AUH` (Abu Dhabi) or `YDE` (Yaounde). |
 | age | Whole years, 18 to 85. |
-| age_band | `18-29`, `30-39`, `40-49`, `50-59`, `60+`. |
-| sex | `male` or `female`. |
-| nationality_group | Abu Dhabi: Emirati, Expatriate Arab, South Asian, Other. Yaounde: one group. |
+| age_band | `18-34`, `35-49`, `50-64`, `65+`. The same bands as the live dashboard. |
+| sex | `F` or `M`, the same codes as the live dashboard (F female, M male). |
+| nationality_group | Abu Dhabi: Emirati, Expatriate Arab, South Asian, Other. Yaounde: Cameroonian (one group). |
 | preferred_language | Abu Dhabi: `ar` or `en`. Yaounde: `fr` or `en`. |
 | insurance_type | Abu Dhabi: thiqa, basic_enhanced, private, none. Yaounde: none, mutual_or_private, employer. |
 | phone_channel | `app`, `sms` or `whatsapp`. |
@@ -44,7 +44,7 @@ These distributions were chosen to make a plausible demonstration population. Th
 ### Abu Dhabi (AUH)
 
 - Age: Normal(mean 38, sd 12), clipped to 18-85, rounded. Young skew for a mixed resident workforce.
-- Sex: male 60%, female 40%.
+- Sex: M 60%, F 40%.
 - Nationality group: Emirati 20%, Expatriate Arab 20%, South Asian 40%, Other 20%.
 - Preferred language: Emirati: (ar 75%, en 25%), Expatriate Arab: (ar 60%, en 40%), South Asian: (ar 2%, en 98%), Other: (ar 5%, en 95%).
 - Insurance: Emirati: (thiqa 80%, private 20%), default: (basic_enhanced 45%, private 35%, none 20%). (Abu Dhabi: Emirati rows use the Emirati entry, everyone else the default entry.)
@@ -53,8 +53,8 @@ These distributions were chosen to make a plausible demonstration population. Th
 ### Yaounde (YDE)
 
 - Age: Normal(mean 36, sd 13), clipped to 18-85, rounded.
-- Sex: male 45%, female 55%.
-- Nationality group: Cameroonian (single group) 100%.
+- Sex: M 45%, F 55%.
+- Nationality group: Cameroonian 100%.
 - Preferred language: fr 92%, en 8%.
 - Insurance: none 85%, mutual_or_private 10%, employer 5%. (Abu Dhabi: Emirati rows use the Emirati entry, everyone else the default entry.)
 - Phone channel: sms 60%, whatsapp 40%.
@@ -65,7 +65,7 @@ These distributions were chosen to make a plausible demonstration population. Th
 - raised_extra is 0 for 85% of people and Normal(25, 12) for the other 15%. This is a simple way to give the population a raised tail.
 - Diastolic = 74 + 0.55 x (systolic - expected systolic) + 0.1 x (age - 40) + Normal(0, 6.5).
 - Values are rounded to whole mmHg and clipped to 80 to 240 (systolic) and 45 to 140 (diastolic).
-- Threshold used for `urgency`: SEVERE at systolic 180 or more or diastolic 110 or more; RAISED at systolic 140 to 179 or diastolic 90 to 109. These are the placeholder values in SPEC section 4.2, pending clinician sign-off. They are not clinically validated.
+- Threshold used for `urgency`: SEVERE at systolic 180 or more or diastolic 110 or more; RAISED at systolic 140 to 179 or diastolic 90 to 109. They are read from the engine config (`backend/app/engine/config.yaml`), where they are placeholder values pending clinician sign-off. They are not clinically validated.
 - The actionable share is a by-product of the model above. It is not calibrated to any published prevalence.
 
 ## Resulting summary

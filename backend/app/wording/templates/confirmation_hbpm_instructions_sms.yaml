@@ -17,13 +17,13 @@ sample_slots:
   fr:
     name: Jean-Paul
 text:
-  en: '{name}: for 7 days, measure at home 2 times in the morning and 2 in the evening, after 5 minutes seated. Reply with each result, e.g. 150/95.'
-  ar: '{name}: لمدة 7 أيام، قس الضغط في المنزل مرتين صباحًا ومرتين مساءً بعد الجلوس 5 دقائق. أرسل كل نتيجة، مثل 150/95.'
-  fr: '{name} : pendant 7 jours, mesurez chez vous 2 fois le matin et 2 fois le soir, après 5 min assis. Envoyez chaque résultat, ex. 150/95.'
+  en: '{name}: for 7 days, measure at home 2 times in the morning and 2 in the evening, after 5 minutes seated. Reply each result, e.g. 150/95. 0 for a call.'
+  ar: '{name}: لمدة 7 أيام، قس الضغط في المنزل مرتين صباحًا ومرتين مساءً بعد الجلوس 5 دقائق. أرسل كل نتيجة، مثل 150/95. 0 لمكالمة.'
+  fr: '{name} : pendant 7 jours, mesurez chez vous 2 fois le matin et 2 fois le soir, après 5 min assis. Envoyez chaque résultat, ex. 150/95. 0 pour un appel.'
 sms_chars_with_sample_slots:
-  en: 141
-  ar: 110
-  fr: 137
+  en: 150
+  ar: 121
+  fr: 154
 gsm7_safe_with_sample_slots:
   en: true
   ar: false

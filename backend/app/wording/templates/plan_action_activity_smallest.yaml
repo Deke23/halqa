@@ -1,0 +1,16 @@
+# Approved template. Edit the text here, bump `version`, and keep every {slot} listed in required_slots.
+id: plan_action_activity_smallest
+version: 1
+purpose: 'Weekly action text: activity, smallest size. Used inside the weekly messages and in the plan view.'
+channel_limits:
+  app: 900
+  whatsapp: 1000
+required_slots: []
+sample_slots:
+  en: {}
+  ar: {}
+  fr: {}
+text:
+  en: Take one 10-minute walk this week
+  ar: امشِ مرة واحدة لمدة 10 دقائق هذا الأسبوع
+  fr: Faites une marche de 10 minutes cette semaine

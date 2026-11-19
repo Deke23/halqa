@@ -1,0 +1,16 @@
+# Approved template. Edit the text here, bump `version`, and keep every {slot} listed in required_slots.
+id: red_flag_check
+version: 1
+purpose: Ask whether any warning symptom is present now. Answered with 1 for yes or 2 for no.
+channel_limits:
+  app: 900
+  whatsapp: 1000
+required_slots: []
+sample_slots:
+  en: {}
+  ar: {}
+  fr: {}
+text:
+  en: One more check. Do you have chest pain, trouble breathing, a severe headache, changes in your vision, confusion, or weakness on one side of the body right now? Reply 1 for yes, 2 for no, or 0 for a call.
+  ar: سؤال أخير. هل لديك الآن ألم في الصدر، أو صعوبة في التنفس، أو صداع شديد، أو تغيّر في الرؤية، أو ارتباك، أو ضعف في جانب واحد من الجسم؟ أرسل 1 للإجابة بنعم أو 2 للإجابة بلا أو 0 لطلب مكالمة.
+  fr: Une dernière question. Avez-vous maintenant une douleur à la poitrine, du mal à respirer, un mal de tête très fort, un changement de la vision, de la confusion ou une faiblesse d'un côté du corps ? Répondez 1 pour oui, 2 pour non ou 0 pour un appel.

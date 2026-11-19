@@ -21,3 +21,5 @@ export type Region = S["Region"];
 export type TaskOut = S["TaskOut"];
 export type PlanWeek = S["PlanWeekOut"];
 export type ConsentOut = S["ConsentOut"];
+export type PersonRef = components["schemas"]["PersonRef"];
+export type Feedback = components["schemas"]["Feedback"];

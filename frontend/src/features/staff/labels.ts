@@ -21,6 +21,10 @@ export function useLabels() {
     },
     source: (s: string) => t(`readingSource.${s}`, { defaultValue: pretty(s) }),
     consent: (p: string) => t(`consentPurpose.${p}`, { defaultValue: pretty(p) }),
+    /** Job title of a person, translated when known. */
+    roleTitle: (title: string | null | undefined) =>
+      title ? t(`roleTitle.${title.toLowerCase().replace(/[^a-z]+/g, "_").replace(/^_|_$/g, "")}`, { defaultValue: title }) : "",
+    contact: (code: string | null | undefined) => (code ? t(`contactAttempt.${code}`, { defaultValue: t(`events.${code}`, { defaultValue: pretty(code) }) }) : ""),
     planAction: (k: string) => t(`planAction.${k}`, { defaultValue: pretty(k) }),
   };
 }

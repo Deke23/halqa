@@ -1,0 +1,16 @@
+# Approved template. Edit the text here, bump `version`, and keep every {slot} listed in required_slots.
+id: plan_action_home_bp_check_smaller
+version: 1
+purpose: 'Weekly action text: home bp check, smaller size. Used inside the weekly messages and in the plan view.'
+channel_limits:
+  app: 900
+  whatsapp: 1000
+required_slots: []
+sample_slots:
+  en: {}
+  ar: {}
+  fr: {}
+text:
+  en: Check your blood pressure at home on 3 mornings this week
+  ar: قِس ضغط دمك في المنزل في 3 صباحات هذا الأسبوع
+  fr: Mesurez votre tension à la maison 3 matins cette semaine

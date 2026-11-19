@@ -1,0 +1,16 @@
+# Approved template. Edit the text here, bump `version`, and keep every {slot} listed in required_slots.
+id: plan_action_activity_full
+version: 1
+purpose: 'Weekly action text: activity, full size. Used inside the weekly messages and in the plan view.'
+channel_limits:
+  app: 900
+  whatsapp: 1000
+required_slots: []
+sample_slots:
+  en: {}
+  ar: {}
+  fr: {}
+text:
+  en: Walk for 30 minutes on 5 days this week
+  ar: امشِ 30 دقيقة في 5 أيام هذا الأسبوع
+  fr: Marchez 30 minutes pendant 5 jours cette semaine

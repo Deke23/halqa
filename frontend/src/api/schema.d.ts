@@ -47,7 +47,10 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Guest */
+        /**
+         * Guest
+         * @description Guest sign-in is a demo control: with DEMO_MODE off it answers 403 DEMO_MODE_OFF.
+         */
         post: operations["guest_api_auth_guest_post"];
         delete?: never;
         options?: never;
@@ -147,7 +150,10 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** My Case */
+        /**
+         * My Case
+         * @description The patient's own case. `language` selects the language of the structured teach-back and the plan texts.
+         */
         get: operations["my_case_api_my_case_get"];
         put?: never;
         post?: never;
@@ -251,7 +257,10 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Draft Message */
+        /**
+         * Draft Message
+         * @description Render an approved template into a draft stored on the server. Optional re-wording (`tone`) is validated here.
+         */
         post: operations["draft_message_api_cases__case_id__messages_draft_post"];
         delete?: never;
         options?: never;
@@ -268,8 +277,12 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Send Message */
-        post: operations["send_message_api_cases__case_id__messages_send_post"];
+        /**
+         * Send Message Route
+         * @description Send a stored draft. The server re-renders the template, re-runs the validator for an AI re-worded draft and
+         *     requires explicit approval by the signed-in staff member for it. The client cannot supply text or a source.
+         */
+        post: operations["send_message_route_api_cases__case_id__messages_send_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -286,6 +299,9 @@ export interface paths {
         /**
          * My Messages
          * @description The thread. With `language`, template-based outgoing messages are re-rendered in that language (patient language switch).
+         *
+         *     The re-render uses the slots stored with each message, so its reading and dates are the ones from when it was created.
+         *     A message stored before slots were kept, or one that cannot render in the language, keeps its stored text.
          */
         get: operations["my_messages_api_my_messages_get"];
         put?: never;
@@ -322,7 +338,10 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Simulated source feed. Opens a case when the reading is actionable */
+        /**
+         * Simulated source feed. Opens a case when the reading is actionable
+         * @description Demo control: with DEMO_MODE off this route answers 403 DEMO_MODE_OFF.
+         */
         post: operations["intake_api_intake_result_post"];
         delete?: never;
         options?: never;
@@ -356,7 +375,10 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Advance the demo clock and re-evaluate every open case */
+        /**
+         * Advance the demo clock and re-evaluate every open case
+         * @description Demo control. Any signed-in guest may skip ahead (the patient demo shortcut); DEMO_MODE off answers 403.
+         */
         post: operations["advance_clock_api_demo_clock_advance_post"];
         delete?: never;
         options?: never;
@@ -373,7 +395,10 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Restore the seeded demo data exactly */
+        /**
+         * Restore the seeded demo data exactly
+         * @description Demo control. Needs a signed-in staff or analyst user; DEMO_MODE off answers 403. Drops and recreates the schema.
+         */
         post: operations["reset_api_demo_reset_post"];
         delete?: never;
         options?: never;
@@ -388,7 +413,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** FHIR R4 Bundle for the case (read-only) */
+        /** FHIR R4 Bundle for the case (read-only, clinician only) */
         get: operations["case_fhir_api_cases__case_id__fhir_get"];
         put?: never;
         post?: never;
@@ -529,6 +554,9 @@ export interface components {
             owner_user_id: number | null;
             /** Owner Name */
             owner_name: string | null;
+            owner_person: components["schemas"]["PersonRef"] | null;
+            /** Plan Active */
+            plan_active: boolean;
             next_step: components["schemas"]["NextStepOut"] | null;
             /** Progress */
             progress: components["schemas"]["ProgressStep"][];
@@ -582,6 +610,11 @@ export interface components {
             closure_ready: boolean;
             /** Urgent Review Pending */
             urgent_review_pending: boolean;
+            /**
+             * Care Coordination Withdrawn
+             * @default false
+             */
+            care_coordination_withdrawn: boolean;
         };
         /** CaseList */
         CaseList: {
@@ -610,6 +643,9 @@ export interface components {
             owner_user_id: number | null;
             /** Owner Name */
             owner_name: string | null;
+            owner_person: components["schemas"]["PersonRef"] | null;
+            /** Age Band */
+            age_band: string;
             /** Next Step Label Key */
             next_step_label_key: string | null;
             /** Due At */
@@ -624,6 +660,14 @@ export interface components {
             reason_code: string;
             /** Reason Text */
             reason_text: string;
+            /** Rejection Reason */
+            rejection_reason: string | null;
+            /** Escalation Reason */
+            escalation_reason: string | null;
+            /** Last Contact Attempt At */
+            last_contact_attempt_at: string | null;
+            /** Last Contact Attempt */
+            last_contact_attempt: string | null;
             flags: components["schemas"]["CaseFlags"];
             /** Index Systolic */
             index_systolic: number;
@@ -674,6 +718,7 @@ export interface components {
             closed_at: string;
             /** Closed By Name */
             closed_by_name: string | null;
+            closed_by_person: components["schemas"]["PersonRef"] | null;
             evidence_type: components["schemas"]["ClosureEvidence"];
             /** Evidence Ref */
             evidence_ref: string | null;
@@ -699,6 +744,8 @@ export interface components {
         ConfigOut: {
             /** App Name */
             app_name: string;
+            /** Demo Mode */
+            demo_mode: boolean;
             /** Notice */
             notice: string;
             /** Entries */
@@ -855,6 +902,9 @@ export interface components {
         };
         /** DraftOut */
         DraftOut: {
+            /** Id */
+            id: number;
+            channel: components["schemas"]["Channel"];
             /** Text */
             text: string;
             source: components["schemas"]["MessageSource"];
@@ -875,6 +925,7 @@ export interface components {
             language: components["schemas"]["Language"];
             /** Tone */
             tone?: string | null;
+            channel?: components["schemas"]["Channel"] | null;
         };
         /** EConsultCreate */
         EConsultCreate: {
@@ -893,10 +944,12 @@ export interface components {
             from_user_id: number;
             /** From Name */
             from_name: string;
+            from_person: components["schemas"]["PersonRef"];
             /** To User Id */
             to_user_id: number;
             /** To Name */
             to_name: string;
+            to_person: components["schemas"]["PersonRef"];
             /** Question */
             question: string;
             /** Answer */
@@ -945,6 +998,7 @@ export interface components {
             at: string;
             /** Actor Name */
             actor_name: string;
+            actor_person: components["schemas"]["PersonRef"] | null;
             /** Actor Role */
             actor_role: string;
             type: components["schemas"]["EventType"];
@@ -961,7 +1015,7 @@ export interface components {
          * EventType
          * @enum {string}
          */
-        EventType: "CASE_OPENED" | "CASE_VIEWED" | "STATE_CHANGED" | "MESSAGE_SENT" | "MESSAGE_RECEIVED" | "TEACH_BACK_PASSED" | "TEACH_BACK_FAILED" | "RED_FLAG_REPORTED" | "URGENT_FLAGGED" | "URGENT_REVIEW_COMPLETED" | "CONFIRMATION_CHOSEN" | "READING_ADDED" | "CONFIRMATION_REVIEWED" | "REFERRAL_SENT" | "REFERRAL_ACCEPTED" | "REFERRAL_REJECTED" | "OWNER_CHANGED" | "APPOINTMENT_BOOKED" | "VISIT_RECORDED" | "PLAN_CHECKIN" | "PLAN_WEEK_LAPSED" | "ESCALATED" | "UNREACHABLE_STEP" | "TASK_CREATED" | "ECONSULT_ASKED" | "ECONSULT_ANSWERED" | "CONSENT_CHANGED" | "CASE_CLOSED" | "CASE_REOPENED";
+        EventType: "CASE_OPENED" | "CASE_VIEWED" | "STATE_CHANGED" | "MESSAGE_SENT" | "MESSAGE_RECEIVED" | "MESSAGE_SUPPRESSED" | "TEACH_BACK_PASSED" | "TEACH_BACK_FAILED" | "RED_FLAG_REPORTED" | "URGENT_FLAGGED" | "URGENT_REVIEW_COMPLETED" | "CONFIRMATION_CHOSEN" | "READING_ADDED" | "CONFIRMATION_REVIEWED" | "REFERRAL_SENT" | "REFERRAL_ACCEPTED" | "REFERRAL_REJECTED" | "OWNER_CHANGED" | "APPOINTMENT_BOOKED" | "VISIT_RECORDED" | "PLAN_CHECKIN" | "PLAN_WEEK_LAPSED" | "ESCALATED" | "UNREACHABLE_STEP" | "TASK_CREATED" | "ECONSULT_ASKED" | "ECONSULT_ANSWERED" | "CONSENT_CHANGED" | "CASE_CLOSED" | "CASE_REOPENED";
         /** Feedback */
         Feedback: {
             /** Code */
@@ -1077,13 +1131,20 @@ export interface components {
             source: components["schemas"]["MessageSource"];
             /** Sender Name */
             sender_name: string | null;
+            sender_person: components["schemas"]["PersonRef"] | null;
             /** Approved By Name */
             approved_by_name: string | null;
+            approved_by_person: components["schemas"]["PersonRef"] | null;
             /**
              * Created At
              * Format: date-time
              */
             created_at: string;
+            /**
+             * Valid Replies
+             * @default []
+             */
+            valid_replies: components["schemas"]["ReplyOption"][];
         };
         /**
          * MessageSource
@@ -1126,6 +1187,7 @@ export interface components {
             owner_user_id: number | null;
             /** Owner Name */
             owner_name: string | null;
+            owner_person: components["schemas"]["PersonRef"] | null;
             /**
              * Started At
              * Format: date-time
@@ -1171,11 +1233,25 @@ export interface components {
             /** Organisation */
             organisation: string;
         };
+        /**
+         * PersonRef
+         * @description A person shown to a reader. `name` has no role in brackets; `role` is the job title, for example `nurse coordinator`.
+         */
+        PersonRef: {
+            /** Name */
+            name: string;
+            /** Role */
+            role: string;
+        };
         /** PersonaInfo */
         PersonaInfo: {
             persona: components["schemas"]["PersonaKey"];
             /** Name */
             name: string;
+            /** Display Name */
+            display_name: string;
+            /** Role Title */
+            role_title: string;
             role: components["schemas"]["RoleName"];
             region: components["schemas"]["Region"];
             /** Description */
@@ -1269,10 +1345,12 @@ export interface components {
             to_user_id: number | null;
             /** To Name */
             to_name: string | null;
+            to_person: components["schemas"]["PersonRef"] | null;
             /** To Service */
             to_service: string | null;
             /** From Name */
             from_name: string | null;
+            from_person: components["schemas"]["PersonRef"] | null;
             /** Reason */
             reason: string;
             /** Rejection Reason */
@@ -1309,6 +1387,18 @@ export interface components {
             };
             /** Emergency Number */
             emergency_number: string | null;
+            /** Timezone */
+            timezone: string;
+        };
+        /**
+         * ReplyOption
+         * @description One reply the patient can send now. `meaning_key` is for the front end's own label (reply.yes, reply.option_a, ...).
+         */
+        ReplyOption: {
+            /** Reply */
+            reply: string;
+            /** Meaning Key */
+            meaning_key: string;
         };
         /** ReplyRequest */
         ReplyRequest: {
@@ -1341,10 +1431,13 @@ export interface components {
             /** Pulse */
             pulse?: number | null;
         };
-        /** SendRequest */
+        /**
+         * SendRequest
+         * @description Send a stored draft. Free text is refused: the server re-renders the template and re-validates AI wording.
+         */
         SendRequest: {
-            draft: components["schemas"]["DraftOut"];
-            channel?: components["schemas"]["Channel"] | null;
+            /** Draft Id */
+            draft_id: number;
             /**
              * Approve
              * @default false
@@ -1418,12 +1511,17 @@ export interface components {
              */
             created_at: string;
         };
-        /** TeachBackOut */
+        /**
+         * TeachBackOut
+         * @description The teach-back question as structured fields in one language. The front end never parses message text.
+         */
         TeachBackOut: {
             /** Question */
             question: string;
             /** Options */
             options: string[];
+            /** Simpler */
+            simpler: string;
             language: components["schemas"]["Language"];
         };
         /** UserOut */
@@ -1433,6 +1531,10 @@ export interface components {
             persona: components["schemas"]["PersonaKey"] | null;
             /** Name */
             name: string;
+            /** Display Name */
+            display_name: string;
+            /** Role Title */
+            role_title: string;
             role: components["schemas"]["RoleName"];
             region: components["schemas"]["Region"];
             /** Organisation */
@@ -1467,7 +1569,7 @@ export interface components {
          * RedFlag
          * @enum {string}
          */
-        RedFlag: "chest_pain" | "shortness_of_breath" | "severe_headache" | "vision_change" | "confusion" | "one_sided_weakness";
+        RedFlag: "chest_pain" | "shortness_of_breath" | "severe_headache" | "vision_change" | "confusion" | "one_sided_weakness" | "unspecified";
         /** AcknowledgePayload */
         AcknowledgePayload: {
             /** Teach Back Answer */
@@ -1893,7 +1995,9 @@ export interface operations {
     };
     my_case_api_my_case_get: {
         parameters: {
-            query?: never;
+            query?: {
+                language?: components["schemas"]["Language"] | null;
+            };
             header?: {
                 authorization?: string | null;
             };
@@ -2296,7 +2400,7 @@ export interface operations {
             };
         };
     };
-    send_message_api_cases__case_id__messages_send_post: {
+    send_message_route_api_cases__case_id__messages_send_post: {
         parameters: {
             query?: never;
             header?: {
@@ -2559,7 +2663,9 @@ export interface operations {
     reset_api_demo_reset_post: {
         parameters: {
             query?: never;
-            header?: never;
+            header?: {
+                authorization?: string | null;
+            };
             path?: never;
             cookie?: never;
         };
@@ -2572,6 +2678,15 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ResetResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
         };

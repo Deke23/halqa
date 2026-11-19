@@ -62,6 +62,7 @@ export function ActionDialog({ action, detail, onClose }: Props) {
     slot_id: "",
   });
   const [error, setError] = useState<string | null>(null);
+  const [suppressed, setSuppressed] = useState(false);
   const set = (k: string) => (value: string) => setV((x) => ({ ...x, [k]: value }));
   const onInput = (k: string) => (e: { target: { value: string } }) => set(k)(e.target.value);
 
@@ -69,15 +70,15 @@ export function ActionDialog({ action, detail, onClose }: Props) {
     () =>
       (users.data ?? [])
         .filter((u) => u.region === patient.region)
-        .map((u) => ({ value: String(u.id), label: `${u.name}, ${t(`roleShort.${u.role}`)}` })),
-    [users.data, patient.region, t],
+        .map((u) => ({ value: String(u.id), label: `${u.display_name}, ${labels.roleTitle(u.role_title)}` })),
+    [users.data, patient.region, labels],
   );
   const clinicianOptions = useMemo(
     () =>
       (users.data ?? [])
         .filter((u) => u.region === patient.region && u.role === "clinician")
-        .map((u) => ({ value: `usr:${u.id}`, label: u.name })),
-    [users.data, patient.region],
+        .map((u) => ({ value: `usr:${u.id}`, label: `${u.display_name}, ${labels.roleTitle(u.role_title)}` })),
+    [users.data, patient.region, labels],
   );
 
   const templates = (config.data?.templates ?? []) as Array<{ id: string }>;
@@ -128,7 +129,12 @@ export function ActionDialog({ action, detail, onClose }: Props) {
     mutation.mutate(
       { action, payload: payload() },
       {
-        onSuccess: () => {
+        onSuccess: (data) => {
+          if (data.feedback?.code === "MESSAGE_SUPPRESSED") {
+            // 200 from the server, but nothing was sent and the case did not move. Keep the dialog open and say so.
+            setSuppressed(true);
+            return;
+          }
           toast.show(t("action.done", { action: t(`action.${action}.title`) }));
           onClose();
         },
@@ -327,16 +333,25 @@ export function ActionDialog({ action, detail, onClose }: Props) {
       footer={
         <>
           <Button variant="ghost" onClick={onClose}>
-            {t("action.cancel")}
+            {suppressed ? t("action.dismiss") : t("action.cancel")}
           </Button>
-          <Button loading={mutation.isPending} onClick={submit}>
-            {t(`action.${action}.submit`)}
-          </Button>
+          {!suppressed && (
+            <Button loading={mutation.isPending} onClick={submit}>
+              {t(`action.${action}.submit`)}
+            </Button>
+          )}
         </>
       }
     >
       <div className="flex flex-col gap-3">
-        {body}
+        {suppressed && (
+          <div role="alert" className="rounded-lg border border-due bg-due-soft px-3 py-2 text-sm text-due-ink">
+            <p className="font-semibold">{t("action.suppressedTitle")}</p>
+            <p>{t("action.suppressedBody")}</p>
+            {mutation.data?.feedback?.message && <p className="mt-1 text-xs">{mutation.data.feedback.message}</p>}
+          </div>
+        )}
+        {!suppressed && body}
         {error && (
           <p role="alert" className="rounded-lg bg-due-soft px-3 py-2 text-sm font-medium text-due-ink">
             {error}

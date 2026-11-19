@@ -1,0 +1,24 @@
+# Approved template. Edit the text here, bump `version`, and keep every {slot} listed in required_slots.
+id: reminder_booking
+version: 1
+purpose: Reminder to choose a visit time after the referral was accepted.
+channel_limits:
+  app: 900
+  whatsapp: 1000
+required_slots:
+- name
+- due_date
+sample_slots:
+  en:
+    name: Khalid
+    due_date: 22 November
+  ar:
+    name: خالد
+    due_date: 22 نوفمبر
+  fr:
+    name: Jean-Paul
+    due_date: 22 novembre
+text:
+  en: 'Hello {name}. A reminder: the specialist team accepted your referral and you can now choose a visit time. Please choose one by {due_date}. If you need help choosing, tell us and we will help or call you.'
+  ar: 'مرحبًا {name}. تذكير: وافق فريق التخصص على إحالتك ويمكنك الآن اختيار موعد للزيارة. يرجى اختيار موعد قبل {due_date}. وإذا احتجت إلى مساعدة، أخبرنا وسنساعدك أو نتصل بك.'
+  fr: 'Bonjour {name}. Rappel : l''équipe spécialisée a accepté votre demande et vous pouvez maintenant choisir l''heure de votre visite. Merci d''en choisir une avant le {due_date}. Si vous avez besoin d''aide, dites-le-nous et nous vous aiderons ou vous appellerons.'

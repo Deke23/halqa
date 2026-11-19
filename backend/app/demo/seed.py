@@ -13,12 +13,10 @@ from typing import Any
 
 from sqlalchemy.orm import Session
 
-from app.api.core import add_message, add_task, log, readings_of, refresh_case, send_template, start_plan, sync_owner
+from app.api.core import STAFF, add_task, log, refresh_case, send_message, start_plan, sync_owner
 from app.api.intake import default_consents, initials_of
-from app.api import wording_port
-from app.api.core import record_checkin
 from app.db.models import (
-    Appointment, Case, DemoClock, EConsult, Patient, PlanWeek, Reading, Referral, Slot, User,
+    Appointment, Case, Consent, DemoClock, EConsult, Patient, PlanWeek, Reading, Referral, Slot, User,
 )
 from app.engine import plan as plan_rules
 from app.engine.types import CheckinStatus, EventType, State, STATE_ORDER
@@ -30,6 +28,12 @@ YDE_SPEC_ORG = "Yaoundé Regional Hypertension Clinic (simulated)"
 
 # Service levels in hours, used only to place seeded steps safely inside or outside their window.
 SL = {"RESULT_ISSUED": 24, "NOTIFIED": 72, "ACKNOWLEDGED": 336, "CONFIRMED": 72, "REFERRED": 48, "REFERRED_ACCEPTED": 120, "IN_CARE": 672}
+
+
+# Seeded people (by the number in their reference) who have not opted in to research_aggregate: the dashboard leaves them out.
+NOT_IN_RESEARCH = (13, 17)
+# Abu Dhabi app patients (by number in their reference) who have agreed to the app only, so the suppression path shows in the demo.
+NO_SMS_CONSENT = (0, 10, 14)
 
 
 def h(now: datetime, hours: float) -> datetime:
@@ -135,13 +139,19 @@ _GROUPS = ["Emirati", "Expatriate Arab", "South Asian", "Other"]
 
 
 def _patient(db: Session, now: datetime, ref: str, name: str, age: int, sex: str, group: str, lang: str, region: str,
-             insurance: str, channel: str, primary: int | None, phone: str, persona: str | None = None, desc: str = "") -> Patient:
+             insurance: str, channel: str, primary: int | None, phone: str, persona: str | None = None, desc: str = "",
+             research: bool = True) -> Patient:
     org = AUH_ORG if region == "AUH" else YDE_ORG
     p = Patient(ref=ref, display_name=name, initials=initials_of(name), age=age, sex=sex, nationality_group=group, language=lang,
                 region=region, insurance=insurance, channel=channel, phone=phone, organisation=org, primary_clinician_id=primary)
     db.add(p)
     db.flush()
-    default_consents(db, p, h(now, 2000))
+    default_consents(db, p, h(now, 2000), research=research)  # research use is opt-in; a few seeded people have not opted in
+    # Explicit app and SMS consent, so the reminder protocol can use its second channel. A few people have not agreed to SMS.
+    no_sms = ref.startswith("SYN-AUH-") and int(ref[-3:]) in NO_SMS_CONSENT
+    for ch in ("APP", "SMS"):
+        if ch != channel and not (ch == "SMS" and no_sms):
+            db.add(Consent(patient_id=p.id, purpose="messaging_channel", channel=ch, granted=True, granted_at=h(now, 2000)))
     if persona:
         db.add(User(persona_key=persona, name=name, role="patient", region=region, organisation=org, language=lang,
                     patient_id=p.id, description=desc))
@@ -164,7 +174,7 @@ def _extra(db: Session, now: datetime, rng: random.Random, region: str, n: int, 
         group, lang, insurance, channel = "Cameroonian", "fr", "NONE", rng.choice(["SMS", "WHATSAPP"])
     primary = nadia if unowned else (sara if region == "AUH" else brice)
     return _patient(db, now, f"SYN-{region}-{n:03d}", name, rng.randint(29, 71), rng.choice(["F", "M"]), group, lang, region,
-                    insurance, channel, primary, f"+000-555-{n:04d}")
+                    insurance, channel, primary, f"+000-555-{n:04d}", research=n not in NOT_IN_RESEARCH)
 
 
 # ------------------------------------------------------------------ cases
@@ -241,13 +251,13 @@ def _case(
 
     if idx >= 1:
         t_n = times[State.NOTIFIED]
-        slots = {"reading": f"{sys_}/{dia}", "name": patient.display_name.split()[0]}
-        for tid in ("result_raised", "teach_back_question") if target is State.NOTIFIED else ("result_raised",):
-            out = wording_port.render(tid, patient.language, slots)
-            add_message(db, case, t_n, tid, out.text, language=patient.language, channel=patient.channel, sender=coord,
-                        version=out.template_version)
-        log(db, case, t_n, EventType.MESSAGE_SENT, coord, from_state=State.RESULT_ISSUED.value, to_state=State.NOTIFIED.value,
-            payload={"template_id": "result_raised", "channel": patient.channel, "language": patient.language})
+        # Written through the one send function, in the patient's language, with the due date of the acknowledge step as it was then.
+        due = {"due_at": (t_n + timedelta(hours=72)).isoformat()}
+        # The in-app thread also holds the teach-back question; an SMS thread gets it after the red-flag question (reply grammar).
+        first_messages = ("result_raised", "teach_back_question") if target is State.NOTIFIED and patient.channel == "APP" else ("result_raised",)
+        for i, tid in enumerate(first_messages):
+            send_message(db, case, t_n, tid, kind=STAFF, sender=coord, extra=due,
+                         transition=(State.RESULT_ISSUED.value, State.NOTIFIED.value) if i == 0 else None)
     if idx >= 2:
         case.teach_back_first_pass = rng.random() < 0.75 if ack_pass else ack_pass
         case.patient_confidence = rng.randint(3, 5)

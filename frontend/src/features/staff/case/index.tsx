@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { useAuth } from "@/api/auth";
 import { Badge, ErrorState, Loading } from "@/components";
 import { useStaffCase } from "../api";
 import { ActionsPanel } from "./ActionsPanel";
@@ -17,6 +18,7 @@ export default function StaffCase() {
   const { t } = useTranslation("staff");
   const { id } = useParams();
   const q = useStaffCase(id);
+  const { user } = useAuth();
   const [fhirOpen, setFhirOpen] = useState(false);
 
   if (q.isLoading) return <Loading />;
@@ -31,6 +33,12 @@ export default function StaffCase() {
           <Badge tone="urgent">{t("header.emergencyAdvice")}</Badge>{" "}
           <span lang={detail.patient.language} dir={detail.patient.language === "ar" ? "rtl" : "ltr"}>{detail.emergency_advice.text}</span>
         </p>
+      )}
+      {detail.flags.care_coordination_withdrawn && detail.state !== "CLOSED" && (
+        <div role="alert" className="rounded-lg border border-due bg-due-soft px-4 py-3 text-due-ink">
+          <p className="font-semibold">{t("banner.coordinationTitle")}</p>
+          <p className="text-sm">{t("banner.coordinationBody")}</p>
+        </div>
       )}
       <ActionsPanel detail={detail} />
       <div className="grid gap-5 xl:grid-cols-3">
@@ -49,7 +57,7 @@ export default function StaffCase() {
           <AuditCard detail={detail} />
         </div>
       </div>
-      <FhirDrawer caseId={String(detail.id)} open={fhirOpen} onClose={() => setFhirOpen(false)} />
+      {user?.role === "clinician" && <FhirDrawer caseId={String(detail.id)} open={fhirOpen} onClose={() => setFhirOpen(false)} />}
     </div>
   );
 }

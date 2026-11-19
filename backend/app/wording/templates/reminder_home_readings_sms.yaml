@@ -1,0 +1,34 @@
+# Approved template. Edit the text here, bump `version`, and keep every {slot} listed in required_slots.
+id: reminder_home_readings_sms
+version: 1
+purpose: SMS reminder that the home blood pressure readings are not finished.
+channel_limits:
+  sms:
+    en: 160
+    fr: 160
+    ar: 134
+required_slots:
+- name
+- due_date
+sample_slots:
+  en:
+    name: Khalid
+    due_date: 22 November
+  ar:
+    name: خالد
+    due_date: 22 نوفمبر
+  fr:
+    name: Jean-Paul
+    due_date: 22 novembre
+text:
+  en: '{name}, reminder: please send your home blood pressure readings by {due_date}, for example 150/95. Reply 0 for a call.'
+  ar: '{name}، تذكير: يرجى إرسال قراءات ضغط الدم المنزلية قبل {due_date}، مثل 150/95. أرسل 0 لمكالمة.'
+  fr: '{name}, rappel : merci d''envoyer vos mesures de tension avant le {due_date}, par exemple 150/95. Répondez 0 pour un appel.'
+sms_chars_with_sample_slots:
+  en: 119
+  ar: 91
+  fr: 126
+gsm7_safe_with_sample_slots:
+  en: true
+  ar: false
+  fr: true

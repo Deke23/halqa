@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import asyncio
 import contextlib
+import logging
 from typing import Any
 
 from fastapi import FastAPI, Request
@@ -21,6 +22,24 @@ from app.demo import clock
 from app.demo.seed import seed
 
 TICK_SECONDS = 60
+log = logging.getLogger("app.tick")
+
+
+async def tick_loop(app: FastAPI, interval: float = TICK_SECONDS) -> None:
+    """Evaluate every open case on a timer. A failed pass is logged with its traceback and the loop keeps running."""
+
+    def run() -> None:
+        with app.state.db.session() as db:
+            tick_all(db, clock.now(db))
+
+    while True:
+        await asyncio.sleep(interval)
+        try:
+            await asyncio.to_thread(run)
+        except asyncio.CancelledError:
+            raise
+        except Exception:
+            log.exception("SLA tick failed; it will run again in %s seconds", interval)
 
 
 def _openapi_with_payloads(app: FastAPI) -> dict[str, Any]:
@@ -46,23 +65,13 @@ def create_app(database_url: str | None = None, *, seed_on_start: bool = True, s
     database = Database(database_url)
     database.create_all()
 
-    async def tick_loop(app: FastAPI) -> None:
-        def run() -> None:
-            with app.state.db.session() as db:
-                tick_all(db, clock.now(db))
-
-        while True:
-            await asyncio.sleep(TICK_SECONDS)
-            with contextlib.suppress(Exception):
-                await asyncio.to_thread(run)
-
     @contextlib.asynccontextmanager
     async def lifespan(app: FastAPI):
         if seed_on_start:
             with database.session() as db:
                 if db.scalar(select(func.count(User.id))) == 0:
                     seed(db, clock.real_now())
-        task = asyncio.create_task(tick_loop(app)) if start_tick else None
+        task = asyncio.create_task(tick_loop(app, TICK_SECONDS)) if start_tick else None
         yield
         if task:
             task.cancel()

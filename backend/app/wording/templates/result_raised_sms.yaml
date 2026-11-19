@@ -21,13 +21,13 @@ sample_slots:
     name: Jean-Paul
     reading: 164/102
 text:
-  en: '{name}, your reading {reading} is raised and needs checking. Not a final result. Next: measure again. Reply 1 if clear, 2 for a call.'
-  ar: '{name}، قراءتك {reading} مرتفعة وتحتاج إلى تأكيد، وليست نتيجة نهائية. التالي: قياس جديد. أرسل 1 إن كان واضحًا، 2 لمكالمة.'
-  fr: '{name}, votre mesure {reading} est élevée et à vérifier. Pas un résultat définitif. Ensuite : mesurer à nouveau. Répondez 1 si clair, 2 pour un appel.'
+  en: '{name}, your reading {reading} is raised and needs checking. Not a final result. Next: measure again. Reply 1 when read, 0 for a call.'
+  ar: '{name}، قراءتك {reading} مرتفعة وتحتاج إلى تأكيد، وليست نتيجة نهائية. التالي: قياس جديد. أرسل 1 بعد القراءة، 0 لمكالمة.'
+  fr: '{name}, votre mesure {reading} est élevée et à vérifier. Pas un résultat définitif. Ensuite : mesurer à nouveau. Répondez 1 si lu, 0 pour un appel.'
 sms_chars_with_sample_slots:
-  en: 130
-  ar: 116
-  fr: 151
+  en: 131
+  ar: 114
+  fr: 148
 gsm7_safe_with_sample_slots:
   en: true
   ar: false

@@ -1,12 +1,16 @@
 import { useTranslation } from "react-i18next";
 import { Badge, Card } from "@/components";
+import { useAuth } from "@/api/auth";
 import { formatDateTime } from "@/lib/format";
+import { usePersonText } from "../PersonLabel";
 import type { CaseDetail } from "../types";
 
 const TONE = { PENDING: "info", ACCEPTED: "accent", REJECTED: "urgent" } as const;
 
 export function ReferralCard({ detail }: { detail: CaseDetail }) {
   const { t, i18n } = useTranslation("staff");
+  const { user } = useAuth();
+  const person = usePersonText();
   const r = detail.referral;
   const a = detail.appointment;
   const history = detail.referrals_history.filter((h) => !r || h.id !== r.id);
@@ -20,9 +24,10 @@ export function ReferralCard({ detail }: { detail: CaseDetail }) {
             <Badge tone={TONE[r.status]}>{t(`referral.status.${r.status}`)}</Badge>
             <span className="text-muted">{formatDateTime(r.created_at, i18n.language)}</span>
           </div>
-          <p>{t("referral.route", { from: r.from_name ?? t("referral.unknown"), to: r.to_name ?? r.to_service ?? t("referral.unknown") })}</p>
+          <p>{t("referral.route", { from: r.from_person ? person(r.from_person) : t("referral.unknown"), to: r.to_person ? person(r.to_person) : (r.to_service ?? t("referral.unknown")) })}</p>
           <p>
-            <span className="font-medium">{t("referral.reason")}</span> {r.reason}
+            <span className="font-medium">{t("referral.reason")}</span>{" "}
+            {r.reason || (user?.role === "coordinator" ? t("clinicianOnly") : "")}
           </p>
           {r.rejection_reason && (
             <p className="rounded-lg bg-urgent-soft px-3 py-2 text-urgent-ink">
@@ -38,7 +43,7 @@ export function ReferralCard({ detail }: { detail: CaseDetail }) {
             {history.map((h) => (
               <li key={h.id} className="rounded-lg bg-surface-2 p-2">
                 <Badge tone={TONE[h.status]}>{t(`referral.status.${h.status}`)}</Badge>{" "}
-                {t("referral.route", { from: h.from_name ?? t("referral.unknown"), to: h.to_name ?? h.to_service ?? t("referral.unknown") })}
+                {t("referral.route", { from: h.from_person ? person(h.from_person) : t("referral.unknown"), to: h.to_person ? person(h.to_person) : (h.to_service ?? t("referral.unknown")) })}
                 {h.rejection_reason && <p className="text-muted">{h.rejection_reason}</p>}
               </li>
             ))}

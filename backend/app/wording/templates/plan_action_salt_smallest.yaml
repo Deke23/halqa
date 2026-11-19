@@ -1,0 +1,16 @@
+# Approved template. Edit the text here, bump `version`, and keep every {slot} listed in required_slots.
+id: plan_action_salt_smallest
+version: 1
+purpose: 'Weekly action text: salt, smallest size. Used inside the weekly messages and in the plan view.'
+channel_limits:
+  app: 900
+  whatsapp: 1000
+required_slots: []
+sample_slots:
+  en: {}
+  ar: {}
+  fr: {}
+text:
+  en: Taste your food before adding salt, once this week
+  ar: تذوّق طعامك قبل إضافة الملح، مرة واحدة هذا الأسبوع
+  fr: Goûtez votre plat avant d'ajouter du sel, une fois cette semaine

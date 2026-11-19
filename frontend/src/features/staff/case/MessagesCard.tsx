@@ -5,6 +5,7 @@ import { Badge, Button, Card, EmptyState, Field, Select, SimulatedTag, useErrorT
 import { formatDateTime } from "@/lib/format";
 import { useDraft, useSendDraft } from "../api";
 import { useLabels } from "../labels";
+import { usePersonText } from "../PersonLabel";
 import type { CaseDetail, Channel, ConfigOut, DraftOut, Language } from "../types";
 
 const TONES = ["warmer", "simpler", "shorter"] as const;
@@ -39,7 +40,7 @@ function DraftPanel({ detail }: { detail: CaseDetail }) {
     setError(null);
     setApproved(false);
     draftM.mutate(
-      { template_id: templateId, language, tone: tone || null },
+      { template_id: templateId, language, tone: tone || null, channel },
       { onSuccess: setDraft, onError: (e) => setError(errorText(e)) },
     );
   }
@@ -48,7 +49,7 @@ function DraftPanel({ detail }: { detail: CaseDetail }) {
     if (!draft) return;
     setError(null);
     sendM.mutate(
-      { draft, channel, approve: reworded ? approved : false },
+      { draft_id: draft.id, approve: reworded ? approved : false },
       {
         onSuccess: () => {
           toast.show(t("messages.sent"));
@@ -64,6 +65,7 @@ function DraftPanel({ detail }: { detail: CaseDetail }) {
     <section className="mt-4 rounded-lg border border-line bg-surface-2 p-3" aria-labelledby="draft-heading">
       <h3 id="draft-heading" className="text-sm font-semibold">{t("messages.draftTitle")}</h3>
       <p className="mt-1 text-sm text-muted">{t("messages.draftIntro")}</p>
+      <p className="mt-1 rounded-lg bg-info-soft px-3 py-2 text-sm text-info-ink">{t("messages.noFreeText")}</p>
       <div className="mt-3 grid gap-3 sm:grid-cols-2">
         <Field label={t("action.fields.template")}>
           <Select
@@ -119,6 +121,7 @@ function DraftPanel({ detail }: { detail: CaseDetail }) {
         <div className="mt-3 flex flex-col gap-2">
           <div className="flex flex-wrap items-center gap-2">
             <Badge tone={reworded ? "info" : "accent"}>{reworded ? t("messages.sourceAi") : t("messages.sourceTemplate")}</Badge>
+            <Badge>{t(`channel.${draft.channel}`)}</Badge>
             <span className="text-xs text-muted">
               {t("messages.templateVersion", { id: labels.template(draft.template_id), version: draft.template_version })}
             </span>
@@ -155,9 +158,9 @@ function DraftPanel({ detail }: { detail: CaseDetail }) {
           )}
           <div className="flex flex-wrap items-center gap-3">
             <Button disabled={reworded && !approved} loading={sendM.isPending} onClick={send}>
-              {t("messages.send", { channel: t(`channel.${channel}`) })}
+              {t("messages.send", { channel: t(`channel.${draft.channel}`) })}
             </Button>
-            {reworded && !approved && <span className="text-sm text-muted">{t("messages.needsApproval")}</span>}
+            {reworded && !approved && <span className="text-sm font-medium text-due-ink">{t("messages.needsApproval")}</span>}
           </div>
         </div>
       )}
@@ -174,6 +177,7 @@ function DraftPanel({ detail }: { detail: CaseDetail }) {
 export function MessagesCard({ detail }: { detail: CaseDetail }) {
   const { t, i18n } = useTranslation("staff");
   const labels = useLabels();
+  const person = usePersonText();
   const msgs = [...detail.messages].sort((a, b) => a.created_at.localeCompare(b.created_at));
   return (
     <Card title={t("messages.title")} action={<SimulatedTag />}>
@@ -194,10 +198,10 @@ export function MessagesCard({ detail }: { detail: CaseDetail }) {
               <p lang={m.language} dir={m.language === "ar" ? "rtl" : "ltr"} className="whitespace-pre-wrap">
                 {m.text}
               </p>
-              {(m.sender_name || m.approved_by_name) && (
+              {(m.sender_person || m.approved_by_person) && (
                 <p className="mt-1 text-xs text-muted">
-                  {m.sender_name && t("messages.sentBy", { name: m.sender_name })}
-                  {m.approved_by_name && ` ${t("messages.approvedBy", { name: m.approved_by_name })}`}
+                  {m.sender_person && t("messages.sentBy", { name: person(m.sender_person) })}
+                  {m.approved_by_person && ` ${t("messages.approvedBy", { name: person(m.approved_by_person) })}`}
                 </p>
               )}
             </li>

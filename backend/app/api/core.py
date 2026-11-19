@@ -6,6 +6,9 @@ this code only reads rows into a `CaseData`, then writes what the engine returne
 
 from __future__ import annotations
 
+import logging
+import re
+from dataclasses import dataclass
 from datetime import datetime, timedelta
 from typing import Any
 
@@ -14,7 +17,7 @@ from sqlalchemy.orm import Session
 
 from app import engine
 from app.db.models import (
-    Appointment, Case, CaseEvent, Consent, EConsult, Message, Patient, PlanWeek, Reading, Referral, Task, User,
+    Appointment, Case, CaseEvent, Consent, EConsult, Message, MessageDraft, Patient, PlanWeek, Reading, Referral, Task, User,
 )
 from app.engine import plan as plan_rules
 from app.engine.types import (
@@ -22,8 +25,10 @@ from app.engine.types import (
     PlanSize, ReadingData, ReadingSource, ReferralStatus, Role, Severity, State, STATE_ORDER,
 )
 
-from . import wording_port
-from .regions import emergency_text
+from . import message_slots, wording_port
+from .regions import tz_of
+
+log_ = logging.getLogger(__name__)
 
 
 class ApiError(Exception):
@@ -32,6 +37,15 @@ class ApiError(Exception):
 
 
 # ------------------------------------------------------------------ lookups
+
+
+_BRACKETED = re.compile(r"^(.*?)\s*\((.*)\)\s*$")
+
+
+def split_name(full: str, fallback_role: str = "") -> tuple[str, str]:
+    """`Clarisse (nurse coordinator)` becomes (`Clarisse`, `nurse coordinator`). Without brackets the role is the fallback."""
+    m = _BRACKETED.match(full)
+    return (m.group(1), m.group(2)) if m else (full, fallback_role)
 
 
 def user_name(db: Session, user_id: int | None) -> str | None:
@@ -71,6 +85,20 @@ def consent_granted(db: Session, patient_id: int, purpose: str, channel: str | N
     return all(c.granted for c in rows) if rows else True
 
 
+def explicit_consent(db: Session, patient_id: int, purpose: str, channel: str | None = None) -> bool:
+    """True only when a matching consent record exists and is granted. A missing record is NOT consent."""
+    q = select(Consent).where(Consent.patient_id == patient_id, Consent.purpose == purpose)
+    if channel:
+        q = q.where(Consent.channel == channel)
+    rows = list(db.scalars(q))
+    return bool(rows) and all(c.granted for c in rows)
+
+
+def plan_active(db: Session, case: Case) -> bool:
+    """A lifestyle plan only runs while the case is in care and the patient has not withdrawn lifestyle_programme."""
+    return case.state == State.IN_CARE.value and consent_granted(db, case.patient_id, "lifestyle_programme")
+
+
 def plan_weeks(db: Session, case_id: int) -> list[PlanWeek]:
     return list(db.scalars(select(PlanWeek).where(PlanWeek.case_id == case_id).order_by(PlanWeek.week_index)))
 
@@ -91,7 +119,7 @@ def case_data(db: Session, case: Case, readings: list[Reading] | None = None) ->
     rows = readings if readings is not None else readings_of(db, case.id)
     rdata = reading_data(rows)
     method = ConfirmationMethod(case.confirmation_method) if case.confirmation_method else None
-    conf = engine.evaluate_confirmation(method, rdata)
+    conf = engine.evaluate_confirmation(method, rdata, tz_of(case.region))
     ref = latest_referral(db, case.id)
     appt = appointment_of(db, case.id) if case.state == State.APPOINTMENT_BOOKED.value else None
     return CaseData(
@@ -215,67 +243,179 @@ def flag_urgent(db: Session, case: Case, now: datetime, reason: str, actor: User
 
 
 # ------------------------------------------------------------------ messages
+#
+# Every outbound message goes through `send_message`, the single place that checks consent, renders (or takes a
+# server-stored draft), stores the slots, writes the audit event and, when consent is withdrawn, records the suppression.
+
+AUTOMATED = "AUTOMATED"          # system notices, reminders, referral and appointment notices, weekly actions
+STAFF = "STAFF"                  # a staff member sends an approved template or a validated draft
+REPLY = "REPLY"                  # immediate reply to something the patient did or sent
+SAFETY_REPLY = "SAFETY_REPLY"    # emergency advice answering the patient's own message; sent even if consent was withdrawn
+FINAL = "FINAL"                  # the one fixed confirmation after STOP; sent after the channel consent was withdrawn
+
+LIFESTYLE_TEMPLATES = frozenset({"weekly_action", "no_blame_checkin", "plan_smaller"})
+
+# The late patient step decides the reminder wording (acknowledge, home readings, booking). The appointment reminder is
+# sent before the visit by the tick, see `refresh_case`.
+REMINDER_BY_STEP = {
+    "patient_acknowledge": "reminder_ack",
+    "choose_confirmation_method": "reminder_home_readings",
+    "complete_home_readings": "reminder_home_readings",
+    "attend_abpm": "reminder_home_readings",
+    "book_appointment": "reminder_booking",
+}
+
+
+def reminder_template_for(step_label: str | None) -> str:
+    return REMINDER_BY_STEP.get(step_label or "", "reminder_ack")
 
 
 def first_name(patient: Patient) -> str:
     return patient.display_name.split()[0]
 
 
-def slots_for(db: Session, case: Case, extra: dict[str, Any] | None = None, language: str | None = None) -> dict[str, Any]:
+def neutral_slots(db: Session, case: Case, template_id: str = "", extra: dict[str, Any] | None = None) -> dict[str, Any]:
+    """Language-neutral slot values for a message about this case, as of now. Dates are ISO timestamps (UTC)."""
     patient = db.get(Patient, case.patient_id)
     rows = readings_of(db, case.id)
     last = rows[-1] if rows else None
-    s, d = (last.systolic, last.diastolic) if last else (case.index_systolic, case.index_diastolic)
-    lang = language or patient.language
+    if message_slots.base_template_id(template_id) in message_slots.INDEX_READING_TEMPLATES or last is None:
+        s, d = case.index_systolic, case.index_diastolic
+    else:
+        s, d = last.systolic, last.diastolic
     step = engine.next_step(case_data(db, case))
-    due = step.due_at if step else None
-    slots: dict[str, Any] = {
-        "name": first_name(patient), "patient_name": first_name(patient),
-        "systolic": s, "diastolic": d, "reading": f"{s}/{d}",
-        "phone": patient.phone or "", "clinic": patient.organisation, "clinic_name": patient.organisation, "provider": "",
-        "date": "", "time": "", "appointment_date": "", "appointment_time": "", "action": "", "action_text": "", "closure_reason": "",
-        "due_date": wording_port.format_date(due, lang) if due else "",
-        "review_time": (case.urgent_started_at + timedelta(hours=engine.config.hours("service_levels", "urgent_review"))).strftime("%H:%M")
-        if case.urgent_started_at else "",
-        "emergency_instruction": emergency_text(case.region, lang),
-        "closed_date": wording_port.format_date(case.closed_at, lang) if case.closed_at else "",
+    review = (case.urgent_started_at + timedelta(hours=engine.config.hours("service_levels", "urgent_review"))
+              if case.urgent_started_at else None)
+    neutral: dict[str, Any] = {
+        "name": first_name(patient), "systolic": s, "diastolic": d, "reading": f"{s}/{d}", "phone": patient.phone or "",
+        "clinic": patient.organisation, "provider": "", "due_at": message_slots.to_iso(step.due_at if step else None),
+        "review_at": message_slots.to_iso(review), "appointment_at": None, "closed_at": message_slots.to_iso(case.closed_at),
+        "closure_reason": "", "plan": None,
     }
     appt = appointment_of(db, case.id)
     if appt:
-        slots.update(date=appt.starts_at.strftime("%Y-%m-%d"), time=appt.starts_at.strftime("%H:%M"),
-                     appointment_date=wording_port.format_date(appt.starts_at, lang), appointment_time=appt.starts_at.strftime("%H:%M"),
-                     clinic=appt.location, clinic_name=appt.location, provider=appt.provider_name)
-    slots.update(extra or {})
-    return slots
+        neutral.update(appointment_at=message_slots.to_iso(appt.starts_at), clinic=appt.location, provider=appt.provider_name)
+    neutral.update(extra or {})
+    return neutral
+
+
+def slots_for(db: Session, case: Case, extra: dict[str, Any] | None = None, language: str | None = None,
+              template_id: str = "") -> dict[str, Any]:
+    """Template slots in one language (default: the patient's) on the region's local clock. `extra` holds neutral values."""
+    patient = db.get(Patient, case.patient_id)
+    return message_slots.localize(neutral_slots(db, case, template_id, extra), language or patient.language, case.region)
+
+
+@dataclass
+class Prepared:
+    """A message whose text was already produced and checked on the server (a stored draft)."""
+
+    text: str
+    version: str
+    source: str
+    neutral: dict[str, Any]
+    validation: dict[str, Any]
+    draft_id: int
+    approved_by: User | None
 
 
 def add_message(
     db: Session, case: Case, now: datetime, template_id: str | None, text: str, *, language: str, channel: str,
-    direction: str = "OUT", sender: User | None = None, source: str = "TEMPLATE", version: str | None = None,
-    approved_by: User | None = None,
+    direction: str = "IN", sender: User | None = None, source: str = "TEMPLATE", version: str | None = None,
+    approved_by: User | None = None, slots: dict[str, Any] | None = None, draft_id: int | None = None,
 ) -> Message:
+    """Store a message row. Outbound rows are written only by `send_message`; call this directly for inbound text only."""
     msg = Message(
         case_id=case.id, direction=direction, channel=channel, language=language, text=text, template_id=template_id,
         template_version=version, source=source, sender_user_id=sender.id if sender else None,
-        approved_by_user_id=approved_by.id if approved_by else None, created_at=now,
+        approved_by_user_id=approved_by.id if approved_by else None, created_at=now, slots=slots, draft_id=draft_id,
     )
     db.add(msg)
     return msg
 
 
-def send_template(
-    db: Session, case: Case, now: datetime, template_id: str, *, sender: User | None = None,
+def consent_blocker(db: Session, case: Case, channel: str, kind: str, template_id: str) -> str | None:
+    """The consent purpose that stops this message, or None when it may be sent."""
+    if kind in (FINAL, SAFETY_REPLY):
+        return None
+    if not explicit_consent(db, case.patient_id, "messaging_channel", channel):
+        return "messaging_channel"
+    if not consent_granted(db, case.patient_id, "care_coordination"):
+        return "care_coordination"
+    if message_slots.base_template_id(template_id) in LIFESTYLE_TEMPLATES and not consent_granted(db, case.patient_id, "lifestyle_programme"):
+        return "lifestyle_programme"
+    return None
+
+
+def consented_channels(db: Session, patient_id: int) -> set[str]:
+    """Channels with an explicit, currently granted messaging_channel consent."""
+    return {c.channel for c in db.scalars(select(Consent).where(Consent.patient_id == patient_id, Consent.purpose == "messaging_channel",
+                                                                 Consent.granted.is_(True)))}
+
+
+def contact_other_route_task(db: Session, case: Case, now: datetime) -> None:
+    """One coordinator task "contact by another agreed route", never one per suppressed reminder.
+
+    Only when no consented channel remains at all. While another channel is agreed, a suppressed message is just recorded.
+    """
+    if consented_channels(db, case.patient_id):
+        return
+    if open_task(db, case.id, "CONTACT_OTHER_ROUTE") is None:
+        add_task(db, case, now, "CONTACT_OTHER_ROUTE", "contact_by_another_agreed_route", "coordinator",
+                 default_owner(db, case, Role.COORDINATOR))
+
+
+def send_message(
+    db: Session, case: Case, now: datetime, template_id: str, *, kind: str = AUTOMATED, sender: User | None = None,
     language: str | None = None, channel: str | None = None, extra: dict[str, Any] | None = None,
-) -> Message:
+    prepared: Prepared | None = None, transition: tuple[str, str] | None = None,
+) -> Message | None:
+    """The single send function. Returns the stored message, or None when it was suppressed.
+
+    1. consent is checked for the channel (and care coordination, and the lifestyle programme for plan messages);
+    2. if it is withdrawn, nothing is sent, a MESSAGE_SUPPRESSED event is written and, for a withdrawn channel, one
+       coordinator task "contact by another agreed route" is created (not one per suppressed message);
+    3. otherwise the text is rendered from the approved template (or taken from a server-stored draft), the neutral
+       slots are stored with the message, and a MESSAGE_SENT event records template, source, approver and validation.
+    """
     patient = db.get(Patient, case.patient_id)
     lang = language or patient.language
     chan = channel or patient.channel
-    out = wording_port.render(template_id, lang, slots_for(db, case, extra), chan)
-    msg = add_message(db, case, now, template_id, out.text, language=lang, channel=chan,
-                      sender=sender, version=out.template_version)
-    log(db, case, now, EventType.MESSAGE_SENT, sender,
-        payload={"template_id": template_id, "channel": msg.channel, "language": lang, "source": "TEMPLATE"})
+    blocker = consent_blocker(db, case, chan, kind, template_id)
+    if blocker:
+        log(db, case, now, EventType.MESSAGE_SUPPRESSED, sender,
+            payload={"template_id": template_id, "channel": chan, "language": lang, "kind": kind, "consent_purpose": blocker})
+        if blocker == "messaging_channel":
+            contact_other_route_task(db, case, now)
+        return None
+
+    if prepared is not None:
+        neutral, text, version, source = prepared.neutral, prepared.text, prepared.version, prepared.source
+        approver, draft_id, validation = prepared.approved_by, prepared.draft_id, prepared.validation
+    else:
+        neutral = neutral_slots(db, case, template_id, extra)
+        out = wording_port.render(template_id, lang, message_slots.localize(neutral, lang, case.region), chan)
+        text, version, source, approver, draft_id, validation = out.text, out.template_version, "TEMPLATE", None, None, None
+    msg = add_message(db, case, now, template_id, text, language=lang, channel=chan, direction="OUT", sender=sender, source=source,
+                      version=version, approved_by=approver, slots=neutral, draft_id=draft_id)
+    payload: dict[str, Any] = {"template_id": template_id, "channel": chan, "language": lang, "source": source, "kind": kind}
+    if kind == SAFETY_REPLY:
+        payload["consent_override"] = "emergency advice answering the patient's own message"
+    if approver is not None:
+        payload["approved_by_user_id"] = approver.id
+    if draft_id is not None:
+        payload["draft_id"] = draft_id
+        payload["validation"] = validation
+    log(db, case, now, EventType.MESSAGE_SENT, sender, payload=payload,
+        from_state=transition[0] if transition else None, to_state=transition[1] if transition else None)
     return msg
+
+
+def send_template(
+    db: Session, case: Case, now: datetime, template_id: str, *, sender: User | None = None,
+    language: str | None = None, channel: str | None = None, extra: dict[str, Any] | None = None, kind: str = AUTOMATED,
+) -> Message | None:
+    return send_message(db, case, now, template_id, kind=kind, sender=sender, language=language, channel=channel, extra=extra)
 
 
 # ------------------------------------------------------------------ lifestyle plan
@@ -307,7 +447,8 @@ def record_checkin(
                  "next_action": decision.action_key.value, "shrunk": decision.shrunk, "offer_larger": decision.offer_larger})
     if decision.call_offer and open_task(db, case.id, "PLAN_CALL_OFFER") is None:
         add_task(db, case, now, "PLAN_CALL_OFFER", "offer_a_call", "coordinator", default_owner(db, case, Role.COORDINATOR))
-    return {"decision": decision, "texts": wording_port.plan_text(decision.action_key.value, decision.size.value)}
+    patient = db.get(Patient, case.patient_id)
+    return {"decision": decision, "texts": wording_port.plan_text(decision.action_key.value, decision.size.value, patient.language)}
 
 
 # ------------------------------------------------------------------ evaluation and tick
@@ -321,7 +462,8 @@ def refresh_case(db: Session, case: Case, now: datetime) -> engine.Evaluation | 
     """Evaluate the case at `now` and write any new effects. Never closes a case."""
     if case.state == State.CLOSED.value:
         return None
-    week = open_week(db, case.id) if case.state == State.IN_CARE.value else None
+    # A withdrawn lifestyle_programme stops the running plan: no lapse is recorded and no further weeks are created.
+    week = open_week(db, case.id) if plan_active(db, case) else None
     if week is not None and plan_rules.week_lapsed(week.starts_at, now):
         record_checkin(db, case, week, CheckinStatus.MISSED, now, auto=True)
 
@@ -340,15 +482,23 @@ def refresh_case(db: Session, case: Case, now: datetime) -> engine.Evaluation | 
             log(db, case, now, EventType.ESCALATED, payload={"level": 2, "task": "urgent_review", **fx.payload})
         elif kind is EffectKind.UNREACHABLE_REMINDER:
             case.unreachable_stage = 1
-            send_template(db, case, now, "reminder_ack")
+            send_template(db, case, now, reminder_template_for(fx.payload.get("step")))
             log(db, case, now, EventType.UNREACHABLE_STEP, payload={"stage": 1, "action": "reminder"})
         elif kind is EffectKind.UNREACHABLE_SECOND_CHANNEL:
             case.unreachable_stage = 2
-            send_template(db, case, now, "reminder_ack", channel=alternate_channel(patient.channel))
+            alt = alternate_channel(patient.channel)
+            if explicit_consent(db, patient.id, "messaging_channel", alt):
+                send_template(db, case, now, reminder_template_for(fx.payload.get("step")), channel=alt)
+            else:  # the next protocol channel was never agreed: record that it was skipped and go on to the next stage
+                log(db, case, now, EventType.MESSAGE_SUPPRESSED, payload={
+                    "template_id": reminder_template_for(fx.payload.get("step")), "channel": alt, "language": patient.language,
+                    "kind": AUTOMATED, "consent_purpose": "messaging_channel", "protocol_stage": 2, "skipped_to_next_stage": True})
+                contact_other_route_task(db, case, now)
             log(db, case, now, EventType.UNREACHABLE_STEP, payload={"stage": 2, "action": "second_channel"})
         elif kind is EffectKind.UNREACHABLE_CALL_TASK:
             case.unreachable_stage = 3
-            if open_task(db, case.id, "COORDINATOR_CALL") is None:
+            # A patient who withdrew care_coordination is not phoned by a task; the clinician decision below is still created.
+            if not case.care_coordination_withdrawn and open_task(db, case.id, "COORDINATOR_CALL") is None:
                 add_task(db, case, now, "COORDINATOR_CALL", "call_the_patient", "coordinator", default_owner(db, case, Role.COORDINATOR))
             log(db, case, now, EventType.UNREACHABLE_STEP, payload={"stage": 3, "action": "call_task"})
         elif kind is EffectKind.UNREACHABLE_CLINICIAN_DECISION:
@@ -359,7 +509,25 @@ def refresh_case(db: Session, case: Case, now: datetime) -> engine.Evaluation | 
                 add_task(db, case, now, "CLINICIAN_DECISION", "decide_unreachable_patient", "clinician",
                          _active(db, patient.primary_clinician_id))
             log(db, case, now, EventType.UNREACHABLE_STEP, payload={"stage": 4, "action": "clinician_decision"})
+    _appointment_reminder(db, case, now)
     return ev
+
+
+APPOINTMENT_REMINDER_HOURS = 24
+
+
+def _appointment_reminder(db: Session, case: Case, now: datetime) -> None:
+    """One reminder in the 24 hours before a booked visit, in the patient's language. A suppressed one is not retried."""
+    if case.state != State.APPOINTMENT_BOOKED.value:
+        return
+    appt = appointment_of(db, case.id)
+    if appt is None or appt.status != "BOOKED" or not (timedelta(0) < appt.starts_at - now <= timedelta(hours=APPOINTMENT_REMINDER_HOURS)):
+        return
+    for e in db.scalars(select(CaseEvent).where(CaseEvent.case_id == case.id, CaseEvent.at >= appt.created_at,
+                                                CaseEvent.type.in_([EventType.MESSAGE_SENT.value, EventType.MESSAGE_SUPPRESSED.value]))):
+        if e.payload.get("template_id") == "appointment_reminder":
+            return
+    send_template(db, case, now, "appointment_reminder")
 
 
 def tick_all(db: Session, now: datetime) -> int:

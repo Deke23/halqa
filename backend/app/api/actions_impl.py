@@ -22,9 +22,9 @@ from app.engine.types import (
 
 from . import wording_port
 from .core import (
-    ApiError, add_message, add_task, begin_step, case_data, complete_tasks, consent_granted, default_owner, flag_urgent,
-    log, open_task, open_week, readings_of, reading_data, record_checkin, send_template, set_state, start_plan,
-    _active,
+    AUTOMATED, REPLY, STAFF, ApiError, add_task, begin_step, case_data, complete_tasks, consent_granted, default_owner,
+    flag_urgent, log, open_task, open_week, plan_active, plan_weeks, record_checkin, send_message, send_template, set_state,
+    start_plan, _active,
 )
 from .regions import emergency_text
 from .schemas import (
@@ -72,29 +72,36 @@ def perform(db: Session, case: Case, user: User | None, role: Role, action: Acti
 
 
 def do_notify(ctx: Ctx, p: NotifyPayload) -> None:
-    patient = ctx.db.get(Patient, ctx.case.patient_id)
-    if not consent_granted(ctx.db, patient.id, "messaging_channel", p.channel.value):
-        raise ApiError(409, "CONSENT_WITHDRAWN", "The patient has withdrawn permission for this messaging channel.")
-    from .core import slots_for
-    out = wording_port.render(p.template_id, p.language.value, slots_for(ctx.db, ctx.case), p.channel.value)
-    add_message(ctx.db, ctx.case, ctx.now, p.template_id, out.text, language=p.language.value, channel=p.channel.value,
-                sender=ctx.user, version=out.template_version)
-    before = ctx.move(State.NOTIFIED)
+    kind = AUTOMATED if ctx.role is Role.SYSTEM else STAFF
+    msg = send_message(ctx.db, ctx.case, ctx.now, p.template_id, kind=kind, sender=ctx.user, language=p.language.value,
+                       channel=p.channel.value, transition=(ctx.case.state, State.NOTIFIED.value))
+    if msg is None:
+        # Consent was withdrawn: nothing was sent, the suppression is on the timeline and a coordinator task asks for another route.
+        # The case stays at RESULT_ISSUED because the patient has not been told.
+        ctx.feedback = Feedback(code="MESSAGE_SUPPRESSED", message="The patient has withdrawn permission to be contacted this way. "
+                                "No message was sent. A coordinator task asks for another agreed route.")
+        return
+    ctx.move(State.NOTIFIED)
     begin_step(ctx.db, ctx.case, ctx.now)
-    ctx.log(EventType.MESSAGE_SENT, from_state=before, to_state=State.NOTIFIED.value,
-            payload={"template_id": p.template_id, "channel": p.channel.value, "language": p.language.value})
+
+
+def record_red_flags(ctx: Ctx, flags: list[str]) -> None:
+    """A reported warning symptom: urgent flag, audit event and the region's emergency advice. Shared by the app and the phone thread."""
+    case = ctx.case
+    flag_urgent(ctx.db, case, ctx.now, "RED_FLAG", ctx.user)
+    ctx.log(EventType.RED_FLAG_REPORTED, payload={"red_flags": flags})
+    ctx.feedback = Feedback(code="RED_FLAG_EMERGENCY", message=emergency_text(case.region, ctx.db.get(Patient, case.patient_id).language))
 
 
 def do_acknowledge(ctx: Ctx, p: AcknowledgePayload) -> None:
     case = ctx.case
-    emergency = bool(p.red_flags)
-    if emergency:
-        flag_urgent(ctx.db, case, ctx.now, "RED_FLAG", ctx.user)
-        ctx.log(EventType.RED_FLAG_REPORTED, payload={"red_flags": [f.value for f in p.red_flags]})
-        ctx.feedback = Feedback(code="RED_FLAG_EMERGENCY", message=emergency_text(case.region, ctx.db.get(Patient, case.patient_id).language))
-    from .core import slots_for
+    if p.red_flags:
+        record_red_flags(ctx, [f.value for f in p.red_flags])
     patient = ctx.db.get(Patient, case.patient_id)
-    tb = wording_port.teach_back(patient.language, slots_for(ctx.db, case), sms=patient.channel == "SMS")
+    from .core import neutral_slots
+    from .message_slots import localize
+    slots = localize(neutral_slots(ctx.db, case, "teach_back_question"), patient.language, case.region)
+    tb = wording_port.teach_back(patient.language, slots, sms=patient.channel == "SMS", app=patient.channel == "APP")
     correct = p.teach_back_answer.strip() == str(tb["correct"])
     if not correct:
         case.teach_back_failures += 1
@@ -105,8 +112,7 @@ def do_acknowledge(ctx: Ctx, p: AcknowledgePayload) -> None:
         if case.teach_back_failures >= limit and open_task(ctx.db, case.id, "TEACH_BACK_CALL") is None:
             add_task(ctx.db, case, ctx.now, "TEACH_BACK_CALL", "call_the_patient", "coordinator",
                      default_owner(ctx.db, case, Role.COORDINATOR))
-        add_message(ctx.db, case, ctx.now, "teach_back_simpler", tb["simpler"], language=patient.language,
-                    channel=patient.channel, version="wording")
+        send_message(ctx.db, case, ctx.now, "teach_back_simpler", kind=REPLY)
         if ctx.feedback is None:
             ctx.feedback = Feedback(code="TEACH_BACK_RETRY", message=tb["simpler"], template_id="teach_back_simpler")
         return
@@ -268,6 +274,8 @@ def do_record_visit(ctx: Ctx, p: RecordVisitPayload) -> None:
 
 
 def do_plan_checkin(ctx: Ctx, p: PlanCheckinPayload) -> None:
+    if not plan_active(ctx.db, ctx.case):
+        raise ApiError(409, "PLAN_STOPPED", "The lifestyle programme is switched off for this patient, so there is no check-in.")
     week = open_week(ctx.db, ctx.case.id)
     if week is None:
         raise ApiError(409, "NO_ACTIVE_WEEK", "There is no open plan week to check in.")
@@ -275,15 +283,14 @@ def do_plan_checkin(ctx: Ctx, p: PlanCheckinPayload) -> None:
                             accept_larger=p.accept_larger, actor=ctx.user)
     d = result["decision"]
     patient = ctx.db.get(Patient, ctx.case.patient_id)
+    extra = {"plan": {"action_key": d.action_key.value, "size": d.size.value}}
     texts = []
     for key in d.message_keys:
         if key == "weekly_action":
             continue
-        from .core import slots_for
-        rendered = wording_port.render(key, patient.language, slots_for(ctx.db, ctx.case, {"action": result["texts"], "action_text": result["texts"]}), patient.channel)
-        texts.append(rendered.text)
-        add_message(ctx.db, ctx.case, ctx.now, key, rendered.text, language=patient.language, channel=patient.channel,
-                    version=rendered.template_version)
+        msg = send_message(ctx.db, ctx.case, ctx.now, key, kind=REPLY, sender=None, extra=extra)
+        if msg is not None:
+            texts.append(msg.text)
     code = "PLAN_SMALLER" if d.shrunk else ("PLAN_LARGER_OFFERED" if d.offer_larger else "PLAN_NEXT")
     ctx.feedback = Feedback(code=code, message=" ".join(texts) or result["texts"])
 
@@ -309,7 +316,8 @@ def do_close(ctx: Ctx, p: ClosePayload) -> None:
     if case.urgent and case.urgent_review_done_at is None:
         case.urgent_review_done_at = ctx.now
     case.urgent = False
-    for t in ("URGENT_REVIEW", "COORDINATOR_CALL", "CLINICIAN_DECISION", "TEACH_BACK_CALL", "PLAN_CALL_OFFER"):
+    for t in ("URGENT_REVIEW", "COORDINATOR_CALL", "CLINICIAN_DECISION", "TEACH_BACK_CALL", "PLAN_CALL_OFFER",
+              "CONSENT_DECISION", "CONTACT_OTHER_ROUTE"):
         complete_tasks(ctx.db, case.id, t, ctx.now)
     ctx.log(EventType.CASE_CLOSED, from_state=before, to_state=State.CLOSED.value,
             payload={"evidence_type": p.evidence_type.value, "evidence_ref": case.closure_evidence_ref},
@@ -346,6 +354,41 @@ def do_update_consent(ctx: Ctx, p: ConsentPayload) -> None:
     else:
         row.withdrawn_at = ctx.now
     ctx.log(EventType.CONSENT_CHANGED, payload={"purpose": p.purpose.value, "channel": channel, "granted": p.granted})
+    ctx.db.flush()
+    apply_consent_effects(ctx.db, patient, p.purpose.value, channel, p.granted, ctx.now, ctx.user)
+
+
+def apply_consent_effects(db: Session, patient: Patient, purpose: str, channel: str | None, granted: bool, now: datetime,
+                          actor: User | None) -> None:
+    """What a consent change does to the patient's open cases. Nothing here closes a case.
+
+    - messaging_channel withdrawn: later messages on that channel are suppressed (see core.send_message) and one coordinator
+      task asks for another agreed route.
+    - care_coordination withdrawn: all automated messaging for the case stops and a clinician decision task is created. The
+      clinician may close with PATIENT_DECLINED; that is the clinician's call, never automatic.
+    - lifestyle_programme withdrawn: the running plan stops (see core.plan_active). Granting it again restarts the open week.
+    - research_aggregate: read by the dashboard only.
+    """
+    for case in db.scalars(select(Case).where(Case.patient_id == patient.id, Case.state != State.CLOSED.value)):
+        if purpose == "messaging_channel" and not granted:
+            from .core import contact_other_route_task
+            contact_other_route_task(db, case, now)
+        elif purpose == "care_coordination":
+            if not granted:
+                case.care_coordination_withdrawn = True
+                case.suggested_closure_type = case.suggested_closure_type or ClosureEvidence.PATIENT_DECLINED.value
+                if open_task(db, case.id, "CONSENT_DECISION") is None:
+                    add_task(db, case, now, "CONSENT_DECISION", "decide_after_care_coordination_withdrawn", "clinician",
+                             _active(db, patient.primary_clinician_id), payload={"purpose": purpose})
+            else:
+                case.care_coordination_withdrawn = False
+                complete_tasks(db, case.id, "CONSENT_DECISION", now)
+                if case.suggested_closure_type == ClosureEvidence.PATIENT_DECLINED.value:
+                    case.suggested_closure_type = None
+        elif purpose == "lifestyle_programme" and granted:
+            week = open_week(db, case.id)
+            if week is not None:
+                week.starts_at = now  # the plan was paused; the open week starts again, with no missed week recorded
 
 
 def do_complete_urgent_review(ctx: Ctx, p: UrgentReviewPayload) -> None:

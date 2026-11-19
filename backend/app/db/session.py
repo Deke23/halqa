@@ -10,6 +10,7 @@ from sqlalchemy.engine import Engine
 from sqlalchemy.orm import Session, sessionmaker
 from sqlalchemy.pool import StaticPool
 
+from .audit import add_missing_columns, install_audit_triggers
 from .models import Base
 
 DEFAULT_DB_PATH = Path(__file__).resolve().parents[2] / "halqa.db"
@@ -44,10 +45,17 @@ class Database:
         self.sessionmaker = sessionmaker(self.engine, expire_on_commit=False)
 
     def create_all(self) -> None:
+        """Create missing tables, add columns an older database lacks, and (re)install the audit-log triggers."""
         Base.metadata.create_all(self.engine)
+        add_missing_columns(self.engine)
+        install_audit_triggers(self.engine)
 
     def reset_schema(self) -> None:
-        """Drop and recreate every table. This is DDL, the only way audit events are ever removed (demo reset)."""
+        """Drop and recreate every table and the audit-log triggers (demo reset only).
+
+        This is DDL. The append-only triggers on case_events guard UPDATE and DELETE rows; they do not stop a DROP TABLE,
+        so dropping the schema is the one and only way audit events are ever removed. Never call this outside the demo.
+        """
         with self.engine.connect() as conn:
             if self.url.startswith("sqlite"):
                 conn.exec_driver_sql("PRAGMA foreign_keys=OFF")
@@ -55,7 +63,7 @@ class Database:
             conn.commit()
             if self.url.startswith("sqlite"):
                 conn.exec_driver_sql("PRAGMA foreign_keys=ON")
-        Base.metadata.create_all(self.engine)
+        self.create_all()
 
     def session(self) -> Session:
         return self.sessionmaker()

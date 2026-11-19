@@ -1,7 +1,7 @@
 """Builds backend/data/DATA_CARD.md from the generator's own documentation, so the card cannot drift from the code."""
 from __future__ import annotations
 
-from .cohort import BP_MODEL, DISTRIBUTIONS, FIELDS, REGION_NAMES
+from .cohort import AGE_BANDS, BP_MODEL, DISTRIBUTIONS, FIELDS, RAISED_DBP, RAISED_SBP, REGION_NAMES, SEVERE_DBP, SEVERE_SBP, SEX
 
 
 def _dist(d: dict) -> str:
@@ -26,9 +26,9 @@ def build(seed: int, stats: dict) -> str:
         "| person_id | Generated id, region prefix plus a running number. |",
         "| region | `AUH` (Abu Dhabi) or `YDE` (Yaounde). |",
         "| age | Whole years, 18 to 85. |",
-        "| age_band | `18-29`, `30-39`, `40-49`, `50-59`, `60+`. |",
-        "| sex | `male` or `female`. |",
-        "| nationality_group | Abu Dhabi: Emirati, Expatriate Arab, South Asian, Other. Yaounde: one group. |",
+        "| age_band | " + ", ".join(f"`{b}`" for b in AGE_BANDS) + ". The same bands as the live dashboard. |",
+        "| sex | " + " or ".join(f"`{c}`" for c in SEX) + ", the same codes as the live dashboard (F female, M male). |",
+        "| nationality_group | Abu Dhabi: Emirati, Expatriate Arab, South Asian, Other. Yaounde: Cameroonian (one group). |",
         "| preferred_language | Abu Dhabi: `ar` or `en`. Yaounde: `fr` or `en`. |",
         "| insurance_type | Abu Dhabi: thiqa, basic_enhanced, private, none. Yaounde: none, mutual_or_private, employer. |",
         "| phone_channel | `app`, `sms` or `whatsapp`. |",
@@ -50,7 +50,7 @@ def build(seed: int, stats: dict) -> str:
         f"- raised_extra is 0 for {1 - m['raised_share']:.0%} of people and Normal({m['raised_mean']:.0f}, {m['raised_sd']:.0f}) for the other {m['raised_share']:.0%}. This is a simple way to give the population a raised tail.",
         f"- Diastolic = {m['dbp_base']:.0f} + {m['dbp_per_sbp']} x (systolic - expected systolic) + {m['dbp_per_year']} x (age - 40) + Normal(0, {m['dbp_noise_sd']}).",
         "- Values are rounded to whole mmHg and clipped to 80 to 240 (systolic) and 45 to 140 (diastolic).",
-        "- Threshold used for `urgency`: SEVERE at systolic 180 or more or diastolic 110 or more; RAISED at systolic 140 to 179 or diastolic 90 to 109. These are the placeholder values in SPEC section 4.2, pending clinician sign-off. They are not clinically validated.",
+        f"- Threshold used for `urgency`: SEVERE at systolic {SEVERE_SBP} or more or diastolic {SEVERE_DBP} or more; RAISED at systolic {RAISED_SBP} to {SEVERE_SBP - 1} or diastolic {RAISED_DBP} to {SEVERE_DBP - 1}. They are read from the engine config (`backend/app/engine/config.yaml`), where they are placeholder values pending clinician sign-off. They are not clinically validated.",
         "- The actionable share is a by-product of the model above. It is not calibrated to any published prevalence.", "",
         "## Resulting summary", "", "| Region | People | Actionable | Actionable share | Severe | Mean age | Mean systolic | Mean diastolic |", "|---|---|---|---|---|---|---|---|",
     ]

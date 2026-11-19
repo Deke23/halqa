@@ -21,9 +21,9 @@ sample_slots:
     name: Jean-Paul
     due_date: vendredi 22 novembre
 text:
-  en: '{name}, a reminder: please answer one short question about your reading by {due_date}. Reply 2 for a call.'
-  ar: '{name}، تذكير: يرجى الإجابة عن سؤال قصير بخصوص قراءتك قبل {due_date}. أرسل 2 لمكالمة.'
-  fr: '{name}, rappel : merci de répondre à une courte question sur votre mesure avant le {due_date}. Répondez 2 pour un appel.'
+  en: '{name}, a reminder: please answer one short question about your reading by {due_date}. Reply 0 for a call.'
+  ar: '{name}، تذكير: يرجى الإجابة عن سؤال قصير بخصوص قراءتك قبل {due_date}. أرسل 0 لمكالمة.'
+  fr: '{name}, rappel : merci de répondre à une courte question sur votre mesure avant le {due_date}. Répondez 0 pour un appel.'
 sms_chars_with_sample_slots:
   en: 114
   ar: 89

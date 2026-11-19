@@ -76,14 +76,14 @@ export function useAnswerEconsult() {
 }
 
 export function useDraft(caseId: string | undefined) {
-  return useMutation<DraftOut, unknown, { template_id: string; language: Language; tone?: string | null }>({
+  return useMutation<DraftOut, unknown, { template_id: string; language: Language; tone?: string | null; channel?: Channel | null }>({
     mutationFn: (body) => api<DraftOut>(`/cases/${caseId}/messages/draft`, { method: "POST", body }),
   });
 }
 
 export function useSendDraft(caseId: string | undefined) {
   const qc = useQueryClient();
-  return useMutation<{ message: MessageOut }, unknown, { draft: DraftOut; channel: Channel; approve: boolean }>({
+  return useMutation<{ message: MessageOut }, unknown, { draft_id: number; approve: boolean }>({
     mutationFn: (body) => api<{ message: MessageOut }>(`/cases/${caseId}/messages/send`, { method: "POST", body }),
     onSuccess: () => void qc.invalidateQueries({ queryKey: qk.cases }),
   });

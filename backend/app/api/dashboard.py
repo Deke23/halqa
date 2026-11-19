@@ -17,8 +17,9 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app import engine
-from app.db.models import Appointment, Case, Patient, PlanWeek, Referral, User
+from app.db.models import Appointment, Case, Consent, Patient, PlanWeek, Referral, User
 from app.demo import clock
+from app.engine.demographics import AGE_BANDS, age_band  # noqa: F401  (one definition, shared with the simulation)
 from app.engine.types import State
 
 from . import schemas as S
@@ -28,11 +29,6 @@ from .deps import anyone_but_patient, get_db
 
 router = APIRouter(prefix="/api/dashboard", tags=["dashboard"])
 MIN_CELL = 5
-AGE_BANDS = ((18, 34, "18-34"), (35, 49, "35-49"), (50, 64, "50-64"), (65, 200, "65+"))
-
-
-def age_band(age: int) -> str:
-    return next(label for lo, hi, label in AGE_BANDS if lo <= age <= hi)
 
 
 def _ts(case: Case, state: State) -> datetime | None:
@@ -64,7 +60,9 @@ def delay_reason(case: Case, cd, ev) -> str | None:
     if cd.state is State.CLOSED:
         return None
     from .projection import flags_of
-    f = flags_of(cd, ev)
+    f = flags_of(cd, ev, case)
+    if f.care_coordination_withdrawn:
+        return "care_coordination_withdrawn"
     if f.rejected:
         return "referral_rejected"
     if f.unowned:
@@ -167,7 +165,9 @@ _SPLITS: dict[S.Split, Callable[[Patient], str]] = {
 def live(split: S.Split = S.Split.NONE, region: S.Region | None = None,
          user: User = Depends(anyone_but_patient), db: Session = Depends(get_db)):
     now = clock.now(db)
-    q = select(Case, Patient).join(Patient, Patient.id == Case.patient_id)
+    # Only people who opted in to research_aggregate are counted in any aggregate (a missing record is not consent).
+    opted_in = select(Consent.patient_id).where(Consent.purpose == "research_aggregate", Consent.granted.is_(True))
+    q = select(Case, Patient).join(Patient, Patient.id == Case.patient_id).where(Patient.id.in_(opted_in))
     if region:
         q = q.where(Case.region == region.value)
     pairs = list(db.execute(q.order_by(Case.id)).all())

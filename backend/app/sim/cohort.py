@@ -11,22 +11,30 @@ from pathlib import Path
 
 import numpy as np
 
+from app.engine import config as engine_config
+from app.engine.demographics import AGE_BAND_LABELS, SEX_CODES, age_band
+
 REGIONS = ("AUH", "YDE")
 REGION_NAMES = {"AUH": "Abu Dhabi", "YDE": "Yaounde"}
 FIELDS = [
     "person_id", "region", "age", "age_band", "sex", "nationality_group", "preferred_language",
     "insurance_type", "phone_channel", "screening_sbp", "screening_dbp", "urgency", "actionable",
 ]
-AGE_BANDS = ("18-29", "30-39", "40-49", "50-59", "60+")
+# Age bands and sex codes are the live dashboard's (app.engine.demographics): one definition, no private copy.
+AGE_BANDS = AGE_BAND_LABELS
+SEX = SEX_CODES
 
-# Placeholder thresholds copied from SPEC section 4.2 (the engine config is the real source and is pending sign-off).
-SEVERE_SBP, SEVERE_DBP = 180, 110
-RAISED_SBP, RAISED_DBP = 140, 90
+# Thresholds are read from the engine config, the single source (placeholders pending clinician sign-off). The simulation
+# imports the engine config; the engine never imports the simulation.
+SEVERE_SBP = engine_config.value("thresholds", "severe_systolic")
+SEVERE_DBP = engine_config.value("thresholds", "severe_diastolic")
+RAISED_SBP = engine_config.value("thresholds", "raised_systolic")
+RAISED_DBP = engine_config.value("thresholds", "raised_diastolic")
 
 DISTRIBUTIONS = {
     "AUH": {
         "age": "Normal(mean 38, sd 12), clipped to 18-85, rounded. Young skew for a mixed resident workforce.",
-        "sex": {"male": 0.60, "female": 0.40},
+        "sex": {"M": 0.60, "F": 0.40},
         "nationality_group": {"Emirati": 0.20, "Expatriate Arab": 0.20, "South Asian": 0.40, "Other": 0.20},
         "preferred_language": {
             "Emirati": {"ar": 0.75, "en": 0.25}, "Expatriate Arab": {"ar": 0.60, "en": 0.40},
@@ -38,8 +46,8 @@ DISTRIBUTIONS = {
     },
     "YDE": {
         "age": "Normal(mean 36, sd 13), clipped to 18-85, rounded.",
-        "sex": {"male": 0.45, "female": 0.55},
-        "nationality_group": {"Cameroonian (single group)": 1.0},
+        "sex": {"M": 0.45, "F": 0.55},
+        "nationality_group": {"Cameroonian": 1.0},
         "preferred_language": {"fr": 0.92, "en": 0.08},
         "insurance_type": {"none": 0.85, "mutual_or_private": 0.10, "employer": 0.05},
         "phone_channel": {"sms": 0.60, "whatsapp": 0.40},
@@ -56,10 +64,6 @@ BP_MODEL = {
     "raised_share": 0.15, "raised_mean": 25.0, "raised_sd": 12.0,
     "dbp_base": 74.0, "dbp_per_sbp": 0.55, "dbp_per_year": 0.10, "dbp_noise_sd": 6.5,
 }
-
-
-def age_band(age: int) -> str:
-    return "18-29" if age < 30 else "30-39" if age < 40 else "40-49" if age < 50 else "50-59" if age < 60 else "60+"
 
 
 def _choice(rng, options: dict, n: int):
@@ -89,7 +93,7 @@ def generate_region(region: str, n: int, seed: int) -> list[dict]:
         ins[i] = _pick(ip, u_ins[i])
 
     m = BP_MODEL
-    male = (sex == "male").astype(float)
+    male = (sex == "M").astype(float)
     expected = m["sbp_base"] + m["sbp_per_year"] * (age - 18) + m["sbp_male"] * male
     raised = rng.random(n) < m["raised_share"]
     sbp = expected + rng.normal(0, m["sbp_noise_sd"], n) + np.where(raised, rng.normal(m["raised_mean"], m["raised_sd"], n), 0.0)

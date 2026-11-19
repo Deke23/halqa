@@ -148,7 +148,8 @@ def test_phone_thread_keywords_and_strict_bp_pattern(api):
     thread = api.get("patient_yde", "/api/my/messages").json()
     assert thread and thread[0]["channel"] == "SMS" and thread[0]["language"] == "fr"
 
-    api.post("patient_yde", "/api/my/messages/reply", {"text": "1"})
+    for text_ in ("1", "2", "B"):  # result read, no warning symptom, correct teach-back answer
+        api.post("patient_yde", "/api/my/messages/reply", {"text": text_})
     d = api.get("nurse_yde", f"/api/cases/{jp}").json()
     assert d["state"] == "ACKNOWLEDGED" and d["owner_name"].startswith("Dr Brice")
 
@@ -166,7 +167,7 @@ def test_phone_thread_keywords_and_strict_bp_pattern(api):
 
 def test_phone_call_me_creates_a_coordinator_task(api):
     jp = api.my_case("patient_yde")["id"]
-    api.post("patient_yde", "/api/my/messages/reply", {"text": "2"})
+    api.post("patient_yde", "/api/my/messages/reply", {"text": "0"})
     tasks = api.get("nurse_yde", f"/api/cases/{jp}").json()["tasks"]
     assert any(t["type"] == "COORDINATOR_CALL" and t["owner_role"] == "coordinator" for t in tasks)
 
@@ -183,17 +184,12 @@ def test_phone_stop_withdraws_channel_consent(api):
 # ---------------------------------------------------------------- messages: draft, approve, send
 
 
-def test_ai_reworded_draft_needs_approval(api, app):
+def test_template_draft_is_sent_from_the_server_copy(api, app):
     cid = scenario_id(app, "unowned")
     d = api.post("coordinator_auh", f"/api/cases/{cid}/messages/draft", {"template_id": "reminder_ack", "language": "en"}).json()
-    assert d["source"] == "TEMPLATE" and d["text"]
-    r = api.post("coordinator_auh", f"/api/cases/{cid}/messages/send", {"draft": d})
-    assert r.status_code == 200
-    ai = {**d, "source": "AI_REWORDED"}
-    r = api.post("coordinator_auh", f"/api/cases/{cid}/messages/send", {"draft": ai})
-    assert r.status_code == 409 and r.json()["code"] == "APPROVAL_REQUIRED"
-    r = api.post("coordinator_auh", f"/api/cases/{cid}/messages/send", {"draft": ai, "approve": True})
-    assert r.status_code == 200 and r.json()["message"]["approved_by_name"].startswith("Mariam")
+    assert d["source"] == "TEMPLATE" and d["text"] and d["id"]
+    r = api.post("coordinator_auh", f"/api/cases/{cid}/messages/send", {"draft_id": d["id"]})
+    assert r.status_code == 200 and r.json()["message"]["text"] == d["text"] and r.json()["message"]["source"] == "TEMPLATE"
 
 
 def test_engine_and_actions_work_with_wording_disabled(api, monkeypatch):
@@ -323,7 +319,8 @@ def test_reset_restores_the_seed(api):
     api.post("coordinator_auh", "/api/demo/clock/advance", {"hours": 200})
     cid = api.case_id("patient_auh")
     api.act("patient_auh", cid, "acknowledge", {"teach_back_answer": correct_answer(api.my_case("patient_auh")), "red_flags": []})
-    r = api.client.post("/api/demo/reset")
+    assert api.client.post("/api/demo/reset").status_code == 401  # reset needs a signed-in staff or analyst user
+    r = api.post("analyst", "/api/demo/reset")
     assert r.status_code == 200 and r.json()["cases"] >= 24 and r.json()["clock"]["offset_seconds"] == 0
     api._tokens.clear()
     assert api.my_case("patient_auh")["state"] == "NOTIFIED"

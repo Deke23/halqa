@@ -17,6 +17,7 @@ import {
 import { formatDateTime } from "@/lib/format";
 import { useCaseList, useMyEconsults, useMyUserId } from "../api";
 import { useLabels } from "../labels";
+import { usePersonText } from "../PersonLabel";
 import type { CaseSummary, EConsult } from "../types";
 
 const READY_LABELS = ["consider_closure", "clinician_closure_decision"];
@@ -27,6 +28,7 @@ export default function StaffWorklist() {
   const { user } = useAuth();
   const navigate = useNavigate();
   const labels = useLabels();
+  const person = usePersonText();
   const list = useCaseList(user?.region ?? "");
   const econsults = useMyEconsults(!!user);
 
@@ -42,6 +44,7 @@ export default function StaffWorklist() {
   const ready = open.filter(
     (c) => c.flags.closure_ready || c.flags.needs_clinician_decision || READY_LABELS.includes(c.next_step_label_key ?? ""),
   );
+  const consentDecisions = open.filter((c) => c.flags.care_coordination_withdrawn);
   const openEconsults = (econsults.data ?? []).filter((e) => e.status === "OPEN");
 
   const caseColumns: Column<CaseSummary>[] = [
@@ -106,7 +109,7 @@ export default function StaffWorklist() {
       ),
     },
     { key: "question", header: t("econsult.questionLabel"), cell: (e) => <span className="line-clamp-2 max-w-md">{e.question}</span> },
-    { key: "route", header: t("worklist.cols.route"), cell: (e) => t("econsult.route", { from: e.from_name, to: e.to_name }) },
+    { key: "route", header: t("worklist.cols.route"), cell: (e) => t("econsult.route", { from: person(e.from_person), to: person(e.to_person) }) },
     {
       key: "dir",
       header: t("worklist.cols.direction"),
@@ -119,6 +122,7 @@ export default function StaffWorklist() {
     { id: "urgent", title: t("worklist.urgent"), hint: t("worklist.urgentHint"), rows: urgent },
     { id: "confirmations", title: t("worklist.confirmations"), hint: t("worklist.confirmationsHint"), rows: confirmations },
     { id: "referrals", title: t("worklist.referrals"), hint: t("worklist.referralsHint"), rows: referrals },
+    { id: "consent", title: t("worklist.consent"), hint: t("worklist.consentHint"), rows: consentDecisions },
   ];
 
   if (list.isLoading) return <Loading />;

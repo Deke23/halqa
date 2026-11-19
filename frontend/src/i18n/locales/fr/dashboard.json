@@ -14,14 +14,18 @@
     "reasonsTitle": "Pourquoi des résultats restent sans suite",
     "reasonsNote": "Dossiers ouverts par motif, groupe : {{group}}. Les motifs de moins de 5 dossiers sont masqués.",
     "reasonsEmpty": "Pas encore assez de dossiers pour afficher des motifs.",
-    "liveTag": "En direct"
+    "liveTag": "En direct",
+    "research": "Les chiffres en direct ne comptent que les personnes qui ont accepté l'utilisation agrégée pour la recherche."
   },
   "sim": {
     "title": "Simulation",
     "disclaimerTitle": "Résultats simulés sur des personnes synthétiques",
     "disclaimer": "Ces chiffres viennent d'une simulation sur des personnes synthétiques. Ils montrent ce que le système mesure. Ils ne prouvent pas une efficacité clinique. Toutes les probabilités, sauf un chiffre publié, sont des hypothèses, listées à la fin de cette partie.",
     "unavailable": "Le fichier de simulation n'est pas disponible.",
-    "arm": { "baseline": "Situation de départ", "with_loop": "Avec la boucle" },
+    "arm": {
+      "baseline": "Situation de départ",
+      "with_loop": "Avec la boucle"
+    },
     "groupSelect": "Groupe affiché",
     "cohort": "Cohorte simulée dans cette région : {{people}} personnes, {{actionable}} avec un résultat à suivre, {{severe}} sévères.",
     "compareTitle": "Situation de départ comparée à la boucle, groupe : {{group}}",
@@ -68,40 +72,106 @@
     "kind": "Nature",
     "source": "Source",
     "rationale": "Pourquoi",
-    "kinds": { "published": "Publié", "assumption": "Hypothèse" }
+    "kinds": {
+      "published": "Publié",
+      "assumption": "Hypothèse"
+    }
   },
   "splitLabel": "Répartir par",
   "splitHint": "S'applique aux deux parties.",
-  "split": { "none": "Pas de répartition", "language": "Langue", "nationality_group": "Groupe de nationalité", "sex": "Sexe", "age_band": "Tranche d'âge" },
+  "split": {
+    "none": "Pas de répartition",
+    "language": "Langue",
+    "nationality_group": "Groupe de nationalité",
+    "sex": "Sexe",
+    "age_band": "Tranche d'âge"
+  },
   "regionLabel": "Région",
   "regionAll": "Toutes les régions",
   "regionAUH": "Abou Dabi",
   "regionYDE": "Yaoundé",
-  "group": { "all": "Tout le monde" },
-  "sex": { "female": "Femmes", "male": "Hommes" },
+  "group": {
+    "all": "Tout le monde"
+  },
+  "sex": {
+    "F": "Femmes",
+    "M": "Hommes"
+  },
   "simulatedWord": "simulé",
   "measure": "Mesure",
   "n": "n",
   "p90": "p90",
   "notMeasured": "Non mesuré",
   "outOf5": "{{value}} sur 5",
-  "unit": { "h": "h", "d": "jours" },
-  "axis": { "days": "Jours", "hours": "Heures", "cases": "Dossiers", "people": "Personnes", "percent": "Pourcentage de personnes", "score": "Note" },
+  "unit": {
+    "h": "h",
+    "d": "jours"
+  },
+  "axis": {
+    "days": "Jours",
+    "hours": "Heures",
+    "cases": "Dossiers",
+    "people": "Personnes",
+    "percent": "Pourcentage de personnes",
+    "score": "Note"
+  },
   "measures": {
-    "time_to_notification_h": { "label": "Délai avant la notification", "help": "Heures entre le résultat émis et l'information du patient. Médiane et 90e centile." },
-    "time_to_acknowledgement_h": { "label": "Délai avant la confirmation de lecture", "help": "Heures jusqu'à ce que le patient confirme avoir compris." },
-    "time_to_confirmation_d": { "label": "Délai avant la confirmation de la mesure", "help": "Jours entre le résultat émis et l'examen de la confirmation par le clinicien." },
-    "time_to_consultation_d": { "label": "Délai avant la consultation", "help": "Jours entre le résultat émis et l'étape de la visite." },
-    "time_to_care_d": { "label": "Délai avant les soins", "help": "Jours entre le résultat émis et le début du traitement." },
-    "referral_completion_rate": { "label": "Orientations menées à terme", "help": "Orientations acceptées, parmi les cas confirmés qui ont été orientés." },
-    "appointment_completion_rate": { "label": "Rendez-vous honorés", "help": "Visites réalisées, parmi les rendez-vous réservés." },
-    "treatment_initiation_rate": { "label": "Traitement commencé", "help": "Traitement commencé, parmi les personnes venues à la visite." },
-    "care_reached_rate": { "label": "Soins atteints", "help": "Soins atteints pendant la période, parmi les personnes à suivre. Simulation seulement." },
-    "unresolved_results": { "label": "Résultats sans suite", "help": "Personnes sans prise en charge et sans résolution clinique. Nombre et part." },
-    "teach_back_pass_rate": { "label": "Reformulation réussie du premier coup", "help": "Parmi les personnes qui ont confirmé avoir compris. Boucle seulement." },
-    "patient_confidence_mean": { "label": "Confiance du patient", "help": "Confiance moyenne auto-évaluée de 1 à 5. Boucle seulement." },
-    "plan_checkin_rate": { "label": "Taux de points hebdomadaires", "help": "Points répondus par semaine proposée. Boucle seulement." },
-    "re_engagement_after_lapse_rate": { "label": "Reprise après une semaine manquée", "help": "Personnes ayant manqué une semaine puis répondu à un point peu après. Boucle seulement." }
+    "time_to_notification_h": {
+      "label": "Délai avant la notification",
+      "help": "Heures entre le résultat émis et l'information du patient. Médiane et 90e centile."
+    },
+    "time_to_acknowledgement_h": {
+      "label": "Délai avant la confirmation de lecture",
+      "help": "Heures jusqu'à ce que le patient confirme avoir compris."
+    },
+    "time_to_confirmation_d": {
+      "label": "Délai avant la confirmation de la mesure",
+      "help": "Jours entre le résultat émis et l'examen de la confirmation par le clinicien."
+    },
+    "time_to_consultation_d": {
+      "label": "Délai avant la consultation",
+      "help": "Jours entre le résultat émis et l'étape de la visite."
+    },
+    "time_to_care_d": {
+      "label": "Délai avant les soins",
+      "help": "Jours entre le résultat émis et le début du traitement."
+    },
+    "referral_completion_rate": {
+      "label": "Orientations menées à terme",
+      "help": "Orientations acceptées, parmi les cas confirmés qui ont été orientés."
+    },
+    "appointment_completion_rate": {
+      "label": "Rendez-vous honorés",
+      "help": "Visites réalisées, parmi les rendez-vous réservés."
+    },
+    "treatment_initiation_rate": {
+      "label": "Traitement commencé",
+      "help": "Traitement commencé, parmi les personnes venues à la visite."
+    },
+    "care_reached_rate": {
+      "label": "Soins atteints",
+      "help": "Soins atteints pendant la période, parmi les personnes à suivre. Simulation seulement."
+    },
+    "unresolved_results": {
+      "label": "Résultats sans suite",
+      "help": "Personnes sans prise en charge et sans résolution clinique. Nombre et part."
+    },
+    "teach_back_pass_rate": {
+      "label": "Reformulation réussie du premier coup",
+      "help": "Parmi les personnes qui ont confirmé avoir compris. Boucle seulement."
+    },
+    "patient_confidence_mean": {
+      "label": "Confiance du patient",
+      "help": "Confiance moyenne auto-évaluée de 1 à 5. Boucle seulement."
+    },
+    "plan_checkin_rate": {
+      "label": "Taux de points hebdomadaires",
+      "help": "Points répondus par semaine proposée. Boucle seulement."
+    },
+    "re_engagement_after_lapse_rate": {
+      "label": "Reprise après une semaine manquée",
+      "help": "Personnes ayant manqué une semaine puis répondu à un point peu après. Boucle seulement."
+    }
   },
   "liveReasons": {
     "referral_rejected": "Orientation refusée",
@@ -111,7 +181,8 @@
     "awaiting_confirmation": "En attente de la confirmation de la mesure",
     "awaiting_referral_or_booking": "En attente de l'orientation ou de la réservation",
     "awaiting_visit_outcome": "En attente du résultat de la visite",
-    "step_overdue": "Étape en retard"
+    "step_overdue": "Étape en retard",
+    "care_coordination_withdrawn": "Coordination des soins retirée"
   },
   "simReasons": {
     "result_not_delivered": "Résultat non communiqué à temps",

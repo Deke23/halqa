@@ -7,6 +7,7 @@ from __future__ import annotations
 
 from collections import defaultdict
 from dataclasses import dataclass
+from datetime import datetime, timezone, tzinfo
 from typing import Sequence
 
 from . import config as cfg
@@ -33,17 +34,22 @@ class Confirmation:
     days_required: int
 
 
-def evaluate_hbpm(readings: Sequence[ReadingData]) -> Confirmation:
+def _local(moment: datetime, tz: tzinfo | None) -> datetime:
+    """The reading time on the patient's local clock. `tz` is passed in by the caller; None means UTC."""
+    return moment.astimezone(tz or timezone.utc)
+
+
+def evaluate_hbpm(readings: Sequence[ReadingData], tz: tzinfo | None = None) -> Confirmation:
     """Home average: days with enough readings, first such day discarded, rest averaged.
 
-    Too few days is INSUFFICIENT, never NOT_CONFIRMED.
+    Days are calendar days on the patient's local clock (`tz`). Too few days is INSUFFICIENT, never NOT_CONFIRMED.
     """
     min_days = int(cfg.value("thresholds", "hbpm_min_days"))
     min_per_day = int(cfg.value("thresholds", "hbpm_min_readings_per_day"))
     by_day: dict = defaultdict(list)
     for r in readings:
         if r.source == ReadingSource.HOME_CUFF:
-            by_day[r.taken_at.date()].append(r)
+            by_day[_local(r.taken_at, tz).date()].append(r)
     qualifying = sorted(d for d, rs in by_day.items() if len(rs) >= min_per_day)
     if len(qualifying) < min_days:
         return Confirmation(ConfirmationStatus.INSUFFICIENT, None, None, 0, 0, len(qualifying), min_days)
@@ -51,12 +57,12 @@ def evaluate_hbpm(readings: Sequence[ReadingData]) -> Confirmation:
     return _decide(used, len(qualifying) - 1, len(qualifying), min_days, "hbpm")
 
 
-def evaluate_abpm(readings: Sequence[ReadingData]) -> Confirmation:
-    """Daytime average of ambulatory readings."""
+def evaluate_abpm(readings: Sequence[ReadingData], tz: tzinfo | None = None) -> Confirmation:
+    """Daytime average of ambulatory readings. The daytime window is on the patient's local clock (`tz`)."""
     start = int(cfg.value("thresholds", "abpm_daytime_start_hour"))
     end = int(cfg.value("thresholds", "abpm_daytime_end_hour"))
     needed = int(cfg.value("thresholds", "abpm_min_daytime_readings"))
-    day = [r for r in readings if r.source == ReadingSource.ABPM and start <= r.taken_at.hour < end]
+    day = [r for r in readings if r.source == ReadingSource.ABPM and start <= _local(r.taken_at, tz).hour < end]
     if len(day) < needed:
         return Confirmation(ConfirmationStatus.INSUFFICIENT, None, None, 0, len(day), 0, needed)
     return _decide(day, 1, 1, needed, "abpm")
@@ -72,11 +78,12 @@ def _decide(used: Sequence[ReadingData], days_counted: int, qualifying: int, req
     return Confirmation(status, round(avg_s, 1), round(avg_d, 1), days_counted, len(used), qualifying, required)
 
 
-def evaluate_confirmation(method: ConfirmationMethod | None, readings: Sequence[ReadingData]) -> Confirmation | None:
+def evaluate_confirmation(method: ConfirmationMethod | None, readings: Sequence[ReadingData],
+                          tz: tzinfo | None = None) -> Confirmation | None:
     if method == ConfirmationMethod.HBPM:
-        return evaluate_hbpm(readings)
+        return evaluate_hbpm(readings, tz)
     if method == ConfirmationMethod.ABPM:
-        return evaluate_abpm(readings)
+        return evaluate_abpm(readings, tz)
     return None
 
 

@@ -1,6 +1,6 @@
 # One container: FastAPI serves the API and the built single-page app.
 
-FROM node:22-alpine AS web
+FROM node:24-alpine AS web
 WORKDIR /web
 COPY frontend/package.json frontend/package-lock.json* ./
 RUN npm ci

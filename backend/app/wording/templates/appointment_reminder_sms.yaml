@@ -1,0 +1,42 @@
+# Approved template. Edit the text here, bump `version`, and keep every {slot} listed in required_slots.
+id: appointment_reminder_sms
+version: 1
+purpose: SMS reminder before the visit.
+channel_limits:
+  sms:
+    en: 160
+    fr: 160
+    ar: 134
+required_slots:
+- name
+- clinic_name
+- appointment_date
+- appointment_time
+sample_slots:
+  en:
+    name: Khalid
+    clinic_name: Al Noor Clinic
+    appointment_date: 25 November
+    appointment_time: 09:30
+  ar:
+    name: خالد
+    clinic_name: عيادة النور
+    appointment_date: 25 نوفمبر
+    appointment_time: 09:30
+  fr:
+    name: Jean-Paul
+    clinic_name: Centre Mvog-Ada
+    appointment_date: 25 novembre
+    appointment_time: 09:30
+text:
+  en: '{name}, reminder: your visit is on {appointment_date} at {appointment_time}, {clinic_name}. Reply 0 if you need help.'
+  ar: '{name}، تذكير: موعدك يوم {appointment_date} الساعة {appointment_time} في {clinic_name}. أرسل 0 للمساعدة.'
+  fr: '{name}, rappel : votre rendez-vous est le {appointment_date} à {appointment_time}, {clinic_name}. Répondez 0 si besoin d''aide.'
+sms_chars_with_sample_slots:
+  en: 98
+  ar: 78
+  fr: 111
+gsm7_safe_with_sample_slots:
+  en: true
+  ar: false
+  fr: true
