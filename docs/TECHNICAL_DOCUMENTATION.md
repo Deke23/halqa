@@ -667,13 +667,13 @@ This document does not contain a business case or a cost model.
 
 ### Test run
 
-Run on 2026-11-19 with `wsl -e bash /mnt/d/Projects/Hackathon/dev/run.sh test tests tests_data_ai -q`:
+Run on 2026-11-20 with `wsl -e bash /mnt/d/Projects/Hackathon/dev/run.sh test tests tests_data_ai -q`:
 
 ```
-506 passed, 1 warning in 131.30s (0:02:11)
+525 passed, 1 warning in 169.56s (0:02:49)
 ```
 
-The warning is a deprecation notice from the Starlette test client about `httpx`. The tests run against SQLite, in a throwaway container. The earlier run, before the hardening pass, was 346 passed.
+The warning is a deprecation notice from the Starlette test client about `httpx`. The tests run against SQLite, in a throwaway container. Earlier runs were 346 passed (before the hardening pass) and 506 passed (after it).
 
 ### What is covered
 

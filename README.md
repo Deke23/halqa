@@ -12,7 +12,7 @@ All screens show synthetic people and simulated data.
   <tr>
     <td align="center"><img src="docs/screenshots/patient-home-ar.png" alt="Patient home in Arabic: the reading inside the eight-segment loop ring and the next step" width="230"><br>Patient home in Arabic, with the loop ring.</td>
     <td align="center"><img src="docs/screenshots/patient-understand-en.png" alt="Understanding check in English, one question at a time" width="230"><br>Understanding check, one question at a time.</td>
-    <td align="center"><img src="docs/screenshots/phone-thread-fr.png" alt="SMS style message thread in French with quick-reply buttons" width="230"><br>Yaounde phone thread in French.</td>
+    <td align="center"><img src="docs/screenshots/phone-thread-fr.png" alt="SMS style message thread in French with quick-reply buttons" width="230"><br>Yaoundé phone thread in French.</td>
   </tr>
 </table>
 
@@ -82,8 +82,8 @@ All are fictional.
 | Mariam (`coordinator_auh`) | Care coordinator, Abu Dhabi. Works the queue |
 | Dr Sara (`clinician_pcp`) | Family medicine. Reviews, refers, answers e-consults, closes |
 | Dr Omar (`clinician_specialist`) | Hypertension clinic. Accepts or rejects referrals |
-| Jean-Paul (`patient_yde`) | 47, Yaounde, clinic reading 164/102. French, SMS and WhatsApp thread |
-| Clarisse (`nurse_yde`) | Nurse coordinator, Yaounde |
+| Jean-Paul (`patient_yde`) | 47, Yaoundé, clinic reading 164/102. French, SMS and WhatsApp thread |
+| Clarisse (`nurse_yde`) | Nurse coordinator, Yaoundé |
 | Programme analyst (`analyst`) | Aggregate dashboard only |
 
 ## Guardrails
@@ -114,7 +114,7 @@ All are fictional.
 wsl -e bash /mnt/d/Projects/Hackathon/dev/run.sh test tests tests_data_ai -q
 ```
 
-On 2026-11-20 this gave `TESTLINE`. The tests cover the engine, the API, messaging, consent, localisation, the wording validator and the simulation. There is no front-end test suite. The production Docker image was built and run by the team on 18 November 2026. The GitHub Actions workflow is `.github/workflows/ci.yml`. Its first run passed the backend job and failed the front-end job on `npm ci`; the lockfile has been repaired and the workflow has not been rerun.
+On 2026-11-20 this gave ``525 passed, 1 warning in 169.56s (0:02:49)``. The tests cover the engine, the API, messaging, consent, localisation, the wording validator and the simulation. There is no front-end test suite. The production Docker image was built and run by the team on 18 November 2026. The GitHub Actions workflow is `.github/workflows/ci.yml`. Its first run passed the backend job and failed the front-end job on `npm ci`; the lockfile has been repaired and the workflow has not been rerun.
 
 ## Synthetic data statement
 

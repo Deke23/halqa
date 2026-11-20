@@ -1,6 +1,6 @@
 # Third-party notices
 
-This file lists the direct open-source dependencies of this project, with their versions and licences as installed on the build date, 2026-11-20. Transitive dependencies are resolved by pip and npm at install time, and they can be listed with `pip list` (or `pip show`) for the Python packages and `npm ls --all` for the JavaScript packages. The base container images are `python:3.12-slim` and `node:22-alpine`.
+This file lists the direct open-source dependencies of this project, with their versions and licences as installed on the build date, 2026-11-20. Transitive dependencies are resolved by pip and npm at install time, and they can be listed with `pip list` (or `pip show`) for the Python packages and `npm ls --all` for the JavaScript packages. The base container images are `python:3.12-slim` and `node:24-alpine`.
 
 ## Python (backend/requirements.txt)
 

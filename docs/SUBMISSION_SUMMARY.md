@@ -5,7 +5,7 @@ PROBLEM
 A raised blood pressure found at screening often does not become care. The result is issued, but nobody owns the next step, patients may not understand it, referrals stall between providers, and nobody sees that a case is late. The team's evidence register (as cited there) notes that over 40% of people with hypertension in a 2025 UAE screening campaign did not know it (MOHAP, reported by Gulf News).
 
 SOLUTION
-Halqa turns each raised reading into one case with eight states, one accountable owner and one due date per step. Overdue, rejected and unowned cases appear in a coordinator queue. A severe reading creates a same-day clinician review. Only a clinician can close a case. Patients get plain-language results in English, Arabic or French, a teach-back check, an SMS thread in Yaounde and, after treatment starts, one small weekly action that shrinks when a week is missed.
+Halqa turns each raised reading into one case with eight states, one accountable owner and one due date per step. Overdue, rejected and unowned cases appear in a coordinator queue. A severe reading creates a same-day clinician review. Only a clinician can close a case. Patients get plain-language results in English, Arabic or French, a teach-back check, an SMS thread in Yaoundé and, after treatment starts, one small weekly action that shrinks when a week is missed.
 
 HOW IT MEETS THE SIX POINTS
 1. End-to-end visibility: one case per result, eight-step progress, audit timeline, FHIR bundle.
