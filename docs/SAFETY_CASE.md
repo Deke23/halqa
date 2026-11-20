@@ -1,6 +1,6 @@
 # Halqa: safety case (prototype)
 
-Status on 2026-11-20, after the hardening pass and the localisation pass. This is a hazard log for a hackathon prototype that uses synthetic data only. No clinician has reviewed it. All thresholds, service levels and message text are placeholders pending clinician sign-off. The prototype is not a medical device and has not been assessed against any medical device regulation. It must not be used with real patients. Test names are in `backend/tests/` (hardening tests are in `test_hardening.py`) or `backend/tests_data_ai/`. Residual risk is our own judgement, not a measured value. On 2026-11-20 the automated suite result was: `525 passed, 1 warning in 169.56s (0:02:49)`.
+Status on 2026-11-20, after the hardening pass and the localisation pass. This is a hazard log for a hackathon prototype that uses synthetic data only. No clinician has reviewed it. All thresholds, service levels and message text are placeholders pending clinician sign-off. The prototype is not a medical device and has not been assessed against any medical device regulation. It must not be used with real patients. Test names are in `backend/tests/` (hardening tests are in `test_hardening.py`) or `backend/tests_data_ai/`. Residual risk is our own judgement, not a measured value. On 2026-11-20 the automated suite result was: `529 passed, 1 warning in 122.24s (0:02:02)`.
 
 | # | Hazard | How it could happen | Control in the prototype | Residual risk |
 |---|---|---|---|---|

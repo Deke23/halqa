@@ -115,7 +115,7 @@ All are fictional.
 wsl -e bash /mnt/d/Projects/Hackathon/dev/run.sh test tests tests_data_ai -q
 ```
 
-On 2026-11-20 this gave ``525 passed, 1 warning in 169.56s (0:02:49)``. The tests cover the engine, the API, messaging, consent, localisation, the wording validator and the simulation. There is no front-end test suite. Without WSL, the same suite runs with `cd backend`, `pip install -r requirements.txt`, `python -m pytest tests tests_data_ai -q`.
+On 2026-11-20 this gave ``529 passed, 1 warning in 122.24s (0:02:02)``. The tests cover the engine, the API, messaging, consent, localisation, the wording validator and the simulation. There is no front-end test suite. Without WSL, the same suite runs with `cd backend`, `pip install -r requirements.txt`, `python -m pytest tests tests_data_ai -q`.
 
 The production Docker image was built from this code and run by the team on 20 November 2026: the container runs as a non-root user, the health check answers, the app is served at `/` and guest sign-in works. The GitHub Actions workflow (`.github/workflows/ci.yml`) runs the backend tests and the front-end build on every push.
 
