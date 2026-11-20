@@ -24,7 +24,7 @@
     "advancing": "Avance de l'horloge en cours",
     "simulatedData": "Données simulées",
     "language": "Langue",
-    "reset": "Réinitialiser les données de démonstration",
+    "reset": "Réinitialiser la démo",
     "resetting": "Réinitialisation en cours",
     "resetDone": "Les données de démonstration ont été réinitialisées.",
     "resetConfirmTitle": "Réinitialiser les données de démonstration",
@@ -92,6 +92,18 @@
       "role": "Analyste",
       "description": "Voit uniquement des mesures agrégées. Les petits groupes sont masqués.",
       "region": "Les deux régions"
+    },
+    "clinician_yde": {
+      "name": "Dr Brice",
+      "role": "Clinicien de soins primaires",
+      "description": "Examine les mesures de confirmation dans un centre de santé de Yaoundé, oriente et clôture les dossiers.",
+      "region": "Yaoundé"
+    },
+    "specialist_yde": {
+      "name": "Dr Estelle",
+      "role": "Clinicienne spécialiste",
+      "description": "Accepte ou refuse les orientations et débute le traitement à Yaoundé.",
+      "region": "Yaoundé"
     }
   },
   "regions": {

@@ -536,6 +536,7 @@ class CaseDetail(BaseModel):
     owner_user_id: int | None
     owner_name: str | None
     owner_person: PersonRef | None
+    urgent_review_due_at: datetime | None  # due time of the open urgent review task; null when none or done (staff view)
     plan_active: bool  # false while the lifestyle programme is withdrawn: no weekly actions or check-ins
     next_step: NextStepOut | None
     progress: list[ProgressStep]
@@ -816,6 +817,7 @@ class PersonaInfo(BaseModel):
     role: RoleName
     region: Region
     description: str
+    listed: bool = True  # false: a persona that exists but is not offered in the picker
 
 
 class HealthOut(BaseModel):

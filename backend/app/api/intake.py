@@ -178,10 +178,20 @@ def _red_flag_answer(yes: bool):
         if yes:
             ctx = Ctx(t.db, t.case, t.user, Role.PATIENT, t.now)
             record_red_flags(ctx, ["unspecified"])  # the same urgent flag and audit event as the app path
+            if open_task(t.db, t.case.id, "COORDINATOR_CALL") is None:
+                add_task(t.db, t.case, t.now, "COORDINATOR_CALL", "call_the_patient", "coordinator",
+                         default_owner(t.db, t.case, Role.COORDINATOR), payload={"reason": "red flag reported by SMS"})
+            t.case.sms_prompt = "CONTINUE"  # nothing routine follows emergency advice; a later `1` carries on
             t.say("urgent_red_flags_sms" if t.patient.channel == "SMS" else "urgent_red_flags", SAFETY_REPLY)
+            return
         t.case.sms_prompt = "TEACH_BACK"
         t.say("teach_back_question")
     return handler
+
+
+def _continue(t: Turn) -> None:
+    t.case.sms_prompt = "TEACH_BACK"
+    t.say("teach_back_question")
 
 
 def _teach_back_answer(t: Turn) -> None:
@@ -203,6 +213,7 @@ def _checkin(t: Turn) -> None:
 REPLY_GRAMMAR: dict[str, dict[str, Callable[[Turn], None]]] = {
     "RESULT": {"1": _read_result},
     "RED_FLAG": {"1": _red_flag_answer(True), "OUI": _red_flag_answer(True), "2": _red_flag_answer(False), "NON": _red_flag_answer(False)},
+    "CONTINUE": {"1": _continue},  # after a red-flag yes: the care team is calling; `1` carries on with the teach-back
     "TEACH_BACK": {letter: _teach_back_answer for letter in LETTERS},
     "HOME": {},  # a strict SYS/DIA reading, handled in handle_reply
     "CHECKIN": {k: _checkin for k in _CHECKIN},
@@ -212,7 +223,7 @@ REPLY_GRAMMAR: dict[str, dict[str, Callable[[Turn], None]]] = {
 def reply_state(db: Session, case: Case) -> str:
     """Where the SMS conversation is, from the case: this picks the row of REPLY_GRAMMAR."""
     if case.state == State.NOTIFIED.value:
-        return case.sms_prompt if case.sms_prompt in ("RED_FLAG", "TEACH_BACK") else "RESULT"
+        return case.sms_prompt if case.sms_prompt in ("RED_FLAG", "TEACH_BACK", "CONTINUE") else "RESULT"
     if case.state == State.ACKNOWLEDGED.value and case.confirmation_method in (None, "HBPM"):
         return "HOME"
     if case.state == State.IN_CARE.value and plan_active(db, case) and open_week(db, case.id) is not None:
@@ -224,6 +235,7 @@ def reply_state(db: Session, case: Case) -> str:
 VALID_REPLIES: dict[str, list[tuple[str, str]]] = {
     "RESULT": [("1", "reply.read")],
     "RED_FLAG": [("1", "reply.yes"), ("2", "reply.no")],
+    "CONTINUE": [("1", "reply.continue")],
     "TEACH_BACK": [("A", "reply.option_a"), ("B", "reply.option_b"), ("C", "reply.option_c")],
     "HOME": [("SYS/DIA", "reply.reading")],
     "CHECKIN": [("A", "reply.done"), ("B", "reply.partly"), ("C", "reply.missed")],

@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { useConfig } from "@/api/hooks";
 import { Badge, Button, Card, EmptyState, Field, Select, SimulatedTag, useErrorText, useToast } from "@/components";
 import { formatDateTime } from "@/lib/format";
+import { pickText, type I18nText } from "@/lib/i18nField";
 import { useDraft, useSendDraft } from "../api";
 import { useLabels } from "../labels";
 import { usePersonText } from "../PersonLabel";
@@ -78,6 +79,14 @@ function DraftPanel({ detail }: { detail: CaseDetail }) {
             options={templates.map((x) => ({ value: x.id, label: labels.template(x.id) }))}
           />
         </Field>
+        {templateId && (
+          <p className="text-xs text-muted sm:col-span-2">
+            {pickText(
+              (config.data?.templates as unknown as Array<{ id: string; purpose: string; purpose_i18n?: I18nText }> | undefined)?.find((x) => x.id === templateId)?.purpose_i18n,
+              "",
+            )}
+          </p>
+        )}
         <Field label={t("action.fields.language")}>
           <Select
             value={language}

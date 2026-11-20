@@ -199,6 +199,25 @@ export function useDashboardSimulation<T = DashboardResponse>(split = "none", op
   });
 }
 
+export interface PersonaInfo {
+  persona: string;
+  display_name?: string;
+  display_names?: Record<string, string>;
+  role_title?: string;
+  role_titles?: Record<string, string>;
+  description?: string;
+}
+
+/** Public list of personas with per-language names and role titles. Falls back to locale text when it fails. */
+export function usePersonas() {
+  return useQuery<PersonaInfo[]>({
+    queryKey: ["personas"],
+    queryFn: () => api<PersonaInfo[]>("/personas", { anonymous: true }),
+    staleTime: 10 * 60_000,
+    retry: false,
+  });
+}
+
 // ---- Demo clock and reset -------------------------------------------------------------
 
 export function useDemoClock(opts?: Opts<DemoClock>) {

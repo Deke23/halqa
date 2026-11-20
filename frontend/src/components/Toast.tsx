@@ -19,10 +19,14 @@ export function ToastProvider({ children }: { children: ReactNode }) {
   const { t } = useTranslation();
   const [items, setItems] = useState<ToastItem[]>([]);
   const nextId = useRef(1);
+  const [top, setTop] = useState(8);
 
   const dismiss = useCallback((id: number) => setItems((xs) => xs.filter((x) => x.id !== id)), []);
   const show = useCallback(
     (message: string, tone: Tone = "accent") => {
+      // Sit just under the demo strip, wherever it ends right now.
+      const strip = document.querySelector("[data-demo-strip]");
+      setTop((strip ? Math.max(0, strip.getBoundingClientRect().bottom) : 0) + 8);
       const id = nextId.current++;
       setItems((xs) => [...xs, { id, message, tone }]);
       window.setTimeout(() => dismiss(id), 5000);
@@ -38,21 +42,22 @@ export function ToastProvider({ children }: { children: ReactNode }) {
         role="status"
         aria-live="polite"
         aria-label={t("generic.notifications")}
-        className="pointer-events-none fixed inset-x-0 bottom-4 z-[100] flex flex-col items-center gap-2 px-4"
+        style={{ top }}
+        className="pointer-events-none fixed inset-x-0 z-[100] flex flex-col items-center gap-2 px-3"
       >
         {items.map((it) => (
           <div
             key={it.id}
             className={cx(
-              "rise-in pointer-events-auto flex max-w-md items-center gap-3 rounded-control border border-line-strong px-4 py-3 text-sm font-medium shadow-float",
+              "rise-in pointer-events-auto flex max-w-[min(28rem,100%)] items-center gap-3 rounded-control border border-line-strong px-3 py-2 text-sm font-medium shadow-float",
               toneClasses[it.tone],
             )}
           >
-            <span>{it.message}</span>
+            <span className="min-w-0">{it.message}</span>
             <button
               type="button"
               onClick={() => dismiss(it.id)}
-              className="rounded px-1 font-semibold underline"
+              className="shrink-0 rounded px-1 text-xs font-semibold underline"
               aria-label={t("generic.dismiss")}
             >
               {t("generic.dismiss")}

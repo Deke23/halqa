@@ -205,7 +205,7 @@ Other:
   | Where the case is | Accepted replies | Effect |
   |---|---|---|
   | Result sent, not yet read | `1` | Marks the result as read and sends the red-flag question |
-  | Red-flag question open | `1` yes, `2` no | Yes: emergency instruction at once, case urgent. Either answer then sends the teach-back question |
+  | Red-flag question open | `1` yes, `2` no | No: the teach-back question follows. Yes: the emergency instruction is sent at once, the case becomes urgent, a coordinator call task is created, and nothing routine follows it. The message ends by saying the care team will call and that the patient can reply `1` later to continue; that later `1` sends the teach-back question |
   | Teach-back question open | `A`, `B`, `C` (case-insensitive) | Correct: case becomes ACKNOWLEDGED and home monitoring instructions follow. Wrong: simpler explanation and the question again. Second wrong answer: coordinator call task |
   | Home monitoring | `SYS/DIA` | Stored as a reading. Severe value gets the urgent template |
   | Weekly action check-in | the letters the check-in message offers | Recorded as done, partly or missed |

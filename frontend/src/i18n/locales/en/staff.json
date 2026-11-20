@@ -306,7 +306,8 @@
     },
     "dismiss": "Close",
     "suppressedTitle": "No message was sent.",
-    "suppressedBody": "The patient has withdrawn permission for this channel, so nothing was sent and the case did not move. A task to contact the patient by another agreed route was created."
+    "suppressedBody": "The patient has withdrawn permission for this channel, so nothing was sent and the case did not move. A task to contact the patient by another agreed route was created.",
+    "tooShort": "Please write at least {{min}} characters."
   },
   "actions": {
     "title": "What you can do",
@@ -332,7 +333,9 @@
     "noteHint": "At least {{min}} characters if you give no reference. Written so far: {{count}}.",
     "refused": "The case was not closed.",
     "recorded": "Closure record",
-    "closedBy": "Closed by"
+    "closedBy": "Closed by",
+    "readingRef": "Reading of {{date}}: {{value}} mmHg",
+    "noNote": "No note was recorded."
   },
   "header": {
     "patientLine": "{{age}} years, {{sex}}, speaks {{language}}",
@@ -357,7 +360,11 @@
       "SEVERE_READING": "severe reading",
       "RED_FLAG": "the patient reported a warning symptom"
     },
-    "coordinationWithdrawn": "Care coordination withdrawn"
+    "coordinationWithdrawn": "Care coordination withdrawn",
+    "closedNoOwner": "None. The case is closed.",
+    "urgentReviewDue": "Urgent review due",
+    "urgentReviewHint": "A clinician must review this case today.",
+    "routineNextStep": "Routine next step"
   },
   "case": {
     "title": "Case",

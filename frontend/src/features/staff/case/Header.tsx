@@ -19,6 +19,9 @@ export function CaseHeader({ detail, onOpenFhir }: { detail: CaseDetail; onOpenF
   const closed = detail.state === "CLOSED";
   const flags = detail.flags;
   const urgent = detail.urgent && !closed;
+  const reviewTask = detail.tasks.find((x) => x.type === "URGENT_REVIEW" && x.status === "OPEN");
+  const dueAt = (detail as { urgent_review_due_at?: string | null }).urgent_review_due_at ?? reviewTask?.due_at ?? null;
+  const urgentTask = flags.urgent_review_pending && dueAt ? { due_at: dueAt, overdue: reviewTask?.overdue ?? false } : null;
 
   return (
     <header className="rise-in flex flex-col gap-4 rounded-card border border-line bg-surface p-5">
@@ -68,15 +71,23 @@ export function CaseHeader({ detail, onOpenFhir }: { detail: CaseDetail; onOpenF
         )}
       </div>
 
+      {urgentTask && (
+        <div className="flex flex-wrap items-center gap-3 rounded-lg border border-urgent bg-urgent-soft px-4 py-3 text-urgent-ink">
+          <Badge tone="urgent">{t("header.urgentReviewDue")}</Badge>
+          <DueChip dueAt={urgentTask.due_at} overdue={urgentTask.overdue} />
+          <span className="text-sm">{formatDateTime(urgentTask.due_at, i18n.language)}</span>
+          <span className="text-sm">{t("header.urgentReviewHint")}</span>
+        </div>
+      )}
       <dl className="grid gap-4 border-t border-line pt-4 sm:grid-cols-3">
         <div>
-          <dt className="text-xs font-medium text-muted">{t("header.nextStep")}</dt>
+          <dt className="text-xs font-medium text-muted">{urgentTask ? t("header.routineNextStep") : t("header.nextStep")}</dt>
           <dd className="mt-1 font-semibold">{closed ? t("header.closedNoStep") : labels.nextStep(step?.label_key)}</dd>
         </div>
         <div>
           <dt className="text-xs font-medium text-muted">{t("header.owner")}</dt>
           <dd className="mt-1">
-            {closed ? <span className="text-muted">{"2014"}</span> : <OwnerCell person={step?.owner_person ?? detail.owner_person} role={detail.owner_role} />}
+            {closed ? <span className="text-muted">{t("header.closedNoOwner")}</span> : <OwnerCell person={step?.owner_person ?? detail.owner_person} role={detail.owner_role} />}
           </dd>
         </div>
         <div>

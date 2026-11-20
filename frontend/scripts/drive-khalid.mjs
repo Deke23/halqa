@@ -20,5 +20,5 @@ if (upto === 'REFERRED') process.exit(0);
 const slots = await call('patient_auh', `/cases/${id}/slots`);
 await act('patient_auh', 'book_appointment', { slot_id: slots[0].id });
 await act('clinician_specialist', 'record_visit', { outcome: 'TREATMENT_STARTED' });
-await act('patient_auh', 'plan_checkin', { status: 'missed', barrier: 'TIME' });
+if (!process.env.NOCHECKIN) await act('patient_auh', 'plan_checkin', { status: 'missed', barrier: 'TIME' });
 console.log('ok', upto);

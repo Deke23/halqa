@@ -13,11 +13,12 @@ import { LoopRing } from "@/components/LoopRing";
 import { ErrorState, useErrorText } from "@/components/States";
 import { useToast } from "@/components/Toast";
 import { cx } from "@/lib/cx";
+import { usePersonaText } from "@/components/usePersonaText";
 import { PERSONA_META } from "./personas";
 
 const GROUPS: Array<{ key: "abu_dhabi" | "yaounde" | "all"; personas: Persona[] }> = [
   { key: "abu_dhabi", personas: ["patient_auh", "coordinator_auh", "clinician_pcp", "clinician_specialist"] },
-  { key: "yaounde", personas: ["patient_yde", "nurse_yde"] },
+  { key: "yaounde", personas: ["patient_yde", "nurse_yde", "clinician_yde"] },
   { key: "all", personas: ["analyst"] },
 ];
 
@@ -34,6 +35,7 @@ export default function Landing() {
   const errorText = useErrorText();
   // The personas are always listed; "Continue as Guest" in the hero scrolls to them.
   const picking: boolean = true;
+  const pText = usePersonaText();
   const pickerRef = useRef<HTMLElement>(null);
 
   const [busy, setBusy] = useState<Persona | null>(null);
@@ -181,11 +183,11 @@ export default function Landing() {
                             aria-hidden="true"
                             className="grid size-10 shrink-0 place-items-center rounded-full bg-accent-soft text-base font-semibold text-accent-ink"
                           >
-                            {Array.from(t(`personas.${p}.name`))[0]}
+                            {Array.from(pText(p).name)[0]}
                           </span>
                           <div className="min-w-0">
-                            <p className="truncate text-lg font-semibold leading-tight">{t(`personas.${p}.name`)}</p>
-                            <p className="text-sm text-muted">{t(`personas.${p}.role`)}</p>
+                            <p className="truncate text-lg font-semibold leading-tight">{pText(p).name}</p>
+                            <p className="text-sm text-muted">{pText(p).role}</p>
                           </div>
                         </div>
                         <p className="mt-3 flex-1 text-sm text-muted">{t(`personas.${p}.description`)}</p>
@@ -196,7 +198,7 @@ export default function Landing() {
                           disabled={busy !== null}
                           onClick={() => void choose(p)}
                         >
-                          {busy === p ? t("landing.signingIn") : t("landing.signInAs", { name: t(`personas.${p}.name`) })}
+                          {busy === p ? t("landing.signingIn") : t("landing.signInAs", { name: pText(p).name })}
                         </Button>
                       </div>
                     </li>

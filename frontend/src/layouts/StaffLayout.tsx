@@ -6,6 +6,7 @@ import type { Role } from "@/api/types";
 import { Brand } from "@/components/Brand";
 import { Loading } from "@/components/States";
 import { cx } from "@/lib/cx";
+import { usePersonaText } from "@/components/usePersonaText";
 import { PERSONA_META } from "@/routes/personas";
 
 interface NavItem {
@@ -26,6 +27,7 @@ const NAV: NavItem[] = [
 export function StaffLayout() {
   const { t } = useTranslation();
   const { user, persona } = useAuth();
+  const pText = usePersonaText();
   const items = NAV.filter((n) => user && n.roles.includes(user.role));
   const region = persona ? PERSONA_META[persona]?.region : undefined;
   return (
@@ -38,8 +40,8 @@ export function StaffLayout() {
           <Brand size={28} />
           {persona && (
             <div className="rounded-control bg-surface-2 px-3 py-2.5">
-              <p className="text-sm font-semibold">{t(`personas.${persona}.name`)}</p>
-              <p className="text-xs text-muted">{t(`personas.${persona}.role`)}</p>
+              <p className="text-sm font-semibold">{pText(persona).name}</p>
+              <p className="text-xs text-muted">{pText(persona).role}</p>
               {region && <p className="mt-1 text-xs text-muted">{t(`regions.${region}`)}</p>}
             </div>
           )}

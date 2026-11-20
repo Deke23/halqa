@@ -138,6 +138,7 @@ export function Shortcuts({ c, flow }: { c: PatientCase; flow: Flow }) {
             <Button variant="secondary" size="sm" fullWidth loading={busy === k} disabled={!avail[k] || busy !== null} onClick={() => void run(k)} className="min-h-11 justify-start text-start">
               {t(`shortcuts.${k}`)}
             </Button>
+            {(k === "skip" || k === "sampleWeek") && avail[k] && <p className="m-0 ps-1 text-xs text-muted">{t("shortcuts.clockNote")}</p>}
             {!avail[k] && <p className="m-0 ps-1 text-xs text-muted">{t("shortcuts.unavailable", { reason: t(`shortcuts.needs.${k}`) })}</p>}
           </div>
         ))}

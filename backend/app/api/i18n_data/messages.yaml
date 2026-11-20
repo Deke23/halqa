@@ -171,6 +171,10 @@ messages:
     en: "No such route."
     ar: "لا يوجد مسار بهذا العنوان."
     fr: "Cette adresse n'existe pas."
+  - code: NOTE_TOO_SHORT
+    en: "A note of at least {min_length} characters is needed."
+    ar: "يلزم إدخال ملاحظة لا يقل طولها عن {min_length} أحرف."
+    fr: "Une note d'au moins {min_length} caractères est nécessaire."
   - code: INVALID_PAYLOAD
     en: "systolic must be higher than diastolic"
     ar: "يجب أن يكون الضغط الانقباضي أعلى من الانبساطي."

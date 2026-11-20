@@ -338,7 +338,8 @@
     "feedback": {
       "PLAN_SMALLER": "Ce n'est pas grave. Certaines semaines sont ainsi. Le pas de la semaine prochaine est plus petit, pour qu'il soit plus facile à placer.",
       "PLAN_LARGER_OFFERED": "Merci. Votre prochaine action est prête. Si vous le souhaitez, vous pourrez choisir un pas un peu plus grand plus tard. C'est votre choix.",
-      "PLAN_NEXT": "Merci pour votre bilan. Votre prochaine action est prête."
+      "PLAN_NEXT": "Merci pour votre bilan. Votre prochaine action est prête.",
+      "MISSED_SMALLEST": "Ce n'est pas grave. Certaines semaines sont ainsi. Votre action est déjà la plus petite possible."
     },
     "noBlameTitle": "Un mot en douceur",
     "noBlameLapsed": "La semaine dernière ne s'est pas passée comme prévu. Ce n'est pas grave. Le pas de cette semaine est plus petit.",
@@ -349,7 +350,8 @@
     "historyStatus": {
       "done": "Fait",
       "partly": "En partie",
-      "missed": "Pas cette semaine"
+      "missed": "Pas cette semaine",
+      "lapsed": "Aucun bilan enregistré"
     },
     "diaryTitle": "Journal d'activité et de sommeil",
     "diaryNote": "Ce journal vient d'un objet connecté d'exemple. Il montre les pas, les minutes d'activité et le sommeil. Il n'est jamais utilisé comme valeur de tension.",
@@ -476,15 +478,15 @@
     },
     "working": "En cours",
     "did": {
-      "review": "{{who}} a examiné les mesures et confirmé la moyenne élevée.",
+      "review": "{{who}} a examiné les mesures.",
       "refer": "{{who}} a envoyé l'orientation.",
-      "accept": "{{who}} a accepté l'orientation.",
+      "accept": "{{who}} l'a acceptée.",
       "book": "{{who}} a réservé la consultation.",
-      "visit": "{{who}} a enregistré la consultation et commencé le traitement.",
-      "skip": "L'horloge de démonstration a avancé d'une semaine.",
-      "sampleWeek": "Une semaine d'exemple de mesures a été envoyée.",
-      "close": "{{who}} a clos le dossier avec une décision enregistrée.",
-      "abpm": "{{who}} a saisi les mesures de votre appareil de 24 heures."
+      "visit": "{{who}} a enregistré la consultation.",
+      "skip": "L'horloge a avancé d'une semaine.",
+      "sampleWeek": "Semaine d'exemple envoyée.",
+      "close": "{{who}} a clos le dossier.",
+      "abpm": "{{who}} a saisi les mesures de l'appareil."
     },
     "note": {
       "review": "Demo shortcut: home average reviewed.",
@@ -493,7 +495,8 @@
     },
     "failed": "Cela n'a pas fonctionné : {{message}}",
     "close": "Équipe de soins : clore mon dossier",
-    "abpm": "Équipe de soins : enregistrer mon appareil de 24 heures"
+    "abpm": "Équipe de soins : enregistrer mon appareil de 24 heures",
+    "clockNote": "Avance l'horloge de démonstration d'environ une semaine."
   },
   "phone": {
     "title": "Messages de votre équipe de soins",
@@ -525,8 +528,10 @@
       "done": "Fait",
       "partly": "En partie",
       "missed": "Pas cette semaine",
-      "call_me": "Appelez-moi"
+      "call_me": "Appelez-moi",
+      "continue": "Continuer"
     },
-    "readingHint": "Écrivez-la ainsi : 150/95"
+    "readingHint": "Écrivez-la ainsi : 150/95",
+    "stopped": "Les messages sur ce canal sont arrêtés. Pour les reprendre, contactez votre équipe de soins."
   }
 }

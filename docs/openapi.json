@@ -2019,6 +2019,18 @@
               }
             ]
           },
+          "urgent_review_due_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Urgent Review Due At"
+          },
           "plan_active": {
             "type": "boolean",
             "title": "Plan Active"
@@ -2222,6 +2234,7 @@
           "owner_user_id",
           "owner_name",
           "owner_person",
+          "urgent_review_due_at",
           "plan_active",
           "next_step",
           "progress",
@@ -4354,6 +4367,11 @@
           "description": {
             "type": "string",
             "title": "Description"
+          },
+          "listed": {
+            "type": "boolean",
+            "title": "Listed",
+            "default": true
           }
         },
         "type": "object",

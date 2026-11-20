@@ -39,7 +39,8 @@ export default function PhoneThread() {
 
   const wa = look === "whatsapp";
   const contact = personName(thread.data?.find((m) => m.direction === "OUT" && m.sender_person)?.sender_person ?? c.owner_person);
-  const replies = [...(thread.data ?? [])].reverse().find((m) => m.direction === "OUT")?.valid_replies ?? [];
+  const stopped = c.consents.some((x) => x.purpose === "messaging_channel" && x.channel === c.patient.channel && !x.granted);
+  const replies = stopped ? [] : [...(thread.data ?? [])].reverse().find((m) => m.direction === "OUT")?.valid_replies ?? [];
   const pick = (r: ValidReply) => {
     if (r.meaning_key === "reply.reading") {
       setHint(true);
@@ -74,7 +75,7 @@ export default function PhoneThread() {
         ) : (
           <ul className="m-0 flex list-none flex-col gap-2 p-0">
             {thread.data!.map((m) => (
-              <Bubble key={m.id} m={m} wa={wa} lng={i18n.language} />
+              <Bubble key={m.id} m={m} wa={wa} lng={i18n.language} alert={isEmergency(m)} />
             ))}
           </ul>
         )}
@@ -86,6 +87,11 @@ export default function PhoneThread() {
       </div>
 
       <div className="border-t border-line bg-surface p-2">
+        {stopped && (
+          <p role="status" className="m-0 mb-2 rounded-control bg-surface-2 px-3 py-2 text-sm text-muted">
+            {t("phone.stopped")}
+          </p>
+        )}
         <QuickReplies replies={replies} onPick={pick} disabled={send.isPending} />
         {send.isError && (
           <p role="alert" className="m-0 mb-1 rounded bg-due-soft px-2 py-1 text-sm text-due-ink">
@@ -109,10 +115,11 @@ export default function PhoneThread() {
             placeholder={hint ? t("phone.readingHint") : t("phone.inputPlaceholder")}
             ref={inputRef}
             autoComplete="off"
+            disabled={stopped}
             inputMode="text"
             className="min-h-11 min-w-0 flex-1 rounded-full border border-line bg-surface px-4 text-base placeholder:text-muted"
           />
-          <Button type="submit" size="md" loading={send.isPending} disabled={!text.trim()}>
+          <Button type="submit" size="md" loading={send.isPending} disabled={stopped || !text.trim()}>
             {t("phone.send")}
           </Button>
         </form>
@@ -170,7 +177,11 @@ function Header({ c, contact, look, onLook }: { c: PatientCase; contact: string;
   );
 }
 
-function Bubble({ m, wa, lng }: { m: MessageOut; wa: boolean; lng: string }) {
+function isEmergency(m: MessageOut): boolean {
+  return m.direction === "OUT" && (/^(result_severe|urgent_red_flags)/.test(m.template_id ?? "") || m.valid_replies.some((r) => r.meaning_key === "reply.continue"));
+}
+
+function Bubble({ m, wa, lng, alert }: { m: MessageOut; wa: boolean; lng: string; alert?: boolean }) {
   const { t } = useTranslation("patient");
   const mine = m.direction === "IN";
   return (
@@ -178,7 +189,7 @@ function Bubble({ m, wa, lng }: { m: MessageOut; wa: boolean; lng: string }) {
       <div
         className={cx(
           "max-w-[85%] whitespace-pre-line rounded-2xl px-3.5 py-2.5 text-[0.95rem] leading-relaxed",
-          mine ? "bg-accent text-white" : wa ? "bg-surface text-ink shadow-card" : "border border-line bg-surface text-ink",
+          mine ? "bg-accent text-white" : alert ? "border-2 border-due bg-due-soft text-due-ink" : wa ? "bg-surface text-ink shadow-card" : "border border-line bg-surface text-ink",
           mine ? "rounded-ee-sm" : "rounded-es-sm",
         )}
       >

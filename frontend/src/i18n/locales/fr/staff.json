@@ -306,7 +306,8 @@
     },
     "dismiss": "Fermer",
     "suppressedTitle": "Aucun message n'a été envoyé.",
-    "suppressedBody": "Le patient a retiré son accord pour ce canal : rien n'a été envoyé et le dossier n'a pas avancé. Une tâche a été créée pour joindre le patient par un autre moyen convenu."
+    "suppressedBody": "Le patient a retiré son accord pour ce canal : rien n'a été envoyé et le dossier n'a pas avancé. Une tâche a été créée pour joindre le patient par un autre moyen convenu.",
+    "tooShort": "Veuillez écrire au moins {{min}} caractères."
   },
   "actions": {
     "title": "Ce que vous pouvez faire",
@@ -332,7 +333,9 @@
     "noteHint": "Au moins {{min}} caractères si vous n'indiquez pas de référence. Écrits jusqu'ici : {{count}}.",
     "refused": "Le dossier n'a pas été clos.",
     "recorded": "Enregistrement de la clôture",
-    "closedBy": "Clos par"
+    "closedBy": "Clos par",
+    "readingRef": "Mesure du {{date}} : {{value}} mmHg",
+    "noNote": "Aucune note enregistrée."
   },
   "header": {
     "patientLine": "{{age}} ans, {{sex}}, parle {{language}}",
@@ -357,7 +360,11 @@
     "backQueue": "Retour à la file",
     "backWorklist": "Retour à la liste de travail",
     "emergencyAdvice": "Conseil d'urgence pour le patient",
-    "coordinationWithdrawn": "Coordination des soins retirée"
+    "coordinationWithdrawn": "Coordination des soins retirée",
+    "closedNoOwner": "Aucun. Le dossier est clos.",
+    "urgentReviewDue": "Examen urgent à faire",
+    "urgentReviewHint": "Un clinicien doit examiner ce dossier aujourd'hui.",
+    "routineNextStep": "Prochaine étape habituelle"
   },
   "case": {
     "title": "Dossier",

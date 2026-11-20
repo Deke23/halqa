@@ -59,7 +59,7 @@ export default function StaffWorklist() {
             <Link
               to={`/staff/cases/${c.id}`}
               onClick={(e) => e.stopPropagation()}
-              className="font-semibold text-accent-ink underline-offset-2 hover:underline"
+              className="block font-semibold text-accent-ink underline-offset-2 hover:underline"
               aria-label={t("queue.openCase", { initials: pickText(c.patient_initials_i18n, c.patient_initials), id: c.id })}
             >
               <bdi>{pickText(c.patient_initials_i18n, c.patient_initials)}</bdi>
@@ -113,7 +113,7 @@ export default function StaffWorklist() {
         <Link
           to={`/staff/cases/${e.case_id}`}
           onClick={(x) => x.stopPropagation()}
-          className="font-semibold text-accent-ink underline-offset-2 hover:underline"
+          className="block font-semibold text-accent-ink underline-offset-2 hover:underline"
         >
           {t("worklist.caseNumber", { id: e.case_id })}
         </Link>

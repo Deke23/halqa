@@ -159,14 +159,15 @@ export function ChoiceGroup({
   return (
     <fieldset className="m-0 min-w-0 border-0 p-0">
       <legend className="mb-3 p-0 text-sm font-medium">{legend}</legend>
-      <div className={cx("flex gap-2", inline ? "flex-row flex-wrap" : "flex-col")}>
+      <div className={cx(inline ? "grid grid-cols-5 gap-2" : "flex flex-col gap-2")}>
         {options.map((o) => {
           const checked = o.value === value;
           return (
             <label
               key={o.value}
               className={cx(
-                "flex min-h-11 cursor-pointer items-start gap-3 rounded-control border px-3 py-2.5",
+                "flex min-h-12 cursor-pointer gap-3 rounded-control border px-3 py-2.5 has-[:focus-visible]:outline has-[:focus-visible]:outline-[3px] has-[:focus-visible]:outline-accent",
+                inline ? "items-center justify-center px-0" : "items-start",
                 checked ? "border-accent bg-accent-soft" : "border-line-strong bg-surface hover:bg-surface-2",
               )}
             >
@@ -177,7 +178,7 @@ export function ChoiceGroup({
                 checked={checked}
                 aria-label={o.text}
                 onChange={() => onChange(o.value)}
-                className="mt-1 size-4 accent-[var(--color-accent)]"
+                className={inline ? "sr-only" : "mt-1 size-4 accent-[var(--color-accent)]"}
               />
               <span className="font-medium">{o.label}</span>
             </label>

@@ -14,6 +14,8 @@ export type Persona =
   | "clinician_specialist"
   | "patient_yde"
   | "nurse_yde"
+  | "clinician_yde"
+  | "specialist_yde"
   | "analyst";
 
 export const PERSONAS: readonly Persona[] = [
@@ -23,6 +25,8 @@ export const PERSONAS: readonly Persona[] = [
   "clinician_specialist",
   "patient_yde",
   "nurse_yde",
+  "clinician_yde",
+  "specialist_yde",
   "analyst",
 ];
 

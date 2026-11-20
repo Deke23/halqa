@@ -52,6 +52,9 @@ def parse_payload(action: Action, raw: dict[str, Any]) -> BaseModel:
     try:
         return PAYLOAD_MODELS[action].model_validate(raw or {})
     except ValidationError as exc:
+        short = [e for e in exc.errors() if e["type"] == "string_too_short"]
+        if short:  # a note or reason that is empty or too short is a domain error, localised, not FastAPI's raw text
+            raise ApiError(422, "NOTE_TOO_SHORT", f"A note of at least {short[0]['ctx']['min_length']} characters is needed.") from exc
         detail = "; ".join(f"{'.'.join(str(p) for p in e['loc'])}: {e['msg']}" for e in exc.errors())
         raise ApiError(422, "INVALID_PAYLOAD", detail) from exc
 

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Badge, Button, EmptyState, ErrorState, Loading, RadioGroup, Select, SimulatedTag, Field, useErrorText, useToast } from "@/components";
@@ -22,6 +22,9 @@ export default function Weekly() {
   const week = currentWeek(c.plan);
   const history = pastWeeks(c.plan);
   const lifestyle = c.consents.find((x) => x.purpose === "lifestyle_programme");
+  // A week the patient reported has a PLAN_CHECKIN event at its check-in time. A week with none was recorded by the system.
+  const reportedTimes = new Set(c.timeline.filter((e) => e.type === "PLAN_CHECKIN").map((e) => new Date(e.at).getTime()));
+  const lapsedWeeks = new Set(c.plan.filter((p) => p.checked_in_at && !reportedTimes.has(new Date(p.checked_in_at).getTime())).map((p) => p.week_index));
   const paused = c.state === "IN_CARE" && lifestyle !== undefined && !lifestyle.granted;
 
   return (
@@ -31,7 +34,7 @@ export default function Weekly() {
       {paused && <Paused />}
       {!paused && !week && history.length === 0 ? <Notice>{t("weekly.notYet")}</Notice> : null}
       {!paused && week && <ThisWeek week={week} lastWeek={history[0]} />}
-      <History weeks={history} />
+      <History weeks={history} lapsed={lapsedWeeks} />
       <Diary />
     </div>
   );
@@ -78,6 +81,11 @@ function ThisWeek({ week, lastWeek }: { week: PlanWeekOut; lastWeek: PlanWeekOut
   const [larger, setLarger] = useState(false);
   const [tried, setTried] = useState(false);
   const [feedback, setFeedback] = useState<Feedback | null>(null);
+  const [reported, setReported] = useState("");
+  const noteRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (feedback) noteRef.current?.scrollIntoView({ block: "start", behavior: "smooth" });
+  }, [feedback]);
 
   const a = actionText((k) => t(k), week);
   const lapsedLast = lastWeek && lastWeek.status !== "done" && lastWeek.size !== week.size;
@@ -97,6 +105,7 @@ function ThisWeek({ week, lastWeek }: { week: PlanWeekOut; lastWeek: PlanWeekOut
       {
         onSuccess: (d) => {
           setFeedback((d.feedback ?? null) as Feedback | null);
+          setReported(status);
           setStatus("");
           setBarrier("");
           setLarger(false);
@@ -110,9 +119,11 @@ function ThisWeek({ week, lastWeek }: { week: PlanWeekOut; lastWeek: PlanWeekOut
   return (
     <>
       {feedback && (
-        <Notice tone="accent" title={feedback.code === "PLAN_SMALLER" ? t("weekly.noBlameTitle") : undefined}>
-          {t(`weekly.feedback.${feedback.code}`, { defaultValue: t("weekly.feedback.PLAN_NEXT") })}
+        <div ref={noteRef} className="scroll-mt-4">
+        <Notice tone="accent" title={reported === "missed" || feedback.code === "PLAN_SMALLER" ? t("weekly.noBlameTitle") : undefined}>
+          {t(reported === "missed" && feedback.code !== "PLAN_SMALLER" ? "weekly.feedback.MISSED_SMALLEST" : `weekly.feedback.${feedback.code}`, { defaultValue: t("weekly.feedback.PLAN_NEXT") })}
         </Notice>
+        </div>
       )}
       {!feedback && lapsedLast && (
         <Notice tone="accent" title={t("weekly.noBlameTitle")}>
@@ -172,7 +183,7 @@ function ThisWeek({ week, lastWeek }: { week: PlanWeekOut; lastWeek: PlanWeekOut
   );
 }
 
-function History({ weeks }: { weeks: PlanWeekOut[] }) {
+function History({ weeks, lapsed }: { weeks: PlanWeekOut[]; lapsed: Set<number> }) {
   const { t } = useTranslation("patient");
   return (
     <Panel title={t("weekly.historyTitle")}>
@@ -188,7 +199,7 @@ function History({ weeks }: { weeks: PlanWeekOut[] }) {
                   <bdi>{t("weekly.week", { n: w.week_index })}</bdi> · {t(`weekly.size.${w.size}`)}
                 </p>
               </div>
-              <Badge tone={w.status === "done" ? "accent" : "neutral"} className="shrink-0 whitespace-nowrap">{w.status ? t(`weekly.historyStatus.${w.status}`) : ""}</Badge>
+              <Badge tone={w.status === "done" ? "accent" : "neutral"} className="shrink-0 whitespace-nowrap">{w.status ? t(lapsed.has(w.week_index) ? "weekly.historyStatus.lapsed" : `weekly.historyStatus.${w.status}`) : ""}</Badge>
             </li>
           ))}
         </ul>

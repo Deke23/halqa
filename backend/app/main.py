@@ -11,6 +11,7 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
+from starlette.exceptions import HTTPException as StarletteHTTPException
 from sqlalchemy import func, select
 
 from app.api import i18n, dashboard, routes, routes_more, schemas
@@ -85,6 +86,15 @@ def create_app(database_url: str | None = None, *, seed_on_start: bool = True, s
     async def api_error(request: Request, exc: ApiError) -> JSONResponse:
         lang = i18n.pick_language(request.headers.get("accept-language"))  # en, ar or fr; the {code, message} shape is unchanged
         return JSONResponse({"code": exc.code, "message": i18n.translate_error(exc.code, exc.message, lang)}, status_code=exc.status)
+
+    @app.exception_handler(StarletteHTTPException)
+    async def http_error(request: Request, exc: StarletteHTTPException) -> JSONResponse:
+        # Framework errors (unknown route, wrong method) use the same {code, message} shape as
+        # domain errors, whether or not the built front end is present.
+        lang = i18n.pick_language(request.headers.get("accept-language"))
+        if exc.status_code == 404:
+            return JSONResponse({"code": "NOT_FOUND", "message": i18n.translate_error("NOT_FOUND", "No such route.", lang)}, status_code=404)
+        return JSONResponse({"code": "HTTP_ERROR", "message": str(exc.detail)}, status_code=exc.status_code, headers=getattr(exc, "headers", None))
 
     app.include_router(routes.router)
     app.include_router(routes_more.router)

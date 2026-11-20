@@ -92,6 +92,18 @@
       "role": "Analyst",
       "description": "Sees aggregate measures only. Small groups are hidden.",
       "region": "Both regions"
+    },
+    "clinician_yde": {
+      "name": "Dr Brice",
+      "role": "Primary care clinician",
+      "description": "Reviews confirmation readings at a Yaoundé health centre, refers and closes cases.",
+      "region": "Yaoundé"
+    },
+    "specialist_yde": {
+      "name": "Dr Estelle",
+      "role": "Specialist clinician",
+      "description": "Accepts or rejects referrals and starts treatment in Yaoundé.",
+      "region": "Yaoundé"
     }
   },
   "regions": {

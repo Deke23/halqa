@@ -19,6 +19,8 @@ export const PERSONA_META: Record<Persona, PersonaMeta> = {
   clinician_specialist: { key: "clinician_specialist", role: "clinician", region: "abu_dhabi", home: "/staff/worklist", language: "en" },
   patient_yde: { key: "patient_yde", role: "patient", region: "yaounde", home: "/phone", language: "fr" },
   nurse_yde: { key: "nurse_yde", role: "coordinator", region: "yaounde", home: "/staff/queue", language: "fr" },
+  clinician_yde: { key: "clinician_yde", role: "clinician", region: "yaounde", home: "/staff/worklist", language: "fr" },
+  specialist_yde: { key: "specialist_yde", role: "clinician", region: "yaounde", home: "/staff/worklist", language: "fr" },
   analyst: { key: "analyst", role: "analyst", region: "all", home: "/dashboard", language: "en" },
 };
 

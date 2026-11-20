@@ -19,6 +19,6 @@ sample_slots:
   fr:
     emergency_instruction: Allez aux urgences les plus proches.
 text:
-  en: 'If you have any of these now: chest pain, trouble breathing, a severe headache, changes in your vision, confusion, or weakness on one side of the body, do this straight away: {emergency_instruction} Do not wait for a message or a call back.'
-  ar: 'إذا ظهر لديك الآن أي مما يلي: ألم في الصدر، أو صعوبة في التنفس، أو صداع شديد، أو تغيّر في الرؤية، أو ارتباك، أو ضعف في جانب واحد من الجسم، فافعل ما يلي فورًا: {emergency_instruction} لا تنتظر رسالة أو اتصالًا.'
-  fr: 'Si vous avez maintenant l''un de ces signes : douleur à la poitrine, difficulté à respirer, mal de tête très fort, changement de la vision, confusion ou faiblesse d''un côté du corps, faites ceci tout de suite : {emergency_instruction} N''attendez pas un message ou un appel.'
+  en: 'If you have any of these now: chest pain, trouble breathing, a severe headache, changes in your vision, confusion, or weakness on one side of the body, do this straight away: {emergency_instruction} Do not wait for a message or a call back. The care team will also call you. When you are ready, reply 1 to continue.'
+  ar: 'إذا ظهر لديك الآن أي مما يلي: ألم في الصدر، أو صعوبة في التنفس، أو صداع شديد، أو تغيّر في الرؤية، أو ارتباك، أو ضعف في جانب واحد من الجسم، فافعل ما يلي فورًا: {emergency_instruction} لا تنتظر رسالة أو اتصالًا. وسيتصل بك فريق الرعاية أيضًا. وعندما تكون مستعدًا أرسل 1 للمتابعة.'
+  fr: 'Si vous avez maintenant l''un de ces signes : douleur à la poitrine, difficulté à respirer, mal de tête très fort, changement de la vision, confusion ou faiblesse d''un côté du corps, faites ceci tout de suite : {emergency_instruction} N''attendez pas un message ou un appel. L''équipe de soins vous appellera aussi. Quand vous serez prêt, répondez 1 pour continuer.'

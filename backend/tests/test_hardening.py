@@ -17,7 +17,7 @@ from sqlalchemy.exc import DBAPIError
 from app import engine
 from app.api import message_slots, wording_port
 from app.api.regions import REGIONS, is_stop_keyword, tz_of
-from app.db.models import Case, CaseEvent, Message, MessageDraft, Patient, Task
+from app.db.models import Case, CaseEvent, Message, MessageDraft, Patient, Task, User
 from app.engine.types import ConfirmationStatus, ReadingData, ReadingSource
 from tests.conftest import add_hbpm_week, correct_answer, drive_khalid, iso, scenario_id, utc_now
 
@@ -82,16 +82,27 @@ def test_phone_thread_asks_the_red_flag_question_and_yes_is_urgent_at_once(api, 
     thread = reply(api, "patient_yde", "1")  # result read
     assert thread[-1]["template_id"] == "red_flag_check" and "1" in thread[-1]["text"] and "2" in thread[-1]["text"]
     assert api.get("nurse_yde", f"/api/cases/{cid}").json()["state"] == "NOTIFIED"  # not acknowledged before teach-back
+    before = len(messages_out(app, cid))
     thread = reply(api, "patient_yde", "1")  # yes, a warning symptom now
-    emergency = [m for m in thread if m["template_id"] == "urgent_red_flags_sms"]
-    assert emergency and "urgences" in emergency[-1]["text"]
-    assert thread[-1]["template_id"] == "teach_back_question"  # the teach-back follows either answer
+    assert len(messages_out(app, cid)) == before + 1  # exactly one outbound message: the emergency instruction
+    assert last(thread)["template_id"] == "urgent_red_flags_sms" and "urgences" in last(thread)["text"]
+    assert "appellera" in last(thread)["text"] and "1" in last(thread)["text"] and len(last(thread)["text"]) <= 160
+    assert not [m for m in thread if m["template_id"] == "teach_back_question"]  # nothing routine follows emergency advice
     d = api.get("nurse_yde", f"/api/cases/{cid}").json()
     assert d["urgent"] is True and d["urgent_reason"] == "RED_FLAG" and d["state"] == "NOTIFIED"
     assert [e.type for e in events_of(app, cid)].count("RED_FLAG_REPORTED") == 1
+    assert len(open_tasks(app, cid, "COORDINATOR_CALL")) == 1
+    assert [(v["reply"], v["meaning_key"]) for v in last(thread)["valid_replies"]] == [("1", "reply.continue"), ("0", "reply.call_me")]
     assert api.get("nurse_yde", "/api/cases?queue=urgent").json()["cases"][0]["id"] == cid
+    # while waiting, a letter is not an answer; 0 does not create a second call task
+    assert last(reply(api, "patient_yde", "B"))["template_id"] == "reply_not_understood"
+    reply(api, "patient_yde", "0")
+    assert len(open_tasks(app, cid, "COORDINATOR_CALL")) == 1
+    thread = reply(api, "patient_yde", "1")  # the later 1 carries on
+    assert last(thread)["template_id"] == "teach_back_question"
     reply(api, "patient_yde", "B")
     assert api.get("nurse_yde", f"/api/cases/{cid}").json()["state"] == "ACKNOWLEDGED"
+    assert len(open_tasks(app, cid, "COORDINATOR_CALL")) == 1
 
 
 def test_phone_red_flag_no_goes_on_to_teach_back_without_urgency(api):
@@ -1016,3 +1027,70 @@ def test_fhir_displays_have_no_role_suffix(api, app):
     k = drive_khalid(api, "IN_CARE")
     bundle = api.get("clinician_pcp", f"/api/cases/{k}/fhir").text
     assert "(care coordinator)" not in bundle and "(hypertension clinic)" not in bundle
+
+
+# ---------------------------------------------------------------- phone-thread safety: staff see a severe reading
+
+
+def test_severe_phone_reading_reaches_the_right_staff_and_only_them(api, app):
+    cid = api.case_id("patient_yde")
+    ack_by_sms(api)
+    reply(api, "patient_yde", "185/115")
+    d = api.get("nurse_yde", f"/api/cases/{cid}").json()
+    assert d["urgent"] is True and d["severity"] == "SEVERE"
+    assert api.get("nurse_yde", "/api/cases?queue=urgent").json()["cases"][0]["id"] == cid
+    tasks = open_tasks(app, cid, "URGENT_REVIEW")
+    assert len(tasks) == 1 and tasks[0].owner_role == "clinician" and tasks[0].due_at
+    with app.state.db.session() as s:
+        owner = s.get(User, tasks[0].owner_user_id)
+        assert owner.persona_key == "clinician_yde" and owner.region == "YDE"
+    # the Yaounde clinician sees the case in the urgent queue and the task in the detail
+    row = api.get("clinician_yde", "/api/cases?queue=urgent").json()["cases"][0]
+    assert row["id"] == cid and row["flags"]["urgent_review_pending"] and row["reason_code"] == "URGENT_SEVERE"
+    detail = api.get("clinician_yde", f"/api/cases/{cid}").json()
+    review = [t for t in detail["tasks"] if t["type"] == "URGENT_REVIEW" and t["status"] == "OPEN"]
+    assert len(review) == 1 and detail["urgent_review_due_at"] == review[0]["due_at"]
+    # an Abu Dhabi clinician and coordinator do not see it
+    assert cid not in [c["id"] for c in api.get("clinician_pcp", "/api/cases").json()["cases"]]
+    assert api.get("clinician_pcp", f"/api/cases/{cid}").status_code == 403
+    assert cid not in [c["id"] for c in api.get("coordinator_auh", "/api/cases").json()["cases"]]
+
+
+def test_yaounde_clinician_personas_are_returned_with_listed_flag(api):
+    personas = {p["persona"]: p for p in api.client.get("/api/personas").json()}
+    assert personas["clinician_yde"]["listed"] is True
+    assert personas["specialist_yde"]["listed"] is False and personas["specialist_yde"]["region"] == "YDE"
+    assert all(personas[k]["listed"] for k in ("patient_auh", "coordinator_auh", "clinician_pcp", "clinician_specialist", "patient_yde",
+                                                "nurse_yde", "analyst"))
+    for key in ("clinician_yde", "specialist_yde"):
+        p = personas[key]
+        assert set(p["display_names"]) == {"en", "ar", "fr"} == set(p["role_titles"]) and all(p["display_names"].values())
+    assert personas["clinician_yde"]["display_names"]["ar"] == "د. بريس"
+
+
+def test_urgent_review_due_at_is_on_the_case_detail(api, app):
+    severe = api.post("coordinator_auh", "/api/intake/result", {"patient_ref": "DUE-1", "source_system": "IFHAS_SCREENING", "region": "AUH",
+                                                                "readings": [{"systolic": 185, "diastolic": 115}]}).json()["case_id"]
+    d = api.get("clinician_pcp", f"/api/cases/{severe}").json()
+    due, opened = datetime.fromisoformat(d["urgent_review_due_at"]), datetime.fromisoformat(d["opened_at"])
+    assert timedelta(hours=3.9) < due - opened < timedelta(hours=4.1)  # 4 hours, not the 72 hours of next_step
+    assert d["next_step"]["due_at"] != d["urgent_review_due_at"]
+    assert api.act("clinician_pcp", severe, "complete_urgent_review", {"note": "Phoned the patient"}).status_code == 200
+    assert api.get("clinician_pcp", f"/api/cases/{severe}").json()["urgent_review_due_at"] is None
+    assert api.get("clinician_pcp", f"/api/cases/{scenario_id(app, 'unowned')}").json()["urgent_review_due_at"] is None
+
+
+def test_short_note_is_a_localised_domain_error(api):
+    severe = api.post("coordinator_auh", "/api/intake/result", {"patient_ref": "NOTE-1", "source_system": "IFHAS_SCREENING", "region": "AUH",
+                                                                "readings": [{"systolic": 185, "diastolic": 115}]}).json()["case_id"]
+    h = api.as_("clinician_pcp")
+    url = f"/api/cases/{severe}/actions"
+    en = api.client.post(url, headers=h, json={"action": "complete_urgent_review", "payload": {"note": ""}})
+    assert en.status_code == 422 and en.json() == {"code": "NOTE_TOO_SHORT", "message": "A note of at least 3 characters is needed."}
+    for lang, probe in (("ar", "يلزم"), ("fr", "Une note")):
+        r = api.client.post(url, headers={**h, "Accept-Language": lang}, json={"action": "complete_urgent_review", "payload": {"note": "ab"}})
+        assert r.json()["code"] == "NOTE_TOO_SHORT" and probe in r.json()["message"] and "String should" not in r.json()["message"]
+    other = api.post("coordinator_auh", "/api/intake/result", {"patient_ref": "NOTE-2", "source_system": "IFHAS_SCREENING", "region": "AUH",
+                                                               "readings": [{"systolic": 150, "diastolic": 95}]}).json()["case_id"]
+    r = api.client.post(f"/api/cases/{other}/actions", headers=api.as_("coordinator_auh"), json={"action": "escalate", "payload": {"reason": "x"}})
+    assert r.status_code == 422 and r.json()["code"] == "NOTE_TOO_SHORT"

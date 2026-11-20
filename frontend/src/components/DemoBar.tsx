@@ -10,6 +10,7 @@ import { Brand } from "./Brand";
 import { ConfirmDialog } from "./ConfirmDialog";
 import { LanguageSwitch } from "./LanguageSwitch";
 import { useToast } from "./Toast";
+import { usePersonaText } from "./usePersonaText";
 import { useErrorText } from "./States";
 
 function StripButton({ children, className, ...rest }: React.ButtonHTMLAttributes<HTMLButtonElement>) {
@@ -45,9 +46,10 @@ export function DemoBar() {
   const [open, setOpen] = useState(false);
 
   const u = user as { display_names?: Record<string, string>; names?: Record<string, string>; display_name?: string; name?: string } | null;
+  const pText = usePersonaText();
   const who =
     pickText(u?.display_names ?? u?.names, u?.display_name ?? u?.name ?? "", i18n.language) ||
-    (persona ? t(`personas.${persona}.name`) : "");
+    (persona ? pText(persona).name : "");
 
   function move(hours: number) {
     advance.mutate(
@@ -84,7 +86,7 @@ export function DemoBar() {
   );
 
   return (
-    <div role="region" aria-label={t("demo.bar")} className="relative z-40 flex-none bg-demo text-demo-ink">
+    <div data-demo-strip role="region" aria-label={t("demo.bar")} className="relative z-40 flex-none bg-demo text-demo-ink">
       <div className="mx-auto flex max-w-screen-2xl flex-wrap items-center gap-x-4 gap-y-2 px-3 py-1.5 sm:px-4">
         <Link to="/" aria-label={t("nav.home")} className="rounded-md">
           <Brand size={20} onDark />

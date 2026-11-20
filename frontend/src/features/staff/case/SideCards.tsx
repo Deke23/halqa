@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { useAuth } from "@/api/auth";
 import { Badge, Card, DueChip, EmptyState, JourneySteps, Timeline } from "@/components";
 import type { JourneyStepData, TimelineEvent } from "@/api/types";
-import { formatDateTime } from "@/lib/format";
+import { formatDate, formatDateTime } from "@/lib/format";
 import { pickText } from "@/lib/i18nField";
 import { useLabels } from "../labels";
 import { usePersonText } from "../PersonLabel";
@@ -37,7 +37,7 @@ export function PatientCard({ detail }: { detail: CaseDetail }) {
         {rows.map(([k, v]) => (
           <div key={k} className="contents">
             <dt className="text-muted">{k}</dt>
-            <dd className="font-medium">{v}</dd>
+            <dd className="font-medium first-letter:uppercase">{v}</dd>
           </div>
         ))}
       </dl>
@@ -174,7 +174,13 @@ export function ClosureSummary({ detail }: { detail: CaseDetail }) {
   const { t, i18n } = useTranslation("staff");
   const labels = useLabels();
   const person = usePersonText();
+  const { user: viewer } = useAuth();
   const c = detail.closure;
+  const refText = (ref: string) => {
+    const m = /^reading:(\d+)$/.exec(ref);
+    const r = m ? detail.readings.find((x) => x.id === Number(m[1])) : undefined;
+    return r ? t("closure.readingRef", { date: formatDate(r.taken_at, i18n.language), value: `${r.systolic}/${r.diastolic}` }) : ref;
+  };
   if (!c) return null;
   return (
     <Card title={t("closure.recorded")}>
@@ -192,12 +198,12 @@ export function ClosureSummary({ detail }: { detail: CaseDetail }) {
         {c.evidence_ref && (
           <div>
             <dt className="text-muted">{t("closure.refLegend")}</dt>
-            <dd className="font-medium">{c.evidence_ref}</dd>
+            <dd className="font-medium">{refText(c.evidence_ref)}</dd>
           </div>
         )}
         <div className="sm:col-span-2">
           <dt className="text-muted">{t("closure.note")}</dt>
-          <dd className={c.decision_note ? "font-medium" : "text-muted"}>{c.decision_note ?? t("clinicianOnly")}</dd>
+          <dd className={c.decision_note ? "font-medium" : "text-muted"}>{c.decision_note ?? (viewer?.role === "clinician" ? t("closure.noNote") : t("clinicianOnly"))}</dd>
         </div>
       </dl>
     </Card>

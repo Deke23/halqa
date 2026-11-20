@@ -559,6 +559,8 @@ export interface components {
             /** Owner Name */
             owner_name: string | null;
             owner_person: components["schemas"]["PersonRef"] | null;
+            /** Urgent Review Due At */
+            urgent_review_due_at: string | null;
             /** Plan Active */
             plan_active: boolean;
             next_step: components["schemas"]["NextStepOut"] | null;
@@ -1299,6 +1301,11 @@ export interface components {
             region: components["schemas"]["Region"];
             /** Description */
             description: string;
+            /**
+             * Listed
+             * @default true
+             */
+            listed: boolean;
         };
         /**
          * PersonaKey

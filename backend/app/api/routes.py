@@ -51,13 +51,11 @@ def personas(db: Session = Depends(get_db)):
     rows = db.scalars(select(User).where(User.persona_key.is_not(None)).order_by(User.id))
     out = []
     for u in rows:
-        if u.persona_key in ("clinician_yde", "specialist_yde"):
-            continue
         display, title = split_name(u.name, u.role)
         out.append(S.PersonaInfo(persona=u.persona_key, name=u.name, display_name=display, role_title=title, role=u.role,
                                  display_names=S.I18nText(**i18n.person_names(u.name)),
                                  role_titles=S.I18nText(**i18n.person_roles(u.name, u.role)),
-                                 region=u.region, description=u.description))
+                                 region=u.region, description=u.description, listed=u.persona_key != "specialist_yde"))
     return out
 
 

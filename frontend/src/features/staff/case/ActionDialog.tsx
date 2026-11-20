@@ -10,6 +10,14 @@ import { useLabels } from "../labels";
 import type { Action, CaseDetail, ConfigOut, SlotOut } from "../types";
 
 /** Actions that open a form here. Closure has its own dialog. */
+const NOTE_RULES: Partial<Record<Action, { field: string; min: number }>> = {
+  complete_urgent_review: { field: "note", min: 5 },
+  reject_referral: { field: "reason", min: 5 },
+  escalate: { field: "reason", min: 5 },
+  reopen: { field: "reason", min: 5 },
+  refer: { field: "reason", min: 5 },
+};
+
 export const FORM_ACTIONS: Action[] = [
   "notify",
   "choose_confirmation",
@@ -66,6 +74,7 @@ export function ActionDialog({ action, detail, onClose }: Props) {
   });
   const [error, setError] = useState<string | null>(null);
   const [suppressed, setSuppressed] = useState(false);
+  const [tried, setTried] = useState(false);
   const set = (k: string) => (value: string) => setV((x) => ({ ...x, [k]: value }));
   const onInput = (k: string) => (e: { target: { value: string } }) => set(k)(e.target.value);
 
@@ -127,8 +136,18 @@ export function ActionDialog({ action, detail, onClose }: Props) {
     }
   }
 
+  // Text fields that need a minimum length are checked here first, with a hint in the interface language.
+  const rule = NOTE_RULES[action];
+  const min = rule ? (action === "reopen" ? Number(config.data?.entries.find((e) => e.key === "reopen_reason_min_chars")?.value ?? rule.min) : rule.min) : 0;
+  const tooShort = !!rule && v[rule.field]!.trim().length < min;
+  const hint = (field: string) => (tried && rule?.field === field && tooShort ? t("action.tooShort", { min }) : undefined);
+
   function submit() {
     setError(null);
+    if (tooShort) {
+      setTried(true);
+      return;
+    }
     mutation.mutate(
       { action, payload: payload() },
       {
@@ -239,7 +258,7 @@ export function ActionDialog({ action, detail, onClose }: Props) {
               options={[{ value: "svc:hypertension_clinic", label: t("action.refer.service") }, ...clinicianOptions]}
             />
           </Field>
-          <Field label={t("action.fields.reason")}>
+          <Field label={t("action.fields.reason")} error={hint("reason")}>
             <Textarea value={v.reason} onChange={onInput("reason")} />
           </Field>
         </div>
@@ -254,7 +273,7 @@ export function ActionDialog({ action, detail, onClose }: Props) {
       body = (
         <div className="flex flex-col gap-3">
           <p className="text-sm text-muted">{t(`action.${action}.rule`)}</p>
-          <Field label={t("action.fields.reason")}>
+          <Field label={t("action.fields.reason")} error={hint("reason")}>
             <Textarea value={v.reason} onChange={onInput("reason")} />
           </Field>
         </div>
@@ -318,7 +337,7 @@ export function ActionDialog({ action, detail, onClose }: Props) {
       body = (
         <div className="flex flex-col gap-3">
           <p className="text-sm text-muted">{t("action.complete_urgent_review.rule")}</p>
-          <Field label={t("action.fields.reviewNote")}>
+          <Field label={t("action.fields.reviewNote")} error={hint("note")}>
             <Textarea value={v.note} onChange={onInput("note")} />
           </Field>
         </div>

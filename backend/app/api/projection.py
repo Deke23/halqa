@@ -199,6 +199,14 @@ def message_list(db: Session, case_id: int) -> list[S.MessageOut]:
     return out
 
 
+def _urgent_due(db: Session, case: Case):
+    if not case.urgent or case.urgent_review_done_at is not None:
+        return None
+    t = db.scalars(select(Task).where(Task.case_id == case.id, Task.type == "URGENT_REVIEW", Task.status == "OPEN")
+                   .order_by(Task.id.desc())).first()
+    return t.due_at if t else None
+
+
 def _teach_back(db: Session, case: Case, patient: Patient, cd, language: str | None = None) -> S.TeachBackOut | None:
     if cd.state is not State.NOTIFIED:
         return None
@@ -297,6 +305,7 @@ def case_detail(db: Session, case: Case, viewer: User, role: Role, now: datetime
                                  region_name_i18n=S.I18nText(**i18n.region_names(patient.region))),
         owner_role=case.owner_role, owner_user_id=case.owner_user_id, owner_name=user_name(db, case.owner_user_id),
         owner_person=person(db, case.owner_user_id), plan_active=plan_active(db, case),
+        urgent_review_due_at=None if patient_view else _urgent_due(db, case),
         next_step=next_out, progress=_progress(case), flags=flags, referral_status=case.referral_status,
         suggested_closure_type=None if patient_view else case.suggested_closure_type,
         readings=[S.ReadingOut(id=r.id, systolic=r.systolic, diastolic=r.diastolic, pulse=r.pulse, taken_at=r.taken_at,

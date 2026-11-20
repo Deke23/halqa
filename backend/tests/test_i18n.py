@@ -165,7 +165,7 @@ def test_other_errors_follow_the_header_and_unknown_languages_fall_back(api):
         r = api.client.get("/api/cases", headers={"Accept-Language": lang})
         assert r.status_code == 401 and r.json()["code"] == "NOT_AUTHENTICATED" and probe.search(r.json()["message"]), lang
     r = api.client.get("/api/nothing/here", headers={"Accept-Language": "ar"})
-    assert r.status_code == 404 and r.json()["code"] == "NOT_FOUND" or r.status_code in (404, 200)
+    assert r.status_code == 404 and r.json()["code"] == "NOT_FOUND"
     wrong = api.act("patient_auh", api.case_id("patient_auh"), "close", {"evidence_type": "BP_CONTROLLED", "decision_note": "a note that is long"})
     assert wrong.status_code == 403
     r = api.client.post(f"/api/cases/{api.case_id('patient_auh')}/actions", headers={**api.as_("patient_auh"), "Accept-Language": "ar"},

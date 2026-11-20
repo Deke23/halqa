@@ -338,7 +338,8 @@
     "feedback": {
       "PLAN_SMALLER": "That is fine. Some weeks are like this. Next week's step is smaller, so it is easier to fit in.",
       "PLAN_LARGER_OFFERED": "Thank you. Your next action is ready. If you like, you can choose a slightly bigger step later. It is your choice.",
-      "PLAN_NEXT": "Thank you for checking in. Your next action is ready."
+      "PLAN_NEXT": "Thank you for checking in. Your next action is ready.",
+      "MISSED_SMALLEST": "That is fine. Some weeks are like this. Your step is already the smallest it can be."
     },
     "noBlameTitle": "A gentle note",
     "noBlameLapsed": "Last week did not go to plan. That is fine. This week's step is smaller.",
@@ -349,7 +350,8 @@
     "historyStatus": {
       "done": "Done",
       "partly": "Part of it",
-      "missed": "Not this week"
+      "missed": "Not this week",
+      "lapsed": "No check-in recorded"
     },
     "diaryTitle": "Activity and sleep diary",
     "diaryNote": "This diary comes from a sample wearable. It shows steps, active minutes and sleep. It is never used as a blood pressure value.",
@@ -476,15 +478,15 @@
     },
     "working": "Working",
     "did": {
-      "review": "{{who}} reviewed the readings and confirmed the raised average.",
+      "review": "{{who}} reviewed the readings.",
       "refer": "{{who}} sent the referral.",
-      "accept": "{{who}} accepted the referral.",
+      "accept": "{{who}} accepted it.",
       "book": "{{who}} booked the visit.",
-      "visit": "{{who}} recorded the visit and started treatment.",
-      "skip": "The demo clock moved forward by one week.",
-      "sampleWeek": "A sample week of readings was sent.",
-      "close": "{{who}} closed the case with a recorded decision.",
-      "abpm": "{{who}} entered the readings from your 24 hour monitor."
+      "visit": "{{who}} recorded the visit.",
+      "skip": "Demo clock moved one week.",
+      "sampleWeek": "Sample week sent.",
+      "close": "{{who}} closed the case.",
+      "abpm": "{{who}} entered the monitor readings."
     },
     "note": {
       "review": "Demo shortcut: home average reviewed.",
@@ -493,7 +495,8 @@
     },
     "failed": "That did not work: {{message}}",
     "close": "Care team: close my case",
-    "abpm": "Care team: record my 24 hour monitor"
+    "abpm": "Care team: record my 24 hour monitor",
+    "clockNote": "Moves the demo clock forward by about a week."
   },
   "phone": {
     "title": "Messages from your care team",
@@ -525,8 +528,10 @@
       "done": "Done",
       "partly": "Part of it",
       "missed": "Not this week",
-      "call_me": "Call me"
+      "call_me": "Call me",
+      "continue": "Continue"
     },
-    "readingHint": "Type it like 150/95"
+    "readingHint": "Type it like 150/95",
+    "stopped": "Messages on this channel are stopped. To start them again, contact your care team."
   }
 }

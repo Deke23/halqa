@@ -21,13 +21,13 @@ sample_slots:
   fr:
     emergency_instruction: Allez aux urgences les plus proches.
 text:
-  en: Your answer means you need help now. {emergency_instruction} Do not wait for a reply.
-  ar: إجابتك تعني أنك بحاجة إلى مساعدة الآن. {emergency_instruction} لا تنتظر ردًا.
-  fr: Votre réponse indique qu'il faut de l'aide maintenant. {emergency_instruction} N'attendez pas de réponse.
+  en: You need help now. {emergency_instruction} The care team will call you. Reply 1 later to continue.
+  ar: تحتاج إلى مساعدة الآن. {emergency_instruction} سيتصل بك فريق الرعاية. أرسل 1 لاحقًا للمتابعة.
+  fr: Il faut de l'aide maintenant. {emergency_instruction} L'équipe vous appellera. Répondez 1 plus tard pour continuer.
 sms_chars_with_sample_slots:
-  en: 75
-  ar: 73
-  fr: 118
+  en: 88
+  ar: 89
+  fr: 128
 gsm7_safe_with_sample_slots:
   en: true
   ar: false
