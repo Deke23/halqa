@@ -28,4 +28,4 @@ Thumbs.db
 .claude/
 
 # Agent test drivers and captures
-screenshots/
+/screenshots/

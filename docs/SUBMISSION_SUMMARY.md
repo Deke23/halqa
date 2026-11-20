@@ -26,7 +26,7 @@ ASSUMPTIONS AND LIMITATIONS (THE FIVE THAT MATTER MOST)
 2. Arabic and French text has not been reviewed by native-speaker clinical reviewers.
 3. All integrations are simulated, and no message is really delivered. A patient with no consented channel depends on a coordinator's call.
 4. Authentication is demo only, PostgreSQL is unexercised, and there is no load testing or accessibility audit.
-5. An independent end-to-end test of the screens is still in progress. There is no hosted deployment: the entry is a public repository plus a demonstration video.
+5. An independent end-to-end run found defects, now fixed, but did not cover every screen in every language. There is no hosted deployment: the entry is a public repository plus a demonstration video.
 The prototype is not a medical device.
 
 PATH TO PILOT

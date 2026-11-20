@@ -56,7 +56,7 @@ Transparency page in Arabic: every threshold is shown with its placeholder statu
 > - Outcome results come from a simulation on synthetic people, mostly using our own assumptions. They are not evidence of clinical effectiveness.
 > - The optional AI re-wording was tested only with mocked HTTP calls and is off by default. Staff can send only stored, approved templates, never free text.
 > - PostgreSQL support is configured but has not been exercised.
-> - An independent end-to-end test of the screens is still in progress.
+> - An independent scripted end-to-end run covered the three demo parts and ten cross-persona checks. It found defects, which were fixed. It did not cover every screen in every language.
 > - The prototype is not a medical device and has not been assessed against any medical device regulation.
 
 Real, with automated tests: the case engine, the closure gate, the audit log, the consent effects, the message validator and the simulation code.
@@ -84,6 +84,7 @@ All are fictional.
 | Dr Omar (`clinician_specialist`) | Hypertension clinic. Accepts or rejects referrals |
 | Jean-Paul (`patient_yde`) | 47, Yaoundé, clinic reading 164/102. French, SMS and WhatsApp thread |
 | Clarisse (`nurse_yde`) | Nurse coordinator, Yaoundé |
+| Dr Brice (`clinician_yde`) | Primary care clinician, Yaoundé. Reviews urgent readings |
 | Programme analyst (`analyst`) | Aggregate dashboard only |
 
 ## Guardrails

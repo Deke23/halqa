@@ -759,7 +759,7 @@ A flake found and fixed during testing: the token check in `backend/app/api/auth
 23. A closure decision note passes the gate if it is long enough. The gate cannot judge it.
 24. The wearable diary is a static sample series, not a device integration.
 25. The reply grammar is rigid. A patient who types something it does not know gets a fixed "please reply with" message, and after two unreadable replies a call task. The teach-back is a three-option question that can be guessed. A reading typed by a patient cannot be checked against a real cuff.
-26. The lead has viewed the main screens from a production build, but not every screen in every language, and an independent scripted end-to-end run is still in progress. The repository has no front-end tests, and the GitHub Actions workflow has not been rerun since its front-end lockfile was repaired.
+26. The lead has viewed the main screens from a production build, but not every screen in every language, and an independent scripted end-to-end run covered the three demo parts and ten cross-persona checks only. The defects it found were fixed. The repository has no front-end tests. The GitHub Actions workflow passed on the commit that carried those fixes.
 27. The emergency number 998, the plan actions and all message wording are unchecked by any clinician or official source.
 28. There is no hosted deployment. The entry is a public repository plus a demonstration video.
 29. The prototype is not a medical device and has not been assessed against any medical device regulation.
