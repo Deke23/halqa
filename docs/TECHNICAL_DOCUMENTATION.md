@@ -2,7 +2,7 @@
 
 Future Health Digital Innovation Challenge, Population Health, Challenge 05 "Closing the Screening-to-Care Loop". Team Latitude-IT. Hackathon prototype.
 
-This document describes what the code in this repository does on the date of writing (2026-11-20), after a hardening pass that closed several gaps found in a first review (the lines prefixed `H:` in `docs/DECISIONS.md` list them, and the tests are in `backend/tests/test_hardening.py`). The entry is submitted as a public code repository plus a demonstration video. There is no hosted deployment. Where the original specification (`docs/SPEC.md`) and the code differ, this document follows the code and says so. Nothing here has been clinically validated. Every person, reading, provider and message in the system is synthetic.
+This document describes what the code in this repository does on the date of writing (2026-11-20), after a hardening pass that closed several gaps found in a first review (the lines prefixed `H:` in `docs/DECISIONS.md` list them, and the tests are in `backend/tests/test_hardening.py`). The entry is submitted as a public code repository plus a demonstration video, with a demo instance hosted at https://halqa-qusd.onrender.com on a free tier. Where the original specification (`docs/SPEC.md`) and the code differ, this document follows the code and says so. Nothing here has been clinically validated. Every person, reading, provider and message in the system is synthetic.
 
 Contents: 1 Summary, 2 System architecture, 3 Case model, 4 Clinical boundaries, 5 Responsible AI, 6 Data, 7 Data governance and privacy, 8 Outcome measures and simulation, 9 Interoperability and path to deployment, 10 Testing and verification, 11 Assumptions and limitations, 12 How to run.
 
@@ -38,7 +38,7 @@ Two settings share one rule engine:
 | An audit log that the application cannot update or delete, with database triggers on SQLite | The same triggers on PostgreSQL. The SQL exists but has not been run |
 | A live dashboard computed from the cases in the database, counting only people who opted in to research use | Evidence of clinical effect. The seeded demo cases are constructed |
 | A seeded Monte Carlo simulation on a synthetic population, with all inputs listed | Realism of the simulation inputs. Almost all are our own assumptions |
-| SQLite storage. The production `Dockerfile` builds and runs (verified by the team on 18 November 2026, see section 10) | PostgreSQL, which is still unexercised. There is no hosted deployment: the entry is a public repository plus a video |
+| SQLite storage. The production `Dockerfile` builds and runs (verified by the team on 18 November 2026, see section 10) | PostgreSQL, which is still unexercised. The hosted demo is a free-tier instance with temporary storage, not a production deployment |
 | Front-end screens for every role in English, Arabic and French, with display strings supplied by the backend in all three languages | An independent end-to-end check of every screen in every language. A scripted run by an independent tester is in progress |
 
 ### The six solution points of the challenge
@@ -641,7 +641,7 @@ There are no FHIR write endpoints and no FHIR search. The route is open to clini
 - Database: SQLite by default (`SQLITE_PATH`). PostgreSQL is selected when `DATABASE_URL` is set, and the driver `psycopg` is in the requirements. This path was not exercised, and neither was the PostgreSQL audit trigger SQL. Tables are created with `create_all`, and a small additive upgrade adds nullable columns that an older database lacks. There are no migrations beyond that, so production would need a migration tool.
 - Stateless tokens allow more than one API instance, but several things have not been tested or designed for it: the 60 second evaluation task would run in every instance, concurrent writes to the same case are untested, and the case list recalculates and writes every case on each request. That last point will not scale to large caseloads without a stored queue or indexed query.
 - Failure handling: a failed 60 second pass is logged with a traceback and the loop continues (test `test_tick_logs_the_traceback_and_keeps_running`). Evaluation on case reads continues regardless. There is still no monitoring or alerting, so a log line is the only signal.
-- There is no hosted deployment. The entry is submitted as a public code repository plus a demonstration video, and a judge who wants to run it builds the image locally (section 12).
+- A demo instance is hosted at https://halqa-qusd.onrender.com on a free tier, from the blueprint in `render.yaml`. It sleeps when idle, so the first load can take about a minute, and its SQLite data resets to the seed on restart. It was checked on 20 November 2026: the health check, the front end and guest sign-in for the eight listed personas. A judge can also build the image locally (section 12).
 - No load testing was done. No cost estimate is given in this document.
 
 ### What a pilot would measure (proposed, using the measures in section 8)
@@ -761,7 +761,7 @@ A flake found and fixed during testing: the token check in `backend/app/api/auth
 25. The reply grammar is rigid. A patient who types something it does not know gets a fixed "please reply with" message, and after two unreadable replies a call task. The teach-back is a three-option question that can be guessed. A reading typed by a patient cannot be checked against a real cuff.
 26. The lead has viewed the main screens from a production build, but not every screen in every language, and an independent scripted end-to-end run covered the three demo parts and ten cross-persona checks only. The defects it found were fixed. The repository has no front-end tests. The GitHub Actions workflow passed on the commit that carried those fixes.
 27. The emergency number 998, the plan actions and all message wording are unchecked by any clinician or official source.
-28. There is no hosted deployment. The entry is a public repository plus a demonstration video.
+28. The hosted demo is a free-tier instance with temporary storage and demo-only authentication. It is not a production deployment.
 29. The prototype is not a medical device and has not been assessed against any medical device regulation.
 
 ## 12. How to run

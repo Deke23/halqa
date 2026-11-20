@@ -2,7 +2,7 @@
 
 When a screening finds a raised blood pressure, the result is often issued and then nobody owns the next step: the patient may not understand it, referrals stall between providers, and nobody sees that a case is late. Halqa (Arabic for "loop") is a hackathon prototype that turns each raised reading into one case with eight states, one accountable owner and one due date at every step. Overdue, rejected and unowned cases show up in a coordinator queue, a severe reading creates a same-day clinician review, and only a clinician can close a case. After treatment starts, the patient gets one small weekly action that gets smaller, never harsher, when a week is missed.
 
-It answers Future Health Digital Innovation Challenge, Population Health, Challenge 05 "Closing the Screening-to-Care Loop", with Challenge 09 lifestyle features as the follow-up stage. Entry by Team Latitude-IT. The entry is a public code repository plus a demonstration video. There is no hosted deployment.
+It answers Future Health Digital Innovation Challenge, Population Health, Challenge 05 "Closing the Screening-to-Care Loop", with Challenge 09 lifestyle features as the follow-up stage. Entry by Team Latitude-IT. The entry is a public code repository, a demonstration video and a hosted demo instance at https://halqa-qusd.onrender.com (free tier: the first load can take about a minute, and the data resets to the seed on restart).
 
 ## Screenshots
 
