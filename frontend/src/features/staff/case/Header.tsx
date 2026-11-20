@@ -51,7 +51,7 @@ export function CaseHeader({ detail, onOpenFhir }: { detail: CaseDetail; onOpenF
             {flags.urgent_review_pending && <Badge tone="urgent">{t("header.urgentReviewPending")}</Badge>}
             {flags.rejected && <Badge tone="urgent">{t("header.rejected")}</Badge>}
             {flags.escalated && !closed && <Badge tone="urgent">{t("header.escalated", { level: step?.escalation_level ?? 2 })}</Badge>}
-            {flags.needs_clinician_decision && <Badge tone="due">{t("header.needsDecision")}</Badge>}
+            {flags.needs_clinician_decision && !closed && <Badge tone="due">{t("header.needsDecision")}</Badge>}
             {flags.care_coordination_withdrawn && <Badge tone="due">{t("header.coordinationWithdrawn")}</Badge>}
             {flags.closure_ready && <Badge tone="accent">{t("header.closureReady")}</Badge>}
             <span className="text-xs text-muted">
