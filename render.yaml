@@ -1,0 +1,16 @@
+# Render blueprint for a public demo instance of the prototype.
+# The container listens on $PORT, which Render sets. Data is synthetic and lives in SQLite
+# on the instance's temporary disk, so a restart restores the seeded demo data.
+services:
+  - type: web
+    name: halqa
+    runtime: docker
+    plan: free
+    healthCheckPath: /api/health
+    envVars:
+      - key: GUEST_TOKEN_SECRET
+        generateValue: true
+      - key: DEMO_MODE
+        value: "true"
+      - key: WORDING_PROVIDER
+        value: none
