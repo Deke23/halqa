@@ -2,6 +2,10 @@
 id: plan_action_salt_smallest
 version: 1
 purpose: 'Weekly action text: salt, smallest size. Used inside the weekly messages and in the plan view.'
+purpose_i18n:
+  en: 'Weekly action text: salt, smallest size.'
+  ar: 'نص الإجراء الأسبوعي: الملح، أصغر حجم.'
+  fr: 'Texte de l''action hebdomadaire : le sel, plus petite taille.'
 channel_limits:
   app: 900
   whatsapp: 1000

@@ -93,7 +93,7 @@ export function JsonViewer({ data, defaultDepth = 1, className }: JsonViewerProp
       <div
         dir="ltr"
         lang="en"
-        className={cx("overflow-x-auto rounded-lg border border-line bg-surface-2 p-3 font-mono text-xs leading-relaxed")}
+        className={cx("overflow-x-auto rounded-control border border-line bg-surface-2 p-3 font-mono text-xs leading-relaxed")}
       >
         <Node key={version} value={data} depth={0} defaultDepth={depth} />
       </div>

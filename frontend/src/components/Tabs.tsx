@@ -4,7 +4,7 @@ import { cx } from "@/lib/cx";
 export interface TabItem {
   id: string;
   label: ReactNode;
-  /** Optional count shown next to the label. */
+  /** Optional count shown next to the label as a mono readout. */
   count?: number;
 }
 
@@ -18,7 +18,7 @@ export interface TabsProps {
   className?: string;
 }
 
-/** Tab list with roving focus. Arrow keys move, Home and End jump. RTL-aware. */
+/** Underline tabs with roving focus. Arrow keys move, Home and End jump. RTL-aware. */
 export function Tabs({ tabs, value, onChange, label, panelId, className }: TabsProps) {
   const refs = useRef<Array<HTMLButtonElement | null>>([]);
 
@@ -39,7 +39,7 @@ export function Tabs({ tabs, value, onChange, label, panelId, className }: TabsP
   }
 
   return (
-    <div role="tablist" aria-label={label} className={cx("flex gap-1 overflow-x-auto border-b border-line", className)}>
+    <div role="tablist" aria-label={label} className={cx("flex gap-5 overflow-x-auto border-b border-line", className)}>
       {tabs.map((tab, i) => {
         const selected = tab.id === value;
         return (
@@ -57,13 +57,20 @@ export function Tabs({ tabs, value, onChange, label, panelId, className }: TabsP
             onClick={() => onChange(tab.id)}
             onKeyDown={(e) => onKeyDown(e, i)}
             className={cx(
-              "-mb-px inline-flex min-h-11 items-center gap-2 whitespace-nowrap border-b-2 px-3 text-sm font-medium",
-              selected ? "border-accent text-accent-ink" : "border-transparent text-muted hover:text-ink",
+              "-mb-px inline-flex min-h-11 items-center gap-2 whitespace-nowrap border-b-2 text-sm font-medium",
+              selected ? "border-accent text-ink" : "border-transparent text-muted hover:text-ink",
             )}
           >
             {tab.label}
             {tab.count !== undefined && (
-              <span className="rounded-full bg-surface-2 px-2 text-xs text-ink latin-digits">{tab.count}</span>
+              <span
+                className={cx(
+                  "readout rounded px-1.5 text-xs leading-5",
+                  selected ? "bg-accent-soft text-accent-ink" : "bg-surface-2 text-muted",
+                )}
+              >
+                {tab.count}
+              </span>
             )}
           </button>
         );

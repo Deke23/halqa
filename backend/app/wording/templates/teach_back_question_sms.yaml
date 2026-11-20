@@ -2,6 +2,10 @@
 id: teach_back_question_sms
 version: 1
 purpose: SMS teach-back question with three answers.
+purpose_i18n:
+  en: SMS teach-back question with three answers.
+  ar: سؤال التحقق من الفهم برسالة نصية بثلاث إجابات.
+  fr: Question SMS de vérification avec trois réponses.
 channel_limits:
   sms:
     en: 160

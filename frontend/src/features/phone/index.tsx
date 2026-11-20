@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, EmptyState, ErrorState, Loading, useErrorText } from "@/components";
 import { cx } from "@/lib/cx";
+import { personName } from "@/lib/i18nField";
 import { formatDate, localeFor } from "@/lib/format";
 import { initials } from "@/lib/format";
 import { usePatientCase, useSendReply, useThread, type MessageOut, type PatientCase, type ValidReply } from "@/features/patient/api";
@@ -37,7 +38,7 @@ export default function PhoneThread() {
   if (!c) return <EmptyState title={t("noCase.title")} description={t("noCase.description")} />;
 
   const wa = look === "whatsapp";
-  const contact = thread.data?.find((m) => m.direction === "OUT" && m.sender_person)?.sender_person?.name ?? c.owner_person?.name ?? "";
+  const contact = personName(thread.data?.find((m) => m.direction === "OUT" && m.sender_person)?.sender_person ?? c.owner_person);
   const replies = [...(thread.data ?? [])].reverse().find((m) => m.direction === "OUT")?.valid_replies ?? [];
   const pick = (r: ValidReply) => {
     if (r.meaning_key === "reply.reading") {
@@ -124,7 +125,7 @@ export default function PhoneThread() {
 function Header({ c, contact, look, onLook }: { c: PatientCase; contact: string; look: Look; onLook: (l: Look) => void }) {
   const { t, i18n } = useTranslation("patient");
   const wa = look === "whatsapp";
-  const owner = c.next_step?.owner_person?.name ?? c.owner_person?.name ?? "";
+  const owner = personName(c.next_step?.owner_person ?? c.owner_person);
   const due = c.next_step?.due_at;
   return (
     <div className={cx("flex flex-col gap-2 border-b border-line px-3 py-2", wa ? "bg-accent-strong text-white" : "bg-surface")}>
@@ -176,14 +177,14 @@ function Bubble({ m, wa, lng }: { m: MessageOut; wa: boolean; lng: string }) {
     <li className={cx("flex flex-col", mine ? "items-end" : "items-start")}>
       <div
         className={cx(
-          "max-w-[85%] whitespace-pre-line rounded-2xl px-3 py-2 text-[0.95rem] leading-snug",
+          "max-w-[85%] whitespace-pre-line rounded-2xl px-3.5 py-2.5 text-[0.95rem] leading-relaxed",
           mine ? "bg-accent text-white" : wa ? "bg-surface text-ink shadow-card" : "border border-line bg-surface text-ink",
           mine ? "rounded-ee-sm" : "rounded-es-sm",
         )}
       >
         <bdi>{m.text}</bdi>
       </div>
-      <span className="mt-0.5 px-1 text-xs text-muted">
+      <span className="mt-1 px-1 text-xs text-muted">
         <bdi>{shortTime(m.created_at, lng)}</bdi>
         {mine ? ` · ${t("phone.you")}` : ""}
         {wa && mine ? ` · ${t("phone.delivered")}` : ""}

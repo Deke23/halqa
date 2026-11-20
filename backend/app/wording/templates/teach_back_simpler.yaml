@@ -2,6 +2,10 @@
 id: teach_back_simpler
 version: 1
 purpose: Simpler re-explanation shown after a wrong teach-back answer.
+purpose_i18n:
+  en: Simpler re-explanation shown after a wrong teach-back answer.
+  ar: شرح أبسط يظهر بعد إجابة خاطئة عن سؤال الفهم.
+  fr: Explication plus simple affichée après une mauvaise réponse.
 channel_limits:
   app: 900
   whatsapp: 1000

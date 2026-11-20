@@ -41,7 +41,7 @@ export function Modal({ open, onClose, title, children, footer, size = "md" }: M
         if (e.target === ref.current) onClose();
       }}
       className={cx(
-        "m-auto w-[calc(100%-2rem)] rounded-card border border-line bg-surface p-0 text-ink shadow-xl backdrop:bg-black/40",
+        "rise-in m-auto w-[calc(100%-2rem)] rounded-sheet border border-line bg-surface p-0 text-ink shadow-float backdrop:bg-demo/50",
         widths[size],
       )}
     >

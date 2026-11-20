@@ -2,6 +2,10 @@
 id: no_blame_checkin
 version: 1
 purpose: No-blame check-in after a missed week. Makes the plan smaller.
+purpose_i18n:
+  en: No-blame check-in after a missed week. Makes the plan smaller.
+  ar: متابعة دون لوم بعد أسبوع فائت. تجعل الخطة أصغر.
+  fr: Point de suivi sans reproche après une semaine manquée. Rend le plan plus petit.
 channel_limits:
   app: 900
   whatsapp: 1000

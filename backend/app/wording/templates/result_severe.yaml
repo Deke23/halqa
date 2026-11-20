@@ -2,6 +2,10 @@
 id: result_severe
 version: 1
 purpose: Tell the patient about a very high reading that needs same-day clinician review, with red-flag advice from region config.
+purpose_i18n:
+  en: Tell the patient about a very high reading that needs same-day clinician review, with red-flag advice from region config.
+  ar: إبلاغ المريض بقراءة مرتفعة جدًا تحتاج إلى مراجعة الطبيب في اليوم نفسه، مع نصيحة الأعراض التحذيرية من إعدادات المنطقة.
+  fr: Informer le patient d'une mesure très élevée qui demande une revue clinique le jour même, avec les conseils sur les signes d'alerte de la région.
 channel_limits:
   app: 900
   whatsapp: 1000

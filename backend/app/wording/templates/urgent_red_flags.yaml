@@ -2,6 +2,10 @@
 id: urgent_red_flags
 version: 1
 purpose: Red-flag symptom advice. The emergency instruction comes from region config.
+purpose_i18n:
+  en: Red-flag symptom advice. The emergency instruction comes from region config.
+  ar: نصيحة الأعراض التحذيرية. تعليمات الطوارئ تأتي من إعدادات المنطقة.
+  fr: Conseils sur les signes d'alerte. La consigne d'urgence vient de la configuration de la région.
 channel_limits:
   app: 900
   whatsapp: 1000

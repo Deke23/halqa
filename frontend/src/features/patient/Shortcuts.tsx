@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useQueryClient } from "@tanstack/react-query";
-import { Button, Tag, useErrorText, useToast } from "@/components";
+import { Button, useErrorText, useToast } from "@/components";
 import { actAs, advanceClockAs, fromZonedInput, replyAs, slotsAs, toZonedInput, useDiary, useRegionZone, type PatientCase } from "./api";
 import { useDemoClock } from "@/api/hooks";
 
@@ -126,25 +126,19 @@ export function Shortcuts({ c, flow }: { c: PatientCase; flow: Flow }) {
   const keys: Key[] = flow === "auh" ? ["abpm", "review", "referral", "visit", "skip", "close"] : ["sampleWeek", "review", "referral", "book", "visit", "skip", "close"];
 
   return (
-    <details className="rounded-card border border-dashed border-info-ink/60 bg-info-soft text-info-ink">
-      <summary className="flex min-h-11 cursor-pointer items-center gap-2 px-4 py-2 font-semibold">
-        <span>{t("shortcuts.title")}</span>
-        <Tag className="font-normal">{t("shortcuts.badge")}</Tag>
+    <details className="demo-outline rounded-card text-sm text-ink">
+      <summary className="flex min-h-11 cursor-pointer items-center justify-between gap-2 px-4 py-2">
+        <span className="font-medium">{t("shortcuts.title")}</span>
+        <span className="text-xs text-muted">{t("shortcuts.badge")}</span>
       </summary>
-      <div className="flex flex-col gap-3 px-4 pb-4">
-        <p className="m-0 text-sm">{t("shortcuts.intro")}</p>
+      <div className="flex flex-col gap-2.5 px-4 pb-4">
+        <p className="m-0 text-xs text-muted">{t("shortcuts.intro")}</p>
         {keys.map((k) => (
-          <div key={k} className="flex flex-col gap-1">
-            <Button
-              variant="secondary"
-              fullWidth
-              loading={busy === k}
-              disabled={!avail[k] || busy !== null}
-              onClick={() => void run(k)}
-            >
+          <div key={k} className="flex flex-col gap-0.5">
+            <Button variant="secondary" size="sm" fullWidth loading={busy === k} disabled={!avail[k] || busy !== null} onClick={() => void run(k)} className="min-h-11 justify-start text-start">
               {t(`shortcuts.${k}`)}
             </Button>
-            {!avail[k] && <p className="m-0 text-xs">{t("shortcuts.unavailable", { reason: t(`shortcuts.needs.${k}`) })}</p>}
+            {!avail[k] && <p className="m-0 ps-1 text-xs text-muted">{t("shortcuts.unavailable", { reason: t(`shortcuts.needs.${k}`) })}</p>}
           </div>
         ))}
       </div>

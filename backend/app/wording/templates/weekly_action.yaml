@@ -2,6 +2,10 @@
 id: weekly_action
 version: 1
 purpose: One small weekly diet or activity action.
+purpose_i18n:
+  en: One small weekly diet or activity action.
+  ar: إجراء أسبوعي صغير واحد في الغذاء أو النشاط.
+  fr: Une petite action hebdomadaire sur l'alimentation ou l'activité.
 channel_limits:
   app: 900
   whatsapp: 1000

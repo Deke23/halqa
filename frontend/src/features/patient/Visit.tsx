@@ -1,17 +1,18 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, Card, EmptyState, ErrorState, Loading, SimulatedTag, useErrorText, useToast } from "@/components";
+import { Button, EmptyState, ErrorState, Loading, SimulatedTag, useErrorText, useToast } from "@/components";
 import { formatNumber } from "@/lib/format";
+import { personName } from "@/lib/i18nField";
 import { cx } from "@/lib/cx";
 import { formatLocal, usePatientAction, usePatientSlots, useRegionZone, type SlotOut } from "./api";
-import { Notice, PageTitle, useCurrentCase } from "./ui";
+import { Notice, PageTitle, useCurrentCase, Panel, i18nOf } from "./ui";
 
 export default function Visit() {
   const { t, i18n } = useTranslation("patient");
   const c = useCurrentCase();
   const tz = useRegionZone(c.region);
   const accepted = c.state === "REFERRED" && c.referral_status === "ACCEPTED";
-  const toName = c.referral?.to_name ?? null;
+  const toName = personName(c.referral?.to_person) || i18nOf(c.referral, "to_name") || null;
 
   let statusKey: string;
   let params: Record<string, string> = {};
@@ -29,19 +30,19 @@ export default function Visit() {
   return (
     <div className="flex flex-col gap-4">
       <PageTitle>{t("visit.heading")}</PageTitle>
-      <Card title={t("visit.statusTitle")}>
+      <Panel title={t("visit.statusTitle")}>
         <div className="flex flex-col gap-2">
           <p className="m-0 text-lg">{t(`visit.status.${statusKey}`, params)}</p>
           {c.referral && c.state !== "CONFIRMED" && c.referral.to_name && (
             <p className="m-0 text-sm text-muted">
-              {t("visit.referralTo")}: <bdi>{c.referral.to_name}</bdi>
+              {t("visit.referralTo")}: <bdi>{toName}</bdi>
             </p>
           )}
         </div>
-      </Card>
+      </Panel>
 
       {c.appointment && (
-        <Card title={t("visit.bookedTitle")}>
+        <Panel title={t("visit.bookedTitle")}>
           <dl className="m-0 grid grid-cols-[auto_1fr] gap-x-4 gap-y-2">
             <dt className="text-muted">{t("visit.when")}</dt>
             <dd className="m-0 font-medium">
@@ -49,15 +50,15 @@ export default function Visit() {
             </dd>
             <dt className="text-muted">{t("visit.with")}</dt>
             <dd className="m-0 font-medium">
-              <bdi>{c.appointment.provider_name}</bdi>
+              <bdi>{i18nOf(c.appointment, "provider_name")}</bdi>
             </dd>
             <dt className="text-muted">{t("visit.where")}</dt>
             <dd className="m-0 font-medium">
-              <bdi>{c.appointment.location}</bdi>
+              <bdi>{i18nOf(c.appointment, "location")}</bdi>
             </dd>
           </dl>
           {c.state === "APPOINTMENT_BOOKED" && <p className="mb-0 mt-3 text-sm text-muted">{t("visit.afterVisit")}</p>}
-        </Card>
+        </Panel>
       )}
 
       {accepted && <SlotPicker />}
@@ -109,7 +110,7 @@ function SlotPicker() {
   };
 
   return (
-    <Card title={t("visit.slotsTitle")}>
+    <Panel title={t("visit.slotsTitle")}>
       {slots.isLoading ? (
         <Loading />
       ) : slots.error ? (
@@ -142,10 +143,10 @@ function SlotPicker() {
                     <bdi>{formatLocal(s.starts_at, i18n.language, tz)}</bdi>
                   </span>
                   <span className="text-sm">
-                    <bdi>{s.provider_name}</bdi>
+                    <bdi>{i18nOf(s, "provider_name")}</bdi>
                   </span>
                   <span className="text-sm text-muted">
-                    <bdi>{s.location}</bdi>
+                    <bdi>{i18nOf(s, "location")}</bdi>
                   </span>
                   <CoverLine slot={s} />
                 </span>
@@ -164,6 +165,6 @@ function SlotPicker() {
         </fieldset>
       )}
       {act.isError && <Notice tone="due">{errorText(act.error)}</Notice>}
-    </Card>
+    </Panel>
   );
 }

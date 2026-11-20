@@ -1,0 +1,242 @@
+# Error messages per code and language. One entry per message the API can raise; `en` is the exact text the code produces,
+# with {placeholders} for the variable parts. The API reads the Accept-Language header (en, ar, fr; default en) and returns
+# the matching text. Entries for one code are tried in order, so the catch-all comes last. Digits stay Latin in every language.
+
+messages:
+  - code: NOT_AUTHENTICATED
+    en: "Send a Bearer guest token."
+    ar: "أرسل رمز الضيف من نوع Bearer."
+    fr: "Envoyez un jeton invité de type Bearer."
+  - code: INVALID_TOKEN
+    en: "The token is invalid or expired."
+    ar: "الرمز غير صالح أو انتهت صلاحيته."
+    fr: "Le jeton est invalide ou a expiré."
+  - code: UNKNOWN_USER
+    en: "The token's user no longer exists. Start a new guest session."
+    ar: "المستخدم الخاص بالرمز لم يعد موجودًا. ابدأ جلسة ضيف جديدة."
+    fr: "L'utilisateur de ce jeton n'existe plus. Ouvrez une nouvelle session invité."
+  - code: FORBIDDEN_ROLE
+    en: "Only a clinician can close a case."
+    ar: "الطبيب وحده يستطيع إغلاق الحالة."
+    fr: "Seul un clinicien peut clôturer un dossier."
+  - code: FORBIDDEN_ROLE
+    en: "Only a clinician can reopen a case."
+    ar: "الطبيب وحده يستطيع إعادة فتح الحالة."
+    fr: "Seul un clinicien peut rouvrir un dossier."
+  - code: FORBIDDEN_ROLE
+    en: "The {role} role may not perform {action}."
+    ar: "لا يجوز لدور {role} تنفيذ الإجراء {action}."
+    fr: "Le rôle {role} n'est pas autorisé à effectuer l'action {action}."
+  - code: FORBIDDEN_ROLE
+    en: "The {role} role cannot use this route."
+    ar: "لا يستطيع دور {role} استخدام هذه الوظيفة."
+    fr: "Le rôle {role} ne peut pas utiliser cette fonction."
+  - code: FORBIDDEN_SOURCE
+    en: "A {role} cannot enter a {source} reading."
+    ar: "لا يستطيع دور {role} إدخال قراءة من نوع {source}."
+    fr: "Le rôle {role} ne peut pas saisir une mesure de type {source}."
+  - code: WRONG_STATE
+    en: "{action} is not possible while the case is {state}."
+    ar: "لا يمكن تنفيذ {action} والحالة في مرحلة {state}."
+    fr: "{action} n'est pas possible lorsque le dossier est à l'étape {state}."
+  - code: CLOSURE_EVIDENCE_TYPE_REQUIRED
+    en: "Closing a case needs an evidence type from the list."
+    ar: "إغلاق الحالة يتطلب اختيار نوع دليل من القائمة."
+    fr: "Pour clôturer un dossier, il faut choisir un type de preuve dans la liste."
+  - code: CLOSURE_EVIDENCE_REQUIRED
+    en: "Closing a case needs an evidence reference or a decision note of at least {min} characters."
+    ar: "إغلاق الحالة يتطلب مرجع دليل أو ملاحظة قرار لا يقل طولها عن {min} حرفًا."
+    fr: "Pour clôturer un dossier, il faut une référence de preuve ou une note de décision d'au moins {min} caractères."
+  - code: REOPEN_REASON_REQUIRED
+    en: "Reopening needs a reason of at least {min} characters."
+    ar: "إعادة الفتح تتطلب سببًا لا يقل طوله عن {min} حرفًا."
+    fr: "La réouverture demande un motif d'au moins {min} caractères."
+  - code: NO_URGENT_REVIEW
+    en: "There is no urgent review waiting for this case."
+    ar: "لا توجد مراجعة عاجلة بانتظار هذه الحالة."
+    fr: "Aucune revue urgente n'est en attente pour ce dossier."
+  - code: REFERRAL_ACTIVE
+    en: "This case already has an active referral."
+    ar: "لهذه الحالة إحالة فعّالة بالفعل."
+    fr: "Ce dossier a déjà une orientation en cours."
+  - code: CONSENT_WITHDRAWN
+    en: "The patient has withdrawn permission to share with the receiving provider. Ask the patient before referring."
+    ar: "سحب المريض موافقته على مشاركة بياناته مع الجهة المستقبِلة. اسأل المريض قبل الإحالة."
+    fr: "Le patient a retiré son accord pour le partage avec le prestataire destinataire. Demandez son accord avant d'orienter."
+  - code: CONSENT_WITHDRAWN
+    en: "The patient has withdrawn permission for this messaging channel or for care coordination. Nothing was sent; a coordinator task asks for another agreed route."
+    ar: "سحب المريض موافقته على قناة المراسلة هذه أو على تنسيق الرعاية. لم تُرسل أي رسالة، وهناك مهمة للمنسق للتواصل بوسيلة أخرى متفق عليها."
+    fr: "Le patient a retiré son accord pour ce canal de messages ou pour la coordination des soins. Rien n'a été envoyé ; une tâche du coordinateur demande un autre moyen convenu."
+  - code: NO_PENDING_REFERRAL
+    en: "There is no pending referral to decide."
+    ar: "لا توجد إحالة معلّقة لاتخاذ قرار بشأنها."
+    fr: "Il n'y a pas d'orientation en attente de décision."
+  - code: NO_PENDING_REFERRAL
+    en: "There is no referral on this case."
+    ar: "لا توجد إحالة لهذه الحالة."
+    fr: "Ce dossier n'a pas d'orientation."
+  - code: NOT_RECEIVING_CLINICIAN
+    en: "Only the receiving clinician can decide this referral."
+    ar: "الطبيب المستقبِل وحده يستطيع اتخاذ قرار بشأن هذه الإحالة."
+    fr: "Seul le clinicien destinataire peut décider de cette orientation."
+  - code: REFERRAL_NOT_ACCEPTED
+    en: "An appointment can be booked after the receiving clinician accepts the referral."
+    ar: "يمكن حجز الموعد بعد أن يقبل الطبيب المستقبِل الإحالة."
+    fr: "Un rendez-vous peut être réservé après l'acceptation de l'orientation par le clinicien destinataire."
+  - code: INSUFFICIENT_READINGS
+    en: "There are not yet enough confirmation readings to review."
+    ar: "لا توجد بعد قراءات تأكيد كافية للمراجعة."
+    fr: "Il n'y a pas encore assez de mesures de confirmation à examiner."
+  - code: SLOT_UNAVAILABLE
+    en: "That time is not available. Please choose another."
+    ar: "هذا الموعد غير متاح. يرجى اختيار موعد آخر."
+    fr: "Cet horaire n'est pas disponible. Veuillez en choisir un autre."
+  - code: PLAN_STOPPED
+    en: "The lifestyle programme is switched off for this patient, so there is no check-in."
+    ar: "برنامج نمط الحياة متوقف لهذا المريض، لذلك لا توجد متابعة."
+    fr: "Le programme de mode de vie est désactivé pour ce patient, il n'y a donc pas de point de suivi."
+  - code: NO_ACTIVE_WEEK
+    en: "There is no open plan week to check in."
+    ar: "لا يوجد أسبوع مفتوح في الخطة للمتابعة."
+    fr: "Il n'y a pas de semaine ouverte dans le plan pour un point de suivi."
+  - code: DEMO_MODE_OFF
+    en: "This control is only available when DEMO_MODE is on."
+    ar: "هذه الأداة متاحة فقط عند تفعيل وضع العرض التجريبي DEMO_MODE."
+    fr: "Cette commande n'est disponible que lorsque DEMO_MODE est activé."
+  - code: CASE_NOT_FOUND
+    en: "No such case."
+    ar: "لا توجد حالة بهذا الرقم."
+    fr: "Ce dossier n'existe pas."
+  - code: CASE_NOT_FOUND
+    en: "You have no open follow-up."
+    ar: "ليس لديك متابعة مفتوحة."
+    fr: "Vous n'avez aucun suivi en cours."
+  - code: NO_ACCESS
+    en: "You do not have access to this case."
+    ar: "لا تملك صلاحية الوصول إلى هذه الحالة."
+    fr: "Vous n'avez pas accès à ce dossier."
+  - code: PERSONA_NOT_FOUND
+    en: "That persona is not seeded. Reset the demo data."
+    ar: "هذه الشخصية غير موجودة في البيانات التجريبية. أعد ضبط البيانات التجريبية."
+    fr: "Ce profil n'existe pas dans les données de démonstration. Réinitialisez les données."
+  - code: ECONSULT_NOT_FOUND
+    en: "No such e-consult."
+    ar: "لا توجد استشارة إلكترونية بهذا الرقم."
+    fr: "Cette e-consultation n'existe pas."
+  - code: NOT_RECIPIENT
+    en: "Only the clinician who was asked can reply."
+    ar: "الطبيب الذي وُجّه إليه السؤال وحده يستطيع الرد."
+    fr: "Seul le clinicien sollicité peut répondre."
+  - code: ALREADY_ANSWERED
+    en: "This e-consult has already been answered."
+    ar: "تمت الإجابة عن هذه الاستشارة الإلكترونية من قبل."
+    fr: "Cette e-consultation a déjà reçu une réponse."
+  - code: UNKNOWN_TEMPLATE
+    en: "Only approved templates can be drafted."
+    ar: "يمكن إعداد مسودات من القوالب المعتمدة فقط."
+    fr: "Seuls les modèles approuvés peuvent servir de brouillon."
+  - code: TEMPLATE_UNAVAILABLE
+    en: "The template cannot be rendered with this case's data: {detail}"
+    ar: "تعذّر تكوين نص القالب ببيانات هذه الحالة: {detail}"
+    fr: "Le modèle ne peut pas être rempli avec les données de ce dossier : {detail}"
+  - code: TEMPLATE_UNAVAILABLE
+    en: "The template cannot be rendered: {detail}"
+    ar: "تعذّر تكوين نص القالب: {detail}"
+    fr: "Le modèle ne peut pas être rempli : {detail}"
+  - code: DRAFT_NOT_FOUND
+    en: "No such draft for this case. Create a draft first."
+    ar: "لا توجد مسودة بهذا الرقم لهذه الحالة. أنشئ مسودة أولًا."
+    fr: "Aucun brouillon de ce type pour ce dossier. Créez d'abord un brouillon."
+  - code: ALREADY_SENT
+    en: "This draft has already been sent."
+    ar: "أُرسلت هذه المسودة من قبل."
+    fr: "Ce brouillon a déjà été envoyé."
+  - code: APPROVAL_REQUIRED
+    en: "An AI re-worded draft must be approved by a staff member before it is sent."
+    ar: "المسودة التي أعاد الذكاء الاصطناعي صياغتها يجب أن يعتمدها أحد الموظفين قبل إرسالها."
+    fr: "Un brouillon reformulé par l'IA doit être approuvé par un membre de l'équipe avant l'envoi."
+  - code: VALIDATION_UNAVAILABLE
+    en: "The wording validator is not available."
+    ar: "أداة التحقق من الصياغة غير متاحة."
+    fr: "Le validateur de formulation n'est pas disponible."
+  - code: VALIDATION_FAILED
+    en: "The re-worded text failed validation: {detail}"
+    ar: "لم ينجح النص المعاد صياغته في التحقق: {detail}"
+    fr: "Le texte reformulé n'a pas passé la validation : {detail}"
+  - code: NO_DIARY
+    en: "No sample series for this user."
+    ar: "لا توجد بيانات نموذجية لهذا المستخدم."
+    fr: "Aucune série d'exemple pour cet utilisateur."
+  - code: NOT_FOUND
+    en: "No such route."
+    ar: "لا يوجد مسار بهذا العنوان."
+    fr: "Cette adresse n'existe pas."
+  - code: INVALID_PAYLOAD
+    en: "systolic must be higher than diastolic"
+    ar: "يجب أن يكون الضغط الانقباضي أعلى من الانبساطي."
+    fr: "La systolique doit être supérieure à la diastolique."
+  - code: INVALID_PAYLOAD
+    en: "taken_at must include a timezone"
+    ar: "يجب أن يتضمن وقت القياس المنطقة الزمنية."
+    fr: "L'heure de la mesure doit inclure le fuseau horaire."
+  - code: INVALID_PAYLOAD
+    en: "taken_at is in the future"
+    ar: "وقت القياس في المستقبل."
+    fr: "L'heure de la mesure est dans le futur."
+  - code: INVALID_PAYLOAD
+    en: "to_user_id must be an active clinician"
+    ar: "يجب أن يكون المستلم طبيبًا نشطًا."
+    fr: "Le destinataire doit être un clinicien actif."
+  - code: INVALID_PAYLOAD
+    en: "to_user_id must be another active clinician"
+    ar: "يجب أن يكون المستلم طبيبًا نشطًا آخر."
+    fr: "Le destinataire doit être un autre clinicien actif."
+  - code: INVALID_PAYLOAD
+    en: "Give to_user_id or to_service"
+    ar: "حدد الطبيب المستلم أو الخدمة المستلمة."
+    fr: "Indiquez le clinicien destinataire ou le service destinataire."
+  - code: INVALID_PAYLOAD
+    en: "user_id must be an active coordinator or clinician"
+    ar: "يجب أن يكون المستخدم منسقًا أو طبيبًا نشطًا."
+    fr: "L'utilisateur doit être un coordinateur ou un clinicien actif."
+  - code: INVALID_PAYLOAD
+    en: "channel is required for messaging_channel"
+    ar: "القناة مطلوبة عند تغيير الموافقة على قناة المراسلة."
+    fr: "Le canal est obligatoire pour le consentement au canal de messages."
+  - code: INVALID_PAYLOAD
+    en: "{detail}"
+    ar: "البيانات المرسلة غير صالحة: {detail}"
+    fr: "Les données envoyées ne sont pas valides : {detail}"
+
+terms:
+  states:
+    RESULT_ISSUED: {en: RESULT_ISSUED, ar: صدور النتيجة, fr: résultat émis}
+    NOTIFIED: {en: NOTIFIED, ar: إبلاغ المريض, fr: patient informé}
+    ACKNOWLEDGED: {en: ACKNOWLEDGED, ar: إقرار المريض بالفهم, fr: compréhension confirmée}
+    CONFIRMED: {en: CONFIRMED, ar: تأكيد القراءة, fr: mesure confirmée}
+    REFERRED: {en: REFERRED, ar: الإحالة, fr: orienté}
+    APPOINTMENT_BOOKED: {en: APPOINTMENT_BOOKED, ar: حجز الموعد, fr: rendez-vous réservé}
+    IN_CARE: {en: IN_CARE, ar: قيد الرعاية, fr: en suivi}
+    CLOSED: {en: CLOSED, ar: مغلقة, fr: clôturé}
+  actions:
+    notify: {en: notify, ar: إبلاغ المريض, fr: informer le patient}
+    acknowledge: {en: acknowledge, ar: الإقرار بالفهم, fr: confirmer la compréhension}
+    choose_confirmation: {en: choose_confirmation, ar: اختيار طريقة التأكيد, fr: choisir la méthode de confirmation}
+    add_reading: {en: add_reading, ar: إضافة قراءة, fr: ajouter une mesure}
+    review_confirmation: {en: review_confirmation, ar: مراجعة التأكيد, fr: examiner la confirmation}
+    refer: {en: refer, ar: الإحالة, fr: orienter}
+    accept_referral: {en: accept_referral, ar: قبول الإحالة, fr: accepter l'orientation}
+    reject_referral: {en: reject_referral, ar: رفض الإحالة, fr: refuser l'orientation}
+    assign_owner: {en: assign_owner, ar: تعيين مسؤول, fr: attribuer un responsable}
+    book_appointment: {en: book_appointment, ar: حجز موعد, fr: réserver un rendez-vous}
+    record_visit: {en: record_visit, ar: تسجيل الزيارة, fr: enregistrer la visite}
+    plan_checkin: {en: plan_checkin, ar: متابعة الخطة, fr: point de suivi du plan}
+    escalate: {en: escalate, ar: التصعيد, fr: escalader}
+    close: {en: close, ar: الإغلاق, fr: clôturer}
+    reopen: {en: reopen, ar: إعادة الفتح, fr: rouvrir}
+    update_consent: {en: update_consent, ar: تغيير الموافقة, fr: modifier le consentement}
+    complete_urgent_review: {en: complete_urgent_review, ar: إكمال المراجعة العاجلة, fr: terminer la revue urgente}
+  sources:
+    HOME_CUFF: {en: HOME_CUFF, ar: جهاز منزلي, fr: tensiomètre à domicile}
+    CLINIC: {en: CLINIC, ar: العيادة, fr: clinique}
+    ABPM: {en: ABPM, ar: جهاز 24 ساعة, fr: moniteur 24 heures}

@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { Badge, BPReading, Button, Card, EmptyState, Field, Input, RadioGroup, Tag, useErrorText, useToast } from "@/components";
+import { Badge, BPReading, Button, EmptyState, Field, Input, RadioGroup, Tag, useErrorText, useToast } from "@/components";
 import { useDemoClock } from "@/api/hooks";
 import { formatLocal, fromZonedInput, homeReadingDays, toZonedInput, useDiary, usePatientAction, useRegionZone, zoneLabel, type PatientCase } from "./api";
-import { Notice, PageTitle, useCurrentCase } from "./ui";
+import { Notice, PageTitle, useCurrentCase, Panel } from "./ui";
 
 const TOTAL_DAYS = 7;
 const linkBtn =
@@ -39,7 +39,7 @@ export default function Confirm() {
       {!reviewed && <MethodChoice caseId={c.id} method={method} />}
       {method === "HBPM" && <Readings c={c} locked={reviewed} />}
       {method === "ABPM" && !reviewed && (
-        <Card>
+        <Panel>
           <div className="flex flex-col gap-3">
             <p className="m-0">{t("confirm.abpmBody")}</p>
             {conf && conf.average_systolic !== null && conf.average_diastolic !== null && (
@@ -51,7 +51,7 @@ export default function Confirm() {
             )}
             {conf?.status === "CONFIRMED_RAISED" && <Notice tone="accent">{t("confirm.enough")}</Notice>}
           </div>
-        </Card>
+        </Panel>
       )}
     </div>
   );
@@ -69,7 +69,7 @@ function MethodChoice({ caseId, method }: { caseId: number; method: "HBPM" | "AB
       <div className="flex flex-col gap-3">
         <RadioGroup
           name="method"
-          legend={t("confirm.legend")}
+          legend={<span className="sr-only">{t("confirm.legend")}</span>}
           value={choice}
           onChange={setChoice}
           options={[
@@ -91,7 +91,7 @@ function MethodChoice({ caseId, method }: { caseId: number; method: "HBPM" | "AB
         </Button>
       </div>
   );
-  if (method === null) return <Card title={t("confirm.chooseTitle")}>{body}</Card>;
+  if (method === null) return <Panel title={t("confirm.chooseTitle")}>{body}</Panel>;
   return (
     <details className="rounded-card border border-line bg-surface shadow-card">
       <summary className="flex min-h-11 cursor-pointer items-center justify-between gap-2 px-4 py-2 font-medium">
@@ -196,16 +196,16 @@ function Readings({ c, locked }: { c: PatientCase; locked: boolean }) {
   return (
     <>
       {!locked && (
-        <Card title={t("confirm.howTitle")}>
+        <Panel title={t("confirm.howTitle")}>
           <ol className="m-0 flex flex-col gap-1.5 ps-5">
             {how.map((x) => (
               <li key={x}>{x}</li>
             ))}
           </ol>
-        </Card>
+        </Panel>
       )}
 
-      <Card title={t("confirm.progressTitle")}>
+      <Panel title={t("confirm.progressTitle")}>
         <div className="flex flex-col gap-3">
           <p className="text-lg font-semibold">
             <bdi>{t("confirm.dayOf", { n: dayCount, total: TOTAL_DAYS })}</bdi>
@@ -234,10 +234,10 @@ function Readings({ c, locked }: { c: PatientCase; locked: boolean }) {
           </div>
           {!locked && conf?.status === "CONFIRMED_RAISED" && <Notice tone="accent">{t("confirm.enough")}</Notice>}
         </div>
-      </Card>
+      </Panel>
 
       {!locked && (
-        <Card title={t("confirm.formTitle")}>
+        <Panel title={t("confirm.formTitle")}>
           <form onSubmit={submit} noValidate className="flex flex-col gap-3">
             <div className="grid grid-cols-2 gap-3">
               <Field label={t("confirm.systolic")} error={tried ? errors.sys : null} required>
@@ -257,21 +257,21 @@ function Readings({ c, locked }: { c: PatientCase; locked: boolean }) {
               {t("confirm.add")}
             </Button>
           </form>
-        </Card>
+        </Panel>
       )}
 
       {!locked && (
-        <Card title={t("confirm.demoTitle")} action={<Tag>{t("shortcuts.badge")}</Tag>} className="border-dashed">
+        <Panel title={t("confirm.demoTitle")} action={<Tag>{t("shortcuts.badge")}</Tag>} className="border-dashed">
           <div className="flex flex-col gap-3">
             <p className="m-0 text-sm text-muted">{t("confirm.demoText")}</p>
             <Button variant="secondary" loading={loadingSample} disabled={!diary.data || act.isPending} onClick={fillSample}>
               {loadingSample ? t("confirm.demoLoading") : t("confirm.demoButton")}
             </Button>
           </div>
-        </Card>
+        </Panel>
       )}
 
-      <Card title={t("confirm.listTitle")} action={<Badge>{home.length}</Badge>}>
+      <Panel title={t("confirm.listTitle")} action={<Badge>{home.length}</Badge>}>
         {home.length === 0 ? (
           <EmptyState description={t("confirm.listEmpty")} />
         ) : (
@@ -292,7 +292,7 @@ function Readings({ c, locked }: { c: PatientCase; locked: boolean }) {
             ))}
           </ul>
         )}
-      </Card>
+      </Panel>
     </>
   );
 }

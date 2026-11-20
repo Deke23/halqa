@@ -33,7 +33,8 @@
       "visit": "Where your referral is and how to book a visit",
       "weekly": "One small step each week, with no pressure",
       "diary": "Steps and sleep from a sample wearable"
-    }
+    },
+    "stepOf": "Step {{n}} of {{total}}"
   },
   "status": {
     "RESULT_ISSUED": "Your result has been received",
@@ -197,7 +198,8 @@
     "doneText": "You have understood your result. Next, we check your blood pressure again.",
     "toConfirm": "Choose how to check again",
     "alreadyDone": "You have already answered these questions.",
-    "notYet": "Your result has not been sent to you yet."
+    "notYet": "Your result has not been sent to you yet.",
+    "progress": "Question {{n}} of {{total}}"
   },
   "confirm": {
     "heading": "Check your blood pressure again",

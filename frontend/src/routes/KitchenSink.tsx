@@ -6,6 +6,8 @@ import type { CaseState, TimelineEvent } from "@/api/types";
 import {
   Badge,
   BPReading,
+  Brand,
+  LoopRing,
   Button,
   Card,
   ConfirmDialog,
@@ -79,10 +81,20 @@ function Showcase() {
     { key: "due", header: t("due.onTime"), cell: () => <DueChip dueAt={iso(-5)} now={NOW} /> },
   ];
 
-  const h = "mb-2 mt-6 text-sm font-semibold uppercase tracking-wide text-muted";
+  const h = "mb-1 mt-8 text-sm font-semibold text-muted";
 
   return (
     <div className="space-y-2">
+      <h3 className={h}>Brand, LoopRing</h3>
+      <div className="flex flex-wrap items-center gap-8">
+        <Brand size={32} />
+        <LoopRing reached={3} size={96} label="3/8">
+          <span className="readout text-lg font-semibold">3/8</span>
+        </LoopRing>
+        <LoopRing reached={8} closed size={56} label="closed" />
+        <BPReading systolic={152} diastolic={96} size="hero" />
+      </div>
+
       <h3 className={h}>Button</h3>
       <div className="flex flex-wrap gap-2">
         <Button>{t("generic.save")}</Button>
@@ -130,8 +142,8 @@ function Showcase() {
         {t("states.RESULT_ISSUED")}: <BPReading systolic={164} diastolic={102} size="sm" />
       </p>
       <div className="grid gap-3 sm:grid-cols-3">
-        <StatCard label={t("states.NOTIFIED")} value={<bdi dir="ltr">{t("units.hour", { count: 18 })}</bdi>} sub={<bdi dir="ltr">p90 {t("units.hour", { count: 30 })}</bdi>} n={42} />
-        <StatCard label={t("states.CLOSED")} value={<bdi dir="ltr">64%</bdi>} n={12} />
+        <StatCard label={t("states.NOTIFIED")} value="18" unit={t("units.hour", { count: 1 }).replace("1 ", "")} sub={<bdi dir="ltr">p90 30</bdi>} n={42} />
+        <StatCard label={t("states.CLOSED")} value="64" unit="%" n={12} />
         <StatCard label={t("states.REFERRED")} suppressed />
       </div>
 
@@ -241,7 +253,7 @@ function LanguageSection({ lng }: { lng: Language }) {
   const dir = lng === "ar" ? "rtl" : "ltr";
   return (
     <I18nextProvider i18n={inst}>
-      <section lang={lng} dir={dir} aria-label={lng} className="mt-8 rounded-card border-2 border-accent/40 bg-bg p-4">
+      <section lang={lng} dir={dir} aria-label={lng} className="mt-8 rounded-sheet border border-dashed border-line-strong bg-bg p-4 sm:p-6">
         <h2 className="text-xl font-semibold">{lng.toUpperCase()}</h2>
         <Showcase />
       </section>

@@ -514,6 +514,10 @@ export interface components {
             location: string;
             /** Status */
             status: string;
+            provider_name_i18n: components["schemas"]["I18nText"];
+            provider_person: components["schemas"]["PersonRef"];
+            location_i18n: components["schemas"]["I18nText"];
+            label_i18n: components["schemas"]["I18nText"];
         };
         /** AuthResponse */
         AuthResponse: {
@@ -644,6 +648,8 @@ export interface components {
             /** Owner Name */
             owner_name: string | null;
             owner_person: components["schemas"]["PersonRef"] | null;
+            patient_names: components["schemas"]["I18nText"];
+            patient_initials_i18n: components["schemas"]["I18nText"];
             /** Age Band */
             age_band: string;
             /** Next Step Label Key */
@@ -709,6 +715,11 @@ export interface components {
          * @enum {string}
          */
         ClosureEvidence: "BP_CONTROLLED" | "NOT_CONFIRMED" | "CARE_TRANSFERRED" | "PATIENT_DECLINED" | "UNREACHABLE_AFTER_PROTOCOL" | "DECEASED_OR_MOVED" | "OTHER_CLINICAL_DECISION";
+        /** ClosureEvidenceLabel */
+        ClosureEvidenceLabel: {
+            code: components["schemas"]["ClosureEvidence"];
+            label_i18n: components["schemas"]["I18nText"];
+        };
         /** ClosureOut */
         ClosureOut: {
             /**
@@ -739,6 +750,9 @@ export interface components {
             basis: string;
             /** Status */
             status: string;
+            label_i18n: components["schemas"]["I18nText"];
+            basis_i18n: components["schemas"]["I18nText"];
+            unit_i18n: components["schemas"]["I18nText"];
         };
         /** ConfigOut */
         ConfigOut: {
@@ -752,6 +766,11 @@ export interface components {
             entries: components["schemas"]["ConfigEntryOut"][];
             /** Closure Evidence Types */
             closure_evidence_types: components["schemas"]["ClosureEvidence"][];
+            /** Closure Evidence Labels */
+            closure_evidence_labels: components["schemas"]["ClosureEvidenceLabel"][];
+            notice_i18n: components["schemas"]["I18nText"];
+            /** Rules I18N */
+            rules_i18n: components["schemas"]["I18nText"][];
             /** Templates */
             templates: {
                 [key: string]: unknown;
@@ -820,12 +839,14 @@ export interface components {
             currency: string;
             /** Label */
             label: string;
+            label_i18n: components["schemas"]["I18nText"];
             /**
              * Simulated
              * @default true
              * @constant
              */
             simulated: true;
+            simulated_label_i18n: components["schemas"]["I18nText"];
         };
         /** DashboardGroup */
         DashboardGroup: {
@@ -833,6 +854,7 @@ export interface components {
             key: string;
             /** Label */
             label: string;
+            label_i18n: components["schemas"]["I18nText"];
             /** Measures */
             measures: components["schemas"]["Measure"][];
         };
@@ -976,6 +998,7 @@ export interface components {
         EmergencyAdvice: {
             /** Text */
             text: string;
+            text_i18n: components["schemas"]["I18nText"];
             /** Number */
             number: string | null;
             region: components["schemas"]["Region"];
@@ -1048,6 +1071,18 @@ export interface components {
              * Format: date-time
              */
             now: string;
+        };
+        /**
+         * I18nText
+         * @description The same display text in every supported language. The front end picks the key for its current language.
+         */
+        I18nText: {
+            /** En */
+            en: string;
+            /** Ar */
+            ar: string;
+            /** Fr */
+            fr: string;
         };
         /** IntakeReading */
         IntakeReading: {
@@ -1232,6 +1267,10 @@ export interface components {
             channel: components["schemas"]["Channel"];
             /** Organisation */
             organisation: string;
+            names: components["schemas"]["I18nText"];
+            initials_i18n: components["schemas"]["I18nText"];
+            organisation_i18n: components["schemas"]["I18nText"];
+            region_name_i18n: components["schemas"]["I18nText"];
         };
         /**
          * PersonRef
@@ -1242,6 +1281,8 @@ export interface components {
             name: string;
             /** Role */
             role: string;
+            names: components["schemas"]["I18nText"];
+            roles: components["schemas"]["I18nText"];
         };
         /** PersonaInfo */
         PersonaInfo: {
@@ -1252,6 +1293,8 @@ export interface components {
             display_name: string;
             /** Role Title */
             role_title: string;
+            display_names: components["schemas"]["I18nText"];
+            role_titles: components["schemas"]["I18nText"];
             role: components["schemas"]["RoleName"];
             region: components["schemas"]["Region"];
             /** Description */
@@ -1293,6 +1336,7 @@ export interface components {
             label_key: string;
             /** Default Text */
             default_text: string;
+            default_text_i18n: components["schemas"]["I18nText"];
         };
         /** ProgressStep */
         ProgressStep: {
@@ -1348,6 +1392,7 @@ export interface components {
             to_person: components["schemas"]["PersonRef"] | null;
             /** To Service */
             to_service: string | null;
+            to_service_i18n: components["schemas"]["I18nText"] | null;
             /** From Name */
             from_name: string | null;
             from_person: components["schemas"]["PersonRef"] | null;
@@ -1378,6 +1423,7 @@ export interface components {
             region: components["schemas"]["Region"];
             /** Name */
             name: string;
+            name_i18n: components["schemas"]["I18nText"];
             default_language: components["schemas"]["Language"];
             /** Languages */
             languages: components["schemas"]["Language"][];
@@ -1474,6 +1520,10 @@ export interface components {
             /** Location */
             location: string;
             cover: components["schemas"]["CoverOut"];
+            provider_name_i18n: components["schemas"]["I18nText"];
+            provider_person: components["schemas"]["PersonRef"];
+            location_i18n: components["schemas"]["I18nText"];
+            label_i18n: components["schemas"]["I18nText"];
         };
         /**
          * Split
@@ -1510,6 +1560,7 @@ export interface components {
              * Format: date-time
              */
             created_at: string;
+            title_i18n: components["schemas"]["I18nText"];
         };
         /**
          * TeachBackOut
@@ -1535,6 +1586,9 @@ export interface components {
             display_name: string;
             /** Role Title */
             role_title: string;
+            display_names: components["schemas"]["I18nText"];
+            role_titles: components["schemas"]["I18nText"];
+            organisation_i18n: components["schemas"]["I18nText"];
             role: components["schemas"]["RoleName"];
             region: components["schemas"]["Region"];
             /** Organisation */

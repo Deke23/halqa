@@ -1,47 +1,81 @@
 @import "tailwindcss";
 
 /*
- * Design tokens. Calm clinical look.
- * Contrast (WCAG AA, 4.5:1 for text) was checked for each text and background pair below.
- *   ink on bg            #1b2733 on #f4f6f7   14.6:1
- *   muted on surface     #4a5866 on #ffffff    7.4:1
- *   white on accent      #ffffff on #0f766e    5.5:1
- *   accent-ink on soft   #0b5e57 on #e3f4f1    6.5:1
- *   due-ink on due-soft  #7a3b05 on #fdf1d3    7.3:1
- *   urgent-ink on soft   #991b1b on #fde8e8    6.6:1
- * Red is for clinical urgency on staff screens only. Never use it on patient screens.
+ * Halqa design system. One page of decisions; everything else follows from it.
+ *
+ * Surfaces   Warm paper page. Solid white cards with a hair border. No drop shadows on cards;
+ *            shadow only on things that float above the page (dialogs, drawers, toasts).
+ * Type       IBM Plex Sans with IBM Plex Sans Arabic (one family, matched metrics in both scripts).
+ *            IBM Plex Mono, tabular, for clinical readouts and counts. Sentence case everywhere.
+ *            No tracked uppercase labels (Arabic has no case, so the hierarchy must not depend on it).
+ * Radii      12 controls, 16 cards, 24 sheets and the phone frame. Full radius only for dots,
+ *            switches and the loop ring.
+ * Signature  The loop ring: eight segments, one per step of a case. Reached steps are filled,
+ *            the next one breathes, a closed case becomes one unbroken ring. Used only where the
+ *            case itself speaks: patient home, case header, queue rows, the brand mark.
+ * Colour     Petrol is the only brand colour and also means "done". Amber means "due soon".
+ *            Clay red means clinical urgency and appears on staff screens only, never in the
+ *            patient app. Demo aids use the dark demo strip or a dashed outline so nobody
+ *            mistakes them for the product.
+ * Motion     One curve. 150 ms for state changes, 320 ms for entrances. Nothing loops except the
+ *            current ring segment, and that stops under prefers-reduced-motion.
+ *
+ * Contrast (WCAG AA, 4.5:1 for text), checked for each pair used:
+ *   ink on page          #15211f on #f6f4ef   15.2:1
+ *   muted on surface     #52605c on #ffffff    6.6:1
+ *   white on accent      #ffffff on #0e5f58    7.3:1
+ *   accent-ink on soft   #0a4a45 on #dfeeeb    8.4:1
+ *   due-ink on due-soft  #7a3b05 on #fbefd5    7.4:1
+ *   urgent-ink on soft   #8f1d14 on #fbe6e3    7.6:1
+ *   demo text on strip   #e9efed on #1c2b29   12.9:1
  */
 @theme {
-  --color-bg: #f4f6f7;
+  --color-bg: #f6f4ef;
   --color-surface: #ffffff;
-  --color-surface-2: #eef1f3;
-  --color-line: #d5dce1;
-  --color-ink: #1b2733;
-  --color-muted: #4a5866;
+  --color-surface-2: #efece4;
+  --color-line: #e0dbcf;
+  --color-line-strong: #c9c2b2;
+  --color-ink: #15211f;
+  --color-muted: #52605c;
 
-  --color-accent: #0f766e;
-  --color-accent-strong: #0b5e57;
-  --color-accent-soft: #e3f4f1;
-  --color-accent-ink: #0b5e57;
+  --color-accent: #0e5f58;
+  --color-accent-strong: #0a4a45;
+  --color-accent-soft: #dfeeeb;
+  --color-accent-ink: #0a4a45;
 
   --color-due: #b45309;
-  --color-due-soft: #fdf1d3;
+  --color-due-soft: #fbefd5;
   --color-due-ink: #7a3b05;
 
-  --color-urgent: #b91c1c;
-  --color-urgent-soft: #fde8e8;
-  --color-urgent-ink: #991b1b;
+  --color-urgent: #b42318;
+  --color-urgent-soft: #fbe6e3;
+  --color-urgent-ink: #8f1d14;
 
-  --color-ok-soft: #e3f4f1;
-  --color-ok-ink: #0b5e57;
-  --color-info-soft: #e6eef7;
-  --color-info-ink: #1e3a5f;
+  --color-ok-soft: #dfeeeb;
+  --color-ok-ink: #0a4a45;
+  --color-info-soft: #e8eef0;
+  --color-info-ink: #1f3b4d;
 
-  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Noto Sans Arabic", "Segoe UI Arabic", "Geeza Pro", "Tahoma", "Arial", sans-serif;
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  /* Demo aids: the strip at the top and dashed demo panels. Not part of the product. */
+  --color-demo: #1c2b29;
+  --color-demo-ink: #e9efed;
+  --color-demo-line: #3a4c49;
 
-  --radius-card: 0.75rem;
-  --shadow-card: 0 1px 2px rgb(16 24 40 / 0.06), 0 1px 3px rgb(16 24 40 / 0.08);
+  --font-sans: "IBM Plex Sans", "IBM Plex Sans Arabic", system-ui, -apple-system, "Segoe UI", "Noto Sans", "Noto Sans Arabic", "Tahoma", sans-serif;
+  --font-arabic: "IBM Plex Sans Arabic", "IBM Plex Sans", "Noto Sans Arabic", "Segoe UI", "Tahoma", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  --radius-control: 0.75rem;
+  --radius-card: 1rem;
+  --radius-sheet: 1.5rem;
+
+  /* Cards are flat. Keep the name so existing utilities still resolve. */
+  --shadow-card: 0 0 0 0 transparent;
+  --shadow-float: 0 12px 32px rgb(21 33 31 / 0.14), 0 2px 6px rgb(21 33 31 / 0.08);
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-state: 150ms;
+  --dur-enter: 320ms;
 }
 
 html {
@@ -49,35 +83,116 @@ html {
   color: var(--color-ink);
   font-family: var(--font-sans);
   -webkit-text-size-adjust: 100%;
+  font-feature-settings: "ss01";
+}
+html[lang="ar"] {
+  font-family: var(--font-arabic);
 }
 body {
   margin: 0;
   min-height: 100vh;
   background: var(--color-bg);
   line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 html[lang="ar"] body {
-  line-height: 1.7;
+  line-height: 1.75;
+}
+
+h1,
+h2,
+h3 {
+  font-weight: 600;
+  letter-spacing: -0.011em;
+  text-wrap: balance;
+}
+html[lang="ar"] h1,
+html[lang="ar"] h2,
+html[lang="ar"] h3 {
+  letter-spacing: 0;
 }
 
 /* Visible keyboard focus everywhere. */
 :focus-visible {
   outline: 3px solid var(--color-accent);
   outline-offset: 2px;
-  border-radius: 4px;
+  border-radius: 6px;
+}
+
+button,
+a,
+input,
+select,
+textarea {
+  transition:
+    background-color var(--dur-state) var(--ease-out),
+    border-color var(--dur-state) var(--ease-out),
+    color var(--dur-state) var(--ease-out),
+    box-shadow var(--dur-state) var(--ease-out);
 }
 
 /* Clinical values stay in Latin digits and read left to right, even in Arabic. */
 .clinical,
-.bp {
+.bp,
+.readout {
   direction: ltr;
   unicode-bidi: isolate;
   display: inline-block;
-  font-variant-numeric: tabular-nums;
-  font-feature-settings: "tnum";
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums lining-nums;
+  font-feature-settings: "tnum", "zero" 0;
+  letter-spacing: -0.02em;
 }
 .latin-digits {
   font-variant-numeric: lining-nums;
+}
+/* Dates contain words. In Arabic a monospace face spaces the letters apart and the forced
+   left-to-right order scrambles the phrase, so dates fall back to the text face there. */
+html[lang="ar"] time.readout,
+html[lang="ar"] .readout-date {
+  font-family: var(--font-arabic);
+  letter-spacing: 0;
+  direction: rtl;
+  unicode-bidi: plaintext;
+}
+
+/* Entrance for cards and sheets. */
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.rise-in {
+  animation: rise-in var(--dur-enter) var(--ease-out) both;
+}
+
+/* The loop ring. The current segment breathes; everything else is still. */
+@keyframes ring-breathe {
+  0%,
+  100% {
+    opacity: 0.38;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+.loop-ring-current {
+  animation: ring-breathe 2.4s ease-in-out infinite;
+}
+.loop-ring-seg {
+  transition: stroke var(--dur-enter) var(--ease-out);
+}
+
+/* Demo aids are visibly not the product. */
+.demo-outline {
+  border: 1.5px dashed var(--color-line-strong);
+  background: repeating-linear-gradient(135deg, transparent 0 10px, rgb(21 33 31 / 0.025) 10px 20px);
 }
 
 .sr-only-focusable:not(:focus):not(:focus-within) {
@@ -92,6 +207,11 @@ html[lang="ar"] body {
 @media (prefers-reduced-motion: reduce) {
   * {
     animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+  .loop-ring-current {
+    animation: none;
+    opacity: 1;
   }
 }

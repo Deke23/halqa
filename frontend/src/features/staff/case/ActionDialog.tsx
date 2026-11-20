@@ -3,6 +3,8 @@ import { useTranslation } from "react-i18next";
 import { useConfig, useDemoNow, useSlots } from "@/api/hooks";
 import { Button, Field, Input, Loading, Modal, RadioGroup, Select, Textarea, useErrorText, useToast } from "@/components";
 import { formatDateTime } from "@/lib/format";
+import { pickText } from "@/lib/i18nField";
+import { usePersonText } from "../PersonLabel";
 import { useStaffAction, useStaffUsers } from "../api";
 import { useLabels } from "../labels";
 import type { Action, CaseDetail, ConfigOut, SlotOut } from "../types";
@@ -37,6 +39,7 @@ export function ActionDialog({ action, detail, onClose }: Props) {
   const toast = useToast();
   const errorText = useErrorText();
   const labels = useLabels();
+  const person = usePersonText();
   const now = useDemoNow();
   const mutation = useStaffAction(String(detail.id));
   const users = useStaffUsers();
@@ -285,8 +288,8 @@ export function ActionDialog({ action, detail, onClose }: Props) {
             onChange={set("slot_id")}
             options={(slots.data ?? []).map((s) => ({
               value: String(s.id),
-              label: `${formatDateTime(s.starts_at, i18n.language)}, ${s.provider_name}`,
-              description: `${s.location}. ${s.cover.label} (${t("simulatedShort")})`,
+              label: `${formatDateTime(s.starts_at, i18n.language)}, ${person(s.provider_person)}`,
+              description: `${pickText(s.location_i18n, s.location)}. ${pickText(s.cover.label_i18n, s.cover.label)} (${t("simulatedShort")})`,
             }))}
           />
         </div>
@@ -348,7 +351,6 @@ export function ActionDialog({ action, detail, onClose }: Props) {
           <div role="alert" className="rounded-lg border border-due bg-due-soft px-3 py-2 text-sm text-due-ink">
             <p className="font-semibold">{t("action.suppressedTitle")}</p>
             <p>{t("action.suppressedBody")}</p>
-            {mutation.data?.feedback?.message && <p className="mt-1 text-xs">{mutation.data.feedback.message}</p>}
           </div>
         )}
         {!suppressed && body}

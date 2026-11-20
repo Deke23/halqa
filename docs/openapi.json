@@ -1877,6 +1877,18 @@
           "status": {
             "type": "string",
             "title": "Status"
+          },
+          "provider_name_i18n": {
+            "$ref": "#/components/schemas/I18nText"
+          },
+          "provider_person": {
+            "$ref": "#/components/schemas/PersonRef"
+          },
+          "location_i18n": {
+            "$ref": "#/components/schemas/I18nText"
+          },
+          "label_i18n": {
+            "$ref": "#/components/schemas/I18nText"
           }
         },
         "type": "object",
@@ -1885,7 +1897,11 @@
           "starts_at",
           "provider_name",
           "location",
-          "status"
+          "status",
+          "provider_name_i18n",
+          "provider_person",
+          "location_i18n",
+          "label_i18n"
         ],
         "title": "AppointmentOut"
       },
@@ -2368,6 +2384,12 @@
               }
             ]
           },
+          "patient_names": {
+            "$ref": "#/components/schemas/I18nText"
+          },
+          "patient_initials_i18n": {
+            "$ref": "#/components/schemas/I18nText"
+          },
           "age_band": {
             "type": "string",
             "title": "Age Band"
@@ -2491,6 +2513,8 @@
           "owner_user_id",
           "owner_name",
           "owner_person",
+          "patient_names",
+          "patient_initials_i18n",
           "age_band",
           "next_step_label_key",
           "due_at",
@@ -2565,6 +2589,22 @@
           "OTHER_CLINICAL_DECISION"
         ],
         "title": "ClosureEvidence"
+      },
+      "ClosureEvidenceLabel": {
+        "properties": {
+          "code": {
+            "$ref": "#/components/schemas/ClosureEvidence"
+          },
+          "label_i18n": {
+            "$ref": "#/components/schemas/I18nText"
+          }
+        },
+        "type": "object",
+        "required": [
+          "code",
+          "label_i18n"
+        ],
+        "title": "ClosureEvidenceLabel"
       },
       "ClosureOut": {
         "properties": {
@@ -2655,6 +2695,15 @@
           "status": {
             "type": "string",
             "title": "Status"
+          },
+          "label_i18n": {
+            "$ref": "#/components/schemas/I18nText"
+          },
+          "basis_i18n": {
+            "$ref": "#/components/schemas/I18nText"
+          },
+          "unit_i18n": {
+            "$ref": "#/components/schemas/I18nText"
           }
         },
         "type": "object",
@@ -2664,7 +2713,10 @@
           "value",
           "unit",
           "basis",
-          "status"
+          "status",
+          "label_i18n",
+          "basis_i18n",
+          "unit_i18n"
         ],
         "title": "ConfigEntryOut"
       },
@@ -2695,6 +2747,23 @@
             },
             "type": "array",
             "title": "Closure Evidence Types"
+          },
+          "closure_evidence_labels": {
+            "items": {
+              "$ref": "#/components/schemas/ClosureEvidenceLabel"
+            },
+            "type": "array",
+            "title": "Closure Evidence Labels"
+          },
+          "notice_i18n": {
+            "$ref": "#/components/schemas/I18nText"
+          },
+          "rules_i18n": {
+            "items": {
+              "$ref": "#/components/schemas/I18nText"
+            },
+            "type": "array",
+            "title": "Rules I18N"
           },
           "templates": {
             "items": {
@@ -2733,6 +2802,9 @@
           "notice",
           "entries",
           "closure_evidence_types",
+          "closure_evidence_labels",
+          "notice_i18n",
+          "rules_i18n",
           "templates",
           "languages",
           "regions",
@@ -2944,11 +3016,17 @@
             "type": "string",
             "title": "Label"
           },
+          "label_i18n": {
+            "$ref": "#/components/schemas/I18nText"
+          },
           "simulated": {
             "type": "boolean",
             "const": true,
             "title": "Simulated",
             "default": true
+          },
+          "simulated_label_i18n": {
+            "$ref": "#/components/schemas/I18nText"
           }
         },
         "type": "object",
@@ -2957,7 +3035,9 @@
           "copay",
           "estimated_price",
           "currency",
-          "label"
+          "label",
+          "label_i18n",
+          "simulated_label_i18n"
         ],
         "title": "CoverOut"
       },
@@ -2971,6 +3051,9 @@
             "type": "string",
             "title": "Label"
           },
+          "label_i18n": {
+            "$ref": "#/components/schemas/I18nText"
+          },
           "measures": {
             "items": {
               "$ref": "#/components/schemas/Measure"
@@ -2983,6 +3066,7 @@
         "required": [
           "key",
           "label",
+          "label_i18n",
           "measures"
         ],
         "title": "DashboardGroup"
@@ -3354,6 +3438,9 @@
             "type": "string",
             "title": "Text"
           },
+          "text_i18n": {
+            "$ref": "#/components/schemas/I18nText"
+          },
           "number": {
             "anyOf": [
               {
@@ -3372,6 +3459,7 @@
         "type": "object",
         "required": [
           "text",
+          "text_i18n",
           "number",
           "region"
         ],
@@ -3593,6 +3681,30 @@
           "now"
         ],
         "title": "HealthOut"
+      },
+      "I18nText": {
+        "properties": {
+          "en": {
+            "type": "string",
+            "title": "En"
+          },
+          "ar": {
+            "type": "string",
+            "title": "Ar"
+          },
+          "fr": {
+            "type": "string",
+            "title": "Fr"
+          }
+        },
+        "type": "object",
+        "required": [
+          "en",
+          "ar",
+          "fr"
+        ],
+        "title": "I18nText",
+        "description": "The same display text in every supported language. The front end picks the key for its current language."
       },
       "IntakeReading": {
         "properties": {
@@ -4148,6 +4260,18 @@
           "organisation": {
             "type": "string",
             "title": "Organisation"
+          },
+          "names": {
+            "$ref": "#/components/schemas/I18nText"
+          },
+          "initials_i18n": {
+            "$ref": "#/components/schemas/I18nText"
+          },
+          "organisation_i18n": {
+            "$ref": "#/components/schemas/I18nText"
+          },
+          "region_name_i18n": {
+            "$ref": "#/components/schemas/I18nText"
           }
         },
         "type": "object",
@@ -4163,7 +4287,11 @@
           "region",
           "insurance",
           "channel",
-          "organisation"
+          "organisation",
+          "names",
+          "initials_i18n",
+          "organisation_i18n",
+          "region_name_i18n"
         ],
         "title": "PatientSummary"
       },
@@ -4176,12 +4304,20 @@
           "role": {
             "type": "string",
             "title": "Role"
+          },
+          "names": {
+            "$ref": "#/components/schemas/I18nText"
+          },
+          "roles": {
+            "$ref": "#/components/schemas/I18nText"
           }
         },
         "type": "object",
         "required": [
           "name",
-          "role"
+          "role",
+          "names",
+          "roles"
         ],
         "title": "PersonRef",
         "description": "A person shown to a reader. `name` has no role in brackets; `role` is the job title, for example `nurse coordinator`."
@@ -4203,6 +4339,12 @@
             "type": "string",
             "title": "Role Title"
           },
+          "display_names": {
+            "$ref": "#/components/schemas/I18nText"
+          },
+          "role_titles": {
+            "$ref": "#/components/schemas/I18nText"
+          },
           "role": {
             "$ref": "#/components/schemas/RoleName"
           },
@@ -4220,6 +4362,8 @@
           "name",
           "display_name",
           "role_title",
+          "display_names",
+          "role_titles",
           "role",
           "region",
           "description"
@@ -4320,6 +4464,9 @@
           "default_text": {
             "type": "string",
             "title": "Default Text"
+          },
+          "default_text_i18n": {
+            "$ref": "#/components/schemas/I18nText"
           }
         },
         "type": "object",
@@ -4333,7 +4480,8 @@
           "starts_at",
           "checked_in_at",
           "label_key",
-          "default_text"
+          "default_text",
+          "default_text_i18n"
         ],
         "title": "PlanWeekOut"
       },
@@ -4502,6 +4650,16 @@
             ],
             "title": "To Service"
           },
+          "to_service_i18n": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/I18nText"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
           "from_name": {
             "anyOf": [
               {
@@ -4564,6 +4722,7 @@
           "to_name",
           "to_person",
           "to_service",
+          "to_service_i18n",
           "from_name",
           "from_person",
           "reason",
@@ -4598,6 +4757,9 @@
           "name": {
             "type": "string",
             "title": "Name"
+          },
+          "name_i18n": {
+            "$ref": "#/components/schemas/I18nText"
           },
           "default_language": {
             "$ref": "#/components/schemas/Language"
@@ -4636,6 +4798,7 @@
         "required": [
           "region",
           "name",
+          "name_i18n",
           "default_language",
           "languages",
           "emergency_text",
@@ -4824,6 +4987,18 @@
           },
           "cover": {
             "$ref": "#/components/schemas/CoverOut"
+          },
+          "provider_name_i18n": {
+            "$ref": "#/components/schemas/I18nText"
+          },
+          "provider_person": {
+            "$ref": "#/components/schemas/PersonRef"
+          },
+          "location_i18n": {
+            "$ref": "#/components/schemas/I18nText"
+          },
+          "label_i18n": {
+            "$ref": "#/components/schemas/I18nText"
           }
         },
         "type": "object",
@@ -4832,7 +5007,11 @@
           "starts_at",
           "provider_name",
           "location",
-          "cover"
+          "cover",
+          "provider_name_i18n",
+          "provider_person",
+          "location_i18n",
+          "label_i18n"
         ],
         "title": "SlotOut"
       },
@@ -4917,6 +5096,9 @@
             "type": "string",
             "format": "date-time",
             "title": "Created At"
+          },
+          "title_i18n": {
+            "$ref": "#/components/schemas/I18nText"
           }
         },
         "type": "object",
@@ -4929,7 +5111,8 @@
           "due_at",
           "status",
           "overdue",
-          "created_at"
+          "created_at",
+          "title_i18n"
         ],
         "title": "TaskOut"
       },
@@ -4992,6 +5175,15 @@
             "type": "string",
             "title": "Role Title"
           },
+          "display_names": {
+            "$ref": "#/components/schemas/I18nText"
+          },
+          "role_titles": {
+            "$ref": "#/components/schemas/I18nText"
+          },
+          "organisation_i18n": {
+            "$ref": "#/components/schemas/I18nText"
+          },
           "role": {
             "$ref": "#/components/schemas/RoleName"
           },
@@ -5028,6 +5220,9 @@
           "name",
           "display_name",
           "role_title",
+          "display_names",
+          "role_titles",
+          "organisation_i18n",
           "role",
           "region",
           "organisation",

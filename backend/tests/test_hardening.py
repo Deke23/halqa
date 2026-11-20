@@ -792,7 +792,7 @@ def test_people_come_with_separate_name_and_role(api, app):
 
     cid = api.case_id("patient_yde")
     d = api.get("nurse_yde", f"/api/cases/{cid}").json()
-    assert d["owner_name"] == "Clarisse (nurse coordinator)" and d["owner_person"] == {"name": "Clarisse", "role": "nurse coordinator"}
+    assert d["owner_name"] == "Clarisse (nurse coordinator)" and (d["owner_person"]["name"], d["owner_person"]["role"]) == ("Clarisse", "nurse coordinator")
     assert d["next_step"]["owner_person"]["name"] == "Clarisse"
     row = api.get("nurse_yde", "/api/cases").json()["cases"][0]
     assert row["owner_person"] is None or "(" not in row["owner_person"]["name"]
@@ -801,7 +801,7 @@ def test_people_come_with_separate_name_and_role(api, app):
 
     econ = scenario_id(app, "econsult_open")
     ec = api.get("clinician_pcp", f"/api/cases/{econ}").json()["econsults"][0]
-    assert ec["from_person"] == {"name": "Dr Sara", "role": "family medicine"} and ec["to_person"]["name"] == "Dr Omar"
+    assert (ec["from_person"]["name"], ec["from_person"]["role"]) == ("Dr Sara", "family medicine") and ec["to_person"]["name"] == "Dr Omar"
     ref = scenario_id(app, "rejected_referral")
     r = api.get("clinician_pcp", f"/api/cases/{ref}").json()["referral"]
     assert r["to_person"]["name"] == "Dr Omar" and r["from_person"]["name"] == "Dr Sara"

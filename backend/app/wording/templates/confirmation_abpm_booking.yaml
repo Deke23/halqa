@@ -2,6 +2,10 @@
 id: confirmation_abpm_booking
 version: 1
 purpose: Booking of a 24-hour blood pressure monitor fitting.
+purpose_i18n:
+  en: Booking of a 24-hour blood pressure monitor fitting.
+  ar: حجز موعد لتركيب جهاز قياس الضغط على مدى 24 ساعة.
+  fr: Réservation de la pose d'un moniteur de tension sur 24 heures.
 channel_limits:
   app: 900
   whatsapp: 1000

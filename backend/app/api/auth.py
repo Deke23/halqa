@@ -22,4 +22,7 @@ def issue(user_id: int, persona: str | None, role: str) -> str:
 
 
 def decode(token: str) -> dict:
-    return jwt.decode(token, _secret(), algorithms=["HS256"])
+    # The issued-at claim is informational. Checking it rejects a fresh token whenever the host
+    # clock is stepped back by a time sync (seen on virtualised hosts), so only expiry is
+    # enforced, with a small leeway for clock skew between instances.
+    return jwt.decode(token, _secret(), algorithms=["HS256"], leeway=120, options={"verify_iat": False})

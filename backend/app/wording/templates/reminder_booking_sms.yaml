@@ -2,6 +2,10 @@
 id: reminder_booking_sms
 version: 1
 purpose: SMS reminder to choose a visit time.
+purpose_i18n:
+  en: SMS reminder to choose a visit time.
+  ar: رسالة نصية تذكّر باختيار موعد الزيارة.
+  fr: SMS de rappel pour choisir l'heure de la visite.
 channel_limits:
   sms:
     en: 160

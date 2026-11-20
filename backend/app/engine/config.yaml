@@ -1,222 +1,709 @@
 # Single source for clinical thresholds and service levels.
 # Every entry is a placeholder pending clinician sign-off. None of these values is clinically validated.
-# `basis` states where the number comes from or that it is an assumption.
+# `basis` states where the number comes from or that it is an assumption. `label_i18n`, `basis_i18n` and `unit_i18n` carry
+# the display text in en, ar and fr; the API passes them through unchanged.
 
 thresholds:
   raised_systolic:
     value: 140
     unit: mmHg
-    basis: "Common outpatient cut-off for a raised reading, used here as a screening trigger only. Assumption pending sign-off."
+    basis: Common outpatient cut-off for a raised reading, used here as a screening trigger only. Assumption pending sign-off.
     status: placeholder_pending_clinician_signoff
+    label_i18n:
+      en: Raised reading, systolic
+      ar: قراءة مرتفعة، الانقباضي
+      fr: Mesure élevée, systolique
+    basis_i18n:
+      en: Common outpatient cut-off for a raised reading, used here as a screening trigger only. Assumption pending sign-off.
+      ar: حد شائع في العيادات الخارجية لقراءة مرتفعة، يُستخدم هنا كمحفز للفحص فقط. افتراض بانتظار الاعتماد.
+      fr: Seuil courant en consultation pour une mesure élevée, utilisé ici uniquement comme déclencheur de dépistage. Hypothèse en attente de validation.
+    unit_i18n:
+      en: mmHg
+      ar: mmHg
+      fr: mmHg
   raised_diastolic:
     value: 90
     unit: mmHg
-    basis: "Common outpatient cut-off for a raised reading, used here as a screening trigger only. Assumption pending sign-off."
+    basis: Common outpatient cut-off for a raised reading, used here as a screening trigger only. Assumption pending sign-off.
     status: placeholder_pending_clinician_signoff
+    label_i18n:
+      en: Raised reading, diastolic
+      ar: قراءة مرتفعة، الانبساطي
+      fr: Mesure élevée, diastolique
+    basis_i18n:
+      en: Common outpatient cut-off for a raised reading, used here as a screening trigger only. Assumption pending sign-off.
+      ar: حد شائع في العيادات الخارجية لقراءة مرتفعة، يُستخدم هنا كمحفز للفحص فقط. افتراض بانتظار الاعتماد.
+      fr: Seuil courant en consultation pour une mesure élevée, utilisé ici uniquement comme déclencheur de dépistage. Hypothèse en attente de validation.
+    unit_i18n:
+      en: mmHg
+      ar: mmHg
+      fr: mmHg
   severe_systolic:
     value: 180
     unit: mmHg
-    basis: "Routing rule from the project specification (section 4.2): same-day clinician review. Assumption pending sign-off."
+    basis: 'Routing rule from the project specification (section 4.2): same-day clinician review. Assumption pending sign-off.'
     status: placeholder_pending_clinician_signoff
+    label_i18n:
+      en: Very high reading, systolic
+      ar: قراءة مرتفعة جدًا، الانقباضي
+      fr: Mesure très élevée, systolique
+    basis_i18n:
+      en: 'Routing rule from the project specification (section 4.2): same-day clinician review. Assumption pending sign-off.'
+      ar: 'قاعدة توجيه من مواصفات المشروع (القسم 4.2): مراجعة الطبيب في اليوم نفسه. افتراض بانتظار الاعتماد.'
+      fr: 'Règle d''orientation du cahier des charges (section 4.2) : revue par un clinicien le jour même. Hypothèse en attente de validation.'
+    unit_i18n:
+      en: mmHg
+      ar: mmHg
+      fr: mmHg
   severe_diastolic:
     value: 110
     unit: mmHg
-    basis: "Routing rule from the project specification (section 4.2): same-day clinician review. Assumption pending sign-off."
+    basis: 'Routing rule from the project specification (section 4.2): same-day clinician review. Assumption pending sign-off.'
     status: placeholder_pending_clinician_signoff
+    label_i18n:
+      en: Very high reading, diastolic
+      ar: قراءة مرتفعة جدًا، الانبساطي
+      fr: Mesure très élevée, diastolique
+    basis_i18n:
+      en: 'Routing rule from the project specification (section 4.2): same-day clinician review. Assumption pending sign-off.'
+      ar: 'قاعدة توجيه من مواصفات المشروع (القسم 4.2): مراجعة الطبيب في اليوم نفسه. افتراض بانتظار الاعتماد.'
+      fr: 'Règle d''orientation du cahier des charges (section 4.2) : revue par un clinicien le jour même. Hypothèse en attente de validation.'
+    unit_i18n:
+      en: mmHg
+      ar: mmHg
+      fr: mmHg
   hbpm_systolic:
     value: 135
     unit: mmHg
-    basis: "Home blood pressure average threshold from the project specification. Assumption pending sign-off."
+    basis: Home blood pressure average threshold from the project specification. Assumption pending sign-off.
     status: placeholder_pending_clinician_signoff
+    label_i18n:
+      en: Home average threshold, systolic
+      ar: حد المتوسط المنزلي، الانقباضي
+      fr: Seuil de la moyenne à domicile, systolique
+    basis_i18n:
+      en: Home blood pressure average threshold from the project specification. Assumption pending sign-off.
+      ar: حد متوسط ضغط الدم المنزلي من مواصفات المشروع. افتراض بانتظار الاعتماد.
+      fr: Seuil de la moyenne de tension à domicile du cahier des charges. Hypothèse en attente de validation.
+    unit_i18n:
+      en: mmHg
+      ar: mmHg
+      fr: mmHg
   hbpm_diastolic:
     value: 85
     unit: mmHg
-    basis: "Home blood pressure average threshold from the project specification. Assumption pending sign-off."
+    basis: Home blood pressure average threshold from the project specification. Assumption pending sign-off.
     status: placeholder_pending_clinician_signoff
+    label_i18n:
+      en: Home average threshold, diastolic
+      ar: حد المتوسط المنزلي، الانبساطي
+      fr: Seuil de la moyenne à domicile, diastolique
+    basis_i18n:
+      en: Home blood pressure average threshold from the project specification. Assumption pending sign-off.
+      ar: حد متوسط ضغط الدم المنزلي من مواصفات المشروع. افتراض بانتظار الاعتماد.
+      fr: Seuil de la moyenne de tension à domicile du cahier des charges. Hypothèse en attente de validation.
+    unit_i18n:
+      en: mmHg
+      ar: mmHg
+      fr: mmHg
   hbpm_min_days:
     value: 4
     unit: days
-    basis: "Days with enough readings, counting the discarded first day. Assumption pending sign-off."
+    basis: Days with enough readings, counting the discarded first day. Assumption pending sign-off.
     status: placeholder_pending_clinician_signoff
+    label_i18n:
+      en: Home monitoring, days needed
+      ar: المراقبة المنزلية، الأيام المطلوبة
+      fr: Suivi à domicile, jours nécessaires
+    basis_i18n:
+      en: Days with enough readings, counting the discarded first day. Assumption pending sign-off.
+      ar: عدد الأيام التي فيها قراءات كافية، مع احتساب اليوم الأول المستبعد. افتراض بانتظار الاعتماد.
+      fr: Jours avec assez de mesures, en comptant le premier jour écarté. Hypothèse en attente de validation.
+    unit_i18n:
+      en: days
+      ar: يوم
+      fr: jours
   hbpm_min_readings_per_day:
     value: 2
     unit: readings
-    basis: "Minimum readings for a day to count. Assumption pending sign-off."
+    basis: Minimum readings for a day to count. Assumption pending sign-off.
     status: placeholder_pending_clinician_signoff
+    label_i18n:
+      en: Home monitoring, readings per day
+      ar: المراقبة المنزلية، القراءات في اليوم
+      fr: Suivi à domicile, mesures par jour
+    basis_i18n:
+      en: Minimum readings for a day to count. Assumption pending sign-off.
+      ar: الحد الأدنى لعدد القراءات حتى يُحتسب اليوم. افتراض بانتظار الاعتماد.
+      fr: Nombre minimal de mesures pour qu'un jour compte. Hypothèse en attente de validation.
+    unit_i18n:
+      en: readings
+      ar: قراءة
+      fr: mesures
   abpm_daytime_systolic:
     value: 135
     unit: mmHg
-    basis: "Daytime ambulatory average threshold from the project specification. Assumption pending sign-off."
+    basis: Daytime ambulatory average threshold from the project specification. Assumption pending sign-off.
     status: placeholder_pending_clinician_signoff
+    label_i18n:
+      en: 24-hour monitor daytime threshold, systolic
+      ar: حد النهار لجهاز 24 ساعة، الانقباضي
+      fr: Seuil de jour du moniteur 24 heures, systolique
+    basis_i18n:
+      en: Daytime ambulatory average threshold from the project specification. Assumption pending sign-off.
+      ar: حد متوسط النهار لجهاز المراقبة المتنقل من مواصفات المشروع. افتراض بانتظار الاعتماد.
+      fr: Seuil de la moyenne de jour de la mesure ambulatoire du cahier des charges. Hypothèse en attente de validation.
+    unit_i18n:
+      en: mmHg
+      ar: mmHg
+      fr: mmHg
   abpm_daytime_diastolic:
     value: 85
     unit: mmHg
-    basis: "Daytime ambulatory average threshold from the project specification. Assumption pending sign-off."
+    basis: Daytime ambulatory average threshold from the project specification. Assumption pending sign-off.
     status: placeholder_pending_clinician_signoff
+    label_i18n:
+      en: 24-hour monitor daytime threshold, diastolic
+      ar: حد النهار لجهاز 24 ساعة، الانبساطي
+      fr: Seuil de jour du moniteur 24 heures, diastolique
+    basis_i18n:
+      en: Daytime ambulatory average threshold from the project specification. Assumption pending sign-off.
+      ar: حد متوسط النهار لجهاز المراقبة المتنقل من مواصفات المشروع. افتراض بانتظار الاعتماد.
+      fr: Seuil de la moyenne de jour de la mesure ambulatoire du cahier des charges. Hypothèse en attente de validation.
+    unit_i18n:
+      en: mmHg
+      ar: mmHg
+      fr: mmHg
   abpm_daytime_start_hour:
     value: 7
     unit: hour of day (patient region local time)
-    basis: "Assumption: daytime window used for the ambulatory average."
+    basis: 'Assumption: daytime window used for the ambulatory average.'
     status: placeholder_pending_clinician_signoff
+    label_i18n:
+      en: Daytime window starts
+      ar: بداية نافذة النهار
+      fr: Début de la plage de jour
+    basis_i18n:
+      en: 'Assumption: daytime window used for the ambulatory average.'
+      ar: 'افتراض: نافذة النهار المستخدمة لحساب متوسط المراقبة المتنقلة.'
+      fr: 'Hypothèse : plage de jour utilisée pour la moyenne ambulatoire.'
+    unit_i18n:
+      en: hour of day (patient region local time)
+      ar: ساعة من اليوم (بالتوقيت المحلي لمنطقة المريض)
+      fr: heure de la journée (heure locale de la région du patient)
   abpm_daytime_end_hour:
     value: 22
     unit: hour of day (patient region local time)
-    basis: "Assumption: daytime window used for the ambulatory average."
+    basis: 'Assumption: daytime window used for the ambulatory average.'
     status: placeholder_pending_clinician_signoff
+    label_i18n:
+      en: Daytime window ends
+      ar: نهاية نافذة النهار
+      fr: Fin de la plage de jour
+    basis_i18n:
+      en: 'Assumption: daytime window used for the ambulatory average.'
+      ar: 'افتراض: نافذة النهار المستخدمة لحساب متوسط المراقبة المتنقلة.'
+      fr: 'Hypothèse : plage de jour utilisée pour la moyenne ambulatoire.'
+    unit_i18n:
+      en: hour of day (patient region local time)
+      ar: ساعة من اليوم (بالتوقيت المحلي لمنطقة المريض)
+      fr: heure de la journée (heure locale de la région du patient)
   abpm_min_daytime_readings:
     value: 14
     unit: readings
-    basis: "Assumption: minimum daytime readings for a usable ambulatory recording."
+    basis: 'Assumption: minimum daytime readings for a usable ambulatory recording.'
     status: placeholder_pending_clinician_signoff
+    label_i18n:
+      en: 24-hour monitor, daytime readings needed
+      ar: جهاز 24 ساعة، قراءات النهار المطلوبة
+      fr: Moniteur 24 heures, mesures de jour nécessaires
+    basis_i18n:
+      en: 'Assumption: minimum daytime readings for a usable ambulatory recording.'
+      ar: 'افتراض: الحد الأدنى لقراءات النهار لتسجيل متنقل صالح للاستخدام.'
+      fr: 'Hypothèse : nombre minimal de mesures de jour pour un enregistrement ambulatoire exploitable.'
+    unit_i18n:
+      en: readings
+      ar: قراءة
+      fr: mesures
   target_systolic:
     value: 130
     unit: mmHg
-    basis: "Assumption: a clinic reading below this and below the diastolic target counts as at target for the ready-to-close prompt."
+    basis: 'Assumption: a clinic reading below this and below the diastolic target counts as at target for the ready-to-close prompt.'
     status: placeholder_pending_clinician_signoff
+    label_i18n:
+      en: Target, systolic
+      ar: الهدف، الانقباضي
+      fr: Cible, systolique
+    basis_i18n:
+      en: 'Assumption: a clinic reading below this and below the diastolic target counts as at target for the ready-to-close prompt.'
+      ar: 'افتراض: قراءة العيادة الأقل من هذا الحد ومن هدف الانبساطي تُعدّ ضمن الهدف لتنبيه الجاهزية للإغلاق.'
+      fr: 'Hypothèse : une mesure en clinique sous ce seuil et sous la cible diastolique compte comme dans la cible pour l''alerte de clôture.'
+    unit_i18n:
+      en: mmHg
+      ar: mmHg
+      fr: mmHg
   target_diastolic:
     value: 80
     unit: mmHg
-    basis: "Assumption: see target_systolic."
+    basis: 'Assumption: see target_systolic.'
     status: placeholder_pending_clinician_signoff
+    label_i18n:
+      en: Target, diastolic
+      ar: الهدف، الانبساطي
+      fr: Cible, diastolique
+    basis_i18n:
+      en: 'Assumption: see target_systolic.'
+      ar: 'افتراض: انظر target_systolic.'
+      fr: 'Hypothèse : voir target_systolic.'
+    unit_i18n:
+      en: mmHg
+      ar: mmHg
+      fr: mmHg
   target_consecutive_readings:
     value: 3
     unit: readings
-    basis: "Project specification (scenario ready_to_close): last three clinic readings at target. Assumption pending sign-off."
+    basis: 'Project specification (scenario ready_to_close): last three clinic readings at target. Assumption pending sign-off.'
     status: placeholder_pending_clinician_signoff
-
+    label_i18n:
+      en: Clinic readings at target in a row
+      ar: قراءات العيادة المتتالية ضمن الهدف
+      fr: Mesures en clinique consécutives dans la cible
+    basis_i18n:
+      en: 'Project specification (scenario ready_to_close): last three clinic readings at target. Assumption pending sign-off.'
+      ar: 'مواصفات المشروع (سيناريو ready_to_close): آخر ثلاث قراءات في العيادة ضمن الهدف. افتراض بانتظار الاعتماد.'
+      fr: 'Cahier des charges (scénario ready_to_close) : les trois dernières mesures en clinique dans la cible. Hypothèse en attente de validation.'
+    unit_i18n:
+      en: readings
+      ar: قراءة
+      fr: mesures
 service_levels:
   result_issued:
     value: 24
     unit: hours
-    basis: "Project specification section 4.1. Placeholder pending sign-off."
+    basis: Project specification section 4.1. Placeholder pending sign-off.
     status: placeholder_pending_clinician_signoff
+    label_i18n:
+      en: Notify the patient
+      ar: إبلاغ المريض
+      fr: Informer le patient
+    basis_i18n:
+      en: Project specification section 4.1. Placeholder pending sign-off.
+      ar: مواصفات المشروع، القسم 4.1. قيمة مؤقتة بانتظار الاعتماد.
+      fr: Cahier des charges, section 4.1. Valeur provisoire en attente de validation.
+    unit_i18n:
+      en: hours
+      ar: ساعة
+      fr: heures
   result_issued_severe:
     value: 2
     unit: hours
-    basis: "Project specification section 4.1. Placeholder pending sign-off."
+    basis: Project specification section 4.1. Placeholder pending sign-off.
     status: placeholder_pending_clinician_signoff
+    label_i18n:
+      en: Notify the patient, very high reading
+      ar: إبلاغ المريض، قراءة مرتفعة جدًا
+      fr: Informer le patient, mesure très élevée
+    basis_i18n:
+      en: Project specification section 4.1. Placeholder pending sign-off.
+      ar: مواصفات المشروع، القسم 4.1. قيمة مؤقتة بانتظار الاعتماد.
+      fr: Cahier des charges, section 4.1. Valeur provisoire en attente de validation.
+    unit_i18n:
+      en: hours
+      ar: ساعة
+      fr: heures
   urgent_review:
     value: 4
     unit: hours
-    basis: "Same-day clinician review of a severe reading, project specification section 4.2. Placeholder pending sign-off."
+    basis: Same-day clinician review of a severe reading, project specification section 4.2. Placeholder pending sign-off.
     status: placeholder_pending_clinician_signoff
+    label_i18n:
+      en: Same-day clinician review
+      ar: مراجعة الطبيب في اليوم نفسه
+      fr: Revue clinique le jour même
+    basis_i18n:
+      en: Same-day clinician review of a severe reading, project specification section 4.2. Placeholder pending sign-off.
+      ar: مراجعة الطبيب في اليوم نفسه لقراءة مرتفعة جدًا، مواصفات المشروع القسم 4.2. قيمة مؤقتة بانتظار الاعتماد.
+      fr: Revue par un clinicien le jour même d'une mesure très élevée, cahier des charges section 4.2. Valeur provisoire en attente de validation.
+    unit_i18n:
+      en: hours
+      ar: ساعة
+      fr: heures
   notified:
     value: 72
     unit: hours
-    basis: "Project specification section 4.1. Placeholder pending sign-off."
+    basis: Project specification section 4.1. Placeholder pending sign-off.
     status: placeholder_pending_clinician_signoff
+    label_i18n:
+      en: Patient acknowledges
+      ar: إقرار المريض بالفهم
+      fr: Le patient confirme avoir compris
+    basis_i18n:
+      en: Project specification section 4.1. Placeholder pending sign-off.
+      ar: مواصفات المشروع، القسم 4.1. قيمة مؤقتة بانتظار الاعتماد.
+      fr: Cahier des charges, section 4.1. Valeur provisoire en attente de validation.
+    unit_i18n:
+      en: hours
+      ar: ساعة
+      fr: heures
   acknowledged:
     value: 14
     unit: days
-    basis: "Project specification section 4.1. Placeholder pending sign-off."
+    basis: Project specification section 4.1. Placeholder pending sign-off.
     status: placeholder_pending_clinician_signoff
+    label_i18n:
+      en: Confirm with home or 24-hour readings
+      ar: التأكد بقراءات منزلية أو بجهاز 24 ساعة
+      fr: Confirmer par des mesures à domicile ou sur 24 heures
+    basis_i18n:
+      en: Project specification section 4.1. Placeholder pending sign-off.
+      ar: مواصفات المشروع، القسم 4.1. قيمة مؤقتة بانتظار الاعتماد.
+      fr: Cahier des charges, section 4.1. Valeur provisoire en attente de validation.
+    unit_i18n:
+      en: days
+      ar: يوم
+      fr: jours
   confirmed:
     value: 3
     unit: days
-    basis: "Project specification section 4.1. Placeholder pending sign-off."
+    basis: Project specification section 4.1. Placeholder pending sign-off.
     status: placeholder_pending_clinician_signoff
+    label_i18n:
+      en: Send the referral
+      ar: إرسال الإحالة
+      fr: Envoyer l'orientation
+    basis_i18n:
+      en: Project specification section 4.1. Placeholder pending sign-off.
+      ar: مواصفات المشروع، القسم 4.1. قيمة مؤقتة بانتظار الاعتماد.
+      fr: Cahier des charges, section 4.1. Valeur provisoire en attente de validation.
+    unit_i18n:
+      en: days
+      ar: يوم
+      fr: jours
   closure_decision:
     value: 3
     unit: days
-    basis: "Clinician closure decision after a not-confirmed review, project specification section 4.1 clarifications. Placeholder pending sign-off."
+    basis: Clinician closure decision after a not-confirmed review, project specification section 4.1 clarifications. Placeholder pending sign-off.
     status: placeholder_pending_clinician_signoff
+    label_i18n:
+      en: Clinician closure decision
+      ar: قرار الطبيب بالإغلاق
+      fr: Décision de clôture du clinicien
+    basis_i18n:
+      en: Clinician closure decision after a not-confirmed review, project specification section 4.1 clarifications. Placeholder pending sign-off.
+      ar: قرار الطبيب بالإغلاق بعد مراجعة لم تؤكد القراءة، توضيحات مواصفات المشروع القسم 4.1. قيمة مؤقتة بانتظار الاعتماد.
+      fr: Décision de clôture du clinicien après une revue non confirmée, précisions du cahier des charges section 4.1. Valeur provisoire en attente de validation.
+    unit_i18n:
+      en: days
+      ar: يوم
+      fr: jours
   referral_accept:
     value: 2
     unit: days
-    basis: "Project specification section 4.1. Placeholder pending sign-off."
+    basis: Project specification section 4.1. Placeholder pending sign-off.
     status: placeholder_pending_clinician_signoff
+    label_i18n:
+      en: Receiving clinician accepts
+      ar: قبول الطبيب المستقبِل
+      fr: Le clinicien destinataire accepte
+    basis_i18n:
+      en: Project specification section 4.1. Placeholder pending sign-off.
+      ar: مواصفات المشروع، القسم 4.1. قيمة مؤقتة بانتظار الاعتماد.
+      fr: Cahier des charges, section 4.1. Valeur provisoire en attente de validation.
+    unit_i18n:
+      en: days
+      ar: يوم
+      fr: jours
   appointment_booking:
     value: 5
     unit: days
-    basis: "Project specification section 4.1. Placeholder pending sign-off."
+    basis: Project specification section 4.1. Placeholder pending sign-off.
     status: placeholder_pending_clinician_signoff
+    label_i18n:
+      en: Book the appointment
+      ar: حجز الموعد
+      fr: Réserver le rendez-vous
+    basis_i18n:
+      en: Project specification section 4.1. Placeholder pending sign-off.
+      ar: مواصفات المشروع، القسم 4.1. قيمة مؤقتة بانتظار الاعتماد.
+      fr: Cahier des charges, section 4.1. Valeur provisoire en attente de validation.
+    unit_i18n:
+      en: days
+      ar: يوم
+      fr: jours
   visit_outcome:
     value: 24
     unit: hours
-    basis: "Hours after the appointment time, project specification section 4.1. Placeholder pending sign-off."
+    basis: Hours after the appointment time, project specification section 4.1. Placeholder pending sign-off.
     status: placeholder_pending_clinician_signoff
+    label_i18n:
+      en: Record the visit outcome
+      ar: تسجيل نتيجة الزيارة
+      fr: Enregistrer le résultat de la visite
+    basis_i18n:
+      en: Hours after the appointment time, project specification section 4.1. Placeholder pending sign-off.
+      ar: عدد الساعات بعد موعد الزيارة، مواصفات المشروع القسم 4.1. قيمة مؤقتة بانتظار الاعتماد.
+      fr: Heures après l'heure du rendez-vous, cahier des charges section 4.1. Valeur provisoire en attente de validation.
+    unit_i18n:
+      en: hours
+      ar: ساعة
+      fr: heures
   in_care_review:
     value: 28
     unit: days
-    basis: "Review at 4 weeks, project specification section 4.1. Placeholder pending sign-off."
+    basis: Review at 4 weeks, project specification section 4.1. Placeholder pending sign-off.
     status: placeholder_pending_clinician_signoff
-
+    label_i18n:
+      en: Review in care
+      ar: المراجعة أثناء الرعاية
+      fr: Revue pendant le suivi
+    basis_i18n:
+      en: Review at 4 weeks, project specification section 4.1. Placeholder pending sign-off.
+      ar: مراجعة بعد 4 أسابيع، مواصفات المشروع القسم 4.1. قيمة مؤقتة بانتظار الاعتماد.
+      fr: Revue à 4 semaines, cahier des charges section 4.1. Valeur provisoire en attente de validation.
+    unit_i18n:
+      en: days
+      ar: يوم
+      fr: jours
 escalation:
   level2_multiplier:
     value: 2
     unit: x service level
-    basis: "Project specification section 4.3. Placeholder pending sign-off."
+    basis: Project specification section 4.3. Placeholder pending sign-off.
     status: placeholder_pending_clinician_signoff
+    label_i18n:
+      en: Second escalation level
+      ar: المستوى الثاني من التصعيد
+      fr: Deuxième niveau d'escalade
+    basis_i18n:
+      en: Project specification section 4.3. Placeholder pending sign-off.
+      ar: مواصفات المشروع، القسم 4.3. قيمة مؤقتة بانتظار الاعتماد.
+      fr: Cahier des charges, section 4.3. Valeur provisoire en attente de validation.
+    unit_i18n:
+      en: x service level
+      ar: × مستوى الخدمة
+      fr: × niveau de service
   level2_multiplier_severe:
     value: 1
     unit: x service level
-    basis: "Project specification section 4.3. Placeholder pending sign-off."
+    basis: Project specification section 4.3. Placeholder pending sign-off.
     status: placeholder_pending_clinician_signoff
-
+    label_i18n:
+      en: Second escalation level, very high reading
+      ar: المستوى الثاني من التصعيد، قراءة مرتفعة جدًا
+      fr: Deuxième niveau d'escalade, mesure très élevée
+    basis_i18n:
+      en: Project specification section 4.3. Placeholder pending sign-off.
+      ar: مواصفات المشروع، القسم 4.3. قيمة مؤقتة بانتظار الاعتماد.
+      fr: Cahier des charges, section 4.3. Valeur provisoire en attente de validation.
+    unit_i18n:
+      en: x service level
+      ar: × مستوى الخدمة
+      fr: × niveau de service
 unreachable_protocol:
   reminder_after:
     value: 24
     unit: hours
-    basis: "Project specification section 4.3. Placeholder pending sign-off."
+    basis: Project specification section 4.3. Placeholder pending sign-off.
     status: placeholder_pending_clinician_signoff
+    label_i18n:
+      en: First reminder after
+      ar: التذكير الأول بعد
+      fr: Premier rappel après
+    basis_i18n:
+      en: Project specification section 4.3. Placeholder pending sign-off.
+      ar: مواصفات المشروع، القسم 4.3. قيمة مؤقتة بانتظار الاعتماد.
+      fr: Cahier des charges, section 4.3. Valeur provisoire en attente de validation.
+    unit_i18n:
+      en: hours
+      ar: ساعة
+      fr: heures
   second_channel_after:
     value: 48
     unit: hours
-    basis: "Project specification section 4.3. Placeholder pending sign-off."
+    basis: Project specification section 4.3. Placeholder pending sign-off.
     status: placeholder_pending_clinician_signoff
+    label_i18n:
+      en: Second channel after
+      ar: القناة الثانية بعد
+      fr: Deuxième canal après
+    basis_i18n:
+      en: Project specification section 4.3. Placeholder pending sign-off.
+      ar: مواصفات المشروع، القسم 4.3. قيمة مؤقتة بانتظار الاعتماد.
+      fr: Cahier des charges, section 4.3. Valeur provisoire en attente de validation.
+    unit_i18n:
+      en: hours
+      ar: ساعة
+      fr: heures
   call_task_after:
     value: 72
     unit: hours
-    basis: "Project specification section 4.3. Placeholder pending sign-off."
+    basis: Project specification section 4.3. Placeholder pending sign-off.
     status: placeholder_pending_clinician_signoff
+    label_i18n:
+      en: Coordinator call task after
+      ar: مهمة اتصال المنسق بعد
+      fr: Tâche d'appel du coordinateur après
+    basis_i18n:
+      en: Project specification section 4.3. Placeholder pending sign-off.
+      ar: مواصفات المشروع، القسم 4.3. قيمة مؤقتة بانتظار الاعتماد.
+      fr: Cahier des charges, section 4.3. Valeur provisoire en attente de validation.
+    unit_i18n:
+      en: hours
+      ar: ساعة
+      fr: heures
   clinician_decision_after:
     value: 120
     unit: hours
-    basis: "Assumption: two days after the call task, the case is flagged for a clinician decision. It is never closed automatically."
+    basis: 'Assumption: two days after the call task, the case is flagged for a clinician decision. It is never closed automatically.'
     status: placeholder_pending_clinician_signoff
-
+    label_i18n:
+      en: Clinician decision after
+      ar: قرار الطبيب بعد
+      fr: Décision du clinicien après
+    basis_i18n:
+      en: 'Assumption: two days after the call task, the case is flagged for a clinician decision. It is never closed automatically.'
+      ar: 'افتراض: بعد يومين من مهمة الاتصال تُحال الحالة إلى قرار الطبيب. لا تُغلق الحالة تلقائيًا أبدًا.'
+      fr: 'Hypothèse : deux jours après la tâche d''appel, le dossier est signalé pour une décision du clinicien. Il n''est jamais clôturé automatiquement.'
+    unit_i18n:
+      en: hours
+      ar: ساعة
+      fr: heures
 closure:
   note_min_chars:
     value: 10
     unit: characters
-    basis: "Project specification section 4.1: minimum length of a recorded decision note."
+    basis: 'Project specification section 4.1: minimum length of a recorded decision note.'
     status: placeholder_pending_clinician_signoff
+    label_i18n:
+      en: Decision note, minimum length
+      ar: ملاحظة القرار، الحد الأدنى للطول
+      fr: Note de décision, longueur minimale
+    basis_i18n:
+      en: 'Project specification section 4.1: minimum length of a recorded decision note.'
+      ar: 'مواصفات المشروع، القسم 4.1: الحد الأدنى لطول ملاحظة القرار المسجلة.'
+      fr: 'Cahier des charges, section 4.1 : longueur minimale d''une note de décision enregistrée.'
+    unit_i18n:
+      en: characters
+      ar: حرفًا
+      fr: caractères
   reopen_reason_min_chars:
     value: 5
     unit: characters
-    basis: "Assumption: a reopen needs a short stated reason."
+    basis: 'Assumption: a reopen needs a short stated reason.'
     status: placeholder_pending_clinician_signoff
-
+    label_i18n:
+      en: Reopen reason, minimum length
+      ar: سبب إعادة الفتح، الحد الأدنى للطول
+      fr: Motif de réouverture, longueur minimale
+    basis_i18n:
+      en: 'Assumption: a reopen needs a short stated reason.'
+      ar: 'افتراض: إعادة الفتح تحتاج إلى سبب مختصر مذكور.'
+      fr: 'Hypothèse : une réouverture demande un court motif.'
+    unit_i18n:
+      en: characters
+      ar: حرفًا
+      fr: caractères
 teach_back:
   failures_before_call_task:
     value: 2
     unit: wrong answers
-    basis: "Project specification section 6: two wrong answers create a coordinator call task."
+    basis: 'Project specification section 6: two wrong answers create a coordinator call task.'
     status: placeholder_pending_clinician_signoff
-
+    label_i18n:
+      en: Wrong answers before a call task
+      ar: الإجابات الخاطئة قبل مهمة الاتصال
+      fr: Mauvaises réponses avant une tâche d'appel
+    basis_i18n:
+      en: 'Project specification section 6: two wrong answers create a coordinator call task.'
+      ar: 'مواصفات المشروع، القسم 6: إجابتان خاطئتان تنشئان مهمة اتصال للمنسق.'
+      fr: 'Cahier des charges, section 6 : deux mauvaises réponses créent une tâche d''appel pour le coordinateur.'
+    unit_i18n:
+      en: wrong answers
+      ar: إجابات خاطئة
+      fr: mauvaises réponses
 lifestyle_plan:
   week_length:
     value: 7
     unit: days
-    basis: "Weekly action."
+    basis: Weekly action.
     status: placeholder_pending_clinician_signoff
+    label_i18n:
+      en: Plan week length
+      ar: طول أسبوع الخطة
+      fr: Durée d'une semaine du plan
+    basis_i18n:
+      en: Weekly action.
+      ar: الإجراء الأسبوعي.
+      fr: Action hebdomadaire.
+    unit_i18n:
+      en: days
+      ar: يوم
+      fr: jours
   lapse_grace:
     value: 1
     unit: days
-    basis: "Assumption: a week with no check-in after this grace period is recorded as missed, with no blame."
+    basis: 'Assumption: a week with no check-in after this grace period is recorded as missed, with no blame.'
     status: placeholder_pending_clinician_signoff
+    label_i18n:
+      en: Grace period before a week counts as missed
+      ar: فترة السماح قبل اعتبار الأسبوع فائتًا
+      fr: Délai de grâce avant qu'une semaine compte comme manquée
+    basis_i18n:
+      en: 'Assumption: a week with no check-in after this grace period is recorded as missed, with no blame.'
+      ar: 'افتراض: الأسبوع دون متابعة بعد فترة السماح هذه يُسجَّل على أنه فائت، دون أي لوم.'
+      fr: 'Hypothèse : une semaine sans point après ce délai de grâce est notée comme manquée, sans reproche.'
+    unit_i18n:
+      en: days
+      ar: يوم
+      fr: jours
   partly_in_row_to_shrink:
     value: 2
     unit: check-ins
-    basis: "Project specification section 4.6."
+    basis: Project specification section 4.6.
     status: placeholder_pending_clinician_signoff
+    label_i18n:
+      en: Partly done in a row before a smaller step
+      ar: عدد المرات الجزئية المتتالية قبل خطوة أصغر
+      fr: Réalisations partielles de suite avant une action plus petite
+    basis_i18n:
+      en: Project specification section 4.6.
+      ar: مواصفات المشروع، القسم 4.6.
+      fr: Cahier des charges, section 4.6.
+    unit_i18n:
+      en: check-ins
+      ar: متابعات
+      fr: points de suivi
   done_in_row_to_offer_larger:
     value: 2
     unit: check-ins
-    basis: "Project specification section 4.6."
+    basis: Project specification section 4.6.
     status: placeholder_pending_clinician_signoff
+    label_i18n:
+      en: Done in a row before a larger step is offered
+      ar: عدد المرات المنجزة المتتالية قبل عرض خطوة أكبر
+      fr: Réalisations de suite avant de proposer une action plus grande
+    basis_i18n:
+      en: Project specification section 4.6.
+      ar: مواصفات المشروع، القسم 4.6.
+      fr: Cahier des charges, section 4.6.
+    unit_i18n:
+      en: check-ins
+      ar: متابعات
+      fr: points de suivi
   missed_in_row_for_call_task:
     value: 3
     unit: check-ins
-    basis: "Project specification section 4.6."
+    basis: Project specification section 4.6.
     status: placeholder_pending_clinician_signoff
+    label_i18n:
+      en: Missed in a row before a call is offered
+      ar: عدد المرات الفائتة المتتالية قبل عرض مكالمة
+      fr: Semaines manquées de suite avant de proposer un appel
+    basis_i18n:
+      en: Project specification section 4.6.
+      ar: مواصفات المشروع، القسم 4.6.
+      fr: Cahier des charges, section 4.6.
+    unit_i18n:
+      en: check-ins
+      ar: متابعات
+      fr: points de suivi

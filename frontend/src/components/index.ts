@@ -23,3 +23,7 @@ export { Tabs, type TabItem, type TabsProps } from "./Tabs";
 export { SimulatedTag, Tag, type TagProps } from "./Tag";
 export { Timeline, type TimelineProps } from "./Timeline";
 export { ToastProvider, useToast } from "./Toast";
+
+export { LoopRing, LoopMark } from "./LoopRing";
+export type { LoopRingProps } from "./LoopRing";
+export { Brand, type BrandProps } from "./Brand";

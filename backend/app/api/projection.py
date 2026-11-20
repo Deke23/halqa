@@ -18,6 +18,7 @@ from app.engine.demographics import age_band
 from app.engine.types import Action, EventType, Role, Severity, State, STATE_ORDER
 from app.engine import queues
 
+from . import i18n
 from . import schemas as S
 from . import wording_port
 from .core import (
@@ -61,8 +62,23 @@ def person(db: Session, user_id: int | None) -> S.PersonRef | None:
     u = db.get(User, user_id)
     if u is None:
         return None
-    name, role = split_name(u.name, u.role)
-    return S.PersonRef(name=name, role=role)
+    return person_from_name(u.name, u.role)
+
+
+def person_from_name(full: str, fallback_role: str = "") -> S.PersonRef:
+    """A person from a stored display string, for example a provider name on a slot or appointment."""
+    name, role = split_name(full, fallback_role)
+    return S.PersonRef(name=name, role=role, names=S.I18nText(**i18n.person_names(full)),
+                       roles=S.I18nText(**i18n.person_roles(full, fallback_role)))
+
+
+def appointment_label(starts_at, provider: str, location: str, region: str) -> S.I18nText:
+    """`25 November, 09:30, Dr Omar, <place>` in each language, on the region's clock."""
+    from .message_slots import format_date
+    from .regions import tz_of
+    local = starts_at.astimezone(tz_of(region))
+    who, where = i18n.person_names(provider), i18n.place(location)
+    return S.I18nText(**{lang: f"{format_date(local, lang)}, {local.strftime('%H:%M')}, {who[lang]}, {where[lang]}" for lang in i18n.LANGS})
 
 
 def _last_event(db: Session, case_id: int, types: list[str]) -> CaseEvent | None:
@@ -97,6 +113,8 @@ def summary_of(db: Session, case: Case, ev: engine.Evaluation, cd) -> S.CaseSumm
         id=case.id, patient_initials=patient.initials, patient_ref=patient.ref, region=case.region, language=patient.language,
         state=case.state, severity=case.severity, urgent=case.urgent, owner_role=case.owner_role,
         owner_user_id=case.owner_user_id, owner_name=user_name(db, case.owner_user_id), owner_person=person(db, case.owner_user_id),
+        patient_names=S.I18nText(**i18n.person_names(patient.display_name)),
+        patient_initials_i18n=S.I18nText(**i18n.initials_i18n(patient.display_name)),
         age_band=age_band(patient.age),
         next_step_label_key=step.label_key if step else None, due_at=step.due_at if step else None,
         overdue=ev.overdue, overdue_hours=round(ev.overdue_hours, 1), escalation_level=ev.escalation_level,
@@ -146,7 +164,7 @@ def _progress(case: Case) -> list[S.ProgressStep]:
 def _referral_out(db: Session, r, patient_view: bool, hide_reason: bool = False) -> S.ReferralOut:
     return S.ReferralOut(
         id=r.id, status=r.status, to_user_id=r.to_user_id, to_name=user_name(db, r.to_user_id), to_person=person(db, r.to_user_id),
-        to_service=r.to_service, from_name=user_name(db, r.from_user_id), from_person=person(db, r.from_user_id),
+        to_service=r.to_service, to_service_i18n=S.I18nText(**i18n.service(r.to_service)) if r.to_service else None, from_name=user_name(db, r.from_user_id), from_person=person(db, r.from_user_id),
         reason="" if (patient_view or hide_reason) else r.reason,
         rejection_reason=None if patient_view else r.rejection_reason, created_at=r.created_at, decided_at=r.decided_at,
     )
@@ -164,9 +182,9 @@ def _message_out(db: Session, m) -> S.MessageOut:
 def econsult_out(db: Session, e: EConsult) -> S.EConsultOut:
     return S.EConsultOut(
         id=e.id, case_id=e.case_id, from_user_id=e.from_user_id, from_name=user_name(db, e.from_user_id) or "",
-        from_person=person(db, e.from_user_id) or S.PersonRef(name="", role=""),
+        from_person=person(db, e.from_user_id) or person_from_name("", ""),
         to_user_id=e.to_user_id, to_name=user_name(db, e.to_user_id) or "",
-        to_person=person(db, e.to_user_id) or S.PersonRef(name="", role=""), question=e.question, answer=e.answer,
+        to_person=person(db, e.to_user_id) or person_from_name("", ""), question=e.question, answer=e.answer,
         status=e.status, created_at=e.created_at, answered_at=e.answered_at,
     )
 
@@ -222,7 +240,7 @@ def case_detail(db: Session, case: Case, viewer: User, role: Role, now: datetime
     tasks, econs = [], []
     if not patient_view:
         for t in db.scalars(select(Task).where(Task.case_id == case.id).order_by(Task.id)):
-            tasks.append(S.TaskOut(id=t.id, type=t.type, title_key=t.title_key, owner_role=t.owner_role, owner_user_id=t.owner_user_id,
+            tasks.append(S.TaskOut(title_i18n=S.I18nText(**i18n.task_title(t.title_key)), id=t.id, type=t.type, title_key=t.title_key, owner_role=t.owner_role, owner_user_id=t.owner_user_id,
                                    due_at=t.due_at, status=t.status, overdue=bool(t.status == "OPEN" and t.due_at and now > t.due_at),
                                    created_at=t.created_at))
         if role is not Role.COORDINATOR:
@@ -237,7 +255,8 @@ def case_detail(db: Session, case: Case, viewer: User, role: Role, now: datetime
 
     advice = None
     if case.state != State.CLOSED.value and (case.urgent or case.severity == Severity.SEVERE.value):
-        advice = S.EmergencyAdvice(text=emergency_text(case.region, patient.language), number=REGIONS[case.region]["emergency_number"],
+        advice = S.EmergencyAdvice(text=emergency_text(case.region, patient.language),
+                                   text_i18n=S.I18nText(**{lang: emergency_text(case.region, lang) for lang in i18n.LANGS}), number=REGIONS[case.region]["emergency_number"],
                                    region=case.region)
 
     next_out = None
@@ -253,7 +272,8 @@ def case_detail(db: Session, case: Case, viewer: User, role: Role, now: datetime
     weeks = [
         S.PlanWeekOut(week_index=w.week_index, action_key=w.action_key, size=w.size, status=w.status, barrier=w.barrier,
                       offered_larger=w.offered_larger, starts_at=w.starts_at, checked_in_at=w.checked_in_at,
-                      label_key=f"plan.{w.action_key}.{w.size}", default_text=wording_port.plan_text(w.action_key, w.size, plan_lang))
+                      label_key=f"plan.{w.action_key}.{w.size}", default_text=wording_port.plan_text(w.action_key, w.size, plan_lang),
+                      default_text_i18n=S.I18nText(**{lang: wording_port.plan_text(w.action_key, w.size, lang) for lang in i18n.LANGS}))
         for w in plan_weeks(db, case.id)
     ]
     consents = [S.ConsentOut(purpose=c.purpose, channel=c.channel, granted=c.granted, granted_at=c.granted_at, withdrawn_at=c.withdrawn_at)
@@ -270,7 +290,11 @@ def case_detail(db: Session, case: Case, viewer: User, role: Role, now: datetime
         patient=S.PatientSummary(id=patient.id, ref=patient.ref, display_name=patient.display_name, initials=patient.initials,
                                  age=patient.age, sex=patient.sex, nationality_group=patient.nationality_group,
                                  language=patient.language, region=patient.region, insurance=patient.insurance,
-                                 channel=patient.channel, organisation=patient.organisation),
+                                 channel=patient.channel, organisation=patient.organisation,
+                                 names=S.I18nText(**i18n.person_names(patient.display_name)),
+                                 initials_i18n=S.I18nText(**i18n.initials_i18n(patient.display_name)),
+                                 organisation_i18n=S.I18nText(**i18n.place(patient.organisation)),
+                                 region_name_i18n=S.I18nText(**i18n.region_names(patient.region))),
         owner_role=case.owner_role, owner_user_id=case.owner_user_id, owner_name=user_name(db, case.owner_user_id),
         owner_person=person(db, case.owner_user_id), plan_active=plan_active(db, case),
         next_step=next_out, progress=_progress(case), flags=flags, referral_status=case.referral_status,
@@ -286,7 +310,10 @@ def case_detail(db: Session, case: Case, viewer: User, role: Role, now: datetime
         referral=_referral_out(db, refs[-1], patient_view, minimise) if refs else None,
         referrals_history=[] if patient_view else [_referral_out(db, r, False, minimise) for r in refs[:-1]],
         appointment=S.AppointmentOut(id=appt.id, starts_at=appt.starts_at, provider_name=appt.provider_name, location=appt.location,
-                                     status=appt.status) if appt else None,
+                                     status=appt.status, provider_name_i18n=S.I18nText(**i18n.person_names(appt.provider_name)),
+                                     provider_person=person_from_name(appt.provider_name, "clinician"),
+                                     location_i18n=S.I18nText(**i18n.place(appt.location)),
+                                     label_i18n=appointment_label(appt.starts_at, appt.provider_name, appt.location, case.region)) if appt else None,
         messages=message_list(db, case.id), econsults=econs, plan=weeks, consents=consents, tasks=tasks, timeline=timeline,
         closure=closure,
         allowed_actions=[a for a in engine.allowed_actions(cd, Role(role), viewer.id if viewer else None)

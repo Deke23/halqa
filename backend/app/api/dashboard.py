@@ -22,6 +22,7 @@ from app.demo import clock
 from app.engine.demographics import AGE_BANDS, age_band  # noqa: F401  (one definition, shared with the simulation)
 from app.engine.types import State
 
+from . import i18n
 from . import schemas as S
 from .constants import DATA_DIR
 from .core import case_data
@@ -176,7 +177,9 @@ def live(split: S.Split = S.Split.NONE, region: S.Region | None = None,
         groups["all" if split is S.Split.NONE else _SPLITS[split](patient)].append(case)
     if not groups:
         groups["all"] = []
-    out = [S.DashboardGroup(key=k, label=k if k != "all" else "All people", measures=measures_for(db, cs, now))
+    out = [S.DashboardGroup(key=k, label=k if k != "all" else "All people",
+                            label_i18n=S.I18nText(**(i18n.all_people_label() if k == "all" else i18n.same(k))),
+                            measures=measures_for(db, cs, now))
            for k, cs in sorted(groups.items())]
     return S.DashboardLive(split=split, region=region, generated_at=now, min_cell_size=MIN_CELL, groups=out)
 

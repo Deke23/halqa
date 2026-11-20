@@ -2,6 +2,10 @@
 id: reminder_booking
 version: 1
 purpose: Reminder to choose a visit time after the referral was accepted.
+purpose_i18n:
+  en: Reminder to choose a visit time after the referral was accepted.
+  ar: تذكير باختيار موعد الزيارة بعد قبول الإحالة.
+  fr: Rappel pour choisir l'heure de la visite après l'acceptation de l'orientation.
 channel_limits:
   app: 900
   whatsapp: 1000

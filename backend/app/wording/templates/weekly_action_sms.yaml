@@ -2,6 +2,10 @@
 id: weekly_action_sms
 version: 1
 purpose: SMS weekly action.
+purpose_i18n:
+  en: SMS weekly action.
+  ar: الإجراء الأسبوعي برسالة نصية.
+  fr: Action hebdomadaire par SMS.
 channel_limits:
   sms:
     en: 160

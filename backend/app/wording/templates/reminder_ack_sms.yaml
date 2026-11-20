@@ -2,6 +2,10 @@
 id: reminder_ack_sms
 version: 1
 purpose: SMS reminder to confirm understanding.
+purpose_i18n:
+  en: SMS reminder to confirm understanding.
+  ar: رسالة نصية تذكّر بتأكيد الفهم.
+  fr: SMS de rappel pour confirmer la compréhension.
 channel_limits:
   sms:
     en: 160

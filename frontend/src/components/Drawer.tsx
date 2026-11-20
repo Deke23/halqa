@@ -37,7 +37,7 @@ export function Drawer({ open, onClose, title, children, width = "lg" }: DrawerP
         if (e.target === ref.current) onClose();
       }}
       className={cx(
-        "m-0 h-dvh max-h-none max-w-full border-s border-line bg-surface p-0 text-ink shadow-xl backdrop:bg-black/40",
+        "rise-in m-0 h-dvh max-h-none max-w-full rounded-s-sheet border-s border-line bg-surface p-0 text-ink shadow-float backdrop:bg-demo/50",
         "ms-auto me-0",
         widths[width],
       )}

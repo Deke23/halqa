@@ -2,6 +2,10 @@
 id: confirmation_hbpm_instructions
 version: 1
 purpose: How to take home blood pressure readings for 7 days.
+purpose_i18n:
+  en: How to take home blood pressure readings for 7 days.
+  ar: كيفية قياس ضغط الدم في المنزل لمدة 7 أيام.
+  fr: Comment mesurer la tension à domicile pendant 7 jours.
 channel_limits:
   app: 900
   whatsapp: 1000

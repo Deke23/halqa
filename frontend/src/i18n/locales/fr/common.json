@@ -1,5 +1,7 @@
 {
-  "app": { "tagline": "Un responsable et une échéance pour chaque résultat de tension artérielle élevée." },
+  "app": {
+    "tagline": "Un responsable et une échéance pour chaque résultat de tension artérielle élevée."
+  },
   "nav": {
     "home": "Accueil",
     "patient": "Mon suivi",
@@ -27,10 +29,11 @@
     "resetDone": "Les données de démonstration ont été réinitialisées.",
     "resetConfirmTitle": "Réinitialiser les données de démonstration",
     "resetConfirmBody": "Cela remet toutes les personnes, tous les dossiers et l'horloge de démonstration à leur état de départ.",
-    "clockAdvanced": "L'horloge de démonstration a avancé."
+    "clockAdvanced": "L'horloge de démonstration a avancé.",
+    "toggle": "Démo"
   },
   "landing": {
-    "title": "Boucler le suivi après un résultat de tension élevée",
+    "title": "Aucun résultat de tension élevée ne se perd",
     "intro": "Ceci est un prototype fonctionnel avec des personnes synthétiques. Tous les résultats, messages et prestataires affichés ici sont fictifs.",
     "continueGuest": "Continuer en tant qu'invité",
     "pickPersona": "Choisissez le profil de connexion",
@@ -40,18 +43,62 @@
     "loginFailed": "La connexion a échoué",
     "backendUnreachable": "Le serveur est injoignable. Démarrez le serveur sur le port 8000 puis réessayez.",
     "region": "Région",
-    "openTransparency": "Comment les décisions sont prises"
+    "openTransparency": "Comment les décisions sont prises",
+    "lead": "Halqa suit chaque mesure élevée du dépistage jusqu'au traitement. Chaque étape a un responsable et une échéance, de sorte qu'un résultat n'attend jamais sans que quelqu'un en réponde.",
+    "simulatedNotice": "Données simulées. Toutes les personnes, mesures et messages affichés ici sont fictifs.",
+    "ringLabel": "Dossier exemple, étape {{n}} sur 8",
+    "ringCaption": "étapes franchies",
+    "openDashboard": "Tableau de bord du programme"
   },
   "personas": {
-    "patient_auh": { "name": "Khalid", "role": "Patient", "description": "34 ans, Émirati, travail de bureau. Repéré lors d'un dépistage simulé avec 152/96 mmHg. Utilise l'application web.", "region": "Abou Dhabi" },
-    "coordinator_auh": { "name": "Mariam", "role": "Coordinatrice des soins", "description": "Gère la file des dossiers en retard, rejetés et sans responsable dans un centre de soins primaires d'Abou Dhabi.", "region": "Abou Dhabi" },
-    "clinician_pcp": { "name": "Dr Sara", "role": "Clinicienne en médecine familiale", "description": "Examine les mesures de confirmation, oriente, demande des avis à distance et clôture les dossiers.", "region": "Abou Dhabi" },
-    "clinician_specialist": { "name": "Dr Omar", "role": "Clinicien de la clinique d'hypertension", "description": "Accepte ou refuse les orientations et débute le traitement.", "region": "Abou Dhabi" },
-    "patient_yde": { "name": "Jean-Paul", "role": "Patient", "description": "47 ans, chauffeur de taxi. Mesure en clinique de 164/102 mmHg. Joint par SMS et WhatsApp en français.", "region": "Yaoundé" },
-    "nurse_yde": { "name": "Clarisse", "role": "Infirmière coordinatrice", "description": "Coordonne le suivi dans un centre de santé de Yaoundé.", "region": "Yaoundé" },
-    "analyst": { "name": "Analyste du programme", "role": "Analyste", "description": "Voit uniquement des mesures agrégées. Les petits groupes sont masqués.", "region": "Les deux régions" }
+    "patient_auh": {
+      "name": "Khalid",
+      "role": "Patient",
+      "description": "34 ans, Émirati, travail de bureau. Repéré lors d'un dépistage simulé avec 152/96 mmHg. Utilise l'application web.",
+      "region": "Abou Dhabi"
+    },
+    "coordinator_auh": {
+      "name": "Mariam",
+      "role": "Coordinatrice des soins",
+      "description": "Gère la file des dossiers en retard, rejetés et sans responsable dans un centre de soins primaires d'Abou Dhabi.",
+      "region": "Abou Dhabi"
+    },
+    "clinician_pcp": {
+      "name": "Dr Sara",
+      "role": "Clinicienne en médecine familiale",
+      "description": "Examine les mesures de confirmation, oriente, demande des avis à distance et clôture les dossiers.",
+      "region": "Abou Dhabi"
+    },
+    "clinician_specialist": {
+      "name": "Dr Omar",
+      "role": "Clinicien de la clinique d'hypertension",
+      "description": "Accepte ou refuse les orientations et débute le traitement.",
+      "region": "Abou Dhabi"
+    },
+    "patient_yde": {
+      "name": "Jean-Paul",
+      "role": "Patient",
+      "description": "47 ans, chauffeur de taxi. Mesure en clinique de 164/102 mmHg. Joint par SMS et WhatsApp en français.",
+      "region": "Yaoundé"
+    },
+    "nurse_yde": {
+      "name": "Clarisse",
+      "role": "Infirmière coordinatrice",
+      "description": "Coordonne le suivi dans un centre de santé de Yaoundé.",
+      "region": "Yaoundé"
+    },
+    "analyst": {
+      "name": "Analyste du programme",
+      "role": "Analyste",
+      "description": "Voit uniquement des mesures agrégées. Les petits groupes sont masqués.",
+      "region": "Les deux régions"
+    }
   },
-  "regions": { "abu_dhabi": "Abou Dhabi", "yaounde": "Yaoundé", "all": "Toutes les régions" },
+  "regions": {
+    "abu_dhabi": "Abou Dhabi",
+    "yaounde": "Yaoundé",
+    "all": "Toutes les régions"
+  },
   "states": {
     "RESULT_ISSUED": "Résultat émis",
     "NOTIFIED": "Patient informé",
@@ -62,7 +109,13 @@
     "IN_CARE": "En soins",
     "CLOSED": "Clôturé"
   },
-  "journey": { "title": "Votre parcours", "youAreHere": "Vous êtes ici", "done": "Terminé", "upcoming": "À venir", "doneAt": "Terminé {{when}}" },
+  "journey": {
+    "title": "Votre parcours",
+    "youAreHere": "Vous êtes ici",
+    "done": "Terminé",
+    "upcoming": "À venir",
+    "doneAt": "Terminé {{when}}"
+  },
   "roles": {
     "patient": "Patient",
     "coordinator": "Coordinateur des soins",
@@ -74,7 +127,10 @@
     "system": "Système",
     "none": "Aucun"
   },
-  "owner": { "noOwner": "Sans responsable", "label": "Responsable" },
+  "owner": {
+    "noOwner": "Sans responsable",
+    "label": "Responsable"
+  },
   "queues": {
     "urgent": "Urgents",
     "overdue": "En retard",
@@ -110,7 +166,13 @@
     "noDate": "Sans échéance",
     "dueOn": "Échéance : {{date}}"
   },
-  "units": { "hour": "{{count}} h", "day_one": "{{count}} jour", "day_many": "{{count}} jours", "day_other": "{{count}} jours", "mmHg": "mmHg" },
+  "units": {
+    "hour": "{{count}} h",
+    "day_one": "{{count}} jour",
+    "day_many": "{{count}} jours",
+    "day_other": "{{count}} jours",
+    "mmHg": "mmHg"
+  },
   "simulated": "Simulé",
   "fewerThan5": "moins de 5",
   "urgent": "Urgent",
@@ -139,8 +201,22 @@
     "notifications": "Notifications",
     "dismiss": "Masquer"
   },
-  "table": { "noRows": "Aucune ligne à afficher" },
-  "timeline": { "title": "Historique du dossier", "by": "par {{actor}}", "system": "Système" },
-  "json": { "copy": "Copier", "copied": "Copié", "expand": "Développer", "collapse": "Réduire" },
-  "placeholder": { "ownedBy": "Cet écran est construit par {{owner}}.", "route": "Route : {{route}}" }
+  "table": {
+    "noRows": "Aucune ligne à afficher"
+  },
+  "timeline": {
+    "title": "Historique du dossier",
+    "by": "par {{actor}}",
+    "system": "Système"
+  },
+  "json": {
+    "copy": "Copier",
+    "copied": "Copié",
+    "expand": "Développer",
+    "collapse": "Réduire"
+  },
+  "placeholder": {
+    "ownedBy": "Cet écran est construit par {{owner}}.",
+    "route": "Route : {{route}}"
+  }
 }

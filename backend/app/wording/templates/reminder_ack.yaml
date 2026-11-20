@@ -2,6 +2,10 @@
 id: reminder_ack
 version: 1
 purpose: Gentle reminder to confirm understanding of the result.
+purpose_i18n:
+  en: Gentle reminder to confirm understanding of the result.
+  ar: تذكير لطيف بتأكيد فهم النتيجة.
+  fr: Rappel aimable pour confirmer la compréhension du résultat.
 channel_limits:
   app: 900
   whatsapp: 1000

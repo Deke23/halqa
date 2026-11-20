@@ -17,7 +17,9 @@
   },
   "sex": {
     "F": "female",
-    "M": "male"
+    "M": "male",
+    "female": "female",
+    "male": "male"
   },
   "roleShort": {
     "patient": "patient",
@@ -77,7 +79,9 @@
       "next": "Next step",
       "owner": "Owner",
       "due": "Due",
-      "why": "Why it is here"
+      "why": "Why it is here",
+      "progress": "Progress",
+      "nextWhy": "Next step and why"
     },
     "openCase": "Open case {{id}} for {{initials}}",
     "new": "New",
@@ -101,10 +105,10 @@
     "title": "Simulate incoming result",
     "intro": "Sends a fictional screening result to the intake endpoint, as the source feed would. Nothing real is involved.",
     "severe": "Simulate severe result (185/115)",
-    "or": "or a custom reading",
-    "systolic": "Systolic (mmHg)",
-    "diastolic": "Diastolic (mmHg)",
-    "custom": "Send custom result",
+    "or": "or custom",
+    "systolic": "Systolic",
+    "diastolic": "Diastolic",
+    "custom": "Send custom",
     "landed": "A new case {{id}} was opened.",
     "landedSevere": "A new urgent case {{id}} was opened at the top of the urgent queue.",
     "notActionable": "No case was opened. {{reason}}",
@@ -207,7 +211,12 @@
     "teach_back_question": "Teach-back question",
     "teach_back_simpler": "Simpler explanation",
     "urgent_red_flags": "Warning symptom advice",
-    "weekly_action": "Weekly action"
+    "weekly_action": "Weekly action",
+    "plan_action": "Weekly action: {{action}}, {{size}}",
+    "red_flag_check": "Warning symptom question",
+    "reminder_booking": "Reminder to book a visit",
+    "reminder_home_readings": "Reminder to take home readings",
+    "teach_back_question_app": "Teach-back question (app)"
   },
   "action": {
     "cancel": "Cancel",
@@ -301,7 +310,7 @@
   },
   "actions": {
     "title": "What you can do",
-    "intro": "These actions come from the server for your role and this case.",
+    "intro": "Actions available to you at this step.",
     "none": "There is nothing for you to do on this case right now.",
     "referBlocked": "Referral is blocked. The patient has withdrawn permission to share their information with the receiving provider. Ask the patient before referring.",
     "coordinatorCannotClose": "Only a clinician can close a case, and only with evidence or a recorded decision. A coordinator can escalate a case to a clinician instead."
@@ -340,7 +349,7 @@
     "due": "Due",
     "closedNoStep": "None, the case is closed",
     "noDue": "No due date",
-    "serviceLevel": "Service level {{hours}} h",
+    "serviceLevel": "Service level: {{hours}}",
     "backQueue": "Back to the queue",
     "backWorklist": "Back to the worklist",
     "emergencyAdvice": "Emergency advice for the patient",
@@ -352,7 +361,8 @@
   },
   "case": {
     "title": "Case",
-    "loadError": "This case did not load"
+    "loadError": "This case did not load",
+    "sideLabel": "Patient summary and consent"
   },
   "fhir": {
     "open": "View FHIR record",
@@ -665,5 +675,23 @@
     "hypertension_clinic": "hypertension clinic",
     "general_practice_yaound": "general practice, Yaoundé",
     "hypertension_clinic_yaound": "hypertension clinic, Yaoundé"
+  },
+  "ring": {
+    "label": "Step {{n}} of {{total}}",
+    "closed": "Closed, all eight steps"
+  },
+  "patient": {
+    "title": "Patient",
+    "age": "Age",
+    "sex": "Sex",
+    "language": "Language",
+    "channel": "Channel",
+    "insurance": "Insurance",
+    "organisation": "Organisation"
+  },
+  "insurance": {
+    "THIQA": "Thiqa (simulated)",
+    "BASIC": "Basic plan (simulated)",
+    "NONE": "None"
   }
 }

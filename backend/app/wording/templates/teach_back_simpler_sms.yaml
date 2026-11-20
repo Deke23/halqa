@@ -2,6 +2,10 @@
 id: teach_back_simpler_sms
 version: 1
 purpose: SMS simpler re-explanation after a wrong teach-back answer.
+purpose_i18n:
+  en: SMS simpler re-explanation after a wrong teach-back answer.
+  ar: شرح أبسط برسالة نصية بعد إجابة خاطئة عن سؤال الفهم.
+  fr: Explication plus simple par SMS après une mauvaise réponse.
 channel_limits:
   sms:
     en: 160

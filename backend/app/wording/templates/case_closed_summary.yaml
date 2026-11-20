@@ -2,6 +2,10 @@
 id: case_closed_summary
 version: 1
 purpose: Plain summary when a clinician has finished the follow-up.
+purpose_i18n:
+  en: Plain summary when a clinician has finished the follow-up.
+  ar: ملخص بسيط عندما ينهي الطبيب المتابعة.
+  fr: Résumé simple lorsque le clinicien termine le suivi.
 channel_limits:
   app: 900
   whatsapp: 1000

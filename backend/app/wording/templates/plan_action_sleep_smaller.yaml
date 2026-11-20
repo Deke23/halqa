@@ -2,6 +2,10 @@
 id: plan_action_sleep_smaller
 version: 1
 purpose: 'Weekly action text: sleep, smaller size. Used inside the weekly messages and in the plan view.'
+purpose_i18n:
+  en: 'Weekly action text: sleep, smaller size.'
+  ar: 'نص الإجراء الأسبوعي: النوم، حجم أصغر.'
+  fr: 'Texte de l''action hebdomadaire : le sommeil, taille réduite.'
 channel_limits:
   app: 900
   whatsapp: 1000

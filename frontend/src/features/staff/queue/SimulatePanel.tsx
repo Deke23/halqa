@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, Card, Field, Input, SimulatedTag, useErrorText, useToast } from "@/components";
+import { Button, Field, Input, SimulatedTag, useErrorText, useToast } from "@/components";
 import { useSimulateResult } from "../api";
 
 interface Props {
@@ -12,6 +12,7 @@ interface Props {
 /** Posts a fake incoming result to the intake endpoint. A severe reading lands at the top of the urgent tab. */
 export function SimulatePanel({ region, onLanded }: Props) {
   const { t } = useTranslation("staff");
+  const { t: tc } = useTranslation();
   const toast = useToast();
   const errorText = useErrorText();
   const sim = useSimulateResult();
@@ -48,28 +49,35 @@ export function SimulatePanel({ region, onLanded }: Props) {
   }
 
   return (
-    <Card title={t("simulate.title")} action={<SimulatedTag />}>
+    <section className="demo-outline rounded-card p-4" aria-labelledby="sim-title">
+      <div className="mb-2 flex items-center justify-between gap-3">
+        <h2 id="sim-title" className="text-base font-semibold">{t("simulate.title")}</h2>
+        <SimulatedTag />
+      </div>
       <p className="mb-3 text-sm text-muted">{t("simulate.intro")}</p>
-      <div className="flex flex-wrap items-end gap-3">
-        <Button variant="danger" loading={sim.isPending} onClick={() => send(185, 115)}>
+      <div className="flex flex-wrap items-end gap-x-6 gap-y-3">
+        <Button variant="secondary" loading={sim.isPending} onClick={() => send(185, 115)}>
+          <span aria-hidden="true" className="me-2 inline-block size-2 rounded-full bg-urgent" />
           {t("simulate.severe")}
         </Button>
-        <span className="pb-2 text-sm text-muted">{t("simulate.or")}</span>
-        <Field label={t("simulate.systolic")} className="w-28">
-          <Input inputMode="numeric" value={sys} onChange={(e) => setSys(e.target.value)} />
-        </Field>
-        <Field label={t("simulate.diastolic")} className="w-28">
-          <Input inputMode="numeric" value={dia} onChange={(e) => setDia(e.target.value)} />
-        </Field>
-        <Button variant="secondary" loading={sim.isPending} onClick={sendCustom}>
-          {t("simulate.custom")}
-        </Button>
+        <div className="flex items-end gap-2">
+          <Field label={t("simulate.systolic")} className="w-24">
+            <Input inputMode="numeric" value={sys} onChange={(e) => setSys(e.target.value)} />
+          </Field>
+          <Field label={t("simulate.diastolic")} className="w-24">
+            <Input inputMode="numeric" value={dia} onChange={(e) => setDia(e.target.value)} />
+          </Field>
+          <span className="pb-2.5 text-sm text-muted">{tc("units.mmHg")}</span>
+          <Button variant="secondary" loading={sim.isPending} onClick={sendCustom}>
+            {t("simulate.custom")}
+          </Button>
+        </div>
       </div>
       {error && (
         <p role="alert" className="mt-2 text-sm font-medium text-due-ink">
           {error}
         </p>
       )}
-    </Card>
+    </section>
   );
 }

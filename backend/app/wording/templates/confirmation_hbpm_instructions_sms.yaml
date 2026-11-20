@@ -2,6 +2,10 @@
 id: confirmation_hbpm_instructions_sms
 version: 1
 purpose: SMS instructions for home blood pressure readings.
+purpose_i18n:
+  en: SMS instructions for home blood pressure readings.
+  ar: تعليمات برسالة نصية لقياس ضغط الدم في المنزل.
+  fr: Consignes par SMS pour les mesures de tension à domicile.
 channel_limits:
   sms:
     en: 160

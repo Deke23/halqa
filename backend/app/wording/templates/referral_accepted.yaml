@@ -2,6 +2,10 @@
 id: referral_accepted
 version: 1
 purpose: Referral accepted; next step is choosing a visit time.
+purpose_i18n:
+  en: Referral accepted; next step is choosing a visit time.
+  ar: قُبلت الإحالة؛ الخطوة التالية اختيار موعد الزيارة.
+  fr: Orientation acceptée ; l'étape suivante est de choisir l'heure de la visite.
 channel_limits:
   app: 900
   whatsapp: 1000

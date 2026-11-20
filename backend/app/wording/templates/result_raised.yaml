@@ -2,6 +2,10 @@
 id: result_raised
 version: 1
 purpose: 'Tell the patient about a raised screening reading: what it means, what it does not mean, urgency, one next step.'
+purpose_i18n:
+  en: 'Tell the patient about a raised screening reading: what it means, what it does not mean, urgency, one next step.'
+  ar: 'إبلاغ المريض بقراءة فحص مرتفعة: ماذا تعني وماذا لا تعني، ومدى الاستعجال، وخطوة تالية واحدة.'
+  fr: 'Informer le patient d''une mesure de dépistage élevée : ce que cela signifie, ce que cela ne signifie pas, l''urgence, une prochaine étape.'
 channel_limits:
   app: 900
   whatsapp: 1000

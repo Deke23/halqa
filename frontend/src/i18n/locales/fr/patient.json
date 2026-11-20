@@ -33,7 +33,8 @@
       "visit": "Où en est votre orientation et comment réserver une consultation",
       "weekly": "Un petit pas chaque semaine, sans pression",
       "diary": "Pas et sommeil d'un objet connecté d'exemple"
-    }
+    },
+    "stepOf": "Étape {{n}} sur {{total}}"
   },
   "status": {
     "RESULT_ISSUED": "Votre résultat a été reçu",
@@ -197,7 +198,8 @@
     "doneText": "Vous avez compris votre résultat. La suite est de mesurer à nouveau votre tension.",
     "toConfirm": "Choisir comment mesurer à nouveau",
     "alreadyDone": "Vous avez déjà répondu à ces questions.",
-    "notYet": "Votre résultat ne vous a pas encore été envoyé."
+    "notYet": "Votre résultat ne vous a pas encore été envoyé.",
+    "progress": "Question {{n}} sur {{total}}"
   },
   "confirm": {
     "heading": "Mesurer à nouveau votre tension",
@@ -294,9 +296,9 @@
     "notYet": "Les actions hebdomadaires commencent après votre première consultation, une fois le traitement ou le suivi décidé.",
     "thisWeek": "Cette semaine",
     "size": {
-      "full": "Pas complet",
-      "smaller": "Pas plus petit",
-      "smallest": "Plus petit pas"
+      "full": "Étape complète",
+      "smaller": "Étape réduite",
+      "smallest": "Étape minimale"
     },
     "action": {
       "salt": {

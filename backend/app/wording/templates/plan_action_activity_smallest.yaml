@@ -2,6 +2,10 @@
 id: plan_action_activity_smallest
 version: 1
 purpose: 'Weekly action text: activity, smallest size. Used inside the weekly messages and in the plan view.'
+purpose_i18n:
+  en: 'Weekly action text: activity, smallest size.'
+  ar: 'نص الإجراء الأسبوعي: النشاط، أصغر حجم.'
+  fr: 'Texte de l''action hebdomadaire : l''activité, plus petite taille.'
 channel_limits:
   app: 900
   whatsapp: 1000

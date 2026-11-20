@@ -2,6 +2,10 @@
 id: referral_accepted_sms
 version: 1
 purpose: SMS referral accepted.
+purpose_i18n:
+  en: SMS referral accepted.
+  ar: رسالة نصية بقبول الإحالة.
+  fr: SMS d'acceptation de l'orientation.
 channel_limits:
   sms:
     en: 160

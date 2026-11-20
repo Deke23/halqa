@@ -136,11 +136,21 @@ class ErrorResponse(BaseModel):
 # ---------------------------------------------------------------- auth and users
 
 
+class I18nText(BaseModel):
+    """The same display text in every supported language. The front end picks the key for its current language."""
+
+    en: str
+    ar: str
+    fr: str
+
+
 class PersonRef(BaseModel):
     """A person shown to a reader. `name` has no role in brackets; `role` is the job title, for example `nurse coordinator`."""
 
     name: str
     role: str
+    names: I18nText  # the name without a role in brackets, in en, ar and fr
+    roles: I18nText  # the job title in en, ar and fr
 
 
 class UserOut(BaseModel):
@@ -149,6 +159,9 @@ class UserOut(BaseModel):
     name: str  # kept for compatibility, may carry the role in brackets, for example `Clarisse (nurse coordinator)`
     display_name: str  # the same person without the role in brackets
     role_title: str  # the job title from the brackets, or the access role when there is none
+    display_names: I18nText
+    role_titles: I18nText
+    organisation_i18n: I18nText
     role: RoleName
     region: Region
     organisation: str
@@ -297,6 +310,10 @@ class PatientSummary(BaseModel):
     insurance: str
     channel: Channel
     organisation: str
+    names: I18nText
+    initials_i18n: I18nText
+    organisation_i18n: I18nText
+    region_name_i18n: I18nText
 
 
 class NextStepOut(BaseModel):
@@ -352,6 +369,7 @@ class ReferralOut(BaseModel):
     to_name: str | None
     to_person: PersonRef | None
     to_service: str | None
+    to_service_i18n: I18nText | None
     from_name: str | None
     from_person: PersonRef | None
     reason: str
@@ -366,6 +384,10 @@ class AppointmentOut(BaseModel):
     provider_name: str
     location: str
     status: str
+    provider_name_i18n: I18nText
+    provider_person: PersonRef
+    location_i18n: I18nText
+    label_i18n: I18nText  # date and time on the region clock, provider and place, per language
 
 
 class ReplyOption(BaseModel):
@@ -419,6 +441,7 @@ class PlanWeekOut(BaseModel):
     checked_in_at: datetime | None
     label_key: str
     default_text: str  # in the patient's language (or the requested `language`), from the approved templates
+    default_text_i18n: I18nText
 
 
 class ConsentOut(BaseModel):
@@ -452,6 +475,7 @@ class TaskOut(BaseModel):
     status: Literal["OPEN", "DONE"]
     overdue: bool
     created_at: datetime
+    title_i18n: I18nText
 
 
 class ClosureOut(BaseModel):
@@ -465,6 +489,7 @@ class ClosureOut(BaseModel):
 
 class EmergencyAdvice(BaseModel):
     text: str
+    text_i18n: I18nText
     number: str | None
     region: Region
 
@@ -549,6 +574,8 @@ class CaseSummary(BaseModel):
     owner_user_id: int | None
     owner_name: str | None
     owner_person: PersonRef | None
+    patient_names: I18nText
+    patient_initials_i18n: I18nText
     age_band: str
     next_step_label_key: str | None
     due_at: datetime | None
@@ -582,7 +609,9 @@ class CoverOut(BaseModel):
     estimated_price: float | None
     currency: str
     label: str
+    label_i18n: I18nText  # every language says it is simulated
     simulated: Literal[True] = True
+    simulated_label_i18n: I18nText
 
 
 class SlotOut(BaseModel):
@@ -591,6 +620,10 @@ class SlotOut(BaseModel):
     provider_name: str
     location: str
     cover: CoverOut
+    provider_name_i18n: I18nText
+    provider_person: PersonRef
+    location_i18n: I18nText
+    label_i18n: I18nText
 
 
 class EConsultCreate(BaseModel):
@@ -693,6 +726,7 @@ class Measure(BaseModel):
 class DashboardGroup(BaseModel):
     key: str
     label: str
+    label_i18n: I18nText
     measures: list[Measure]
 
 
@@ -736,11 +770,20 @@ class ConfigEntryOut(BaseModel):
     unit: str
     basis: str
     status: str
+    label_i18n: I18nText
+    basis_i18n: I18nText
+    unit_i18n: I18nText
+
+
+class ClosureEvidenceLabel(BaseModel):
+    code: ClosureEvidence
+    label_i18n: I18nText
 
 
 class RegionConfig(BaseModel):
     region: Region
     name: str
+    name_i18n: I18nText
     default_language: Language
     languages: list[Language]
     emergency_text: dict[str, str]
@@ -754,6 +797,9 @@ class ConfigOut(BaseModel):
     notice: str
     entries: list[ConfigEntryOut]
     closure_evidence_types: list[ClosureEvidence]
+    closure_evidence_labels: list[ClosureEvidenceLabel]
+    notice_i18n: I18nText
+    rules_i18n: list[I18nText]
     templates: list[dict[str, Any]]
     languages: list[Language]
     regions: list[RegionConfig]
@@ -765,6 +811,8 @@ class PersonaInfo(BaseModel):
     name: str
     display_name: str
     role_title: str
+    display_names: I18nText
+    role_titles: I18nText
     role: RoleName
     region: Region
     description: str

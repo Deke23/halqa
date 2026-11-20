@@ -2,6 +2,10 @@
 id: red_flag_check
 version: 1
 purpose: Ask whether any warning symptom is present now. Answered with 1 for yes or 2 for no.
+purpose_i18n:
+  en: Ask whether any warning symptom is present now. Answered with 1 for yes or 2 for no.
+  ar: السؤال عن وجود أي عَرَض تحذيري الآن. الإجابة بـ 1 لنعم أو 2 للا.
+  fr: Demander si un signe d'alerte est présent maintenant. Réponse 1 pour oui ou 2 pour non.
 channel_limits:
   app: 900
   whatsapp: 1000

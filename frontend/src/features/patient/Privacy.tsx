@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Badge, Button, Card, ConfirmDialog, useErrorText, useToast } from "@/components";
+import { Badge, Button, ConfirmDialog, useErrorText, useToast } from "@/components";
 import { usePatientAction, type ConsentOut } from "./api";
-import { BulletList, PageTitle, useCurrentCase } from "./ui";
+import { BulletList, PageTitle, useCurrentCase, Panel } from "./ui";
 
 const ORDER = ["care_coordination", "messaging_channel", "share_with_receiving_provider", "lifestyle_programme", "research_aggregate"];
 
@@ -39,7 +39,7 @@ export default function Privacy() {
     <div className="flex flex-col gap-4">
       <PageTitle>{t("privacy.heading")}</PageTitle>
 
-      <Card title={t("privacy.consentTitle")}>
+      <Panel title={t("privacy.consentTitle")}>
         <p className="mt-0 text-muted">{t("privacy.consentIntro")}</p>
         <ul className="m-0 flex list-none flex-col divide-y divide-line p-0">
           {consents.map((cs) => {
@@ -71,11 +71,11 @@ export default function Privacy() {
             );
           })}
         </ul>
-      </Card>
+      </Panel>
 
-      <Card title={t("privacy.dataTitle")}>
+      <Panel title={t("privacy.dataTitle")}>
         <BulletList items={data} />
-      </Card>
+      </Panel>
 
       <ConfirmDialog
         open={pending !== null}

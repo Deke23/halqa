@@ -97,6 +97,7 @@ def list_templates() -> list[dict]:
             "id": tid,
             "version": tpl["version"],
             "purpose": tpl["purpose"],
+            "purpose_i18n": tpl.get("purpose_i18n") or {l: tpl["purpose"] for l in LANGUAGES},
             "languages": [l for l in LANGUAGES if l in tpl["text"]],
             "required_slots": list(tpl["required_slots"]),
             "channel_limits": tpl["channel_limits"],

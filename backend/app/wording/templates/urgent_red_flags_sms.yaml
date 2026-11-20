@@ -2,6 +2,10 @@
 id: urgent_red_flags_sms
 version: 1
 purpose: 'SMS answer to a yes on the red-flag question: the region''s emergency instruction at once.'
+purpose_i18n:
+  en: 'SMS answer to a yes on the red-flag question: the region''s emergency instruction at once.'
+  ar: 'رد برسالة نصية على الإجابة بنعم عن الأعراض التحذيرية: تعليمات الطوارئ للمنطقة فورًا.'
+  fr: 'Réponse SMS à un oui sur les signes d''alerte : la consigne d''urgence de la région tout de suite.'
 channel_limits:
   sms:
     en: 160

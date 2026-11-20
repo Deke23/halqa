@@ -6,11 +6,11 @@ export interface TagProps extends HTMLAttributes<HTMLSpanElement> {
   children: ReactNode;
 }
 
-/** Small outlined label. Use for metadata such as a region or a channel. */
+/** Small outlined label for metadata such as a region or a channel. */
 export function Tag({ className, children, ...rest }: TagProps) {
   return (
     <span
-      className={cx("inline-flex items-center rounded border border-line bg-surface px-1.5 py-0.5 text-xs font-medium text-muted", className)}
+      className={cx("inline-flex items-center rounded-md border border-line-strong bg-surface px-1.5 py-0.5 text-xs font-medium leading-5 text-muted", className)}
       {...rest}
     >
       {children}
@@ -20,14 +20,14 @@ export function Tag({ className, children, ...rest }: TagProps) {
 
 /**
  * The "Simulated" tag required on every screen that shows a simulated source
- * (IFHAS, Thiqa, Malaffi, SMS, WhatsApp, cover lines, simulation results).
+ * (IFHAS, Thiqa, Malaffi, SMS, WhatsApp, cover lines, simulation results). Dashed outline, so it reads as a demo aid.
  */
 export function SimulatedTag({ className, label }: { className?: string; label?: string }) {
   const { t } = useTranslation();
   return (
     <span
       className={cx(
-        "inline-flex items-center gap-1 rounded border border-dashed border-info-ink/60 bg-info-soft px-1.5 py-0.5 text-xs font-semibold text-info-ink",
+        "inline-flex items-center gap-1.5 rounded-md border border-dashed border-info-ink/55 bg-info-soft px-1.5 py-0.5 text-xs font-medium leading-5 text-info-ink",
         className,
       )}
     >

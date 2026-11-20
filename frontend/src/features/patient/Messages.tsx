@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { EmptyState, ErrorState, Loading, SimulatedTag, Tag } from "@/components";
 import { formatDateTime } from "@/lib/format";
+import { personName } from "@/lib/i18nField";
 import { useThread } from "./api";
 import { PageTitle } from "./ui";
 
@@ -22,14 +23,14 @@ export default function Messages() {
       ) : (
         <ul className="m-0 flex list-none flex-col gap-3 p-0">
           {items.map((m) => (
-            <li key={m.id} className="rounded-card border border-line bg-surface p-4 shadow-card">
+            <li key={m.id} className="rounded-card border border-line bg-surface p-5">
               <div className="mb-2 flex flex-wrap items-center gap-2 text-sm text-muted">
                 <span className="font-medium text-ink">
                   <bdi>
                     {m.direction === "IN"
                       ? t("messages.you")
                       : m.sender_person
-                        ? t("messages.from", { name: m.sender_person.name })
+                        ? t("messages.from", { name: personName(m.sender_person) })
                         : t("messages.fromTeam")}
                   </bdi>
                 </span>

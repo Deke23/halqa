@@ -2,6 +2,10 @@
 id: reminder_home_readings_sms
 version: 1
 purpose: SMS reminder that the home blood pressure readings are not finished.
+purpose_i18n:
+  en: SMS reminder that the home blood pressure readings are not finished.
+  ar: رسالة نصية تذكّر بأن قراءات ضغط الدم المنزلية لم تكتمل.
+  fr: 'SMS de rappel : les mesures de tension à domicile ne sont pas terminées.'
 channel_limits:
   sms:
     en: 160

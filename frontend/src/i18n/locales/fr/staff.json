@@ -17,7 +17,9 @@
   },
   "sex": {
     "F": "femme",
-    "M": "homme"
+    "M": "homme",
+    "female": "femme",
+    "male": "homme"
   },
   "roleShort": {
     "patient": "patient",
@@ -77,7 +79,9 @@
       "next": "Prochaine étape",
       "owner": "Responsable",
       "due": "Échéance",
-      "why": "Pourquoi il est ici"
+      "why": "Pourquoi il est ici",
+      "progress": "Progression",
+      "nextWhy": "Prochaine étape et motif"
     },
     "openCase": "Ouvrir le dossier {{id}} de {{initials}}",
     "new": "Nouveau",
@@ -101,10 +105,10 @@
     "title": "Simuler un résultat entrant",
     "intro": "Envoie un résultat de dépistage fictif au point d'entrée, comme le ferait la source. Rien de réel n'est en jeu.",
     "severe": "Simuler un résultat sévère (185/115)",
-    "or": "ou une mesure personnalisée",
-    "systolic": "Systolique (mmHg)",
-    "diastolic": "Diastolique (mmHg)",
-    "custom": "Envoyer le résultat personnalisé",
+    "or": "ou personnalisé",
+    "systolic": "Systolique",
+    "diastolic": "Diastolique",
+    "custom": "Envoyer",
     "landed": "Un nouveau dossier {{id}} a été ouvert.",
     "landedSevere": "Un nouveau dossier urgent {{id}} a été ouvert en haut de la file urgente.",
     "notActionable": "Aucun dossier n'a été ouvert. {{reason}}",
@@ -207,7 +211,12 @@
     "teach_back_question": "Question de reformulation",
     "teach_back_simpler": "Explication plus simple",
     "urgent_red_flags": "Conseils sur les symptômes d'alerte",
-    "weekly_action": "Action de la semaine"
+    "weekly_action": "Action de la semaine",
+    "plan_action": "Action de la semaine : {{action}}, {{size}}",
+    "red_flag_check": "Question sur les symptômes d'alerte",
+    "reminder_booking": "Rappel pour réserver une visite",
+    "reminder_home_readings": "Rappel de mesures à domicile",
+    "teach_back_question_app": "Question de reformulation (application)"
   },
   "action": {
     "cancel": "Annuler",
@@ -301,7 +310,7 @@
   },
   "actions": {
     "title": "Ce que vous pouvez faire",
-    "intro": "Ces actions viennent du serveur, selon votre rôle et ce dossier.",
+    "intro": "Actions à votre disposition à cette étape.",
     "none": "Vous n'avez rien à faire sur ce dossier pour le moment.",
     "referBlocked": "L'orientation est bloquée. Le patient a retiré son accord pour partager ses informations avec le prestataire destinataire. Demandez-lui avant d'orienter.",
     "coordinatorCannotClose": "Seul un clinicien peut clore un dossier, et seulement avec une preuve ou une décision enregistrée. Un coordinateur peut plutôt escalader le dossier à un clinicien."
@@ -344,7 +353,7 @@
     "due": "Échéance",
     "closedNoStep": "Aucune, le dossier est clos",
     "noDue": "Pas d'échéance",
-    "serviceLevel": "Délai prévu : {{hours}} h",
+    "serviceLevel": "Délai prévu : {{hours}}",
     "backQueue": "Retour à la file",
     "backWorklist": "Retour à la liste de travail",
     "emergencyAdvice": "Conseil d'urgence pour le patient",
@@ -352,7 +361,8 @@
   },
   "case": {
     "title": "Dossier",
-    "loadError": "Ce dossier ne s'est pas chargé"
+    "loadError": "Ce dossier ne s'est pas chargé",
+    "sideLabel": "Résumé du patient et consentement"
   },
   "fhir": {
     "open": "Voir le dossier FHIR",
@@ -665,5 +675,23 @@
     "hypertension_clinic": "clinique de l'hypertension",
     "general_practice_yaound": "médecine générale, Yaoundé",
     "hypertension_clinic_yaound": "clinique de l'hypertension, Yaoundé"
+  },
+  "ring": {
+    "label": "Étape {{n}} sur {{total}}",
+    "closed": "Clos, les huit étapes"
+  },
+  "patient": {
+    "title": "Patient",
+    "age": "Âge",
+    "sex": "Sexe",
+    "language": "Langue",
+    "channel": "Canal",
+    "insurance": "Assurance",
+    "organisation": "Établissement"
+  },
+  "insurance": {
+    "THIQA": "Thiqa (simulée)",
+    "BASIC": "Régime de base (simulé)",
+    "NONE": "Aucune"
   }
 }

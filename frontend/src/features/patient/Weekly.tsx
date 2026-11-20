@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { Badge, Button, Card, EmptyState, ErrorState, Loading, RadioGroup, Select, SimulatedTag, Field, useErrorText, useToast } from "@/components";
+import { Badge, Button, EmptyState, ErrorState, Loading, RadioGroup, Select, SimulatedTag, Field, useErrorText, useToast } from "@/components";
 import type { components } from "@/api/schema";
-import { formatDate, formatNumber } from "@/lib/format";
-import { currentWeek, latestMessage, pastWeeks, useDiary, usePatientAction, useThread, type Feedback, type PlanWeekOut } from "./api";
-import { Notice, PageTitle, useCurrentCase } from "./ui";
+import { formatNumber } from "@/lib/format";
+import { currentWeek, pastWeeks, useDiary, usePatientAction, type Feedback, type PlanWeekOut } from "./api";
+import { Notice, PageTitle, useCurrentCase, Panel, i18nOf } from "./ui";
 
 type Barrier = components["schemas"]["Barrier"];
 const BARRIERS: Barrier[] = ["TIME", "COST", "NOT_SURE_HOW", "FELT_UNWELL", "WORK_SCHEDULE", "OTHER"];
@@ -64,16 +64,15 @@ function Paused() {
 }
 
 function actionText(t: (k: string) => string, w: PlanWeekOut) {
-  return { name: t(`weekly.action.${w.action_key}.name`), text: w.default_text };
+  return { name: t(`weekly.action.${w.action_key}.name`), text: i18nOf(w, "default_text") };
 }
 
 function ThisWeek({ week, lastWeek }: { week: PlanWeekOut; lastWeek: PlanWeekOut | undefined }) {
-  const { t, i18n } = useTranslation("patient");
+  const { t } = useTranslation("patient");
   const toast = useToast();
   const errorText = useErrorText();
   const c = useCurrentCase();
   const act = usePatientAction(c.id);
-  const thread = useThread(i18n.language);
   const [status, setStatus] = useState("");
   const [barrier, setBarrier] = useState("");
   const [larger, setLarger] = useState(false);
@@ -81,7 +80,6 @@ function ThisWeek({ week, lastWeek }: { week: PlanWeekOut; lastWeek: PlanWeekOut
   const [feedback, setFeedback] = useState<Feedback | null>(null);
 
   const a = actionText((k) => t(k), week);
-  const noBlameMsg = latestMessage(thread.data, "no_blame_checkin");
   const lapsedLast = lastWeek && lastWeek.status !== "done" && lastWeek.size !== week.size;
 
   const submit = () => {
@@ -119,18 +117,17 @@ function ThisWeek({ week, lastWeek }: { week: PlanWeekOut; lastWeek: PlanWeekOut
       {!feedback && lapsedLast && (
         <Notice tone="accent" title={t("weekly.noBlameTitle")}>
           <p className="m-0">{t("weekly.noBlameLapsed")}</p>
-          {noBlameMsg && <p className="m-0 mt-2 whitespace-pre-line text-sm">{noBlameMsg.text}</p>}
-        </Notice>
+                  </Notice>
       )}
 
-      <Card title={t("weekly.thisWeek")} action={<Badge tone="accent">{t(`weekly.size.${week.size}`)}</Badge>}>
+      <Panel title={t("weekly.thisWeek")} action={<Badge tone="accent">{t(`weekly.size.${week.size}`)}</Badge>}>
         <div className="flex flex-col gap-2">
           <p className="m-0 text-sm font-medium text-muted">{a.name}</p>
           <p className="m-0 text-lg font-semibold leading-snug">{a.text}</p>
         </div>
-      </Card>
+      </Panel>
 
-      <Card title={t("weekly.checkinTitle")}>
+      <Panel title={t("weekly.checkinTitle")}>
         <div className="flex flex-col gap-4">
           <RadioGroup
             name="checkin"
@@ -170,15 +167,15 @@ function ThisWeek({ week, lastWeek }: { week: PlanWeekOut; lastWeek: PlanWeekOut
             {t("weekly.submit")}
           </Button>
         </div>
-      </Card>
+      </Panel>
     </>
   );
 }
 
 function History({ weeks }: { weeks: PlanWeekOut[] }) {
-  const { t, i18n } = useTranslation("patient");
+  const { t } = useTranslation("patient");
   return (
-    <Card title={t("weekly.historyTitle")}>
+    <Panel title={t("weekly.historyTitle")}>
       {weeks.length === 0 ? (
         <EmptyState description={t("weekly.historyEmpty")} />
       ) : (
@@ -188,15 +185,15 @@ function History({ weeks }: { weeks: PlanWeekOut[] }) {
               <div className="min-w-0">
                 <p className="m-0 font-medium">{t(`weekly.action.${w.action_key}.name`)}</p>
                 <p className="m-0 text-sm text-muted">
-                  <bdi>{t("weekly.week", { n: w.week_index })}</bdi> · <bdi>{formatDate(w.starts_at, i18n.language)}</bdi> · {t(`weekly.size.${w.size}`)}
+                  <bdi>{t("weekly.week", { n: w.week_index })}</bdi> · {t(`weekly.size.${w.size}`)}
                 </p>
               </div>
-              <Badge tone={w.status === "done" ? "accent" : "neutral"}>{w.status ? t(`weekly.historyStatus.${w.status}`) : ""}</Badge>
+              <Badge tone={w.status === "done" ? "accent" : "neutral"} className="shrink-0 whitespace-nowrap">{w.status ? t(`weekly.historyStatus.${w.status}`) : ""}</Badge>
             </li>
           ))}
         </ul>
       )}
-    </Card>
+    </Panel>
   );
 }
 
@@ -207,7 +204,7 @@ function Diary() {
   const maxSteps = Math.max(1, ...days.map((d) => d.steps));
   return (
     <section id="diary" aria-labelledby="diary-title" className="scroll-mt-4">
-      <Card
+      <Panel
         title={<span id="diary-title">{t("weekly.diaryTitle")}</span>}
         action={<SimulatedTag />}
       >
@@ -242,7 +239,7 @@ function Diary() {
             </ul>
           )}
         </div>
-      </Card>
+      </Panel>
     </section>
   );
 }

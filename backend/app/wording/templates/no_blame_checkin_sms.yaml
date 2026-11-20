@@ -2,6 +2,10 @@
 id: no_blame_checkin_sms
 version: 1
 purpose: SMS no-blame check-in that makes the plan smaller.
+purpose_i18n:
+  en: SMS no-blame check-in that makes the plan smaller.
+  ar: رسالة نصية للمتابعة دون لوم تجعل الخطة أصغر.
+  fr: SMS de suivi sans reproche qui rend le plan plus petit.
 channel_limits:
   sms:
     en: 160

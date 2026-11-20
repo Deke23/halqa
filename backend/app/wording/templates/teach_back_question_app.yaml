@@ -2,6 +2,10 @@
 id: teach_back_question_app
 version: 1
 purpose: In-app teach-back question. The options are shown as structured choices, so the text has no reply instruction.
+purpose_i18n:
+  en: In-app teach-back question. The options are shown as structured choices, so the text has no reply instruction.
+  ar: سؤال التحقق من الفهم داخل التطبيق. تُعرض الخيارات منفصلة، لذلك لا يحتوي النص على تعليمات للرد.
+  fr: Question de vérification dans l'application. Les choix sont affichés à part, le texte n'a donc pas de consigne de réponse.
 channel_limits:
   app: 900
   whatsapp: 1000

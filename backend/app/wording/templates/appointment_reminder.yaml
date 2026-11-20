@@ -2,6 +2,10 @@
 id: appointment_reminder
 version: 1
 purpose: Reminder before the visit.
+purpose_i18n:
+  en: Reminder before the visit.
+  ar: تذكير قبل الزيارة.
+  fr: Rappel avant la visite.
 channel_limits:
   app: 900
   whatsapp: 1000

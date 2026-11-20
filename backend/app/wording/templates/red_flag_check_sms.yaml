@@ -2,6 +2,10 @@
 id: red_flag_check_sms
 version: 1
 purpose: SMS red-flag symptom question. Answered with 1 for yes or 2 for no.
+purpose_i18n:
+  en: SMS red-flag symptom question. Answered with 1 for yes or 2 for no.
+  ar: سؤال برسالة نصية عن الأعراض التحذيرية. الإجابة بـ 1 لنعم أو 2 للا.
+  fr: Question SMS sur les signes d'alerte. Réponse 1 pour oui ou 2 pour non.
 channel_limits:
   sms:
     en: 160

@@ -2,6 +2,10 @@
 id: plan_action_home_bp_check_smallest
 version: 1
 purpose: 'Weekly action text: home bp check, smallest size. Used inside the weekly messages and in the plan view.'
+purpose_i18n:
+  en: 'Weekly action text: home blood pressure check, smallest size.'
+  ar: 'نص الإجراء الأسبوعي: قياس الضغط في المنزل، أصغر حجم.'
+  fr: 'Texte de l''action hebdomadaire : la mesure de la tension à domicile, plus petite taille.'
 channel_limits:
   app: 900
   whatsapp: 1000

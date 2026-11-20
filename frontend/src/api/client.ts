@@ -2,6 +2,8 @@
  * Small fetch wrapper. All routes live under /api (Vite proxies to :8000 in dev,
  * FastAPI serves both in production).
  */
+import i18next from "i18next";
+
 export interface ApiError {
   /** HTTP status. 0 means the backend could not be reached. */
   status: number;
@@ -111,7 +113,10 @@ function normalise(status: number, payload: unknown, fallback: string): ApiError
 }
 
 export async function api<T = unknown>(path: string, opts: RequestOptions = {}): Promise<T> {
-  const headers: Record<string, string> = { Accept: "application/json" };
+  const headers: Record<string, string> = {
+    Accept: "application/json",
+    "Accept-Language": (i18next.language || "en").slice(0, 2),
+  };
   const token = opts.anonymous ? null : getToken();
   if (token) headers.Authorization = `Bearer ${token}`;
   let body: string | undefined;

@@ -2,6 +2,10 @@
 id: appointment_booked_sms
 version: 1
 purpose: SMS appointment booked.
+purpose_i18n:
+  en: SMS appointment booked.
+  ar: رسالة نصية بحجز الموعد.
+  fr: SMS de réservation du rendez-vous.
 channel_limits:
   sms:
     en: 160

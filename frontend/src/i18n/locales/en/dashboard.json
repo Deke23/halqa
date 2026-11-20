@@ -75,7 +75,23 @@
     "kinds": {
       "published": "Published",
       "assumption": "Assumption"
-    }
+    },
+    "units": {
+      "days": "days",
+      "log_sd": "log-sd",
+      "multiplier": "multiplier",
+      "probability": "probability",
+      "probability_by_score": "probability by score",
+      "probability_by_size": "probability by size",
+      "weeks": "weeks"
+    },
+    "published": {
+      "simple_bangladesh": "Simple app, Bangladesh: overdue lists and calls cut 3-month missed visits from 50% to 26% in six months (team brief)",
+      "mohap_uae": "MOHAP 2025 UAE screening campaign, reported by Gulf News: over 40% of people with hypertension did not know it; 29% of treated patients not at target (team brief). Context only, not used as a transition probability.",
+      "nhns_uae": "UAE National Health and Nutrition Survey 2024 to 2025: 25.9% of UAE adults have high blood pressure (team brief). Context only, not used as a transition probability.",
+      "tam_jmir_2021": "Tam et al., JMIR mHealth 2021: text messaging roughly halved the odds of uncontrolled BP (team brief). Context only, not used as a transition probability."
+    },
+    "rationaleEnglish": ""
   },
   "splitLabel": "Split by",
   "splitHint": "Applies to both parts.",
@@ -105,14 +121,18 @@
   "outOf5": "{{value}} out of 5",
   "unit": {
     "h": "h",
-    "d": "days"
+    "d": "days",
+    "hShort": "h",
+    "dShort": "days",
+    "outOf5": "out of 5",
+    "people": "people"
   },
   "axis": {
     "days": "Days",
     "hours": "Hours",
     "cases": "Cases",
     "people": "People",
-    "percent": "Per cent of people",
+    "percent": "% of people",
     "score": "Score"
   },
   "measures": {

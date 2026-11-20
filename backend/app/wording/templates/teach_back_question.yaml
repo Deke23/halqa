@@ -2,6 +2,10 @@
 id: teach_back_question
 version: 1
 purpose: 'Check understanding: one question, three answers, one correct.'
+purpose_i18n:
+  en: 'Check understanding: one question, three answers, one correct.'
+  ar: 'التحقق من الفهم: سؤال واحد وثلاث إجابات وإجابة صحيحة واحدة.'
+  fr: 'Vérifier la compréhension : une question, trois réponses, une seule correcte.'
 channel_limits:
   app: 900
   whatsapp: 1000

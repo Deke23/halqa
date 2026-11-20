@@ -2,6 +2,10 @@
 id: plan_smaller
 version: 1
 purpose: Tell the patient the weekly step was made smaller.
+purpose_i18n:
+  en: Tell the patient the weekly step was made smaller.
+  ar: إبلاغ المريض بأن الخطوة الأسبوعية صارت أصغر.
+  fr: Informer le patient que l'action de la semaine a été rendue plus petite.
 channel_limits:
   app: 900
   whatsapp: 1000

@@ -2,6 +2,10 @@
 id: plan_action_activity_full
 version: 1
 purpose: 'Weekly action text: activity, full size. Used inside the weekly messages and in the plan view.'
+purpose_i18n:
+  en: 'Weekly action text: activity, full size.'
+  ar: 'نص الإجراء الأسبوعي: النشاط، الحجم الكامل.'
+  fr: 'Texte de l''action hebdomadaire : l''activité, taille complète.'
 channel_limits:
   app: 900
   whatsapp: 1000

@@ -24,7 +24,7 @@ export default function Dashboard() {
         </div>
       </header>
 
-      <section aria-labelledby="live-heading" className="flex flex-col gap-4 rounded-card border-2 border-accent p-4">
+      <section aria-labelledby="live-heading" className="rise-in flex flex-col gap-4 rounded-card border border-line bg-surface p-5 border-t-4 border-t-accent">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <h2 id="live-heading" className="flex items-center gap-2 text-xl font-semibold">
             {t("live.title")}
@@ -46,7 +46,7 @@ export default function Dashboard() {
         <LivePart split={split} region={liveRegion} />
       </section>
 
-      <section aria-labelledby="sim-heading" className="flex flex-col gap-4 rounded-card border-2 border-dashed border-info-ink p-4">
+      <section aria-labelledby="sim-heading" className="flex flex-col gap-4 rounded-card border border-line-strong bg-surface-2 p-5 border-t-4 border-t-line-strong">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <h2 id="sim-heading" className="flex items-center gap-2 text-xl font-semibold">
             {t("sim.title")}

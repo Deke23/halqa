@@ -6,6 +6,14 @@ Use the `@/` alias for imports (`@/components`, `@/api/hooks`, `@/lib/format`).
 Run: `npm run dev` (port 5173, proxies `/api` to `http://localhost:8000`), `npm run build` (type check plus bundle to `dist`), `npm run gen:api` (writes `src/api/schema.d.ts` from `../docs/openapi.json`).
 Visual check of every component in all three languages: open `/kitchen-sink` (hidden from navigation, works signed out).
 
+## Design system in one screen (read first)
+
+The decisions and tokens are in the comment at the top of `src/index.css`. In short: warm paper page, flat white cards with a hair border (no card shadows; shadow only on dialogs, drawers, toasts), IBM Plex Sans and Plex Sans Arabic, Plex Mono for every clinical value (`.readout`, `BPReading`, `StatCard`). Radii: `rounded-control` 12, `rounded-card` 16, `rounded-sheet` 24. Chips (`Badge`, `DueChip`, `OwnerChip`, `Tag`) are rectangles with radius 6 and a leading dot, never pills. Petrol is the only brand colour and means done; amber is due soon; clay red (`tone="urgent"`, `variant="danger"`, staff `DueChip`) is staff-only clinical urgency. Demo aids use the dark demo strip or a dashed outline (`.demo-outline`).
+
+New shared pieces: `Brand` (mark plus name, Arabic name on Arabic screens), `LoopRing` and `LoopMark` (signature, only where the case speaks), `BPReading size="hero"`, `StatCard unit`, `Table maxHeight` (sticky header), `Badge dot`, `OwnerChip names` (per-language names, falls back to `name`). Server text arrives with per-language maps: use `pickText` and `personName` from `@/lib/i18nField`. The API client sends `Accept-Language` on every request.
+
+Layout contract: `AppShell` is a full-height column. The demo strip is a real row, and the page area under it scrolls, so nothing sits beneath the strip. `PatientLayout` main is the scroll container with 16 px padding (the patient bottom navigation is sticky inside it). `PhoneThreadLayout` and `StaffLayout` children should use `flex-1 min-h-0`.
+
 ## How to add a page
 
 Your feature folder already has an `index.tsx` with a default export. Replace its body.

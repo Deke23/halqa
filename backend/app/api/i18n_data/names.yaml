@@ -1,0 +1,131 @@
+# Display names in en, ar and fr for the synthetic people, places and services. All people are fictional.
+# `staff` is keyed by the stored display string (name with the role in brackets). Unknown names fall back to the stored string.
+
+staff:
+  "Mariam (care coordinator)":
+    name: {en: Mariam, ar: مريم, fr: Mariam}
+    role: {en: care coordinator, ar: منسقة الرعاية, fr: coordinatrice de soins}
+  "Dr Sara (family medicine)":
+    name: {en: Dr Sara, ar: د. سارة, fr: Dr Sara}
+    role: {en: family medicine, ar: طب الأسرة, fr: médecine de famille}
+  "Dr Omar (hypertension clinic)":
+    name: {en: Dr Omar, ar: د. عمر, fr: Dr Omar}
+    role: {en: hypertension clinic, ar: عيادة ضغط الدم, fr: clinique de la tension}
+  "Clarisse (nurse coordinator)":
+    name: {en: Clarisse, ar: كلاريس, fr: Clarisse}
+    role: {en: nurse coordinator, ar: ممرضة منسقة, fr: infirmière coordinatrice}
+  "Programme analyst":
+    name: {en: Programme analyst, ar: محلل البرنامج, fr: Analyste du programme}
+    role: {en: analyst, ar: محلل, fr: analyste}
+  "Dr Brice (general practice, Yaoundé)":
+    name: {en: Dr Brice, ar: د. بريس, fr: Dr Brice}
+    role: {en: "general practice, Yaoundé", ar: "طب عام، ياوندي", fr: "médecine générale, Yaoundé"}
+  "Dr Estelle (hypertension clinic, Yaoundé)":
+    name: {en: Dr Estelle, ar: د. إستيل, fr: Dr Estelle}
+    role: {en: "hypertension clinic, Yaoundé", ar: "عيادة ضغط الدم، ياوندي", fr: "clinique de la tension, Yaoundé"}
+  "Dr Nadia (has left the organisation)":
+    name: {en: Dr Nadia, ar: د. نادية, fr: Dr Nadia}
+    role: {en: has left the organisation, ar: غادرت المؤسسة, fr: a quitté l'organisation}
+
+# Access roles, used as the job title when a name carries none.
+roles:
+  patient: {en: patient, ar: مريض, fr: patient}
+  coordinator: {en: coordinator, ar: منسق, fr: coordinateur}
+  clinician: {en: clinician, ar: طبيب, fr: clinicien}
+  analyst: {en: analyst, ar: محلل, fr: analyste}
+  system: {en: system, ar: النظام, fr: système}
+
+# First names of the synthetic patients. The surname is only an initial, mapped letter by letter.
+first_names:
+  Khalid: {ar: خالد}
+  Jean-Paul: {ar: جان بول}
+  Omar: {ar: عمر}
+  Layla: {ar: ليلى}
+  Yusuf: {ar: يوسف}
+  Noura: {ar: نورة}
+  Hamad: {ar: حمد}
+  Aisha: {ar: عائشة}
+  Rashed: {ar: راشد}
+  Maryam: {ar: مريم}
+  Hessa: {ar: حصة}
+  Zayed: {ar: زايد}
+  Latifa: {ar: لطيفة}
+  Nasser: {ar: ناصر}
+  Sultan: {ar: سلطان}
+  Amna: {ar: آمنة}
+  Faisal: {ar: فيصل}
+  Dina: {ar: دينا}
+  Imran: {ar: عمران}
+  Priya: {ar: بريا}
+  Arjun: {ar: أرجون}
+  Salma: {ar: سلمى}
+  Tariq: {ar: طارق}
+  Huda: {ar: هدى}
+  Eric: {ar: إريك}
+  Solange: {ar: سولانج}
+  Pascal: {ar: باسكال}
+  Rose: {ar: روز}
+  Alain: {ar: آلان}
+  Mireille: {ar: ميراي}
+  Joseph: {ar: جوزيف}
+  Berthe: {ar: بيرت}
+  Landry: {ar: لاندري}
+  Estelle: {ar: إستيل}
+  Fabrice: {ar: فابريس}
+  Nadine: {ar: نادين}
+  Cyrille: {ar: سيريل}
+  Odette: {ar: أوديت}
+  Hermann: {ar: هيرمان}
+  Judith: {ar: جوديث}
+
+initials_ar: {A: أ, B: ب, C: س, D: د, E: إ, F: ف, G: ج, H: ه, I: إ, J: ج, K: ك, L: ل, M: م, N: ن, O: أ, P: ب, Q: ق, R: ر, S: س, T: ت, U: أ, V: ف, W: و, X: إ, Y: ي, Z: ز}
+
+# Places: organisations, clinics and locations. The word simulated is kept in every language.
+places:
+  "Abu Dhabi Primary Care (simulated)": {en: "Abu Dhabi Primary Care (simulated)", ar: "الرعاية الأولية في أبوظبي (محاكاة)", fr: "Soins primaires d'Abou Dabi (simulé)"}
+  "Hypertension Clinic Abu Dhabi (simulated)": {en: "Hypertension Clinic Abu Dhabi (simulated)", ar: "عيادة ضغط الدم في أبوظبي (محاكاة)", fr: "Clinique de la tension d'Abou Dabi (simulé)"}
+  "Yaoundé Health Centre (simulated)": {en: "Yaoundé Health Centre (simulated)", ar: "المركز الصحي في ياوندي (محاكاة)", fr: "Centre de santé de Yaoundé (simulé)"}
+  "Yaoundé Regional Hypertension Clinic (simulated)": {en: "Yaoundé Regional Hypertension Clinic (simulated)", ar: "العيادة الإقليمية لضغط الدم في ياوندي (محاكاة)", fr: "Clinique régionale de la tension de Yaoundé (simulé)"}
+  "Programme office (simulated)": {en: "Programme office (simulated)", ar: "مكتب البرنامج (محاكاة)", fr: "Bureau du programme (simulé)"}
+
+regions:
+  AUH: {en: Abu Dhabi, ar: أبوظبي, fr: Abou Dabi}
+  YDE: {en: Yaoundé, ar: ياوندي, fr: Yaoundé}
+
+services:
+  hypertension_clinic: {en: Hypertension clinic, ar: عيادة ضغط الدم, fr: Clinique de la tension}
+
+simulated_label: {en: Simulated, ar: محاكاة, fr: Simulé}
+
+task_titles:
+  urgent_review: {en: Same-day clinician review, ar: مراجعة الطبيب في اليوم نفسه, fr: Revue clinique le jour même}
+  call_the_patient: {en: Call the patient, ar: الاتصال بالمريض, fr: Appeler le patient}
+  offer_a_call: {en: Offer a call, ar: عرض مكالمة, fr: Proposer un appel}
+  decide_unreachable_patient: {en: Decide about a patient who could not be reached, ar: اتخاذ قرار بشأن مريض تعذّر الوصول إليه, fr: Décider pour un patient resté injoignable}
+  contact_by_another_agreed_route: {en: Contact by another agreed route, ar: التواصل بوسيلة أخرى متفق عليها, fr: Contacter par un autre moyen convenu}
+  decide_after_care_coordination_withdrawn: {en: Decide after the patient withdrew care coordination, ar: اتخاذ قرار بعد أن سحب المريض موافقته على تنسيق الرعاية, fr: Décider après le retrait de l'accord pour la coordination des soins}
+
+closure_evidence:
+  BP_CONTROLLED: {en: Blood pressure at target, ar: ضغط الدم ضمن الهدف, fr: Tension dans la cible}
+  NOT_CONFIRMED: {en: Raised reading not confirmed, ar: لم تتأكد القراءة المرتفعة, fr: Mesure élevée non confirmée}
+  CARE_TRANSFERRED: {en: Care transferred, ar: نُقلت الرعاية, fr: Suivi transféré}
+  PATIENT_DECLINED: {en: Patient declined follow-up, ar: رفض المريض المتابعة, fr: Le patient a refusé le suivi}
+  UNREACHABLE_AFTER_PROTOCOL: {en: Patient not reached after the contact steps, ar: تعذّر الوصول إلى المريض بعد خطوات التواصل, fr: Patient injoignable après les étapes de contact}
+  DECEASED_OR_MOVED: {en: Deceased or moved away, ar: توفي أو انتقل, fr: Décédé ou déménagé}
+  OTHER_CLINICAL_DECISION: {en: Other clinical decision, ar: قرار سريري آخر, fr: Autre décision clinique}
+
+all_people: {en: All people, ar: جميع الأشخاص, fr: Toutes les personnes}
+
+cover:
+  thiqa: {en: "Covered by Thiqa (simulated), no co-payment", ar: "مغطى بموجب ثقة (محاكاة)، دون مشاركة في الدفع", fr: "Couvert par Thiqa (simulé), sans ticket modérateur"}
+  basic: {en: "Covered by basic plan (simulated), co-payment AED {copay}", ar: "مغطى بموجب الخطة الأساسية (محاكاة)، مشاركة في الدفع AED {copay}", fr: "Couvert par le régime de base (simulé), ticket modérateur de {copay} AED"}
+  self_pay: {en: "Self-pay estimate (simulated)", ar: "تقدير الدفع الذاتي (محاكاة)", fr: "Estimation du paiement direct (simulé)"}
+  estimate: {en: "Estimated price (simulated)", ar: "السعر التقديري (محاكاة)", fr: "Prix estimé (simulé)"}
+
+rules:
+  - {en: "Rules decide routing, urgency, ownership, SLA and closure. AI only drafts wording and never takes part in those decisions.", ar: "القواعد هي التي تقرر التوجيه والاستعجال والمسؤولية ومدة الخدمة والإغلاق. الذكاء الاصطناعي يصيغ النصوص فقط ولا يشارك في هذه القرارات.", fr: "Les règles décident de l'orientation, de l'urgence, de la responsabilité, des délais et de la clôture. L'IA ne fait que rédiger des textes et ne participe jamais à ces décisions."}
+  - {en: "Only a clinician can close a case, and only with an evidence type plus an evidence reference or a decision note.", ar: "الطبيب وحده يستطيع إغلاق الحالة، وذلك بنوع دليل مع مرجع دليل أو ملاحظة قرار.", fr: "Seul un clinicien peut clôturer un dossier, avec un type de preuve et une référence de preuve ou une note de décision."}
+  - {en: "Blood pressure values come only from a validated cuff or ambulatory monitor. Wearable data is never used as a blood pressure value.", ar: "قيم ضغط الدم تأتي فقط من جهاز قياس معتمد أو جهاز مراقبة متنقل. بيانات الأجهزة القابلة للارتداء لا تُستخدم أبدًا كقيمة لضغط الدم.", fr: "Les valeurs de tension viennent uniquement d'un tensiomètre validé ou d'un moniteur ambulatoire. Les données des objets connectés ne sont jamais utilisées comme valeur de tension."}
+  - {en: "The dashboard is aggregate only and hides any cell with fewer than 5 people.", ar: "لوحة المؤشرات تعرض مجاميع فقط وتخفي أي خلية تضم أقل من 5 أشخاص.", fr: "Le tableau de bord n'affiche que des agrégats et masque toute cellule de moins de 5 personnes."}
+
+notice: {en: "Every threshold and service level is a placeholder pending clinician sign-off. None is clinically validated.", ar: "كل حد ومدة خدمة هنا قيمة مؤقتة بانتظار اعتماد الأطباء. لا شيء منها معتمد سريريًا.", fr: "Chaque seuil et chaque délai de service est une valeur provisoire en attente de validation par les cliniciens. Aucun n'est validé cliniquement."}

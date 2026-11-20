@@ -2,6 +2,10 @@
 id: result_severe_sms
 version: 1
 purpose: SMS version of the severe result with red-flag advice.
+purpose_i18n:
+  en: SMS version of the severe result with red-flag advice.
+  ar: نسخة الرسالة النصية للنتيجة المرتفعة جدًا مع نصيحة الأعراض التحذيرية.
+  fr: Version SMS du résultat très élevé avec les conseils sur les signes d'alerte.
 channel_limits:
   sms:
     en: 160

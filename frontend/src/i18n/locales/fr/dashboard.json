@@ -75,7 +75,23 @@
     "kinds": {
       "published": "Publié",
       "assumption": "Hypothèse"
-    }
+    },
+    "units": {
+      "days": "jours",
+      "log_sd": "écart-type log",
+      "multiplier": "multiplicateur",
+      "probability": "probabilité",
+      "probability_by_score": "probabilité par note",
+      "probability_by_size": "probabilité par taille",
+      "weeks": "semaines"
+    },
+    "published": {
+      "simple_bangladesh": "Application Simple, Bangladesh : les listes de retard et les appels ont fait passer les visites manquées à 3 mois de 50 % à 26 % en six mois (note de l'équipe).",
+      "mohap_uae": "Campagne de dépistage 2025 aux Émirats, MOHAP, relayée par Gulf News : plus de 40 % des personnes hypertendues l'ignoraient ; 29 % des patients traités n'étaient pas dans la cible. Contexte seulement.",
+      "nhns_uae": "Enquête nationale sur la santé et la nutrition des Émirats, 2024 à 2025 : 25,9 % des adultes ont une tension élevée. Contexte seulement.",
+      "tam_jmir_2021": "Tam et coll., JMIR mHealth 2021 : les SMS ont à peu près divisé par deux les chances d'une tension non maîtrisée. Contexte seulement."
+    },
+    "rationaleEnglish": "Les explications de chaque paramètre ne sont disponibles qu'en anglais."
   },
   "splitLabel": "Répartir par",
   "splitHint": "S'applique aux deux parties.",
@@ -105,14 +121,18 @@
   "outOf5": "{{value}} sur 5",
   "unit": {
     "h": "h",
-    "d": "jours"
+    "d": "jours",
+    "hShort": "h",
+    "dShort": "jours",
+    "outOf5": "sur 5",
+    "people": "personnes"
   },
   "axis": {
     "days": "Jours",
     "hours": "Heures",
     "cases": "Dossiers",
     "people": "Personnes",
-    "percent": "Pourcentage de personnes",
+    "percent": "% des personnes",
     "score": "Note"
   },
   "measures": {

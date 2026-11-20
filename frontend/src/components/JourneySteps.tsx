@@ -14,7 +14,7 @@ export interface JourneyStepsProps {
 }
 
 /**
- * Vertical eight-step journey. Done steps are filled teal, the current step says "You are here",
+ * Vertical eight-step journey, same language as the loop ring. Reached steps are filled petrol dots, the current step says "You are here",
  * later steps are quiet. No red anywhere, so it is safe on patient screens.
  */
 export function JourneySteps({ currentState, steps, labels, className }: JourneyStepsProps) {
@@ -35,19 +35,17 @@ export function JourneySteps({ currentState, steps, labels, className }: Journey
             {!last && (
               <span
                 aria-hidden="true"
-                className={cx("absolute start-[0.8rem] top-7 bottom-0 w-0.5", isDone ? "bg-accent" : "bg-line")}
+                className={cx("absolute start-[0.8125rem] top-7 bottom-0 w-0.5", isDone ? "bg-accent" : "bg-line-strong/60")}
               />
             )}
-            <span
-              aria-hidden="true"
-              className={cx(
-                "z-10 flex size-7 shrink-0 items-center justify-center rounded-full border-2 text-xs font-bold latin-digits",
-                isDone && "border-accent bg-accent text-white",
-                isCurrent && "border-accent bg-surface text-accent-ink ring-4 ring-accent-soft",
-                !isDone && !isCurrent && "border-line bg-surface text-muted",
+            <span aria-hidden="true" className="z-10 grid size-7 shrink-0 place-items-center">
+              {isDone && <span className="size-3.5 rounded-full bg-accent" />}
+              {isCurrent && (
+                <span className="grid size-7 place-items-center rounded-full bg-accent-soft">
+                  <span className="loop-ring-current size-3.5 rounded-full bg-accent" />
+                </span>
               )}
-            >
-              {isDone ? "✓" : i + 1}
+              {!isDone && !isCurrent && <span className="size-3.5 rounded-full border-2 border-line-strong bg-surface" />}
             </span>
             <div className="min-w-0 pt-0.5">
               <p className={cx("font-medium", !isDone && !isCurrent && "text-muted")}>{name}</p>

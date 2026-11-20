@@ -13,7 +13,7 @@ from app.db.models import Case, EConsult, MessageDraft, Patient, Slot, User
 from app.demo import clock
 from app.engine.types import Action, EventType, Role, State
 
-from . import auth, message_slots, projection, schemas as S, wording_port
+from . import auth, i18n, message_slots, projection, schemas as S, wording_port
 from .actions_impl import perform
 from .constants import APP_NAME
 from .core import (
@@ -32,6 +32,8 @@ ERR = {403: {"model": S.ErrorResponse}, 404: {"model": S.ErrorResponse}, 409: {"
 def user_out(u: User) -> S.UserOut:
     display, title = split_name(u.name, u.role)
     return S.UserOut(id=u.id, persona=u.persona_key, name=u.name, display_name=display, role_title=title, role=u.role,
+                     display_names=S.I18nText(**i18n.person_names(u.name)), role_titles=S.I18nText(**i18n.person_roles(u.name, u.role)),
+                     organisation_i18n=S.I18nText(**i18n.place(u.organisation)),
                      region=u.region, organisation=u.organisation, language=u.language, patient_id=u.patient_id,
                      description=u.description)
 
@@ -53,6 +55,8 @@ def personas(db: Session = Depends(get_db)):
             continue
         display, title = split_name(u.name, u.role)
         out.append(S.PersonaInfo(persona=u.persona_key, name=u.name, display_name=display, role_title=title, role=u.role,
+                                 display_names=S.I18nText(**i18n.person_names(u.name)),
+                                 role_titles=S.I18nText(**i18n.person_roles(u.name, u.role)),
                                  region=u.region, description=u.description))
     return out
 
@@ -81,15 +85,20 @@ def users(role: S.RoleName | None = None, user: User = Depends(staff), db: Sessi
 
 @router.get("/config", response_model=S.ConfigOut, tags=["system"])
 def config():
-    entries = [S.ConfigEntryOut(section=e.section, key=e.key, value=e.value, unit=e.unit, basis=e.basis, status=e.status)
+    entries = [S.ConfigEntryOut(section=e.section, key=e.key, value=e.value, unit=e.unit, basis=e.basis, status=e.status,
+                                label_i18n=S.I18nText(**i18n.tri(e.label_i18n, e.key)), basis_i18n=S.I18nText(**i18n.tri(e.basis_i18n, e.basis)),
+                                unit_i18n=S.I18nText(**i18n.tri(e.unit_i18n, e.unit)))
                for e in engine.config.all_entries()]
-    regions = [S.RegionConfig(region=k, name=v["name"], default_language=v["default_language"], languages=v["languages"],
+    regions = [S.RegionConfig(region=k, name=v["name"], name_i18n=S.I18nText(**i18n.region_names(k)), default_language=v["default_language"], languages=v["languages"],
                               emergency_text=v["emergency_text"], emergency_number=v["emergency_number"], timezone=v["timezone"])
                for k, v in REGIONS.items()]
     return S.ConfigOut(
         app_name=APP_NAME, demo_mode=demo_mode(),
         notice="Every threshold and service level is a placeholder pending clinician sign-off. None is clinically validated.",
-        entries=entries, closure_evidence_types=list(engine.ClosureEvidence), templates=wording_port.template_catalogue(),
+        entries=entries, closure_evidence_types=list(engine.ClosureEvidence),
+        closure_evidence_labels=[S.ClosureEvidenceLabel(code=c, label_i18n=S.I18nText(**i18n.closure_label(c.value)))
+                                 for c in engine.ClosureEvidence],
+        notice_i18n=S.I18nText(**i18n.config_notice()), rules_i18n=[S.I18nText(**r) for r in i18n.config_rules()], templates=wording_port.template_catalogue(),
         languages=list(S.Language), regions=regions,
         rules=[
             "Rules decide routing, urgency, ownership, SLA and closure. AI only drafts wording and never takes part in those decisions.",
@@ -180,14 +189,19 @@ def post_action(case_id: int, req: S.ActionRequest, user: User = Depends(current
 
 
 def cover_for(patient: Patient, slot: Slot) -> S.CoverOut:
-    """Simulated cover lines. Always tagged simulated."""
+    """Simulated cover lines. Always tagged simulated, in every language."""
+    def out(kind: str, text: str, covered, copay_value, price, currency, **params) -> S.CoverOut:
+        return S.CoverOut(covered=covered, copay=copay_value, estimated_price=price, currency=currency, label=text,
+                          label_i18n=S.I18nText(**i18n.cover_label(kind, **params)),
+                          simulated_label_i18n=S.I18nText(**i18n.simulated_label()))
+
     if patient.region == "AUH":
         if patient.insurance == "THIQA":
-            return S.CoverOut(covered=True, copay=0, estimated_price=None, currency="AED", label="Covered by Thiqa (simulated), no co-payment")
+            return out("thiqa", "Covered by Thiqa (simulated), no co-payment", True, 0, None, "AED")
         if patient.insurance == "BASIC":
-            return S.CoverOut(covered=True, copay=20, estimated_price=None, currency="AED", label="Covered by basic plan (simulated), co-payment AED 20")
-        return S.CoverOut(covered=False, copay=None, estimated_price=250, currency="AED", label="Self-pay estimate (simulated)")
-    return S.CoverOut(covered=None, copay=None, estimated_price=5000, currency="XAF", label="Estimated price (simulated)")
+            return out("basic", "Covered by basic plan (simulated), co-payment AED 20", True, 20, None, "AED", copay=20)
+        return out("self_pay", "Self-pay estimate (simulated)", False, None, 250, "AED")
+    return out("estimate", "Estimated price (simulated)", None, None, 5000, "XAF")
 
 
 @router.get("/cases/{case_id}/slots", response_model=list[S.SlotOut], tags=["cases"], responses=ERR)
@@ -196,7 +210,11 @@ def slots(case_id: int, user: User = Depends(current_user), db: Session = Depend
     now = clock.now(db)
     patient = db.get(Patient, case.patient_id)
     q = select(Slot).where(Slot.region == case.region, Slot.booked.is_(False), Slot.starts_at > now).order_by(Slot.starts_at).limit(12)
-    return [S.SlotOut(id=s.id, starts_at=s.starts_at, provider_name=s.provider_name, location=s.location, cover=cover_for(patient, s))
+    return [S.SlotOut(id=s.id, starts_at=s.starts_at, provider_name=s.provider_name, location=s.location, cover=cover_for(patient, s),
+                      provider_name_i18n=S.I18nText(**i18n.person_names(s.provider_name)),
+                      provider_person=projection.person_from_name(s.provider_name, "clinician"),
+                      location_i18n=S.I18nText(**i18n.place(s.location)),
+                      label_i18n=projection.appointment_label(s.starts_at, s.provider_name, s.location, case.region))
             for s in db.scalars(q)]
 
 

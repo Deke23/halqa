@@ -38,3 +38,35 @@ export function useGroupLabel() {
     return k.startsWith("language.") ? ts(k, { defaultValue: key }) : t(k, { defaultValue: key });
   };
 }
+
+export interface MeasureParts {
+  value?: string;
+  unit?: string;
+  sub?: string;
+  suppressed: boolean;
+  notMeasured: boolean;
+}
+
+/** The pieces of a measure for a stat card: a big value, its unit, and a small second line. */
+export function useMeasureParts() {
+  const { t, i18n } = useTranslation("dashboard");
+  const num = (v: number, d = 1) => formatNumber(v, i18n.language, { maximumFractionDigits: d });
+  return (kind: MeasureKind, m: Norm | undefined): MeasureParts => {
+    const none: MeasureParts = { suppressed: false, notMeasured: true };
+    if (!m) return none;
+    if (m.suppressed) return { suppressed: true, notMeasured: false };
+    const ok = (p: Omit<MeasureParts, "suppressed" | "notMeasured">): MeasureParts => ({ ...p, suppressed: false, notMeasured: false });
+    switch (kind) {
+      case "time_h":
+      case "time_d":
+        if (m.median == null) return none;
+        return ok({ value: num(m.median), unit: kind === "time_h" ? t("unit.hShort") : t("unit.dShort"), sub: m.p90 != null ? `${t("p90")} ${num(m.p90)}` : undefined });
+      case "rate":
+        return m.value == null ? none : ok({ value: formatNumber(m.value * 100, i18n.language, { maximumFractionDigits: 0 }), unit: "%" });
+      case "mean":
+        return m.value == null ? none : ok({ value: num(m.value, 1), unit: t("unit.outOf5") });
+      case "unresolved":
+        return m.count == null ? none : ok({ value: num(m.count, 0), unit: t("unit.people"), sub: m.value != null ? formatPercent(m.value, i18n.language) : undefined });
+    }
+  };
+}

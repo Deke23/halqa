@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { BPReading, Card, Loading, SimulatedTag, Tag } from "@/components";
+import { BPReading, Loading, SimulatedTag, Tag } from "@/components";
 import { formatDate } from "@/lib/format";
 import { latestMessage, useThread } from "./api";
-import { BulletList, NextStepCard, Notice, PageTitle, useCurrentCase } from "./ui";
+import { BulletList, NextStepCard, Notice, PageTitle, useCurrentCase, Panel, i18nOf } from "./ui";
 
 export default function Result() {
   const { t, i18n } = useTranslation("patient");
@@ -21,7 +21,7 @@ export default function Result() {
     <div className="flex flex-col gap-4">
       <PageTitle>{t("result.heading")}</PageTitle>
 
-      <Card>
+      <Panel>
         <div className="flex flex-col items-start gap-3">
           <div className="flex flex-wrap items-center gap-2">
             <Tag>{t(`result.source.${sourceKey}`, { defaultValue: t("result.source.OTHER") })}</Tag>
@@ -36,23 +36,23 @@ export default function Result() {
           )}
           <p className="font-medium">{t("result.needsChecking")}</p>
         </div>
-      </Card>
+      </Panel>
 
       {c.emergency_advice && (
         <Notice tone="due" title={t("result.emergencyTitle")}>
-          {c.emergency_advice.text}
+          {i18nOf(c.emergency_advice, "text")}
         </Notice>
       )}
 
-      <Card title={t("result.meansTitle")}>
+      <Panel title={t("result.meansTitle")}>
         <BulletList items={means} />
-      </Card>
+      </Panel>
 
-      <Card title={t("result.notMeansTitle")}>
+      <Panel title={t("result.notMeansTitle")}>
         <BulletList items={notMeans} />
-      </Card>
+      </Panel>
 
-      <Card title={t("result.urgencyTitle")}>
+      <Panel title={t("result.urgencyTitle")}>
         {severe ? (
           <p>{t("result.urgencySevere")}</p>
         ) : (
@@ -60,7 +60,7 @@ export default function Result() {
             <bdi>{t("result.urgencyRaised", { date: formatDate(c.next_step?.due_at, i18n.language) })}</bdi>
           </p>
         )}
-      </Card>
+      </Panel>
 
       <NextStepCard compact />
 
@@ -75,7 +75,7 @@ export default function Result() {
         c.state !== "RESULT_ISSUED" && <p className="text-sm text-muted">{t("result.alreadyUnderstood")}</p>
       )}
 
-      <Card title={t("result.messageTitle")}>
+      <Panel title={t("result.messageTitle")}>
         {thread.isLoading ? (
           <Loading />
         ) : message ? (
@@ -83,7 +83,7 @@ export default function Result() {
         ) : (
           <p className="text-muted">{t("messages.empty")}</p>
         )}
-      </Card>
+      </Panel>
     </div>
   );
 }

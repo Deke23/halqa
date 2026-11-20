@@ -13,7 +13,7 @@ import { useTranslation } from "react-i18next";
 import { cx } from "@/lib/cx";
 
 const controlCls =
-  "block w-full min-h-11 rounded-lg border border-line bg-surface px-3 py-2 text-base text-ink placeholder:text-muted " +
+  "block w-full min-h-11 rounded-control border border-line-strong bg-surface px-3 py-2 text-base text-ink placeholder:text-muted " +
   "disabled:bg-surface-2 aria-[invalid=true]:border-due";
 
 export interface FieldProps {
@@ -128,8 +128,8 @@ export function RadioGroup({ name, legend, options, value, onChange, error, inli
             <label
               key={o.value}
               className={cx(
-                "flex min-h-11 cursor-pointer items-start gap-3 rounded-lg border px-3 py-2",
-                checked ? "border-accent bg-accent-soft" : "border-line bg-surface hover:bg-surface-2",
+                "flex min-h-11 cursor-pointer items-start gap-3 rounded-control border px-3 py-2.5",
+                checked ? "border-accent bg-accent-soft" : "border-line-strong bg-surface hover:bg-surface-2",
                 o.disabled && "cursor-not-allowed opacity-60",
               )}
             >

@@ -11,7 +11,7 @@ export interface DueChipProps {
   /** Override the clock (tests, kitchen sink). Defaults to the demo clock. */
   now?: Date;
   /**
-   * staff: overdue is red. patient: overdue is amber, never red.
+   * staff: overdue is clay red. patient: overdue is amber, never red.
    * Red is reserved for clinical urgency on staff screens.
    */
   audience?: "staff" | "patient";
@@ -49,8 +49,10 @@ export function DueChip({ dueAt, overdue, now, audience = "staff", className }: 
   }
 
   return (
-    <span className={cx("inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-semibold", toneClasses[tone], className)}>
-      <span aria-hidden="true" className="inline-block size-1.5 rounded-full bg-current" />
+    <span
+      className={cx("inline-flex items-center gap-1.5 rounded-md px-2 py-0.5 text-xs font-medium leading-5", toneClasses[tone], className)}
+    >
+      <span aria-hidden="true" className="inline-block size-1.5 shrink-0 rounded-full bg-current" />
       {text}
     </span>
   );

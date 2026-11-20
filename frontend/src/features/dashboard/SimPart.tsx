@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Bar, BarChart, CartesianGrid, Legend, LabelList, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { Badge, Card, EmptyState, ErrorState, Field, Loading, Select, SimulatedTag, Table, type Column } from "@/components";
 import { useSimulation } from "./api";
+import { COLOR, WrapTick, legendText } from "./charts";
 import { useGroupLabel, useMeasureText } from "./format";
 import { DAY_MEASURES, MEASURES, RATE_MEASURES, normSim, type MeasureDef, type Norm } from "./measures";
 import { ParamsPanel } from "./ParamsPanel";
@@ -15,8 +16,8 @@ interface Props {
 }
 
 const ARMS: Arm[] = ["baseline", "with_loop"];
-const BASE_FILL = "var(--color-line)";
-const LOOP_FILL = "var(--color-accent)";
+const BASE_FILL = COLOR.baseline;
+const LOOP_FILL = COLOR.loop;
 
 export function SimPart({ split, region }: Props) {
   const { t } = useTranslation("dashboard");
@@ -108,12 +109,12 @@ export function SimPart({ split, region }: Props) {
 
   return (
     <div className="flex flex-col gap-5">
-      <div role="note" className="rounded-card border-2 border-info-ink bg-info-soft p-4 text-info-ink">
+      <div role="note" className="rounded-card border border-line-strong bg-surface p-4">
         <p className="flex flex-wrap items-center gap-2 font-semibold">
           <SimulatedTag />
           {t("sim.disclaimerTitle")}
         </p>
-        <p className="mt-1">{t("sim.disclaimer")}</p>
+        <p className="mt-1 text-sm">{t("sim.disclaimer")}</p>
       </div>
 
       <div className="flex flex-wrap items-end gap-4">
@@ -184,7 +185,7 @@ function pct(m: Norm | undefined): number | null {
   return m && !m.suppressed && m.value != null ? Math.round(m.value * 1000) / 10 : null;
 }
 function med(m: Norm | undefined): number | null {
-  return m && !m.suppressed && m.median != null ? m.median : null;
+  return m && !m.suppressed && m.median != null ? Math.round(m.median * 10) / 10 : null;
 }
 function scalar(def: MeasureDef, m: Norm | undefined): number | null {
   if (!m || m.suppressed) return null;
@@ -218,11 +219,11 @@ function Grouped({ data, yLabel, caption, fmt, armName }: GroupedProps) {
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={data} margin={{ top: 18, right: 8, bottom: 8, left: 0 }}>
             <CartesianGrid stroke="var(--color-line)" strokeDasharray="3 3" vertical={false} />
-            <XAxis dataKey="name" tick={{ fontSize: 11 }} interval={0} height={56} />
+            <XAxis dataKey="name" tick={<WrapTick />} interval={0} height={76} />
             <YAxis tick={{ fontSize: 11 }} label={{ value: yLabel, angle: -90, position: "insideLeft", fontSize: 11 }} />
             <Tooltip formatter={(v) => (v == null ? tc("fewerThan5") : String(v))} />
-            <Legend wrapperStyle={{ fontSize: 12 }} formatter={(v) => <span style={{ color: "var(--color-ink)" }}>{v}</span>} />
-            <Bar dataKey="baseline" name={armName("baseline")} fill={BASE_FILL} stroke="var(--color-muted)" strokeWidth={1.5} isAnimationActive={false}>
+            <Legend wrapperStyle={{ fontSize: 12 }} formatter={legendText} />
+            <Bar dataKey="baseline" name={armName("baseline")} fill={BASE_FILL} stroke={COLOR.baselineStroke} strokeWidth={1.5} isAnimationActive={false}>
               <LabelList dataKey="baseline" position="top" fontSize={10} formatter={(v: unknown) => (typeof v === "number" ? fmt(v) : "")} />
             </Bar>
             <Bar dataKey="with_loop" name={armName("with_loop")} fill={LOOP_FILL} isAnimationActive={false}>

@@ -1,9 +1,12 @@
 import { useTranslation } from "react-i18next";
 import { Bar, BarChart, CartesianGrid, LabelList, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
-import { Badge, Card, EmptyState, ErrorState, Loading, StatCard, Table, type Column } from "@/components";
+import { Badge, Card, EmptyState, ErrorState, Loading, Table, type Column } from "@/components";
+import { COLOR, WrapTick } from "./charts";
+import { ReadoutCard } from "./ReadoutCard";
 import { formatDateTime } from "@/lib/format";
+import { pickText } from "@/lib/i18nField";
 import { useLive } from "./api";
-import { useGroupLabel, useMeasureText } from "./format";
+import { useGroupLabel, useMeasureParts, useMeasureText } from "./format";
 import { DAY_MEASURES, MEASURES, normLive, type MeasureDef, type Norm } from "./measures";
 
 interface Props {
@@ -15,6 +18,7 @@ export function LivePart({ split, region }: Props) {
   const { t, i18n } = useTranslation("dashboard");
   const q = useLive(split, region);
   const text = useMeasureText();
+  const parts = useMeasureParts();
   const groupLabel = useGroupLabel();
 
   if (q.isLoading) return <Loading />;
@@ -35,7 +39,7 @@ export function LivePart({ split, region }: Props) {
     ...data.groups.map((g) => ({
       key: g.key,
       header: (
-        <span>{groupLabel(split, g.key)}</span>
+        <span>{pickText(g.label_i18n, groupLabel(split, g.key))}</span>
       ),
       numeric: true,
       cell: (m: MeasureDef) => {
@@ -69,14 +73,18 @@ export function LivePart({ split, region }: Props) {
         <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
           {defs.map((m) => {
             const v = firstGet(m.name);
+            const p = parts(m.kind, v);
             return (
-              <StatCard
+              <ReadoutCard
                 key={m.name}
                 label={t(`measures.${m.name}.label`)}
-                value={text(m.kind, v)}
+                help={t(`measures.${m.name}.help`)}
+                value={p.value}
+                unit={p.unit}
+                sub={p.sub}
                 n={v?.n}
-                suppressed={v?.suppressed ?? false}
-                sub={t(`measures.${m.name}.help`)}
+                suppressed={p.suppressed}
+                notMeasured={p.notMeasured}
               />
             );
           })}
@@ -92,14 +100,14 @@ export function LivePart({ split, region }: Props) {
           {timing.length === 0 ? (
             <EmptyState description={t("live.timingEmpty")} />
           ) : (
-            <BarsOne data={timing} xKey="name" yKey="median" yLabel={t("axis.days")} caption={t("live.timingNote", { group: groupLabel(split, first.key) })} />
+            <BarsOne data={timing} xKey="name" yKey="median" yLabel={t("axis.days")} fill={COLOR.loop} caption={t("live.timingNote", { group: groupLabel(split, first.key) })} />
           )}
         </Card>
         <Card title={t("live.reasonsTitle")} action={<Badge>{t("live.liveTag")}</Badge>}>
           {reasons.length === 0 ? (
             <EmptyState description={t("live.reasonsEmpty")} />
           ) : (
-            <BarsOne data={reasons} xKey="name" yKey="n" yLabel={t("axis.cases")} caption={t("live.reasonsNote", { group: groupLabel(split, first.key) })} />
+            <BarsOne data={reasons} xKey="name" yKey="n" yLabel={t("axis.cases")} fill={COLOR.delay} caption={t("live.reasonsNote", { group: groupLabel(split, first.key) })} />
           )}
         </Card>
       </div>
@@ -117,17 +125,17 @@ function MeasureName({ name }: { name: string }) {
   );
 }
 
-function BarsOne<T extends Record<string, unknown>>({ data, xKey, yKey, yLabel, caption }: { data: T[]; xKey: string; yKey: string; yLabel: string; caption: string }) {
+function BarsOne<T extends Record<string, unknown>>({ data, xKey, yKey, yLabel, caption, fill }: { data: T[]; xKey: string; yKey: string; yLabel: string; caption: string; fill: string }) {
   return (
     <figure>
       <div className="h-60 w-full" role="img" aria-label={caption}>
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={data} margin={{ top: 16, right: 8, bottom: 8, left: 0 }}>
-            <CartesianGrid stroke="var(--color-line)" strokeDasharray="3 3" vertical={false} />
-            <XAxis dataKey={xKey} tick={{ fontSize: 11 }} interval={0} />
+            <CartesianGrid stroke={COLOR.grid} strokeDasharray="3 3" vertical={false} />
+            <XAxis dataKey={xKey} tick={<WrapTick />} interval={0} height={64} />
             <YAxis tick={{ fontSize: 11 }} label={{ value: yLabel, angle: -90, position: "insideLeft", fontSize: 11 }} />
             <Tooltip />
-            <Bar dataKey={yKey} fill="var(--color-accent)" isAnimationActive={false}>
+            <Bar dataKey={yKey} fill={fill} isAnimationActive={false}>
               <LabelList dataKey={yKey} position="top" fontSize={11} />
             </Bar>
           </BarChart>

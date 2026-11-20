@@ -3,7 +3,6 @@ import { useTranslation } from "react-i18next";
 import { useAuth } from "@/api/auth";
 import {
   Badge,
-  BPReading,
   Card,
   DueChip,
   EmptyState,
@@ -15,7 +14,9 @@ import {
   type Column,
 } from "@/components";
 import { formatDateTime } from "@/lib/format";
+import { pickText } from "@/lib/i18nField";
 import { useCaseList, useMyEconsults, useMyUserId } from "../api";
+import { CaseRing } from "../CaseRing";
 import { useLabels } from "../labels";
 import { usePersonText } from "../PersonLabel";
 import type { CaseSummary, EConsult } from "../types";
@@ -52,24 +53,24 @@ export default function StaffWorklist() {
       key: "patient",
       header: t("queue.cols.patient"),
       cell: (c) => (
-        <div>
-          <Link
-            to={`/staff/cases/${c.id}`}
-            onClick={(e) => e.stopPropagation()}
-            className="font-semibold text-accent-ink underline-offset-2 hover:underline"
-            aria-label={t("queue.openCase", { initials: c.patient_initials, id: c.id })}
-          >
-            {c.patient_initials}
-          </Link>
-          <p className="text-xs text-muted">
-            <bdi dir="ltr" className="clinical">
-              {c.patient_ref}
-            </bdi>
-          </p>
+        <div className="flex items-center gap-2.5">
+          <CaseRing state={c.state} urgent={c.urgent} size={30} />
+          <div>
+            <Link
+              to={`/staff/cases/${c.id}`}
+              onClick={(e) => e.stopPropagation()}
+              className="font-semibold text-accent-ink underline-offset-2 hover:underline"
+              aria-label={t("queue.openCase", { initials: pickText(c.patient_initials_i18n, c.patient_initials), id: c.id })}
+            >
+              <bdi>{pickText(c.patient_initials_i18n, c.patient_initials)}</bdi>
+            </Link>
+            <p className="readout whitespace-nowrap text-xs text-muted">
+              {c.age_band} · {c.index_systolic}/{c.index_diastolic}
+            </p>
+          </div>
         </div>
       ),
     },
-    { key: "reading", header: t("queue.cols.reading"), cell: (c) => <BPReading systolic={c.index_systolic} diastolic={c.index_diastolic} size="sm" /> },
     {
       key: "state",
       header: t("queue.cols.state"),
@@ -80,7 +81,18 @@ export default function StaffWorklist() {
         </div>
       ),
     },
-    { key: "next", header: t("queue.cols.next"), cell: (c) => labels.nextStep(c.next_step_label_key) },
+    {
+      key: "next",
+      header: t("queue.cols.nextWhy"),
+      cell: (c) => (
+        <div>
+          <p className="font-medium">{labels.nextStep(c.next_step_label_key)}</p>
+          <p className="max-w-[14rem] truncate text-xs text-muted" title={labels.reason(c.reason_code)}>
+            {labels.reason(c.reason_code)}
+          </p>
+        </div>
+      ),
+    },
     {
       key: "due",
       header: t("queue.cols.due"),
@@ -91,7 +103,6 @@ export default function StaffWorklist() {
         </div>
       ),
     },
-    { key: "why", header: t("queue.cols.why"), cell: (c) => labels.reason(c.reason_code) },
   ];
 
   const econsultColumns: Column<EConsult>[] = [

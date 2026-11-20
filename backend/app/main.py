@@ -13,7 +13,7 @@ from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from sqlalchemy import func, select
 
-from app.api import dashboard, routes, routes_more, schemas
+from app.api import i18n, dashboard, routes, routes_more, schemas
 from app.api.constants import APP_NAME, FRONTEND_DIST
 from app.api.core import ApiError, tick_all
 from app.db import Database
@@ -82,8 +82,9 @@ def create_app(database_url: str | None = None, *, seed_on_start: bool = True, s
                        allow_credentials=True)
 
     @app.exception_handler(ApiError)
-    async def api_error(_: Request, exc: ApiError) -> JSONResponse:
-        return JSONResponse({"code": exc.code, "message": exc.message}, status_code=exc.status)
+    async def api_error(request: Request, exc: ApiError) -> JSONResponse:
+        lang = i18n.pick_language(request.headers.get("accept-language"))  # en, ar or fr; the {code, message} shape is unchanged
+        return JSONResponse({"code": exc.code, "message": i18n.translate_error(exc.code, exc.message, lang)}, status_code=exc.status)
 
     app.include_router(routes.router)
     app.include_router(routes_more.router)
@@ -95,9 +96,10 @@ def create_app(database_url: str | None = None, *, seed_on_start: bool = True, s
             app.mount("/assets", StaticFiles(directory=FRONTEND_DIST / "assets"), name="assets")
 
         @app.get("/{path:path}", include_in_schema=False)
-        async def spa(path: str):
+        async def spa(path: str, request: Request):
             if path.startswith("api/"):
-                return JSONResponse({"code": "NOT_FOUND", "message": "No such route."}, status_code=404)
+                lang = i18n.pick_language(request.headers.get("accept-language"))
+                return JSONResponse({"code": "NOT_FOUND", "message": i18n.translate_error("NOT_FOUND", "No such route.", lang)}, status_code=404)
             candidate = (FRONTEND_DIST / path).resolve()
             if path and candidate.is_file() and FRONTEND_DIST.resolve() in candidate.parents:
                 return FileResponse(candidate)

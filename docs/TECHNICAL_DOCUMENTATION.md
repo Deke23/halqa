@@ -2,7 +2,7 @@
 
 Future Health Digital Innovation Challenge, Population Health, Challenge 05 "Closing the Screening-to-Care Loop". Team Latitude-IT. Hackathon prototype.
 
-This document describes what the code in this repository does on the date of writing (2026-11-19), after a hardening pass that closed several gaps found in a first review (the lines prefixed `H:` in `docs/DECISIONS.md` list them, and the tests are in `backend/tests/test_hardening.py`). Where the original specification (`docs/SPEC.md`) and the code differ, this document follows the code and says so. Nothing here has been clinically validated. Every person, reading, provider and message in the system is synthetic.
+This document describes what the code in this repository does on the date of writing (2026-11-20), after a hardening pass that closed several gaps found in a first review (the lines prefixed `H:` in `docs/DECISIONS.md` list them, and the tests are in `backend/tests/test_hardening.py`). The entry is submitted as a public code repository plus a demonstration video. There is no hosted deployment. Where the original specification (`docs/SPEC.md`) and the code differ, this document follows the code and says so. Nothing here has been clinically validated. Every person, reading, provider and message in the system is synthetic.
 
 Contents: 1 Summary, 2 System architecture, 3 Case model, 4 Clinical boundaries, 5 Responsible AI, 6 Data, 7 Data governance and privacy, 8 Outcome measures and simulation, 9 Interoperability and path to deployment, 10 Testing and verification, 11 Assumptions and limitations, 12 How to run.
 
@@ -31,15 +31,15 @@ Two settings share one rule engine:
 | Real, in this repository | Simulated or not done |
 |---|---|
 | The case state machine, owners, due dates, queues, escalation and closure gate, as code with automated tests | Any clinical review of the pathway, thresholds or service levels. All of them are placeholders pending clinician sign-off |
-| Approved message templates in English, Arabic and French (47 template files), deterministic rendering, one send function with a consent check | Review of the Arabic and French text by native-speaker clinical reviewers |
+| Approved message templates in English, Arabic and French (47 template files), deterministic rendering, one send function with a consent check | **Review of the Arabic and French text by native-speaker clinical reviewers. None has happened** |
 | An SMS reply grammar that is one state-driven table, parsed by fixed rules | Any real SMS or WhatsApp delivery. The thread is a database table shown in a simulated phone view |
 | A validator for optionally re-worded text, server-stored drafts and a staff approval step that is recorded | Any live call to an AI provider. The provider code was tested only with mocked HTTP calls and is off by default |
 | A read-only FHIR R4B projection of a case, validated with the `fhir.resources` library | Any connection to IFHAS, Malaffi, Thiqa, an SMS gateway or a WhatsApp gateway. All are simulated |
 | An audit log that the application cannot update or delete, with database triggers on SQLite | The same triggers on PostgreSQL. The SQL exists but has not been run |
 | A live dashboard computed from the cases in the database, counting only people who opted in to research use | Evidence of clinical effect. The seeded demo cases are constructed |
 | A seeded Monte Carlo simulation on a synthetic population, with all inputs listed | Realism of the simulation inputs. Almost all are our own assumptions |
-| SQLite storage. The production `Dockerfile` builds and runs (verified by the team on 18 November 2026, see section 10) | PostgreSQL, which is still unexercised. No public deployment exists yet |
-| Front-end screens for every role, built by the team and clicked through by the people who built them | An independent end-to-end check of the screens. It is still to come |
+| SQLite storage. The production `Dockerfile` builds and runs (verified by the team on 18 November 2026, see section 10) | PostgreSQL, which is still unexercised. There is no hosted deployment: the entry is a public repository plus a video |
+| Front-end screens for every role in English, Arabic and French, with display strings supplied by the backend in all three languages | An independent end-to-end check of every screen in every language. A scripted run by an independent tester is in progress |
 
 ### The six solution points of the challenge
 
@@ -157,65 +157,50 @@ stateDiagram-v2
     note right of CLOSED : Only a clinician can enter CLOSED. Any state reaches CLOSED through the close action. Reopen returns to the state held before closure, IN_CARE is drawn only as one example
 ```
 
-The severe reading path. The 185/115 example is the demo button "Simulate incoming severe result":
-
-```mermaid
-sequenceDiagram
-    participant F as "Simulated IFHAS feed"
-    participant A as "API"
-    participant E as "Engine"
-    participant Q as "Coordinator queue"
-    participant C as "Clinician"
-    participant O as "On-call clinician"
-    participant P as "Patient"
-    F->>A: POST intake result with 185/115 reading
-    A->>E: classify reading with now
-    E-->>A: SEVERE by rule, systolic at or above 180
-    A->>Q: open urgent case at top of queue
-    E->>Q: patient notification step due in 2 hours
-    A->>P: urgent template with red-flag symptom advice
-    E->>Q: parallel urgent_review task due in 4 hours
-    Q->>C: urgent_review task appears in clinician worklist
-    alt Completed by a clinician before the due time
-        C->>A: complete_urgent_review with note
-    else Not completed by the due time
-        E-->>Q: urgent_review escalates to on-call clinician
-        Q->>O: task escalated to on-call clinician
-    end
-    Note over Q: Case stays urgent until a clinician completes complete_urgent_review
-    Note over E,Q: Evaluation runs on every clock advance, on every case read and on a 60 second tick
-```
-
-Two more diagrams are in `docs/diagrams/diagrams.md`: the ownership and service level table (diagram 3) and the standard patient journey (diagram 5).
+The severe reading path (a 185/115 reading creates a 2 hour notification step and a parallel 4 hour urgent review that escalates to the on-call target) and the closure gate flow are drawn in `docs/diagrams/diagrams.md` (diagrams 4 and 7), together with the ownership table (diagram 3) and the standard patient journey (diagram 5).
 
 ### User interface
 
-<!-- LEAD: confirm screens after integration -->
+Verification status: the lead has personally viewed the landing page, the patient home, result and understanding check, the phone thread, the coordinator queue, a case detail, the dashboard and the transparency page from a static production build, in English, Arabic or French (not every screen in every language). The people who built each screen also clicked through it. An end-to-end scripted run by an independent tester is in progress. This document does not claim that every flow works end to end.
 
-This subsection is written from the source in `frontend/src/features` and the English locale files in `frontend/src/i18n/locales/en`. The people who built each screen clicked through it. An independent end-to-end check has not been done yet, so this document does not claim that every flow works end to end. The screen names below are the ones in the English locale files. Arabic (right to left) and French locale files also exist. How well they read has not been reviewed.
+Text below is written from `frontend/src/features`, `components`, `layouts`, `routes/Landing.tsx` and the English locale files. Arabic (right to left) and French locale files also exist.
 
-Shell (`App.tsx`, `layouts/`, `components/`):
+#### Design system
 
-- A landing page with "Continue as Guest", a persona picker with the seven personas and a "Reset demo data" control (with a confirmation dialog).
-- A persistent demo bar with the signed-in persona, "Switch persona", the demo date with "+1 day" and "+3 days", a "Simulated data" tag and a language switch.
-- Routes by role: `/patient/*` and `/phone/*` for patients, `/staff/queue` for coordinators, `/staff/worklist` for clinicians, `/staff/cases/:id` for both, `/dashboard` for coordinators, clinicians and the analyst, and a public "How it works" page at `/transparency`.
-- Types generated from the checked-in OpenAPI file (`npm run gen:api`).
+The decisions are written at the top of `frontend/src/index.css`:
 
-Screens:
+- Warm paper page, white cards with a hair border, shadows only on things that float (dialogs, drawers, toasts).
+- Type is IBM Plex Sans with IBM Plex Sans Arabic, and IBM Plex Mono for clinical readouts. The fonts are self-hosted (`src/fonts.ts`, SIL Open Font License), so no font request leaves the deployment. Sentence case, no tracked uppercase labels, because Arabic has no case.
+- The signature element is the loop ring (`components/LoopRing.tsx`): eight segments, one per step of a case. Reached steps are filled, the next one breathes, and a closed case is one unbroken ring. It is used on the patient home around the reading, in the case header, on queue and worklist rows, on the landing page and as the brand mark. The motion stops under `prefers-reduced-motion`.
+- Petrol is the only brand colour and also means "done". Amber means "due soon". Clay red means clinical urgency and appears on staff screens only, never in the patient app.
+- Demo aids are visually separated: a dark demo strip at the top and dashed demo panels, so they are not mistaken for the product.
+- The file lists the contrast pairs used, each stated as meeting 4.5:1 for text. We have not run an accessibility audit to confirm this on rendered screens.
+
+#### Shell and routes
+
+A landing page ("Continue as Guest", persona picker, "Reset demo data" with a confirmation dialog), a persistent demo bar (persona, "Switch persona", demo date with "+1 day" and "+3 days", "Simulated data" tag, language switch), and routes by role: `/patient/*` and `/phone/*` for patients, `/staff/queue` for coordinators, `/staff/worklist` for clinicians, `/staff/cases/:id` for both, `/dashboard` for coordinators, clinicians and the analyst, and a public `/transparency` page ("How it works"). API types are generated from the checked-in OpenAPI file (`npm run gen:api`).
+
+#### Screens
 
 | Screen | For | What it shows or does |
 |---|---|---|
-| Patient app ("My care") | Khalid (`patient_auh`) | Home with the reading and "Your next step"; "Your result" (what it means and does not mean, how urgent, the care team's message, emergency advice when urgent); "Check your understanding" (six warning-sign questions, one teach-back question, a 1 to 5 confidence rating, "Send my answer"); "Check your blood pressure again" (home monitoring or a 24 hour monitor, reading entry, running average and day count); "Referral and visit" (referral status, time slots with simulated cover shown first, "Book this visit"); "This week's action" (one action in three sizes, the check-in "I did it", "I did part of it", "I could not this week", and a no-blame note); the activity and sleep diary (marked as a sample wearable, never a blood pressure value); "Messages"; "My data" (consent switches with plain-language effects, and "How my data is used"); the journey ("Your journey", eight steps, "You are here"); a closed-case screen |
-| Phone thread | Jean-Paul (`patient_yde`) | An SMS or WhatsApp style thread. The look is only a style. Quick-reply buttons are drawn from the `valid_replies` the server attaches to the latest message, plus a text box for typing a reading such as 150/95. The server parses every reply by fixed rules |
-| Coordinator queue ("Case queue") | Mariam, Clarisse | Tabs Urgent, Overdue, Rejected, Unowned, Escalated, All. Each row shows initials, age band, index reading, state, next step, owner or "No owner", due date and the reason it is in the queue. A "Simulate incoming result" panel with "Simulate severe result (185/115)" and a custom reading |
-| Case detail | Coordinators and clinicians | Header with state, owner, due and flags; "What you can do" (actions from the server for the role); readings chart with the placeholder threshold lines; confirmation evaluation; referral and appointment; "Messages" with "Write a message" (approved template, preview, optional AI re-wording, approval box); e-consults (clinicians only); consent; lifestyle plan; "Audit timeline"; a closure dialog that shows the rule and sends the request so the server's refusal is displayed; and, for clinicians, "View FHIR record" |
-| Clinician worklist ("Clinician worklist") | Dr Sara, Dr Omar | Urgent reviews, confirmations awaiting my review, referrals sent to me, open e-consults, ready to close, consent decisions |
+| Patient app ("My care") | Khalid | Home with the reading inside the loop ring and "Your next step"; "Your result" (what it means and does not mean, how urgent, the care team's message); "Check your understanding", one question at a time (six warning-sign questions, the teach-back question, a 1 to 5 confidence rating); "Check your blood pressure again" (home monitoring or a 24 hour monitor, reading entry, running average and day count); "Referral and visit" (referral status, time slots with simulated cover shown first); "This week's action" (one action in three sizes, a three-way check-in, a no-blame note); the activity and sleep diary (sample wearable, never a blood pressure value); "Messages"; "My data" (consent switches with plain-language effects); the journey ("You are here"); a closed-case screen |
+| Phone thread | Jean-Paul | An SMS or WhatsApp style thread. The look is only a style. Quick-reply buttons are drawn from the `valid_replies` the server attaches to the latest message, plus a text box for a reading such as 150/95. The server parses every reply by fixed rules |
+| Coordinator queue ("Case queue") | Mariam, Clarisse | Tabs Urgent, Overdue, Rejected, Unowned, Escalated, All. Rows show a loop ring, initials, age band, index reading, state, next step, owner or "No owner", due date and the reason it is in the queue. A "Simulate incoming result" panel with "Simulate severe result (185/115)" |
+| Case detail | Coordinators and clinicians | Header with the loop ring, state, owner, due and flags; "What you can do" (actions from the server for the role); readings chart with the placeholder threshold lines; confirmation evaluation; referral and appointment; "Write a message" (approved template, preview, optional AI re-wording, approval box); e-consults (clinicians only); consent; lifestyle plan; "Audit timeline"; a closure dialog that sends the request so the server's refusal is displayed; and, for clinicians, "View FHIR record" |
+| Clinician worklist | Dr Sara, Dr Omar | Urgent reviews, confirmations awaiting my review, referrals sent to me, open e-consults, ready to close, consent decisions |
 | Dashboard ("Outcome dashboard") | Analyst, coordinators, clinicians | "Live data" and "Simulation" as two separate parts, a "Split by" selector, a region selector, "fewer than 5" for hidden cells, baseline against "With the loop", a sensitivity table, and "What this is based on" with every parameter and its kind |
-| "How it works" (transparency) | Everyone, no sign in | The thresholds and service levels from `/api/config` with the placeholder status, the four rules, the closure rule, where AI is and is not used, the template catalogue, regions and time zones, and whether demo mode is on |
+| "How it works" | Everyone, no sign in | Thresholds and service levels from `/api/config` with the placeholder status, the four rules, the closure rule, where AI is and is not used, the template catalogue, regions and time zones, and whether demo mode is on |
 
-Demo shortcuts. The patient screens carry a collapsed "Demo shortcuts" panel (`features/patient/Shortcuts.tsx`), tagged "Demo aid, not part of the product". Its buttons are "Care team: review my readings", "Care team: send and accept referral", "Care team: record my visit", "Care team: book my visit" (Yaoundé flow), "Care team: close my case", "Skip ahead one week" and "Send a sample week of readings". Each care team button signs in as the right staff persona in the background and calls the real action endpoint, so the change is a real transition and appears in the audit log under that staff member's role. Nothing is changed on the client. "Skip ahead one week" moves the demo clock. "Send a sample week of readings" sends the sample series as typed replies in the thread and moves the clock 12 hours between them. A button is disabled with a reason until the case is in the right state.
+#### Demo shortcuts
 
-Design intent that a reviewer can check on the screens: calm clinical palette, no red on the patient lifestyle screens, Latin digits for clinical values in all languages, `lang` and `dir` set per language. No accessibility audit has been done (section 11).
+The patient screens carry a collapsed "Demo shortcuts" panel (`features/patient/Shortcuts.tsx`), tagged "Demo aid, not part of the product". Each care team button signs in as the right staff persona in the background and calls the real action endpoint, so the change is a real transition and appears in the audit log under that staff member's role. Nothing is faked on the client. Other buttons move the demo clock ("Skip ahead one week") or send the sample series as typed replies ("Send a sample week of readings"). A button is disabled with a reason until the case is in the right state.
+
+#### Localisation
+
+The backend supplies every display string in English, Arabic and French (`backend/app/api/i18n.py`, with `i18n_data/names.yaml` and `messages.yaml`, `label_i18n`, `basis_i18n` and `unit_i18n` in `engine/config.yaml`, and `purpose_i18n` in the template files): person names in Arabic script, role titles, clinics, slots, cover lines, config text and closure evidence labels. Error messages follow the `Accept-Language` header. Tests are in `backend/tests/test_i18n.py`. A value with no translation falls back to the stored text, never to an invented one. Some text stays in its author's language by design: clinician free text, stored messages and the simulation parameter explanations. **None of the Arabic or French text has been reviewed by a native-speaker clinical reader.**
+
+Design intent a reviewer can check on screen: Latin digits for clinical values in all languages, `lang` and `dir` set per language. No accessibility audit has been done (section 11).
 
 ## 3. Case model
 
@@ -326,30 +311,6 @@ Blood pressure values come only from a validated home cuff (`HOME_CUFF`), a clin
 ### Clinician-only closure
 
 `close` is allowed only for the clinician role and from any open state (`engine/actions.py`). The closure gate (`engine/closure.py`) refuses the request unless it has an evidence type from the list and either an evidence reference or a decision note of at least 10 characters. Evidence types: `BP_CONTROLLED`, `NOT_CONFIRMED`, `CARE_TRANSFERRED`, `PATIENT_DECLINED`, `UNREACHABLE_AFTER_PROTOCOL`, `DECEASED_OR_MOVED`, `OTHER_CLINICAL_DECISION`. The gate checks that a note exists and is long enough. It cannot judge whether the note is sensible. No timer, job or rule has a path to `CLOSED`: `producers_of_closed()` in `engine/states.py` must return exactly `{close}`, and a test asserts that.
-
-```mermaid
-flowchart TD
-    REQ["Close requested with close action"]
-    R1{"Caller role is clinician"}
-    X1["Refuse: role may not close"]
-    E1{"Evidence type present"}
-    X2["Refuse: evidence type missing"]
-    E2{"Evidence reference or decision note of at least 10 characters"}
-    X3["Refuse: no reference or decision note"]
-    CLS["Case set to CLOSED"]
-    AUD["CaseEvent written with clinician id, time, evidence type and reference or note"]
-    EVT["Allowed evidence types: BP_CONTROLLED, NOT_CONFIRMED, CARE_TRANSFERRED, PATIENT_DECLINED, UNREACHABLE_AFTER_PROTOCOL, DECEASED_OR_MOVED, OTHER_CLINICAL_DECISION"]
-    STMT["No timer, job or rule ever sets a case to CLOSED"]
-    REQ --> R1
-    R1 -->|"no"| X1
-    R1 -->|"yes"| E1
-    E1 -->|"no"| X2
-    E1 -->|"yes"| E2
-    E2 -->|"no"| X3
-    E2 -->|"yes"| CLS
-    CLS --> AUD
-    EVT -.-> E1
-```
 
 ### Lifestyle plan rules (Challenge 09 follow-up stage)
 
@@ -574,21 +535,7 @@ No route returns individual data to an employer or an insurer, and no such role 
 
 The thirteen measures named in SPEC section 6 are produced by both the live dashboard (`GET /api/dashboard/live`) and the simulation (`GET /api/dashboard/simulation`):
 
-| Measure | Meaning (live dashboard) |
-|---|---|
-| `time_to_notification_h` | Hours from case opened to patient notified (median, p90) |
-| `time_to_acknowledgement_h` | Hours from notified to acknowledged |
-| `time_to_confirmation_d` | Days from opened to clinician-confirmed |
-| `time_to_consultation_d` | Days from opened to the visit being recorded (state `IN_CARE`) |
-| `time_to_care_d` | Days from opened to `IN_CARE`, for cases where treatment started |
-| `referral_completion_rate` | Referral accepted, among cases with a referral |
-| `appointment_completion_rate` | Appointment attended, among cases with an appointment |
-| `treatment_initiation_rate` | Treatment started, among cases with a recorded visit outcome |
-| `unresolved_results` | Open cases that are overdue, rejected, unowned or awaiting a clinician decision, with the delay reason |
-| `teach_back_pass_rate` | Passed teach-back at the first try |
-| `patient_confidence_mean` | Mean self-rated confidence, 1 to 5 |
-| `plan_checkin_rate` | Done or partly weeks, among closed weeks |
-| `re_engagement_after_lapse_rate` | People with a missed week who answered a later check-in |
+In short (the live definitions): time from case opened to notified, from notified to acknowledged, from opened to clinician-confirmed, and from opened to `IN_CARE` (medians and 90th percentiles); referral completion (accepted, among cases with a referral); appointment completion (attended, among booked); treatment initiation (among recorded visit outcomes); unresolved results with the reason for delay; teach-back pass rate at the first try; mean confidence 1 to 5; weekly check-in rate; and re-engagement after a lapse. The `time_to_care_d` measure counts cases where treatment started. The simulation uses the same names with the differences below.
 
 ### Live measures and simulated measures are not the same numbers
 
@@ -694,7 +641,7 @@ There are no FHIR write endpoints and no FHIR search. The route is open to clini
 - Database: SQLite by default (`SQLITE_PATH`). PostgreSQL is selected when `DATABASE_URL` is set, and the driver `psycopg` is in the requirements. This path was not exercised, and neither was the PostgreSQL audit trigger SQL. Tables are created with `create_all`, and a small additive upgrade adds nullable columns that an older database lacks. There are no migrations beyond that, so production would need a migration tool.
 - Stateless tokens allow more than one API instance, but several things have not been tested or designed for it: the 60 second evaluation task would run in every instance, concurrent writes to the same case are untested, and the case list recalculates and writes every case on each request. That last point will not scale to large caseloads without a stored queue or indexed query.
 - Failure handling: a failed 60 second pass is logged with a traceback and the loop continues (test `test_tick_logs_the_traceback_and_keeps_running`). Evaluation on case reads continues regardless. There is still no monitoring or alerting, so a log line is the only signal.
-- No public deployment exists yet.
+- There is no hosted deployment. The entry is submitted as a public code repository plus a demonstration video, and a judge who wants to run it builds the image locally (section 12).
 - No load testing was done. No cost estimate is given in this document.
 
 ### What a pilot would measure (proposed, using the measures in section 8)
@@ -730,16 +677,14 @@ The warning is a deprecation notice from the Starlette test client about `httpx`
 
 ### What is covered
 
-| File | Covers |
-|---|---|
-| `backend/tests/test_engine_rules.py` | Classification boundaries, home and ambulatory averages (at threshold, just under, just over, first day discarded, too few days), service levels and escalation timing, urgent review escalation, effects not repeated, unreachable protocol, plan rules, config entries all placeholders, only `close` can produce `CLOSED`, closure gate, the engine import checks |
-| `backend/tests/test_api_closure_sla.py` | Non-clinicians cannot close, evidence is required, close and reopen audited, nothing closes on its own after advancing the clock by months, clock advance changes queues, severe intake, referral reject and reassign, withdrawn sharing consent blocks referral, 403, 409 and 422 behaviour, staff reads write `CASE_VIEWED`, events are append-only, patient view hides staff content |
-| `backend/tests/test_api_patient_flows.py` | Teach-back failure, red flags with region advice, wearable is not a BP source, confirmation steps, plan rules through the API, lapsed weeks recorded without blame, no penalty words, phone thread keywords and strict BP pattern, STOP, AI draft needs approval, engine works with wording disabled, e-consults, cover shown first, dashboard suppression, aggregate-only dashboard, FHIR bundle validity for every seeded case, reset, seed shape, transparent config |
-| `backend/tests/test_hardening.py` | The hardening pass: SMS reply grammar (state-driven table, letters for choices, digits for yes or no, `0` for call me, STOP words in three languages), red-flag question and severe SMS reading, server-stored drafts and re-validation at send, the single send function and its two documented bypasses, suppression events and the other-route task, the effects of each consent purpose, `DEMO_MODE`, coordinator redaction and clinician-only FHIR, queue row fields, step-specific reminders and the appointment reminder, region time zones for day grouping and the ABPM window, tick logging, database triggers on SQLite, language-neutral message slots, plan action text in three languages, simulation using the dashboard's bands and the engine thresholds |
-| `backend/tests/test_smoke.py` | Health route and queues respond |
-| `backend/tests/test_demo_script.py` | The three demo flows of SPEC section 11 through the API: Abu Dhabi patient, coordinator and clinician, Yaounde phone thread |
-| `backend/tests_data_ai/test_wording.py` | Every template in three languages, slots, SMS length limits, blocked words, no hard-coded phone numbers or streak language, validator checks, provider behaviour with mocked HTTP, wording does not import the engine, api or db |
-| `backend/tests_data_ai/test_sim.py` | Cohort determinism and plausibility, parameter table completeness, only allowed published values, result structure, small-cell suppression, byte-identical output, plausibility of the with-loop result, demo series |
+- `backend/tests/test_engine_rules.py`: classification boundaries, home and ambulatory averages, service levels and escalation timing, effects not repeated, the unreachable protocol, plan rules, all config entries labelled placeholders, only `close` can produce `CLOSED`, the closure gate, the engine import checks.
+- `backend/tests/test_api_closure_sla.py`, `test_api_patient_flows.py`, `test_demo_script.py`, `test_smoke.py`: the API behaviour (roles, 403, 409 and 422), closure and reopen, the clock, referral reject and reassign, teach-back, red flags, the wearable rule, plan rules, the phone thread, dashboard suppression, FHIR validity for every seeded case, reset and the three demo flows of SPEC section 11.
+- `backend/tests/test_hardening.py`: the hardening pass, namely the SMS reply grammar, red-flag and severe SMS handling, server-stored drafts and re-validation at send, the single send function and its two bypasses, the effects of each consent purpose, `DEMO_MODE`, coordinator redaction, clinician-only FHIR, step-specific reminders, region time zones, tick logging, database triggers on SQLite, language-neutral message slots and plan texts in three languages.
+- `backend/tests/test_i18n.py`: backend-supplied display strings in English, Arabic and French and `Accept-Language` error messages.
+- `backend/tests_data_ai/test_wording.py`: every template in three languages, slots, SMS length limits, blocked words, validator checks, provider behaviour with mocked HTTP, wording does not import the engine, api or db.
+- `backend/tests_data_ai/test_sim.py`: cohort determinism, parameter table completeness, only allowed published values, result structure, small-cell suppression, byte-identical output, plausibility of the with-loop result, demo series.
+
+A flake found and fixed during testing: the token check in `backend/app/api/auth.py` intermittently rejected freshly issued tokens in a test run, because a clock step on a virtualised host made the issued-at claim look like it was in the future. The issued-at claim is no longer enforced, and expiry has a 120 second leeway.
 
 ### Guardrail tests by rule
 
@@ -793,7 +738,7 @@ The warning is a deprecation notice from the Starlette test client about `httpx`
 2. All thresholds and service levels are placeholders pending clinician sign-off.
 3. All integrations are simulated: IFHAS, Malaffi, Thiqa, SMS and WhatsApp. There are no real inbound or outbound connections, and no delivery receipts.
 4. All outcomes are simulated on synthetic people. The live dashboard shows constructed demo cases. Neither is evidence of clinical effect.
-5. Arabic and French text has not been reviewed by native-speaker clinical reviewers. Register, culture and clarity are unchecked. As recorded in the template files, Arabic SMS text is never safe for the basic GSM-7 character set, so it uses shorter segments (134 characters, see `docs/DECISIONS.md`), and the French red-flag question SMS (`red_flag_check_sms`) is also recorded as not GSM-7 safe. Message length and cost on real networks are untested.
+5. **Arabic and French text has not been reviewed by native-speaker clinical reviewers.** This covers the templates, the backend-supplied labels, names and error messages, and the front-end strings. Register, culture and clarity are unchecked. As recorded in the template files, Arabic SMS text is never safe for the basic GSM-7 character set, so it uses shorter segments (134 characters, see `docs/DECISIONS.md`), and the French red-flag question SMS (`red_flag_check_sms`) is also recorded as not GSM-7 safe. Message length and cost on real networks are untested.
 6. There is one pathway, for raised blood pressure. It does not handle pregnancy, children, people already on treatment, secondary causes, or other conditions. The seeded e-consult scenario mentions pregnancy as a question, not as logic.
 7. Authentication is demo only. Anyone can obtain a token for any persona, and a development signing secret is used if none is configured. With `DEMO_MODE` off there is no way to sign in at all, because real authentication does not exist.
 8. In demo mode any signed-in user, including a patient, can advance the demo clock. The reset needs a signed-in staff or analyst user. Neither should be exposed on a shared deployment.
@@ -814,18 +759,23 @@ The warning is a deprecation notice from the Starlette test client about `httpx`
 23. A closure decision note passes the gate if it is long enough. The gate cannot judge it.
 24. The wearable diary is a static sample series, not a device integration.
 25. The reply grammar is rigid. A patient who types something it does not know gets a fixed "please reply with" message, and after two unreadable replies a call task. The teach-back is a three-option question that can be guessed. A reading typed by a patient cannot be checked against a real cuff.
-26. The front-end screens were built and clicked through by the people who built them. No independent end-to-end pass has been done, the repository has no front-end tests, and the GitHub Actions workflow has not been rerun since its front-end lockfile was repaired.
+26. The lead has viewed the main screens from a production build, but not every screen in every language, and an independent scripted end-to-end run is still in progress. The repository has no front-end tests, and the GitHub Actions workflow has not been rerun since its front-end lockfile was repaired.
 27. The emergency number 998, the plan actions and all message wording are unchecked by any clinician or official source.
-28. No public deployment exists.
+28. There is no hosted deployment. The entry is a public repository plus a demonstration video.
 29. The prototype is not a medical device and has not been assessed against any medical device regulation.
-
-### Resolved since the first review
-
-For readers who saw the earlier version of this document. Each of these is now fixed in code and tested: no emergency advice for a severe SMS reading and no red-flag question in the thread; the send endpoint trusting client text; partial consent enforcement; automatic reminders ignoring channel consent; the reset needing no token; FHIR open to coordinators and coordinators reading clinical notes; one reminder text for every late step; UTC day grouping; a silent background task; ORM-only audit protection (on SQLite); the cohort generator keeping its own threshold copy; English-only plan texts.
 
 ## 12. How to run
 
 All commands are from files in this repository. The development helper runs Docker inside WSL (this machine's Windows Application Control policy can block compiled Python extensions, so a native Windows virtual environment is a fallback only).
+
+### Run it as a judge (two commands)
+
+```
+docker build -t halqa .
+docker run -p 8000:8000 -e GUEST_TOKEN_SECRET=<any long random string> halqa
+```
+
+Then open `http://localhost:8000` and choose "Continue as Guest". The team verified the build and a run on 18 November 2026 (section 9). We did not repeat it for this document. The container stores the SQLite file in `/srv/state`, which is not a mounted volume, so data is lost when the container is removed unless a volume is added. `DEMO_MODE` defaults to on, which is what the guest login needs.
 
 ### Backend in development (Docker in WSL)
 
@@ -872,17 +822,6 @@ npm run gen:api
 ```
 
 The first command writes `docs/openapi.json`. The second writes `frontend/src/api/schema.d.ts` from it.
-
-### Production image
-
-The `Dockerfile` at the repository root builds one image with the API and the built front end. Standard Docker commands apply, for example:
-
-```
-docker build -t halqa .
-docker run -p 8000:8000 --env-file .env halqa
-```
-
-These two lines are the standard use of the Dockerfile. The team verified the build and a run on 18 November 2026 (section 9). We did not run them for this document. The container stores the SQLite file in `/srv/state`, which is not a mounted volume, so data is lost when the container is removed unless a volume is added.
 
 ### Environment variables (`.env.example`)
 

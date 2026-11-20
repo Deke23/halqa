@@ -1,5 +1,7 @@
 {
-  "app": { "tagline": "One accountable owner and one due date for every raised blood pressure result." },
+  "app": {
+    "tagline": "One accountable owner and one due date for every raised blood pressure result."
+  },
   "nav": {
     "home": "Home",
     "patient": "My care",
@@ -27,10 +29,11 @@
     "resetDone": "Demo data was reset.",
     "resetConfirmTitle": "Reset demo data",
     "resetConfirmBody": "This restores all people, cases and the demo clock to their starting values.",
-    "clockAdvanced": "The demo clock moved forward."
+    "clockAdvanced": "The demo clock moved forward.",
+    "toggle": "Demo"
   },
   "landing": {
-    "title": "Close the loop after a raised blood pressure result",
+    "title": "No raised blood pressure result gets lost",
     "intro": "This is a working prototype with synthetic people. Every result, message and provider shown here is fictional.",
     "continueGuest": "Continue as Guest",
     "pickPersona": "Choose who to sign in as",
@@ -40,18 +43,62 @@
     "loginFailed": "Sign in did not work",
     "backendUnreachable": "The backend is not reachable. Start the server on port 8000 and try again.",
     "region": "Region",
-    "openTransparency": "How decisions are made"
+    "openTransparency": "How decisions are made",
+    "lead": "Halqa follows each raised reading from screening to treatment. Every step has one accountable owner and one due date, so a result never waits without someone responsible.",
+    "simulatedNotice": "Simulated data. Every person, reading and message here is fictional.",
+    "ringLabel": "Example case, step {{n}} of 8",
+    "ringCaption": "steps reached",
+    "openDashboard": "Programme dashboard"
   },
   "personas": {
-    "patient_auh": { "name": "Khalid", "role": "Patient", "description": "34, Emirati, office job. Flagged at a simulated screening with 152/96 mmHg. Uses the web app.", "region": "Abu Dhabi" },
-    "coordinator_auh": { "name": "Mariam", "role": "Care coordinator", "description": "Works the queue of overdue, rejected and unowned cases at an Abu Dhabi primary care centre.", "region": "Abu Dhabi" },
-    "clinician_pcp": { "name": "Dr Sara", "role": "Family medicine clinician", "description": "Reviews confirmation readings, refers, asks e-consults and closes cases.", "region": "Abu Dhabi" },
-    "clinician_specialist": { "name": "Dr Omar", "role": "Hypertension clinic clinician", "description": "Accepts or rejects referrals and starts treatment.", "region": "Abu Dhabi" },
-    "patient_yde": { "name": "Jean-Paul", "role": "Patient", "description": "47, taxi driver. Clinic reading of 164/102 mmHg. Reached by SMS and WhatsApp in French.", "region": "Yaoundé" },
-    "nurse_yde": { "name": "Clarisse", "role": "Nurse coordinator", "description": "Coordinates follow-up at a Yaoundé health centre.", "region": "Yaoundé" },
-    "analyst": { "name": "Programme analyst", "role": "Analyst", "description": "Sees aggregate measures only. Small groups are hidden.", "region": "Both regions" }
+    "patient_auh": {
+      "name": "Khalid",
+      "role": "Patient",
+      "description": "34, Emirati, office job. Flagged at a simulated screening with 152/96 mmHg. Uses the web app.",
+      "region": "Abu Dhabi"
+    },
+    "coordinator_auh": {
+      "name": "Mariam",
+      "role": "Care coordinator",
+      "description": "Works the queue of overdue, rejected and unowned cases at an Abu Dhabi primary care centre.",
+      "region": "Abu Dhabi"
+    },
+    "clinician_pcp": {
+      "name": "Dr Sara",
+      "role": "Family medicine clinician",
+      "description": "Reviews confirmation readings, refers, asks e-consults and closes cases.",
+      "region": "Abu Dhabi"
+    },
+    "clinician_specialist": {
+      "name": "Dr Omar",
+      "role": "Hypertension clinic clinician",
+      "description": "Accepts or rejects referrals and starts treatment.",
+      "region": "Abu Dhabi"
+    },
+    "patient_yde": {
+      "name": "Jean-Paul",
+      "role": "Patient",
+      "description": "47, taxi driver. Clinic reading of 164/102 mmHg. Reached by SMS and WhatsApp in French.",
+      "region": "Yaoundé"
+    },
+    "nurse_yde": {
+      "name": "Clarisse",
+      "role": "Nurse coordinator",
+      "description": "Coordinates follow-up at a Yaoundé health centre.",
+      "region": "Yaoundé"
+    },
+    "analyst": {
+      "name": "Programme analyst",
+      "role": "Analyst",
+      "description": "Sees aggregate measures only. Small groups are hidden.",
+      "region": "Both regions"
+    }
   },
-  "regions": { "abu_dhabi": "Abu Dhabi", "yaounde": "Yaoundé", "all": "All regions" },
+  "regions": {
+    "abu_dhabi": "Abu Dhabi",
+    "yaounde": "Yaoundé",
+    "all": "All regions"
+  },
   "states": {
     "RESULT_ISSUED": "Result issued",
     "NOTIFIED": "Patient notified",
@@ -62,7 +109,13 @@
     "IN_CARE": "In care",
     "CLOSED": "Closed"
   },
-  "journey": { "title": "Your journey", "youAreHere": "You are here", "done": "Done", "upcoming": "Coming up", "doneAt": "Done {{when}}" },
+  "journey": {
+    "title": "Your journey",
+    "youAreHere": "You are here",
+    "done": "Done",
+    "upcoming": "Coming up",
+    "doneAt": "Done {{when}}"
+  },
   "roles": {
     "patient": "Patient",
     "coordinator": "Care coordinator",
@@ -74,7 +127,10 @@
     "system": "System",
     "none": "None"
   },
-  "owner": { "noOwner": "No owner", "label": "Owner" },
+  "owner": {
+    "noOwner": "No owner",
+    "label": "Owner"
+  },
   "queues": {
     "urgent": "Urgent",
     "overdue": "Overdue",
@@ -110,7 +166,12 @@
     "noDate": "No due date",
     "dueOn": "Due {{date}}"
   },
-  "units": { "hour": "{{count}} h", "day_one": "{{count}} day", "day_other": "{{count}} days", "mmHg": "mmHg" },
+  "units": {
+    "hour": "{{count}} h",
+    "day_one": "{{count}} day",
+    "day_other": "{{count}} days",
+    "mmHg": "mmHg"
+  },
   "simulated": "Simulated",
   "fewerThan5": "fewer than 5",
   "urgent": "Urgent",
@@ -139,8 +200,22 @@
     "notifications": "Notifications",
     "dismiss": "Dismiss"
   },
-  "table": { "noRows": "No rows to show" },
-  "timeline": { "title": "Case timeline", "by": "by {{actor}}", "system": "System" },
-  "json": { "copy": "Copy", "copied": "Copied", "expand": "Expand", "collapse": "Collapse" },
-  "placeholder": { "ownedBy": "This screen is built by {{owner}}.", "route": "Route: {{route}}" }
+  "table": {
+    "noRows": "No rows to show"
+  },
+  "timeline": {
+    "title": "Case timeline",
+    "by": "by {{actor}}",
+    "system": "System"
+  },
+  "json": {
+    "copy": "Copy",
+    "copied": "Copied",
+    "expand": "Expand",
+    "collapse": "Collapse"
+  },
+  "placeholder": {
+    "ownedBy": "This screen is built by {{owner}}.",
+    "route": "Route: {{route}}"
+  }
 }

@@ -11,7 +11,7 @@ import { CaseHeader } from "./Header";
 import { MessagesCard } from "./MessagesCard";
 import { ReadingsCard } from "./ReadingsCard";
 import { ReferralCard } from "./ReferralCard";
-import { AuditCard, ClosureSummary, ConsentCard, PlanCard, ProgressCard, TasksCard } from "./SideCards";
+import { AuditCard, ClosureSummary, ConsentCard, PatientCard, PlanCard, ProgressCard, TasksCard } from "./SideCards";
 
 /** Route /staff/cases/:id. Actions come only from the server's allowed_actions. */
 export default function StaffCase() {
@@ -40,23 +40,24 @@ export default function StaffCase() {
           <p className="text-sm">{t("banner.coordinationBody")}</p>
         </div>
       )}
-      <ActionsPanel detail={detail} />
-      <div className="grid gap-5 xl:grid-cols-3">
-        <div className="flex min-w-0 flex-col gap-5 xl:col-span-2">
+      <div className="grid items-start gap-5 lg:grid-cols-[minmax(0,1fr)_18rem]">
+        <div className="flex min-w-0 flex-col gap-5">
+          <ActionsPanel detail={detail} />
           <ClosureSummary detail={detail} />
           <ReadingsCard detail={detail} />
           <ReferralCard detail={detail} />
           <MessagesCard detail={detail} />
           <EconsultCard detail={detail} />
         </div>
-        <div className="flex min-w-0 flex-col gap-5">
-          <ProgressCard detail={detail} />
-          <TasksCard detail={detail} />
+        <aside className="flex min-w-0 flex-col gap-5" aria-label={t("case.sideLabel")}>
+          <PatientCard detail={detail} />
           <ConsentCard detail={detail} />
           <PlanCard detail={detail} />
-          <AuditCard detail={detail} />
-        </div>
+          <TasksCard detail={detail} />
+          <ProgressCard detail={detail} />
+        </aside>
       </div>
+      <AuditCard detail={detail} />
       {user?.role === "clinician" && <FhirDrawer caseId={String(detail.id)} open={fhirOpen} onClose={() => setFhirOpen(false)} />}
     </div>
   );

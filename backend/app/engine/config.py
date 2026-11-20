@@ -21,6 +21,9 @@ class ConfigEntry:
     unit: str
     basis: str
     status: str
+    label_i18n: dict | None = None
+    basis_i18n: dict | None = None
+    unit_i18n: dict | None = None
 
 
 @lru_cache(maxsize=1)
@@ -47,7 +50,7 @@ def hours(section: str, key: str) -> float:
 
 def all_entries() -> list[ConfigEntry]:
     return [
-        ConfigEntry(section, key, e["value"], e["unit"], e["basis"], e["status"])
+        ConfigEntry(section, key, e["value"], e["unit"], e["basis"], e["status"], e.get("label_i18n"), e.get("basis_i18n"), e.get("unit_i18n"))
         for section, entries in _load().items()
         for key, e in entries.items()
     ]

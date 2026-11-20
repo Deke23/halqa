@@ -4,6 +4,7 @@ import { useAuth } from "@/api/auth";
 import { Badge, Card, DueChip, EmptyState, JourneySteps, Timeline } from "@/components";
 import type { JourneyStepData, TimelineEvent } from "@/api/types";
 import { formatDateTime } from "@/lib/format";
+import { pickText } from "@/lib/i18nField";
 import { useLabels } from "../labels";
 import { usePersonText } from "../PersonLabel";
 import type { CaseDetail } from "../types";
@@ -17,6 +18,32 @@ const CLINICAL_TEXT_EVENTS = new Set([
   "ECONSULT_ASKED",
   "ECONSULT_ANSWERED",
 ]);
+
+export function PatientCard({ detail }: { detail: CaseDetail }) {
+  const { t } = useTranslation("staff");
+  const p = detail.patient;
+  const org = pickText(p.organisation_i18n, p.organisation);
+  const rows: Array<[string, string]> = [
+    [t("patient.age"), String(p.age)],
+    [t("patient.sex"), t(`sex.${p.sex}`, { defaultValue: p.sex })],
+    [t("patient.language"), t(`language.${p.language}`)],
+    [t("patient.channel"), t(`channel.${p.channel}`)],
+    [t("patient.insurance"), t(`insurance.${p.insurance}`, { defaultValue: p.insurance })],
+    [t("patient.organisation"), org],
+  ];
+  return (
+    <Card title={t("patient.title")}>
+      <dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-1.5 text-sm">
+        {rows.map(([k, v]) => (
+          <div key={k} className="contents">
+            <dt className="text-muted">{k}</dt>
+            <dd className="font-medium">{v}</dd>
+          </div>
+        ))}
+      </dl>
+    </Card>
+  );
+}
 
 export function ProgressCard({ detail }: { detail: CaseDetail }) {
   const { t } = useTranslation("staff");
@@ -103,7 +130,7 @@ export function TasksCard({ detail }: { detail: CaseDetail }) {
         {open.map((task) => (
           <li key={task.id} className="flex flex-wrap items-center justify-between gap-2">
             <span>
-              {labels.task(task.title_key)} <span className="text-muted">({t(`roleShort.${task.owner_role}`)})</span>
+              {pickText(task.title_i18n, labels.task(task.title_key))} <span className="text-muted">({t(`roleShort.${task.owner_role}`)})</span>
             </span>
             <DueChip dueAt={task.due_at} overdue={task.overdue} />
           </li>
@@ -119,13 +146,14 @@ export function AuditCard({ detail }: { detail: CaseDetail }) {
   const [showViews, setShowViews] = useState(false);
   const { user } = useAuth();
   const person = usePersonText();
+  const { t: tc } = useTranslation();
   const coordinator = user?.role === "coordinator";
   // A coordinator never receives the clinical free text of these events. Say so instead of leaving a gap.
   const events: TimelineEvent[] = detail.timeline
     .filter((e) => showViews || e.type !== "CASE_VIEWED")
     .map((e) => ({
       ...e,
-      actor_name: e.actor_person ? person(e.actor_person) : e.actor_name,
+      actor_name: e.actor_person ? person(e.actor_person) : e.actor_role === "system" ? tc("roles.system") : e.actor_name,
       reason: e.reason ?? (coordinator && CLINICAL_TEXT_EVENTS.has(e.type) ? t("clinicianOnly") : null),
     }));
   return (

@@ -2,6 +2,10 @@
 id: result_raised_sms
 version: 1
 purpose: SMS version of the raised-reading result.
+purpose_i18n:
+  en: SMS version of the raised-reading result.
+  ar: نسخة الرسالة النصية لنتيجة القراءة المرتفعة.
+  fr: Version SMS du résultat d'une mesure élevée.
 channel_limits:
   sms:
     en: 160

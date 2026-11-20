@@ -2,6 +2,10 @@
 id: appointment_booked
 version: 1
 purpose: Appointment booked confirmation.
+purpose_i18n:
+  en: Appointment booked confirmation.
+  ar: تأكيد حجز الموعد.
+  fr: Confirmation de la réservation du rendez-vous.
 channel_limits:
   app: 900
   whatsapp: 1000
